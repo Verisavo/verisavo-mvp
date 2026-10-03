@@ -1,0 +1,1987 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body data-sound-sections>
+<title>Verisavo Intelligence Assistant</title>
+<meta name="description" content="Verisavo is a connected intelligence layer for African markets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sectioned product page after the MVP_2 reference — hero panel with wireframe globe and product card, split proof section, Royal Indigo platform band, 2x2 trust grid, dark CTA panel. */
+:root {
+  --indigo: #1F273F; --white: #FFFFFF;
+  --b100: #E3EBF8; --b200: #CCDDF1; --b300: #A8C6E8; --b400: #80AADC; --b500: #618CD0; --b600: #4D74C3; --b700: #4362B2; --b800: #3A5292;
+  --fg: var(--indigo); --muted: var(--b800); --accent: var(--b700); --line: var(--b200);
+  --sans: "Geist", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+  --h1: clamp(2.4rem, 1.4rem + 3.8vw, 4rem);
+  --h2: clamp(1.9rem, 1.3rem + 2vw, 2.75rem);
+  --ease: cubic-bezier(.2,.7,.2,1);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--white); color: var(--fg); font: 400 1rem/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.035em; line-height: 1.08; text-wrap: balance; }
+h3 { letter-spacing: -0.015em; line-height: 1.3; }
+p { margin: 0; }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--b600); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1120px; margin-inline: auto; padding-inline: 20px; }
+.tone { color: var(--b700); }
+.eyebrow { font: 600 0.75rem/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--b700); }
+.lead { font-size: 1.0625rem; color: var(--muted); max-width: 54ch; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -9999px; border: 0; font: inherit; cursor: pointer; }
+.skip:focus { left: 12px; top: 12px; z-index: 80; background: var(--white); padding: 8px 12px; border-radius: 8px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 0 18px; border-radius: 8px; border: 1px solid transparent; font: 600 0.9375rem/1 var(--sans); cursor: pointer; white-space: nowrap; transition: background-color .2s, border-color .2s, transform .15s; }
+.btn:active { transform: scale(.98); }
+.btn .ic { width: 15px; height: 15px; transition: transform .25s var(--ease); }
+.btn:hover .ic { transform: translateX(3px); }
+.btn-blue { background: var(--b700); color: var(--white); }
+.btn-blue:hover { background: var(--b800); }
+.btn-dark { background: var(--indigo); color: var(--white); }
+.btn-dark:hover { background: var(--b800); }
+.btn-ghost { background: var(--white); color: var(--indigo); border-color: var(--b200); }
+.btn-ghost:hover { border-color: var(--b500); }
+.btn-outline-w { background: transparent; color: var(--white); border-color: var(--b300); }
+.btn-outline-w:hover { border-color: var(--white); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+.btn-primary { background: var(--indigo); color: var(--white); }
+.btn-primary:hover { background: var(--b800); }
+
+/* Header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; background: var(--white); border-bottom: 1px solid transparent; transition: border-color .3s; }
+.top.line { border-bottom-color: var(--b200); }
+.nav { display: flex; align-items: center; gap: 24px; min-height: 68px; }
+.logo { background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; color: var(--indigo); font: 700 1.3125rem/1 var(--sans); letter-spacing: -0.05em; }
+.logo svg { width: 20px; height: 20px; }
+a.logo { text-decoration: none; }
+.logo .dot { color: var(--b600); }
+.links { display: flex; gap: 4px; list-style: none; margin: 0 auto; padding: 0; }
+.links button { background: none; border: 0; padding: 8px 12px; border-radius: 8px; font: 500 0.9375rem/1 var(--sans); color: var(--muted); cursor: pointer; }
+.links button:hover, .links button.on { color: var(--indigo); background: var(--b100); }
+.nav-cta { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+.nav .btn { min-height: 42px; padding: 0 20px; font-size: 0.9375rem; border-radius: 8px; }
+.login { background: none; border: 0; padding: 10px 14px; border-radius: 999px; font: 600 0.9375rem/1 var(--sans); color: var(--indigo); cursor: pointer; }
+.login:hover { background: var(--b100); }
+.login { white-space: nowrap; }
+.a-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.a-tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--b100); border-radius: 999px; }
+.a-tabs [role=tab] { border: 0; background: transparent; padding: 8px 16px; border-radius: 999px; font: 600 0.875rem/1 var(--sans); color: var(--b800); cursor: pointer; }
+.a-tabs [role=tab][aria-selected="true"] { background: var(--white); color: var(--indigo); }
+.a-google { background: var(--white); color: var(--indigo); border: 1px solid var(--b200); border-radius: 10px; min-height: 48px; text-decoration: none; }
+.a-google:hover { border-color: var(--b500); }
+.a-google svg { width: 18px; height: 18px; }
+.a-or { display: flex; align-items: center; gap: 12px; color: var(--b600); font-size: 0.8125rem; }
+.a-or::before, .a-or::after { content: ""; flex: 1; height: 1px; background: var(--b200); }
+.a-form { display: grid; gap: 12px; }
+.a-form[hidden], .a-field[hidden] { display: none; }
+.a-field { display: grid; gap: 6px; }
+.a-field input { width: 100%; min-height: 46px; border: 1px solid var(--b200); border-radius: 10px; padding: 0 14px; font: 400 1rem/1 var(--sans); color: var(--indigo); background: var(--white); }
+.a-field input:focus { outline: none; border-color: var(--b600); box-shadow: 0 0 0 4px var(--b100); }
+.a-field input::placeholder { color: var(--b500); }
+.a-form .btn { border-radius: 10px; min-height: 48px; }
+.a-msg { line-height: 1.45; }
+.a-sent { background: var(--b100); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; font-size: 0.9375rem; }
+.a-sent[hidden] { display: none; }
+.a-switch { font-size: 0.875rem; color: var(--muted); text-align: center; }
+.linkish { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--indigo); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 420px) { .nav { gap: 10px; } .login { padding: 10px 8px; font-size: 0.875rem; } .nav .btn { padding: 0 14px; font-size: 0.875rem; } .logo { font-size: 1.1875rem; } }
+@media (max-width: 820px) { .links { display: none; } }
+.menu-btn { display: none; width: 42px; height: 42px; border: 1px solid var(--b200); border-radius: 8px; background: var(--white); color: var(--indigo); cursor: pointer; place-items: center; flex: none; }
+.menu-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.menu-btn path { transition: transform .25s var(--ease), opacity .2s; transform-origin: 10px 10px; }
+.menu-btn[aria-expanded="true"] .mb1 { transform: translateY(4px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] .mb2 { opacity: 0; }
+.menu-btn[aria-expanded="true"] .mb3 { transform: translateY(-4px) rotate(-45deg); }
+.m-menu { border-top: 1px solid var(--b200); background: var(--white); box-shadow: 0 18px 30px -24px #3A5292; animation: rise .25s var(--ease); }
+.m-menu[hidden] { display: none; }
+.m-menu .wrap { display: grid; padding-block: 8px 14px; }
+.m-menu button { text-align: left; background: none; border: 0; border-bottom: 1px solid var(--b100); padding: 15px 2px; font: 500 1rem/1 var(--sans); color: var(--indigo); cursor: pointer; }
+.m-menu button:last-child { border-bottom: 0; }
+.m-login { display: none; }
+@media (max-width: 820px) { .menu-btn { display: grid; } }
+@media (max-width: 520px) { .nav-cta .login { display: none; } .m-login { display: block; } }
+
+
+/* Hero (original startup-style) */
+.hero { position: relative; isolation: isolate; z-index: 1; background: linear-gradient(180deg, #FFFFFF 0%, #E3EBF8 100%); border-bottom: 1px solid var(--b200); }
+#net { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 32px; padding-block: clamp(72px, 10vw, 136px) clamp(72px, 9vw, 120px); }
+@media (max-width: 760px) { .hero-grid { padding-top: 112px; } }
+.hero-title { display: grid; gap: 18px; align-content: start; }
+.hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.25rem, 1.5rem + 2.4vw, 3.5rem); letter-spacing: -0.02em; line-height: 1.12; }
+.hero h1 .l1, .hero h1 .tone { display: block; }
+.hero h1 .tone { color: var(--b700); }
+@media (min-width: 440px) { .hero h1 .l1 { white-space: nowrap; } }
+.hero-title .sub { font-size: 1.0625rem; line-height: 1.55; font-weight: 500; color: var(--indigo); max-width: 44ch; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: -8px; }
+.btn-rect { min-height: 42px; padding: 0 18px; border-radius: 3px; font-size: 0.875rem; font-weight: 500; }
+.btn-rect.solid { background: var(--indigo); color: var(--white); }
+.btn-rect.solid:hover { background: var(--b800); color: var(--white); }
+.btn-rect.plain { background: var(--white); color: var(--indigo); border: 1px solid var(--b200); }
+.btn-rect.plain:hover { border-color: var(--b500); color: var(--indigo); }
+.badge { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font: 500 0.8125rem/1 var(--sans); color: var(--b800); background: var(--white); border: 1px solid var(--b200); padding: 7px 12px 7px 10px; border-radius: 999px; }
+.badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--b600); box-shadow: 0 0 0 3px var(--b100); }
+.ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.stage-sec { padding-block: clamp(56px, 7vw, 88px) clamp(40px, 5vw, 64px); }
+
+.stage { position: relative; isolation: isolate; }
+.stage-bg { position: relative; overflow: hidden; height: clamp(250px, 30vw, 360px); border-radius: 20px; border: 1px solid var(--b200); background: #E3EBF8; }
+.stage .pcard { z-index: 1; margin-top: calc(-1 * clamp(64px, 8vw, 100px)); padding-inline: 16px; }
+@media (max-width: 640px) { .stage-bg { height: 230px; } .stage .pcard { margin-top: -36px; padding-inline: 10px; } }
+.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.scene .lyr, .scene .wk { will-change: transform; }
+.scene [pathLength] { stroke-dasharray: 1; stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .scene [pathLength] { animation: draw 2.4s cubic-bezier(.4,0,.2,1) both; }
+  .scene .far [pathLength] { animation-delay: .1s; }
+  .scene .mid [pathLength] { animation-delay: .35s; }
+  .scene .crowd [pathLength], .scene .shop [pathLength] { animation-delay: .5s; }
+}
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+.mpin { position: absolute; z-index: -1; width: 30px; height: 30px; border-radius: 50%; background: var(--white); border: 1px solid var(--b300); display: grid; place-items: center; box-shadow: 0 8px 18px -10px #3A5292; }
+.mpin i { width: 10px; height: 10px; border-radius: 50%; background: var(--b600); }
+.mpin::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: 26px; background: var(--b500); }
+.mpin.p1 { left: 52%; top: 5%; } .mpin.p2 { left: 58%; top: 2%; } .mpin.p2 i { background: var(--indigo); } .mpin.p3 { left: 81%; top: 74%; }
+.mpin.p3::after { top: auto; bottom: 100%; }
+
+.pcard { position: relative; max-width: 800px; margin: 0 auto; }
+.chat { text-align: left; background: var(--white); border: 1px solid var(--b200); border-radius: 14px; box-shadow: 0 24px 60px -28px #A8C6E8; transition: border-color .2s, box-shadow .2s; }
+.chat:focus-within { border-color: var(--b400); box-shadow: 0 24px 60px -28px #80AADC, 0 0 0 4px #E3EBF8; }
+.chat-head .chat-pill { margin-left: auto; }
+.chat-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 0 20px; padding: 16px 0 14px; border-bottom: 1px solid var(--b200); }
+.chat-title { font: 400 1rem/1.3 var(--sans); color: var(--indigo); }
+.chat-pill { font: 700 0.625rem/1 var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--b700); background: var(--b100); padding: 7px 9px; border-radius: 5px; white-space: nowrap; }
+.chat-body { padding: 20px 20px 6px; }
+.chat textarea { width: 100%; min-height: 64px; max-height: 180px; border: 0; padding: 2px 0; resize: none; font: 400 1rem/1.55 var(--sans); color: var(--indigo); background: transparent; }
+.chat textarea::placeholder { color: var(--b500); }
+.chat textarea:focus { outline: none; }
+.chat-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 20px 18px; }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.attach { position: relative; }
+.add-btn { width: 32px; height: 32px; border-radius: 6px; border: 0; background: none; color: var(--b800); display: grid; place-items: center; cursor: pointer; transition: border-color .2s, background-color .2s, transform .25s var(--ease); }
+.add-btn svg { width: 18px; height: 18px; }
+.add-btn:hover { color: var(--b600); }
+.add-btn[aria-expanded="true"] { transform: rotate(45deg); color: var(--b600); }
+.add-menu { position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 5; min-width: 168px; padding: 6px; background: var(--white); border: 1px solid var(--b200); border-radius: 12px; box-shadow: 0 18px 40px -18px #A8C6E8; display: grid; gap: 2px; animation: pop .2s var(--ease); }
+.add-menu[hidden] { display: none; }
+.add-menu button { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border: 0; border-radius: 8px; background: none; font: 500 0.875rem/1 var(--sans); color: var(--indigo); cursor: pointer; text-align: left; }
+.add-menu button svg { width: 17px; height: 17px; color: var(--b700); }
+.add-menu button:hover, .add-menu button:focus-visible { background: var(--b100); outline: none; }
+.att-list { list-style: none; margin: 0; padding: 4px 20px 6px; display: flex; flex-wrap: wrap; gap: 8px; }
+.att-list[hidden] { display: none; }
+.att { display: flex; align-items: center; gap: 8px; max-width: 240px; padding: 5px 6px 5px 5px; border: 1px solid var(--b200); border-radius: 10px; background: var(--b100); font-size: 0.8125rem; color: var(--indigo); animation: pop .2s var(--ease); }
+.att-thumb { flex: none; width: 30px; height: 30px; border-radius: 6px; background: var(--white); display: grid; place-items: center; overflow: hidden; color: var(--b700); }
+.att-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.att-thumb svg { width: 16px; height: 16px; }
+.att-meta { min-width: 0; display: grid; gap: 2px; }
+.att-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.att-size { font-size: 0.6875rem; color: var(--b600); }
+.att-x { flex: none; width: 22px; height: 22px; border: 0; border-radius: 50%; background: none; color: var(--b700); cursor: pointer; display: grid; place-items: center; }
+.att-x:hover { background: var(--white); }
+.att-x svg { width: 10px; height: 10px; }
+
+/* Question box: place picker and what an answer contains */
+.place-menu { position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 6; min-width: 184px; max-height: 280px; overflow-y: auto; margin: 0; padding: 6px; list-style: none; background: var(--white); border: 1px solid var(--b200); border-radius: 12px; box-shadow: 0 18px 40px -18px #A8C6E8; }
+.place-menu[hidden] { display: none; }
+.place-menu button { width: 100%; padding: 9px 10px; border: 0; border-radius: 8px; background: none; font: 500 0.875rem/1.2 var(--sans); color: var(--indigo); text-align: left; cursor: pointer; }
+.place-menu button:hover, .place-menu button:focus-visible { background: var(--b100); outline: none; }
+.place-menu [aria-checked="true"] { background: var(--b100); font-weight: 600; }
+.add-menu .add-sep { margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--b200); border-radius: 0 0 8px 8px; }
+.add-menu .add-sep svg { width: 17px; height: 17px; }
+.add-val { margin-left: auto; padding-left: 12px; font-size: 0.75rem; font-weight: 500; color: var(--b600); white-space: nowrap; }
+.add-menu { min-width: 236px; }
+.add-menu button { white-space: nowrap; }
+.place-tag { display: inline-flex; align-items: center; border: 1px solid var(--b300); background: var(--b100); border-radius: 999px; }
+.place-tag[hidden] { display: none; }
+.place-tag-b { display: inline-flex; align-items: center; gap: 6px; padding: 8px 4px 8px 10px; border: 0; background: none; font: 600 0.75rem/1 var(--sans); color: var(--indigo); cursor: pointer; }
+.place-tag-b svg { width: 14px; height: 14px; }
+.place-tag-x { width: 24px; height: 24px; margin-right: 4px; border: 0; border-radius: 50%; background: none; color: var(--b700); display: grid; place-items: center; cursor: pointer; }
+.place-tag-x:hover { background: var(--white); }
+.place-tag-x svg { width: 9px; height: 9px; }
+.ask-promise { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 16px auto 0; padding-inline: 16px; font-size: 0.8125rem; line-height: 1.5; color: var(--b800); text-align: center; }
+.ask-promise svg { width: 15px; height: 15px; flex: none; color: var(--b600); }
+
+/* Question box: dark mode with a toggle in its top corner */
+.chat { position: relative; }
+.chat-body { padding-right: 56px; }
+.chat-theme { position: absolute; top: 12px; right: 12px; z-index: 2; width: 34px; height: 34px; border: 0; border-radius: 50%; background: none; color: var(--b700); display: grid; place-items: center; cursor: pointer; transition: background-color .2s, color .2s; }
+.chat-theme:hover { background: var(--b100); color: var(--indigo); }
+.chat-theme svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.chat-theme .ct-sun { display: none; }
+.chat.dark .chat-theme .ct-sun { display: block; }
+.chat.dark .chat-theme .ct-moon { display: none; }
+.chat, .chat textarea, .chat .chip, .chat .add-btn, .chat .send-q { transition: background-color .3s, color .3s, border-color .3s, box-shadow .3s; }
+.chat.dark { background: linear-gradient(180deg, #1F273F 0%, #1F273F 50%, #3A5292 100%); border-color: #3A5292; box-shadow: 0 24px 60px -26px #1F273F; }
+.chat.dark:focus-within { border-color: #618CD0; box-shadow: 0 24px 60px -26px #1F273F, 0 0 0 4px rgba(97,140,208,.25); }
+.chat.dark textarea { color: #FFFFFF; }
+.chat.dark textarea::placeholder { color: #CCDDF1; opacity: 1; }
+.chat.dark .chat-theme, .chat.dark .add-btn { color: #CCDDF1; }
+.chat.dark .chat-theme:hover { background: rgba(227,235,248,.1); color: #FFFFFF; }
+.chat.dark .chip { background: transparent; border-color: rgba(168,198,232,.3); color: #CCDDF1; }
+.chat.dark .chip:hover { border-color: rgba(168,198,232,.6); }
+.chat.dark .chip[aria-pressed="true"] { background: rgba(227,235,248,.12); border-color: #80AADC; color: #FFFFFF; }
+.chat.dark .place-tag { background: rgba(227,235,248,.1); border-color: rgba(168,198,232,.4); }
+.chat.dark .place-tag-b { color: #FFFFFF; }
+.chat.dark .place-tag-x { color: #A8C6E8; }
+.chat.dark .place-tag-x:hover { background: rgba(227,235,248,.12); }
+.chat.dark .send-q { background: #FFFFFF; color: #1F273F; }
+.chat.dark .send-q:hover { background: #E3EBF8; }
+.chat.dark .att { background: rgba(227,235,248,.1); border-color: rgba(168,198,232,.3); color: #FFFFFF; }
+.chat.dark .att-size { color: #A8C6E8; }
+.chat.dark .att-x { color: #CCDDF1; }
+.chat.dark .ask-note { color: #FFFFFF; }
+
+.chip { font: 600 0.75rem/1 var(--sans); color: var(--b800); background: var(--white); border: 1px solid var(--b200); padding: 9px 12px; border-radius: 999px; cursor: pointer; transition: border-color .2s, background-color .2s; }
+.chip:hover { border-color: var(--b400); }
+.chip[aria-pressed="true"] { background: var(--b100); border-color: var(--b400); color: var(--indigo); }
+.send-q { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 14px; border: 0; border-radius: 7px; background: var(--indigo); color: var(--white); font: 700 0.8125rem/1 var(--sans); cursor: pointer; transition: background-color .2s; }
+.send-q:hover { background: var(--b800); }
+.send-q svg { width: 12px; height: 12px; }
+.ask-note { font-size: 0.8125rem; color: var(--indigo); font-weight: 600; padding: 0 20px 16px; }
+.ask-note:empty { display: none; }
+@media (max-width: 520px) { .chat-foot .send-q { width: 100%; justify-content: center; min-height: 44px; } }
+
+/* How it works */
+section[id] { scroll-margin-top: 80px; }
+.sec { padding-block: clamp(72px, 9vw, 112px); }
+.how { background: var(--white); }
+.how h2 { font-size: var(--h2); margin-top: 16px; }
+.how-sub { margin-top: 18px; font-size: 1rem; color: var(--indigo); }
+.how-steps { list-style: none; margin: clamp(40px, 5vw, 56px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 3vw, 32px); }
+.how-steps li { border-top: 1px solid var(--b800); padding-top: 22px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.hn { font: 500 0.75rem/1 var(--mono); color: var(--b700); margin-bottom: 18px; }
+.how-steps h3 { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.02em; }
+.how-steps p { font-size: 0.875rem; line-height: 1.6; color: var(--indigo); }
+@media (max-width: 900px) { .how-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; } }
+@media (max-width: 520px) { .how-steps { grid-template-columns: minmax(0, 1fr); } }
+
+/* Platform band */
+.band { background: linear-gradient(180deg, #1F273F 0%, #1F273F 55%, #3A5292 100%); color: var(--white); padding-block: clamp(72px, 9vw, 112px); }
+.band-head { display: grid; justify-items: center; text-align: center; gap: 14px; margin-bottom: clamp(32px, 5vw, 48px); }
+.band-head .eyebrow { color: var(--b300); }
+.band-head h2 { font-size: var(--h2); color: var(--white); max-width: 26ch; }
+.band-head p { color: var(--b300); max-width: 60ch; }
+.apbox { max-width: 980px; margin: 0 auto; background: var(--white); color: var(--indigo); border-radius: 18px; padding: clamp(20px, 3vw, 32px); box-shadow: 0 30px 70px -30px #1F273F; }
+.ap-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.ap-head::after { content: ""; flex: 1; height: 1px; background: var(--b200); }
+.ap-head .eyebrow { color: var(--b700); white-space: nowrap; }
+.ap-grid2 { display: grid; grid-template-columns: minmax(0, 0.34fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 32px); align-items: start; }
+.ap-group { font: 600 0.6875rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--b600); margin: 4px 0 10px 10px; }
+.ap-list { display: grid; gap: 4px; }
+.ap-list [role=tab] { text-align: left; background: none; border: 0; padding: 11px 12px; border-radius: 10px; font: 600 0.9375rem/1.2 var(--sans); color: var(--b800); cursor: pointer; transition: background-color .2s, color .2s; }
+.ap-list [role=tab]:hover { background: var(--b100); color: var(--indigo); }
+.ap-list [role=tab][aria-selected="true"] { background: var(--b200); color: var(--indigo); }
+.ap-panel { background: var(--b100); border: 1px solid var(--b200); border-radius: 16px; padding: clamp(18px, 3vw, 26px); display: grid; gap: 14px; min-width: 0; }
+.ap-note { font-size: 0.9375rem; color: var(--b800); }
+.ap-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.lg { display: inline-flex; align-items: center; gap: 7px; background: var(--white); padding: 7px 12px; border-radius: 999px; font-size: 0.875rem; font-weight: 500; }
+.lg i { width: 9px; height: 9px; border-radius: 50%; }
+.lg-v { color: var(--indigo); } .lg-v i { background: var(--indigo); }
+.lg-s { color: var(--b800); } .lg-s i { background: var(--b500); }
+.ap-illus { margin-left: auto; font: 500 0.6875rem/1.3 var(--mono); letter-spacing: .04em; color: var(--b700); }
+.apchart { width: 100%; height: auto; display: block; }
+.ap-grid line { stroke: var(--b200); stroke-width: 1; }
+.ap-axis { stroke: var(--b300); stroke-width: 1; }
+.ap-tick { font: 500 11px var(--sans); fill: var(--b600); }
+.ap-lab { font: 600 10px var(--sans); letter-spacing: .1em; fill: var(--b700); }
+.ap-cap, .ap-hint { display: none; }
+.apchart { touch-action: pan-y; }
+@media (max-width: 640px) {
+  .apchart .ap-lab { display: none; }
+  .ap-tick { font-size: 22px; }
+  .apchart .apt circle { r: 11px; } .apchart .apt.on circle { r: 15px; } .apchart .apv circle { r: 15px; }
+  .ap-cap { display: block; margin: 0; font: 600 0.6875rem/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--b700); }
+  .ap-cap-x { text-align: right; }
+  .ap-hint { display: block; margin: 0; font-size: 0.75rem; color: var(--b600); text-align: center; }
+  .ap-list { flex-wrap: nowrap !important; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -4px; padding: 2px 4px 6px; }
+  .ap-list::-webkit-scrollbar { display: none; }
+  .ap-list [role=tab] { flex: none; scroll-snap-align: start; white-space: nowrap; }
+}
+.apt, .apv { transition: transform .9s cubic-bezier(.16,1,.3,1); }
+.apt circle { fill: var(--b500); transition: fill .3s, r .3s; }
+.apt text { font: 500 12px var(--sans); fill: var(--b600); opacity: 0; transition: opacity .2s; }
+.apt.on circle { fill: var(--b500); r: 9px; }
+.apt.on text { opacity: 1; fill: var(--indigo); font-weight: 600; }
+.apv circle { fill: var(--indigo); }
+.apv text { font: 700 13px var(--sans); fill: var(--indigo); }
+.apd { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; animation: rise .35s var(--ease); }
+.apd[hidden] { display: none; }
+.apd > div { background: var(--white); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; }
+.apd span { font: 600 0.6875rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--b600); }
+.apd p { font-size: 0.9375rem; color: var(--indigo); }
+.apd-v { box-shadow: inset 3px 0 0 #4362B2; }
+.apd-v span { color: var(--b700); }
+.rv-on .rv { opacity: 0; transform: translate3d(0, 22px, 0); transition: opacity 1s cubic-bezier(.33,1,.68,1), transform 1.2s cubic-bezier(.16,1,.3,1); transition-delay: var(--rv-d, 0ms); will-change: opacity, transform; }
+.rv-on .rv.in { opacity: 1; transform: none; will-change: auto; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 820px) { .ap-grid2 { grid-template-columns: minmax(0, 1fr); } .ap-list { display: flex; flex-wrap: wrap; gap: 6px; } .ap-group { display: none; } .ap-list [role=tab] { border: 1px solid var(--b200); border-radius: 999px; padding: 9px 14px; } .apd { grid-template-columns: minmax(0, 1fr); } .ap-illus { margin-left: 0; width: 100%; } }
+
+/* Trust */
+#trust { overflow: hidden; }
+.trust-head { display: grid; justify-items: center; text-align: center; gap: 12px; margin-bottom: 36px; }
+.trust-head h2 { font-size: var(--h2); }
+.tgrid-wrap { position: relative; max-width: 760px; margin: 0 auto; }
+.tgrid-wrap::before { content: ""; position: absolute; inset: -60px -80px; z-index: -1; background: radial-gradient(ellipse at 50% 70%, #E3EBF8 0%, #FFFFFF 70%); }
+.tgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; position: relative; }
+.tgrid::before, .tgrid::after { content: ""; position: absolute; pointer-events: none; }
+.tgrid::before { left: 50%; top: 10%; bottom: 10%; border-left: 1px dashed var(--b400); }
+.tgrid::after { top: 50%; left: 10%; right: 10%; border-top: 1px dashed var(--b400); }
+.tc { position: relative; z-index: 1; background: var(--white); border: 1px solid var(--b200); border-radius: 14px; padding: 22px; display: grid; gap: 8px; align-content: start; }
+.tc-ic { width: 34px; height: 34px; border-radius: 9px; background: var(--b100); display: grid; place-items: center; margin-bottom: 6px; }
+.tc-ic svg { width: 18px; height: 18px; }
+.tc h3 { font-size: 1.0625rem; }
+.tc p { font-size: 0.875rem; color: var(--muted); }
+@media (max-width: 620px) { .tgrid { grid-template-columns: minmax(0, 1fr); } .tgrid::before, .tgrid::after { display: none; } }
+
+/* CTA panel */
+/* FAQ */
+.faq-sec { padding-top: clamp(40px, 6vw, 80px); }
+.faq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(32px, 5vw, 64px); align-items: start; max-width: 1040px; margin-inline: auto; }
+.faq-intro { display: grid; gap: 14px; }
+.faq-intro h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--indigo); }
+.tone2 { color: var(--b600); }
+.faq-talk { font-size: 0.9375rem; color: var(--muted); }
+.faq-talk .linkbtn { color: var(--indigo); }
+.linkbtn { white-space: nowrap; background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--b700); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.qa { border-top: 1px solid var(--line); min-width: 0; }
+.qa details { border-bottom: 1px solid var(--line); }
+.qa summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; font-weight: 600; font-size: 1rem; color: var(--indigo); }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary:focus-visible { outline: 2px solid var(--b600); outline-offset: 4px; border-radius: 4px; }
+.qa summary span { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--b300); display: grid; place-items: center; transition: transform .3s var(--ease); }
+.qa details[open] summary span { transform: rotate(45deg); }
+.qa details p { padding: 0 40px 20px 0; color: var(--b700); font-size: 0.9375rem; line-height: 1.6; }
+@media (max-width: 820px) { .faq { grid-template-columns: minmax(0, 1fr); } }
+.cta-wrap { padding-block: 0 clamp(72px, 9vw, 112px); }
+.cta { position: relative; overflow: hidden; isolation: isolate; border-radius: 18px; background: #1F273F; color: var(--white); box-shadow: 0 28px 60px -36px #1F273F; padding: clamp(48px, 8vw, 88px) 24px; display: grid; justify-items: center; text-align: center; gap: 16px; }
+.cta h2 { font-size: var(--h2); color: var(--white); max-width: 20ch; }
+.cta p { color: var(--b300); max-width: 46ch; }
+.cta .eyebrow { color: var(--b300); }
+.cta .ctas { margin-top: 8px; }
+.vlines { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+
+/* Footer */
+.foot { background: var(--indigo); color: var(--b200); padding-block: 40px calc(40px + env(safe-area-inset-bottom, 0px)); }
+.foot-in { max-width: 1240px; margin: 0 auto; padding-inline: 24px; display: grid; gap: 28px; font-size: .875rem; }
+.foot-brand { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; }
+.foot .logo { color: var(--white); font-size: 1.15rem; }
+.foot-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); font: 500 0.62rem/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--b300); }
+@media (max-width: 760px) { .foot-bar > span { order: 2; } }   /* mobile: copyright sits under the legal links */
+.foot-bar nav { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.foot-bar nav button { background: none; border: 0; padding: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--b200); cursor: pointer; white-space: nowrap; }
+.foot-bar nav button:hover { color: var(--white); }
+dialog.legal { width: min(640px, calc(100% - 24px)); }
+@media (max-width: 420px) { #legal .dlg { padding: 20px 18px; } }
+.legal .dlg { gap: 14px; }
+.ldoc { max-height: min(62vh, 560px); overflow: auto; padding-right: 6px; display: grid; gap: 10px; align-content: start; }
+.ldoc[hidden] { display: none; }
+.ldoc h2 { font-size: 1.375rem; letter-spacing: -0.02em; padding-right: 48px; }
+.l-top { display: flex; justify-content: flex-end; margin-bottom: -50px; position: relative; z-index: 1; }
+.ldoc > * { margin: 0; }
+.ldoc h4 { font-size: 0.9375rem; line-height: 1.3; margin-top: 10px; margin-bottom: -4px; color: var(--indigo); }
+.ldoc p, .ldoc li { font-size: 0.9375rem; line-height: 1.6; color: var(--b800); }
+.ldoc ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.ldate { font-size: 0.8125rem !important; color: var(--b600) !important; }
+.ldoc:focus-visible { outline: 2px solid var(--b500); outline-offset: 4px; border-radius: 6px; }
+
+/* Early-access dialog */
+dialog { width: min(440px, calc(100% - 24px)); max-height: calc(100% - 24px); border: 1px solid var(--line); border-radius: 22px; padding: 0; color: var(--indigo); background: var(--white); overflow: auto; }
+dialog[open] { animation: pop .3s var(--ease); }
+@keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+dialog::backdrop { background: #E3EBF8; opacity: .85; }
+.dlg { padding: 24px; display: grid; gap: 18px; }
+.dlg-top { display: flex; justify-content: flex-end; margin-bottom: -44px; position: relative; z-index: 1; }
+.x { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--white); cursor: pointer; display: grid; place-items: center; }
+.x:hover { border-color: var(--b500); }
+.progress { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; flex: 1; }
+.progress li { flex: 1; display: grid; gap: 8px; font: 500 0.6875rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--b500); }
+.progress li::before { content: ""; height: 3px; border-radius: 3px; background: var(--b100); transition: background-color .3s; }
+.progress li.done::before, .progress li.cur::before { background: var(--b600); }
+.progress li.cur { color: var(--indigo); }
+.stp { display: grid; gap: 16px; }
+.stp[hidden] { display: none; }
+.stp:focus { outline: none; }
+.stp h2 { padding-right: 48px; font-size: 1.5rem; letter-spacing: -0.035em; }
+.stp > p { color: var(--muted); font-size: 0.9375rem; }
+.demo { font-size: 0.8125rem; background: var(--b100); border-radius: 12px; padding: 10px 12px; }
+.field-label { font-size: 0.8125rem; font-weight: 600; }
+.phone { display: grid; grid-template-columns: 120px minmax(0, 1fr); border: 1px solid var(--b200); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+.phone:focus-within { border-color: var(--b600); box-shadow: 0 0 0 4px var(--b100); }
+.phone.bad { border: 2px solid var(--indigo); }
+.phone select, .phone input { border: 0; min-height: 50px; font: 500 1rem/1 var(--sans); color: var(--indigo); background: var(--white); padding: 0 14px; min-width: 0; }
+.phone select { border-right: 1px solid var(--b200); appearance: none; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--b800) 50%), linear-gradient(135deg, var(--b800) 50%, transparent 50%); background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 28px; }
+.phone input { font-variant-numeric: tabular-nums; }
+.phone select:focus, .phone input:focus { outline: none; }
+.phone input::placeholder { color: var(--b500); }
+.qfield { width: 100%; min-height: 72px; border: 1px solid var(--b200); border-radius: 14px; padding: 12px 14px; font: 400 0.9375rem/1.45 var(--sans); color: var(--indigo); resize: vertical; }
+.qfield:focus { outline: none; border-color: var(--b600); box-shadow: 0 0 0 4px var(--b100); }
+.qfield::placeholder { color: var(--b500); }
+.consent { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; font-size: 0.8125rem; color: var(--muted); cursor: pointer; }
+.consent input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--indigo); }
+.msg { font-size: 0.8125rem; font-weight: 600; display: flex; gap: 8px; align-items: center; }
+.msg:empty { display: none; }
+.msg::before { content: "!"; flex: none; width: 16px; height: 16px; border-radius: 50%; background: var(--indigo); color: var(--white); display: grid; place-items: center; font-size: 0.625rem; }
+.otp { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.otp input { width: 100%; aspect-ratio: 1 / 1.15; border: 1px solid var(--b200); border-radius: 12px; text-align: center; font: 500 1.375rem/1 var(--mono); color: var(--indigo); background: var(--white); }
+.otp input:focus { outline: none; border-color: var(--b600); box-shadow: 0 0 0 4px var(--b100); }
+.otp input.filled { background: var(--b100); border-color: var(--b300); }
+.otp.bad input { border: 2px solid var(--indigo); }
+.otp.shake { animation: shake .35s; }
+@keyframes shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+.row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+.textbtn { background: none; border: 0; padding: 4px 0; color: var(--accent); font: 600 0.875rem/1.2 var(--sans); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.textbtn[disabled] { color: var(--b500); text-decoration: none; cursor: default; }
+.num { font: 500 0.9375rem/1 var(--mono); background: var(--b100); padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+.wide { width: 100%; }
+.ok { width: 56px; height: 56px; border-radius: 50%; background: var(--b100); display: grid; place-items: center; }
+.ok path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .5s .1s var(--ease) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.preview { border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 6px; }
+.preview small { font: 500 0.6875rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--b600); }
+.preview p { font-size: 0.9375rem; white-space: pre-wrap; word-break: break-word; }
+.spin { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--b400); border-top-color: var(--white); animation: rot .7s linear infinite; }
+@keyframes rot { to { transform: rotate(360deg); } }
+@media (max-width: 400px) { .phone { grid-template-columns: 104px minmax(0, 1fr); } .otp { gap: 5px; } }
+
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } .ok path { stroke-dashoffset: 0; } }
+/* Full-screen menu, after the reference: the scene greys out behind, links sit right, wipe in from the right */
+.mnav { position: fixed; inset: 0; z-index: 35; display: grid; grid-template-rows: 1fr auto; padding: calc(env(safe-area-inset-top, 0px) + 110px) clamp(20px, 3vw, 40px) calc(env(safe-area-inset-bottom, 0px) + 22px); background: rgba(20,25,41,.88); backdrop-filter: grayscale(1) blur(6px); -webkit-backdrop-filter: grayscale(1) blur(6px); color: var(--white); clip-path: inset(0 0 0 100%); visibility: hidden; transition: clip-path .75s cubic-bezier(.77,0,.18,1), visibility 0s linear .75s; }
+.mnav.open { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .75s cubic-bezier(.77,0,.18,1), visibility 0s; }
+.mnav-main { justify-self: end; align-self: start; display: grid; justify-items: end; gap: clamp(28px, 6vh, 64px); margin-top: clamp(0px, 6vh, 70px); }
+.mnav-big, .mnav-small { display: grid; justify-items: end; list-style: none; margin: 0; padding: 0; }
+.mnav-big { gap: 2px; }
+.mnav-small { gap: 14px; }
+.mnav button, .mnav a { background: none; border: 0; padding: 0; cursor: pointer; text-decoration: none; text-align: right; font-family: var(--mono); text-transform: uppercase; color: var(--b400); transition: color .25s; }
+.mnav-big button, .mnav-big a { display: inline-block; position: relative; font-size: clamp(2rem, 1rem + 3.2vw, 3.9rem); font-weight: 500; line-height: 1.08; letter-spacing: -0.02em; padding-bottom: 6px; }
+.mnav-big button::after, .mnav-big a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--b400); transform: scaleX(0); transform-origin: right; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.mnav-big button:hover, .mnav-big button:focus-visible, .mnav-big a:hover, .mnav-big a:focus-visible { color: var(--white); }
+.mnav-big button:hover::after, .mnav-big button:focus-visible::after, .mnav-big a:hover::after, .mnav-big a:focus-visible::after { transform: scaleX(1); }
+.mnav-small a, .mnav-small button { font-size: clamp(.95rem, .85rem + .4vw, 1.2rem); font-weight: 500; letter-spacing: .04em; }
+.mnav-small a:hover, .mnav-small button:hover, .mnav-small button:focus-visible { color: var(--white); }
+.mnav li { opacity: 0; transform: translateX(28px); transition: opacity .5s, transform .6s cubic-bezier(.2,.7,.2,1); }
+.mnav.open li { opacity: 1; transform: none; transition-delay: calc(.32s + var(--i) * .06s); }
+.mnav-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 12px 24px; font: 500 0.62rem/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--b200); }
+.mnav-foot nav { display: flex; gap: 18px; }
+.mnav-foot nav:last-child { justify-self: end; }
+.mnav-foot a, .mnav-foot button { font: inherit; letter-spacing: inherit; color: var(--white); }
+.mnav-foot a:hover, .mnav-foot button:hover { color: var(--b300); }
+.logo { transition: color .2s .15s; }
+body.menu-open .logo { color: var(--white); transition-delay: .45s; }
+@media (max-width: 700px) {
+  .mnav { padding-top: calc(env(safe-area-inset-top, 0px) + 86px); }
+  .mnav-main { margin-top: 0; }
+  .mnav-big button, .mnav-big a { font-size: clamp(1.55rem, 1rem + 3vw, 2.2rem); }
+  .mnav-foot { grid-template-columns: 1fr; justify-items: end; text-align: right; }
+}
+@media (prefers-reduced-motion: reduce) { .mnav, .mnav.open, .mnav li { transition: none !important; } }
+/* Menu button (same as the homepage) */
+.vmenu { display: inline-flex; align-items: center; gap: 10px; min-height: 42px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--indigo); color: var(--white); font: 500 0.68rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: background-color .2s .15s, box-shadow .2s .15s; }
+.vmenu:hover { background: var(--b800); }
+.vmenu svg { width: 15px; height: 15px; }
+.snd { width: 42px; height: 42px; flex: none; border: 0; border-radius: 6px; background: none; color: var(--indigo); display: grid; place-items: center; cursor: pointer; transition: background-color .2s; }
+.snd:hover { background: var(--b100); }
+.snd svg { width: 18px; height: 18px; }
+body.menu-open .snd { color: var(--white); }
+body.menu-open .snd:hover { background: rgba(255,255,255,.08); }
+/* sound toggle */
+.snd-ic .snd-w1, .snd-ic .snd-w2 { display: none; }
+.is-on .snd-ic .snd-x { display: none; }
+.is-on .snd-ic .snd-w1, .is-on .snd-ic .snd-w2 { display: inline; animation: sndPulse 2.4s ease-in-out infinite; }
+.is-on .snd-ic .snd-w2 { animation-delay: .4s; }
+@keyframes sndPulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+.is-on.is-waiting .snd-ic path { animation: none; opacity: .45; }
+.is-on.is-waiting { position: relative; }
+.is-on.is-waiting::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; box-shadow: 0 0 0 0 rgba(128,170,220,.55); animation: sndWait 1.8s ease-out infinite; pointer-events: none; }
+@keyframes sndWait { 0% { box-shadow: 0 0 0 0 rgba(128,170,220,.55); } 100% { box-shadow: 0 0 0 10px rgba(128,170,220,0); } }
+
+@media (prefers-reduced-motion: reduce) { .is-on .snd-ic path { animation: none; } }
+
+.vmenu .x-ic { display: none; }
+body.menu-open .vmenu .x-ic { display: block; }
+body.menu-open .vmenu .b-ic { display: none; }
+body.menu-open .vmenu { background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); transition-delay: .5s; }
+.top { transition: background-color .2s .15s, border-color .2s .15s; }
+body.menu-open .top { background: transparent; border-bottom-color: transparent; transition-delay: .45s; }
+body.menu-open .links, body.menu-open .login { visibility: hidden; }
+body.menu-open { overflow: hidden; }
+
+
+.soon-ic path, .soon-ic circle { stroke-dasharray: none; animation: none; }
+.soon-lab { font: 500 0.66rem/1 var(--mono) !important; letter-spacing: .16em; text-transform: uppercase; color: var(--b700) !important; margin-bottom: -6px; }
+.ldoc b { color: var(--indigo); font-weight: 600; }
+
+
+
+/* ---------- Intelligence Assistant window ---------- */
+dialog.va { width: min(1120px, calc(100% - 32px)); height: min(760px, calc(100% - 32px)); max-height: none; padding: 0; border: 1px solid var(--b200); border-radius: 16px; overflow: hidden; background: var(--white); box-shadow: 0 40px 90px -40px #1F273F; }
+dialog.va::backdrop { background: #1F273F; opacity: .45; }
+.va .vi { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.va-app { display: grid; grid-template-columns: 252px minmax(0, 1fr); height: 100%; }
+.va-app.va-collapsed { grid-template-columns: 0 minmax(0, 1fr); }
+.va-app.va-collapsed .va-side { visibility: hidden; }
+.va-side { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 16px 12px 14px; background: var(--b100); border-right: 1px solid var(--b200); overflow-y: auto; }
+.va-brand { display: flex; align-items: center; justify-content: space-between; padding: 2px 6px 10px; }
+.va-word { font: 700 1.1875rem/1 var(--sans); letter-spacing: -0.02em; color: var(--indigo); }
+.va-ib { width: 34px; height: 34px; border: 0; border-radius: 8px; background: none; color: var(--b800); display: grid; place-items: center; cursor: pointer; flex: none; }
+.va-ib:hover, .va-ib[aria-expanded="true"] { background: var(--b200); color: var(--indigo); }
+.va-new { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 0; border-radius: 10px; background: var(--b200); font: 600 0.9375rem/1 var(--sans); color: var(--indigo); cursor: pointer; text-align: left; }
+.va-new:hover { background: var(--b300); }
+.va-new .vi { width: 16px; height: 16px; padding: 3px; box-sizing: content-box; border-radius: 50%; background: var(--indigo); color: var(--white); stroke-width: 2; }
+.va-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.va-nav, .va-recent button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: 0; border-radius: 8px; background: none; font: 500 0.9rem/1.2 var(--sans); color: var(--indigo); cursor: pointer; text-align: left; }
+.va-nav:hover, .va-recent button:hover, .va-recent button[aria-current="true"] { background: var(--b200); }
+.va-recent button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.va-side { overflow-x: hidden; }
+.va-recent, .va-recent li { min-width: 0; }
+.va-soon { color: var(--b400); }
+.va-soon, .va-soon * { cursor: default !important; user-select: none; -webkit-user-select: none; }
+.va-soon:hover, .va-soon:active, .va-soon:focus { background: none; outline: none; }
+.va-soon-tag { margin-left: auto; padding: 3px 7px; border-radius: 6px; background: var(--white); font: 500 0.6875rem/1 var(--sans); font-style: normal; color: var(--b600); white-space: nowrap; }
+.va-h { margin: 14px 12px 4px; font: 600 0.75rem/1 var(--sans); color: var(--b700); }
+.va-h-recent { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--b200); }
+.va-empty { margin: 2px 12px; font-size: 0.8125rem; color: var(--b600); }
+.va-empty[hidden] { display: none; }
+.va-search { padding: 2px 6px 4px; }
+.va-search[hidden] { display: none; }
+.va-search input { width: 100%; box-sizing: border-box; padding: 9px 11px; border: 1px solid var(--b300); border-radius: 8px; background: var(--white); font: 400 0.875rem/1.2 var(--sans); color: var(--indigo); }
+.va-search input:focus { outline: 2px solid var(--b500); outline-offset: 1px; }
+.va-user { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 6px 0; border-top: 1px solid var(--b200); }
+.va-av { width: 34px; height: 34px; border-radius: 50%; background: var(--indigo); color: var(--white); display: grid; place-items: center; font: 600 0.8125rem/1 var(--sans); flex: none; }
+.va-who { display: grid; gap: 3px; min-width: 0; flex: 1; }
+.va-who b { font: 600 0.875rem/1.2 var(--sans); color: var(--indigo); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.va-who small { font-size: 0.75rem; color: var(--b700); }
+.va-pop-wrap { position: relative; }
+.va-pop { position: absolute; z-index: 5; top: calc(100% + 6px); left: 0; min-width: 190px; max-height: 320px; overflow-y: auto; margin: 0; padding: 6px; list-style: none; background: var(--white); border: 1px solid var(--b200); border-radius: 12px; box-shadow: 0 18px 40px -18px #3A5292; display: grid; gap: 2px; }
+.va-pop[hidden] { display: none; }
+.va-pop-up { top: auto; bottom: calc(100% + 6px); left: auto; right: 0; }
+.va-pop-r { left: auto; right: 0; }
+.va-pop button { width: 100%; padding: 9px 10px; border: 0; border-radius: 8px; background: none; font: 500 0.875rem/1.2 var(--sans); color: var(--indigo); text-align: left; cursor: pointer; }
+.va-pop button:hover, .va-pop button:focus-visible { background: var(--b100); outline: none; }
+.va-pop [aria-checked="true"] { background: var(--b100); font-weight: 600; }
+.va-tip { left: auto; right: 0; width: 250px; padding: 12px 14px; font-size: 0.8125rem; line-height: 1.5; color: var(--b800); }
+.va-tip b { display: block; margin-bottom: 4px; color: var(--indigo); }
+.va-shield { color: var(--b700); }
+.va-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--white); }
+.va-top { display: flex; align-items: center; gap: 6px; padding: 12px 14px 12px 18px; }
+.va-top-r { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+.va-open-side { display: none; }
+.va-collapsed .va-open-side { display: grid; }
+.va-scope { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border: 0; border-radius: 8px; background: none; font: 500 0.9375rem/1 var(--sans); color: var(--indigo); cursor: pointer; }
+.va-scope:hover, .va-scope[aria-expanded="true"] { background: var(--b100); }
+.va-scope .vi { width: 15px; height: 15px; }
+.va-body { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; padding: 0 24px; }
+.va-hello { padding-bottom: 28px; text-align: center; }
+.va-hello h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.375rem); letter-spacing: -0.02em; color: var(--indigo); }
+.va.va-has-thread .va-hello { display: none; }
+.va-thread { list-style: none; margin: 0 auto; padding: 8px 0 24px; width: 100%; max-width: 720px; display: grid; gap: 18px; align-content: start; }
+.va-thread:empty { display: none; }
+.va-msg-u { justify-self: end; max-width: 82%; padding: 12px 16px; border-radius: 16px 16px 4px 16px; background: var(--b100); color: var(--indigo); font-size: 0.9375rem; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; animation: rise .3s var(--ease); }
+.va-msg-u .va-meta { display: block; margin-top: 6px; font-size: 0.75rem; color: var(--b700); }
+.va-msg-a { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; animation: rise .3s var(--ease); }
+.va-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--indigo); color: var(--white); display: grid; place-items: center; font: 700 0.8125rem/1 var(--sans); }
+.va-card { border: 1px solid var(--b200); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; }
+.va-card b { font: 600 0.9375rem/1.3 var(--sans); color: var(--indigo); }
+.va-card p { margin: 0; font-size: 0.9rem; line-height: 1.6; color: var(--b800); white-space: pre-wrap; }
+.va-state { justify-self: start; padding: 4px 8px; border-radius: 6px; background: var(--b100); font: 600 0.6875rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--b700); }
+.va-typing { display: inline-flex; gap: 4px; padding: 6px 0; }
+.va-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--b400); animation: vaBlink 1s infinite; }
+.va-typing i:nth-child(2) { animation-delay: .15s; } .va-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes vaBlink { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+.va-dock { padding: 0 24px 16px; }
+.va.va-has-thread .va-chips { display: none; }
+.va-hello + .va-thread:empty ~ * { }
+.va:not(.va-has-thread) .va-body { flex: 0 0 auto; margin-top: auto; }
+.va:not(.va-has-thread) .va-dock { margin-bottom: auto; padding-bottom: 56px; }
+.va-composer { max-width: 720px; margin: 0 auto; border: 1px solid var(--b300); border-radius: 26px; background: var(--white); box-shadow: 0 10px 30px -22px #3A5292; transition: border-color .2s, box-shadow .2s; }
+.va-composer:focus-within { border-color: var(--b500); box-shadow: 0 0 0 3px var(--b100), 0 10px 30px -22px #3A5292; }
+.va-row { display: flex; align-items: flex-end; gap: 6px; padding: 8px 8px 8px 10px; }
+.va-row textarea { flex: 1; min-width: 0; resize: none; border: 0; outline: none; background: none; padding: 9px 4px; max-height: 168px; font: 400 0.9375rem/1.5 var(--sans); color: var(--indigo); }
+.va-row textarea::placeholder { color: var(--b600); }
+.va-add { border-radius: 50%; color: var(--b800); }
+.va-send { width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--indigo); color: var(--white); display: grid; place-items: center; cursor: pointer; flex: none; transition: background-color .2s, opacity .2s; }
+.va-send .vi { stroke-width: 2; }
+.va-send:disabled { background: var(--b200); color: var(--b600); cursor: default; }
+.va-files { list-style: none; margin: 0; padding: 10px 14px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.va-files[hidden] { display: none; }
+.va-files li { display: inline-flex; align-items: center; gap: 6px; max-width: 220px; padding: 5px 6px 5px 10px; border-radius: 8px; background: var(--b100); font-size: 0.8125rem; color: var(--indigo); }
+.va-files li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.va-files button { width: 20px; height: 20px; border: 0; border-radius: 50%; background: none; color: var(--b700); cursor: pointer; display: grid; place-items: center; }
+.va-files button:hover { background: var(--white); }
+.va-chips { max-width: 720px; margin: 14px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.va-chip { padding: 10px 14px; border: 1px solid var(--b200); border-radius: 10px; background: var(--white); font: 500 0.875rem/1 var(--sans); color: var(--b700); cursor: pointer; transition: border-color .2s, background-color .2s; }
+.va-chip:hover { border-color: var(--b400); background: var(--b100); }
+.va-chip[hidden] { display: none; }
+.va-dots { border-color: transparent; padding: 6px 8px; }
+.va-dots .vi { width: 18px; height: 18px; fill: currentColor; stroke: none; }
+.va-foot { max-width: 720px; margin: 12px auto 0; text-align: center; font-size: 0.75rem; color: var(--b400); }
+.va.va-has-thread .va-foot { margin-top: 8px; }
+.va [id="va-more"] .vi { fill: currentColor; stroke: none; }
+.va-scrim { display: none; }
+@media (max-width: 760px) {
+  dialog.va { width: 100%; height: 100%; max-width: 100%; max-height: 100%; border-radius: 0; border: 0; }
+  .va-app, .va-app.va-collapsed { grid-template-columns: minmax(0, 1fr); }
+  .va-side { position: absolute; z-index: 10; inset: 0 auto 0 0; width: min(290px, 84%); transform: translateX(-102%); transition: transform .3s var(--ease); visibility: visible !important; }
+  .va-app.va-drawer .va-side { transform: none; box-shadow: 20px 0 40px -30px #1F273F; }
+  .va-scrim:not([hidden]) { display: block; position: absolute; z-index: 9; inset: 0; background: #1F273F; opacity: .35; }
+  .va-open-side { display: grid; }
+  .va-top { padding: 10px 8px; }
+  .va-body { padding: 0 16px; }
+  .va-dock { padding: 0 12px 12px; }
+  .va-chips { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -12px; padding: 0 12px; }
+  .va-chips::-webkit-scrollbar { display: none; }
+  .va-chip { flex: none; }
+  .va-row textarea { font-size: 1rem; }
+  .va-shield-tip, .va-tip { width: 230px; }
+}
+
+/* ---------- Assistant: dark galaxy theme (default) with a light option ---------- */
+.va-main { position: relative; isolation: isolate; transition: background-color .4s var(--ease); }
+.va-main > .va-top, .va-main > .va-body, .va-main > .va-dock { position: relative; z-index: 1; }
+.va-main::before, .va-main::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }
+.va-main.va-dark { background: #1F273F; }
+.va-main.va-dark::before { opacity: 1;
+  background:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.7), transparent 100%),
+    radial-gradient(1px 1px at 37% 9%, rgba(227,235,248,.55), transparent 100%),
+    radial-gradient(1.5px 1.5px at 64% 27%, rgba(255,255,255,.75), transparent 100%),
+    radial-gradient(1px 1px at 88% 41%, rgba(204,221,241,.6), transparent 100%),
+    radial-gradient(1px 1px at 23% 63%, rgba(255,255,255,.5), transparent 100%),
+    radial-gradient(1.5px 1.5px at 52% 79%, rgba(227,235,248,.6), transparent 100%),
+    radial-gradient(1px 1px at 76% 88%, rgba(255,255,255,.55), transparent 100%),
+    radial-gradient(1px 1px at 6% 44%, rgba(204,221,241,.5), transparent 100%);
+}
+.va-main.va-dark::after { opacity: 1; animation: vaTwinkle 5s ease-in-out infinite alternate;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,.55), transparent 100%),
+    radial-gradient(1px 1px at 140px 90px, rgba(204,221,241,.45), transparent 100%),
+    radial-gradient(1px 1px at 70px 160px, rgba(255,255,255,.4), transparent 100%),
+    radial-gradient(1px 1px at 190px 200px, rgba(168,198,232,.5), transparent 100%),
+    radial-gradient(1px 1px at 250px 40px, rgba(255,255,255,.35), transparent 100%),
+    radial-gradient(1px 1px at 110px 250px, rgba(227,235,248,.4), transparent 100%);
+  background-size: 290px 290px; }
+@keyframes vaTwinkle { from { opacity: .35; } to { opacity: 1; } }
+.va-dark .va-ib, .va-dark .va-scope, .va-dark .va-shield { color: #CCDDF1; }
+.va-dark .va-ib:hover, .va-dark .va-ib[aria-expanded="true"], .va-dark .va-scope:hover, .va-dark .va-scope[aria-expanded="true"] { background: rgba(227,235,248,.1); color: #FFFFFF; }
+.va-dark .va-hello h2 { color: #FFFFFF; }
+.va-dark .va-msg-u { background: rgba(168,198,232,.14); color: #E3EBF8; box-shadow: inset 0 0 0 1px rgba(168,198,232,.12); }
+.va-dark .va-msg-u .va-meta { color: #A8C6E8; }
+.va-dark .va-mark { background: #E3EBF8; color: #1F273F; }
+.va-dark .va-card { background: rgba(31,39,63,.6); border-color: rgba(168,198,232,.2); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.va-dark .va-card b { color: #FFFFFF; }
+.va-dark .va-card p { color: #A8C6E8; }
+.va-dark .va-state { background: rgba(128,170,220,.16); color: #A8C6E8; }
+.va-dark .va-composer { background: rgba(31,39,63,.75); border-color: rgba(168,198,232,.3); box-shadow: 0 14px 40px -24px #000; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.va-dark .va-composer:focus-within { border-color: #618CD0; box-shadow: 0 0 0 3px rgba(97,140,208,.22), 0 14px 40px -24px #000; }
+.va-dark .va-row textarea { color: #FFFFFF; }
+.va-dark .va-row textarea::placeholder { color: #80AADC; }
+.va-dark .va-add { color: #CCDDF1; }
+.va-dark .va-send { background: #E3EBF8; color: #1F273F; }
+.va-dark .va-send:disabled { background: rgba(227,235,248,.12); color: #80AADC; }
+.va-dark .va-files li { background: rgba(227,235,248,.1); color: #E3EBF8; }
+.va-dark .va-files button { color: #A8C6E8; }
+.va-dark .va-files button:hover { background: rgba(227,235,248,.12); }
+.va-dark .va-chip { background: rgba(31,39,63,.55); border-color: rgba(168,198,232,.25); color: #CCDDF1; }
+.va-dark .va-chip:hover { background: rgba(227,235,248,.08); border-color: rgba(168,198,232,.5); }
+.va-dark .va-foot { color: #80AADC; }
+.va-theme .va-sun { display: none; }
+.va-dark .va-theme .va-sun { display: block; }
+.va-dark .va-theme .va-moon { display: none; }
+</style>
+
+<button type="button" class="skip" data-scroll="main">Skip to content</button>
+
+<header class="top" id="top">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="logo" href="index.html" aria-label="Verisavo home"><span>Verisavo</span></a>
+    <ul class="links">
+      <li><button type="button" data-href="index.html#about-us">About us</button></li>
+      <li><button type="button" data-scroll="product">Platform</button></li>
+      <li><button type="button" data-scroll="how">How it works</button></li>
+      <li><button type="button" data-scroll="faq">FAQs</button></li>
+    </ul>
+    <div class="nav-cta">
+      <button type="button" class="snd" data-sound-toggle aria-pressed="false" aria-label="Turn sound on" title="Turn sound on"><svg class="snd-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6h2.2L8 3.2v9.6L4.7 10H2.5z"/><path class="snd-w1" d="M10.4 6.2a2.6 2.6 0 0 1 0 3.6"/><path class="snd-w2" d="M12.3 4.4a5.1 5.1 0 0 1 0 7.2"/><path class="snd-x" d="M10.6 6.3l3.4 3.4M14 6.3l-3.4 3.4"/></svg></button>
+      <button type="button" class="login" data-login>Log in</button>
+      <button type="button" class="vmenu" id="vmenu-btn" aria-expanded="false" aria-controls="vmenu"><span id="vmenu-lab">Menu</span> <svg class="b-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M2 4.5h12M2 8h12M2 11.5h12"/></svg><svg class="x-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg></button>
+    </div>
+  </nav>
+</header>
+
+<div class="mnav" id="vmenu" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <div class="mnav-main">
+    <ul class="mnav-big">
+      <li style="--i:0"><button type="button" data-mn="platform">Platform</button></li>
+      <li style="--i:1"><a href="index.html#about-us">About us</a></li>
+      <li style="--i:2"><a href="index.html#research">Research</a></li>
+      <li style="--i:3"><a href="index.html#contact">Contact us</a></li>
+    </ul>
+    <ul class="mnav-small">
+      <li style="--i:5"><button type="button" data-access>Deploy Scout</button></li>
+      <li style="--i:6"><a href="index.html#pricing">Pricing</a></li>
+      <li style="--i:7"><a href="index.html#careers">Careers</a></li>
+      <li style="--i:8"><button type="button" data-login>Sign in</button></li>
+    </ul>
+  </div>
+  <div class="mnav-foot">
+    <span>© 2026 Verisavo. All rights reserved.</span>
+    <nav aria-label="Legal"><button type="button" data-legal="terms">Terms</button><button type="button" data-legal="privacy">Privacy</button></nav>
+    <nav aria-label="Company"><a href="index.html#about-us">About</a><a href="index.html#contact">Contact</a></nav>
+  </div>
+</div>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <canvas id="net" aria-hidden="true"></canvas>
+    <div class="wrap hero-grid">
+      <div class="hero-title">
+        <h1 id="hero-title"><span class="l1">Understand the market</span> <span class="tone">around your business.</span></h1>
+        <p class="sub">We connect scattered market evidence, so you see what is happening and what is still unknown.</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" class="btn btn-rect solid" id="ask-cta">Ask Verisavo</button>
+        <button type="button" class="btn btn-rect plain" data-scroll="how">See how it works</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="stage-sec" aria-label="Ask Verisavo">
+    <div class="wrap">
+      <div class="stage" id="product">
+        <div class="stage-bg"><svg class="scene" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g class="lyr far" data-k="0.012" stroke="#80AADC" stroke-width="1" opacity=".32"><path pathLength="1" d="M10.0 382.0L10.0 132.0L120.0 132.0L120.0 382.0"/><path pathLength="1" d="M20.0 148.0h12v14h-12Z"/><path pathLength="1" d="M46.0 148.0h12v14h-12Z"/><path pathLength="1" d="M72.0 148.0h12v14h-12Z"/><path pathLength="1" d="M98.0 148.0h12v14h-12Z"/><path pathLength="1" d="M150.0 382.0L150.0 232.0L180.0 214.0L210.0 232.0L210.0 382.0"/><path pathLength="1" d="M168.0 382.0L168.0 314.5L192.0 314.5L192.0 382.0"/><path pathLength="1" d="M250.0 382.0L250.0 172.0L400.0 172.0L400.0 382.0"/><path pathLength="1" d="M260.0 188.0h12v14h-12Z"/><path pathLength="1" d="M286.0 188.0h12v14h-12Z"/><path pathLength="1" d="M312.0 188.0h12v14h-12Z"/><path pathLength="1" d="M338.0 188.0h12v14h-12Z"/><path pathLength="1" d="M364.0 188.0h12v14h-12Z"/><path pathLength="1" d="M430.0 382.0L430.0 122.0L550.0 122.0L550.0 382.0"/><path pathLength="1" d="M440.0 138.0h12v14h-12Z"/><path pathLength="1" d="M466.0 138.0h12v14h-12Z"/><path pathLength="1" d="M492.0 138.0h12v14h-12Z"/><path pathLength="1" d="M518.0 138.0h12v14h-12Z"/><path pathLength="1" d="M580.0 382.0L580.0 152.0L750.0 152.0L750.0 382.0"/><path pathLength="1" d="M590.0 168.0h12v14h-12Z"/><path pathLength="1" d="M616.0 168.0h12v14h-12Z"/><path pathLength="1" d="M642.0 168.0h12v14h-12Z"/><path pathLength="1" d="M668.0 168.0h12v14h-12Z"/><path pathLength="1" d="M694.0 168.0h12v14h-12Z"/><path pathLength="1" d="M720.0 168.0h12v14h-12Z"/><path pathLength="1" d="M780.0 382.0L780.0 132.0L900.0 132.0L900.0 382.0"/><path pathLength="1" d="M790.0 148.0h12v14h-12Z"/><path pathLength="1" d="M816.0 148.0h12v14h-12Z"/><path pathLength="1" d="M842.0 148.0h12v14h-12Z"/><path pathLength="1" d="M868.0 148.0h12v14h-12Z"/><path pathLength="1" d="M930.0 382.0L930.0 222.0L965.0 204.0L1000.0 222.0L1000.0 382.0"/><path pathLength="1" d="M951.0 382.0L951.0 310.0L979.0 310.0L979.0 382.0"/><path pathLength="1" d="M1030.0 382.0L1030.0 142.0L1190.0 142.0L1190.0 382.0"/><path pathLength="1" d="M1040.0 158.0h12v14h-12Z"/><path pathLength="1" d="M1066.0 158.0h12v14h-12Z"/><path pathLength="1" d="M1092.0 158.0h12v14h-12Z"/><path pathLength="1" d="M1118.0 158.0h12v14h-12Z"/><path pathLength="1" d="M1144.0 158.0h12v14h-12Z"/><path pathLength="1" d="M1170.0 158.0h12v14h-12Z"/></g>
+<g class="lyr mid" data-k="0.03" stroke="#4D74C3" stroke-width="1" opacity=".36"><path pathLength="1" d="M-20.0 58.0Q600.0 110.0 1220.0 58.0"/><path pathLength="1" d="M14.3 61.4L21.3 74.4L28.3 61.4"/><path pathLength="1" d="M55.7 64.5L62.7 77.5L69.7 64.5"/><path pathLength="1" d="M97.0 67.4L104.0 80.4L111.0 67.4"/><path pathLength="1" d="M138.3 70.0L145.3 83.0L152.3 70.0"/><path pathLength="1" d="M179.7 72.4L186.7 85.4L193.7 72.4"/><path pathLength="1" d="M221.0 74.6L228.0 87.6L235.0 74.6"/><path pathLength="1" d="M262.3 76.6L269.3 89.6L276.3 76.6"/><path pathLength="1" d="M303.7 78.3L310.7 91.3L317.7 78.3"/><path pathLength="1" d="M345.0 79.8L352.0 92.8L359.0 79.8"/><path pathLength="1" d="M386.3 81.1L393.3 94.1L400.3 81.1"/><path pathLength="1" d="M427.7 82.2L434.7 95.2L441.7 82.2"/><path pathLength="1" d="M469.0 83.0L476.0 96.0L483.0 83.0"/><path pathLength="1" d="M510.3 83.5L517.3 96.5L524.3 83.5"/><path pathLength="1" d="M551.7 83.9L558.7 96.9L565.7 83.9"/><path pathLength="1" d="M593.0 84.0L600.0 97.0L607.0 84.0"/><path pathLength="1" d="M634.3 83.9L641.3 96.9L648.3 83.9"/><path pathLength="1" d="M675.7 83.5L682.7 96.5L689.7 83.5"/><path pathLength="1" d="M717.0 83.0L724.0 96.0L731.0 83.0"/><path pathLength="1" d="M758.3 82.2L765.3 95.2L772.3 82.2"/><path pathLength="1" d="M799.7 81.1L806.7 94.1L813.7 81.1"/><path pathLength="1" d="M841.0 79.8L848.0 92.8L855.0 79.8"/><path pathLength="1" d="M882.3 78.3L889.3 91.3L896.3 78.3"/><path pathLength="1" d="M923.7 76.6L930.7 89.6L937.7 76.6"/><path pathLength="1" d="M965.0 74.6L972.0 87.6L979.0 74.6"/><path pathLength="1" d="M1006.3 72.4L1013.3 85.4L1020.3 72.4"/><path pathLength="1" d="M1047.7 70.0L1054.7 83.0L1061.7 70.0"/><path pathLength="1" d="M1089.0 67.4L1096.0 80.4L1103.0 67.4"/><path pathLength="1" d="M1130.3 64.5L1137.3 77.5L1144.3 64.5"/><path pathLength="1" d="M1171.7 61.4L1178.7 74.4L1185.7 61.4"/><path pathLength="1" d="M28.0 382.0L28.0 150.0"/><path pathLength="1" d="M196.0 382.0L196.0 150.0"/><path pathLength="1" d="M20.0 150.0L204.0 150.0L196.0 184.0"/><path pathLength="1" d="M28.0 184.0Q42.0 193.0 56.0 184.0Q70.0 193.0 84.0 184.0Q98.0 193.0 112.0 184.0Q126.0 193.0 140.0 184.0Q154.0 193.0 168.0 184.0Q182.0 193.0 196.0 184.0"/><path pathLength="1" d="M20.0 150.0L28.0 184.0"/><path pathLength="1" d="M52.0 150.0L56.0 184.0"/><path pathLength="1" d="M80.0 150.0L84.0 184.0"/><path pathLength="1" d="M108.0 150.0L112.0 184.0"/><path pathLength="1" d="M136.0 150.0L140.0 184.0"/><path pathLength="1" d="M164.0 150.0L168.0 184.0"/><path pathLength="1" d="M22.0 292.0L202.0 292.0L202.0 300.0L22.0 300.0Z"/><path pathLength="1" d="M34.0 300.0L34.0 382.0"/><path pathLength="1" d="M190.0 300.0L190.0 382.0"/><circle pathLength="1" cx="54.0" cy="284.0" r="8.0"/><circle pathLength="1" cx="70.0" cy="284.0" r="8.0"/><circle pathLength="1" cx="86.0" cy="284.0" r="8.0"/><circle pathLength="1" cx="62.0" cy="270.4" r="8.0"/><circle pathLength="1" cx="78.0" cy="270.4" r="8.0"/><circle pathLength="1" cx="70.0" cy="256.8" r="8.0"/><circle pathLength="1" cx="134.0" cy="284.0" r="8.0"/><circle pathLength="1" cx="150.0" cy="284.0" r="8.0"/><circle pathLength="1" cx="166.0" cy="284.0" r="8.0"/><circle pathLength="1" cx="142.0" cy="270.4" r="8.0"/><circle pathLength="1" cx="158.0" cy="270.4" r="8.0"/><circle pathLength="1" cx="150.0" cy="256.8" r="8.0"/><circle pathLength="1" cx="112.0" cy="241.6" r="7.8"/><path pathLength="1" d="M103.6 236.8Q112.0 223.6 120.4 236.8"/><path pathLength="1" d="M97.6 292.0L100.0 256.0Q112.0 251.2 124.0 256.0L126.4 292.0"/><path pathLength="1" d="M100.0 258.4L90.4 284.8"/><path pathLength="1" d="M124.0 258.4L133.6 284.8"/><path pathLength="1" d="M1088.0 382.0L1088.0 150.0"/><path pathLength="1" d="M988.0 188.0Q1088.0 105.0 1188.0 188.0"/><path pathLength="1" d="M988.0 188.0Q1004.7 196.0 1021.3 188.0Q1038.0 196.0 1054.7 188.0Q1071.3 196.0 1088.0 188.0Q1104.7 196.0 1121.3 188.0Q1138.0 196.0 1154.7 188.0Q1171.3 196.0 1188.0 188.0"/><path pathLength="1" d="M1088.0 147.0Q1054.7 155.0 1021.3 188.0"/><path pathLength="1" d="M1088.0 147.0Q1071.3 155.0 1054.7 188.0"/><path pathLength="1" d="M1088.0 147.0Q1088.0 155.0 1088.0 188.0"/><path pathLength="1" d="M1088.0 147.0Q1104.7 155.0 1121.3 188.0"/><path pathLength="1" d="M1088.0 147.0Q1121.3 155.0 1154.7 188.0"/><path pathLength="1" d="M1013.0 300.0L1163.0 300.0L1163.0 308.0L1013.0 308.0Z"/><path pathLength="1" d="M1019.0 308.0L1019.0 382.0"/><path pathLength="1" d="M1157.0 308.0L1157.0 382.0"/><path pathLength="1" d="M1017.0 284.0L1022.0 300.0L1046.0 300.0L1051.0 284.0"/><ellipse pathLength="1" cx="1034.0" cy="284.0" rx="17.0" ry="4.0"/><path pathLength="1" d="M1019.5 292.0L1048.5 292.0"/><circle pathLength="1" cx="1028.0" cy="277.0" r="6.0"/><circle pathLength="1" cx="1040.0" cy="277.0" r="6.0"/><circle pathLength="1" cx="1034.0" cy="266.8" r="6.0"/><path pathLength="1" d="M1123.0 284.0L1128.0 300.0L1152.0 300.0L1157.0 284.0"/><ellipse pathLength="1" cx="1140.0" cy="284.0" rx="17.0" ry="4.0"/><path pathLength="1" d="M1125.5 292.0L1154.5 292.0"/><circle pathLength="1" cx="1134.0" cy="277.0" r="6.0"/><circle pathLength="1" cx="1146.0" cy="277.0" r="6.0"/><circle pathLength="1" cx="1140.0" cy="266.8" r="6.0"/><circle pathLength="1" cx="1060.0" cy="251.7" r="7.5"/><path pathLength="1" d="M1046.2 300.0L1048.5 265.5Q1060.0 260.9 1071.5 265.5L1073.8 300.0"/><path pathLength="1" d="M1048.5 267.8L1039.3 293.1"/><path pathLength="1" d="M1071.5 267.8L1080.7 293.1"/><circle pathLength="1" cx="1105.0" cy="293.0" r="7.0"/><circle pathLength="1" cx="1119.0" cy="293.0" r="7.0"/><circle pathLength="1" cx="1112.0" cy="281.1" r="7.0"/><path pathLength="1" d="M420.0 382.0L420.0 170.0"/><path pathLength="1" d="M560.0 382.0L560.0 170.0"/><path pathLength="1" d="M412.0 170.0L568.0 170.0L560.0 198.0"/><path pathLength="1" d="M420.0 198.0Q431.7 207.0 443.3 198.0Q455.0 207.0 466.7 198.0Q478.3 207.0 490.0 198.0Q501.7 207.0 513.3 198.0Q525.0 207.0 536.7 198.0Q548.3 207.0 560.0 198.0"/><path pathLength="1" d="M412.0 170.0L420.0 198.0"/><path pathLength="1" d="M439.3 170.0L443.3 198.0"/><path pathLength="1" d="M462.7 170.0L466.7 198.0"/><path pathLength="1" d="M486.0 170.0L490.0 198.0"/><path pathLength="1" d="M509.3 170.0L513.3 198.0"/><path pathLength="1" d="M532.7 170.0L536.7 198.0"/><path pathLength="1" d="M414.0 300.0L566.0 300.0L566.0 308.0L414.0 308.0Z"/><path pathLength="1" d="M426.0 308.0L426.0 382.0"/><path pathLength="1" d="M554.0 308.0L554.0 382.0"/><path pathLength="1" d="M640.0 382.0L640.0 170.0"/><path pathLength="1" d="M780.0 382.0L780.0 170.0"/><path pathLength="1" d="M632.0 170.0L788.0 170.0L780.0 198.0"/><path pathLength="1" d="M640.0 198.0Q651.7 207.0 663.3 198.0Q675.0 207.0 686.7 198.0Q698.3 207.0 710.0 198.0Q721.7 207.0 733.3 198.0Q745.0 207.0 756.7 198.0Q768.3 207.0 780.0 198.0"/><path pathLength="1" d="M632.0 170.0L640.0 198.0"/><path pathLength="1" d="M659.3 170.0L663.3 198.0"/><path pathLength="1" d="M682.7 170.0L686.7 198.0"/><path pathLength="1" d="M706.0 170.0L710.0 198.0"/><path pathLength="1" d="M729.3 170.0L733.3 198.0"/><path pathLength="1" d="M752.7 170.0L756.7 198.0"/><path pathLength="1" d="M634.0 300.0L786.0 300.0L786.0 308.0L634.0 308.0Z"/><path pathLength="1" d="M646.0 308.0L646.0 382.0"/><path pathLength="1" d="M774.0 308.0L774.0 382.0"/><path pathLength="1" d="M686.0 382.0L686.0 352.0L730.0 352.0L730.0 382.0Z"/><path pathLength="1" d="M686.0 367.0L730.0 367.0"/><path pathLength="1" d="M708.0 352.0L708.0 382.0"/><path pathLength="1" d="M730.0 382.0L730.0 352.0L774.0 352.0L774.0 382.0Z"/><path pathLength="1" d="M730.0 367.0L774.0 367.0"/><path pathLength="1" d="M752.0 352.0L752.0 382.0"/><path pathLength="1" d="M708.0 352.0L708.0 326.0L752.0 326.0L752.0 352.0Z"/><path pathLength="1" d="M708.0 339.0L752.0 339.0"/><path pathLength="1" d="M730.0 326.0L730.0 352.0"/><path pathLength="1" d="M417.0 360.0L422.0 382.0L458.0 382.0L463.0 360.0"/><ellipse pathLength="1" cx="440.0" cy="360.0" rx="23.0" ry="4.0"/><path pathLength="1" d="M419.5 371.0L460.5 371.0"/><circle pathLength="1" cx="433.0" cy="352.0" r="7.0"/><circle pathLength="1" cx="447.0" cy="352.0" r="7.0"/><circle pathLength="1" cx="440.0" cy="340.1" r="7.0"/><path pathLength="1" d="M469.0 360.0L474.0 382.0L510.0 382.0L515.0 360.0"/><ellipse pathLength="1" cx="492.0" cy="360.0" rx="23.0" ry="4.0"/><path pathLength="1" d="M471.5 371.0L512.5 371.0"/><circle pathLength="1" cx="485.0" cy="352.0" r="7.0"/><circle pathLength="1" cx="499.0" cy="352.0" r="7.0"/><circle pathLength="1" cx="492.0" cy="340.1" r="7.0"/><path pathLength="1" d="M524.0 362.0L529.0 382.0L559.0 382.0L564.0 362.0"/><ellipse pathLength="1" cx="544.0" cy="362.0" rx="20.0" ry="4.0"/><path pathLength="1" d="M526.5 372.0L561.5 372.0"/><path pathLength="1" d="M825.0 360.0L830.0 382.0L870.0 382.0L875.0 360.0"/><ellipse pathLength="1" cx="850.0" cy="360.0" rx="25.0" ry="4.0"/><path pathLength="1" d="M827.5 371.0L872.5 371.0"/><circle pathLength="1" cx="842.0" cy="351.0" r="8.0"/><circle pathLength="1" cx="858.0" cy="351.0" r="8.0"/><circle pathLength="1" cx="850.0" cy="337.4" r="8.0"/></g>
+<g class="lyr shop" data-k="0.05" stroke="#3A5292" stroke-width="1.1" opacity=".42"><circle pathLength="1" cx="205.0" cy="261.9" r="8.6"/><path pathLength="1" d="M193.1 276.4L194.4 320.0L215.6 320.0L216.9 276.4Q205.0 271.1 193.1 276.4Z"/><path pathLength="1" d="M195.8 320.0L196.4 382.0"/><path pathLength="1" d="M214.2 320.0L213.6 382.0"/><path pathLength="1" d="M205.0 320.0L205.0 331.8"/><path pathLength="1" d="M193.1 279.0L191.5 313.4"/><path pathLength="1" d="M216.9 279.0L218.5 313.4"/><path pathLength="1" d="M183.6 313.4L182.3 337.1L200.8 337.1L199.5 313.4"/><path pathLength="1" d="M186.3 313.4Q191.5 305.4 196.8 313.4"/><path pathLength="1" d="M795.2 353.2L816.8 353.2M797.6 353.2L796.4 382.0M814.4 353.2L815.6 382.0"/><circle pathLength="1" cx="806.0" cy="302.8" r="7.8"/><path pathLength="1" d="M797.6 298.0Q806.0 284.8 814.4 298.0"/><path pathLength="1" d="M796.4 313.6L797.6 353.2M815.6 313.6L814.4 353.2M796.4 313.6Q806.0 308.8 815.6 313.6"/><path pathLength="1" d="M806.0 353.2L830.0 350.8L832.4 382.0"/><path pathLength="1" d="M815.6 317.2L830.0 343.6"/><circle pathLength="1" cx="1172.0" cy="258.2" r="8.8"/><path pathLength="1" d="M1159.8 273.2L1161.1 318.1L1182.9 318.1L1184.2 273.2Q1172.0 267.8 1159.8 273.2Z"/><path pathLength="1" d="M1162.5 318.1L1163.8 382.0"/><path pathLength="1" d="M1181.5 318.1L1180.2 382.0"/><path pathLength="1" d="M1172.0 318.1L1172.0 330.3"/><path pathLength="1" d="M1159.8 275.9L1157.3 311.3"/><path pathLength="1" d="M1184.2 275.9L1186.7 311.3"/></g>
+<g stroke="#3A5292" stroke-width="1" opacity=".28"><path pathLength="1" d="M-20 382L1220 382"/></g>
+<g class="crowd" stroke="#3A5292" stroke-width="1.1" opacity=".45"><g class="wk" data-x="70" data-d="1" data-v="0.2" style="transform: translate(70px, 0px)"><circle pathLength="1" cx="0.0" cy="274.6" r="7.7"/><path pathLength="1" d="M-8.3 269.9Q0.0 256.9 8.3 269.9"/><path pathLength="1" d="M-10.6 287.6L-8.3 313.6L-17.7 358.4Q0.0 361.9 17.7 358.4L8.3 313.6L10.6 287.6Q0.0 282.9 -10.6 287.6Z"/><path pathLength="1" d="M-4.7 359.6L-8.8 382.0"/><path pathLength="1" d="M4.7 359.6L8.8 382.0"/><path pathLength="1" d="M-10.6 290.0L-16.3 320.6"/><path pathLength="1" d="M10.6 290.0L16.3 320.6"/><path pathLength="1" d="M9.2 320.6L8.0 341.9L24.5 341.9L23.4 320.6"/><path pathLength="1" d="M11.6 320.6Q16.3 313.6 21.0 320.6"/><circle pathLength="1" cx="34.0" cy="311.0" r="5.1"/><path pathLength="1" d="M27.0 319.6L27.8 345.3L40.2 345.3L41.0 319.6Q34.0 316.5 27.0 319.6Z"/><path pathLength="1" d="M28.5 345.3L26.2 382.0"/><path pathLength="1" d="M39.5 345.3L41.8 382.0"/><path pathLength="1" d="M34.0 345.3L34.0 352.4"/><path pathLength="1" d="M27.0 321.2L22.8 341.4"/><path pathLength="1" d="M41.0 321.2L45.2 341.4"/></g><g class="wk" data-x="1012" data-d="-1" data-v="0.18" style="transform: translate(1012px, 0px)"><circle pathLength="1" cx="0.0" cy="269.2" r="8.1"/><path pathLength="1" d="M-8.7 264.2Q0.0 250.6 8.7 264.2"/><path pathLength="1" d="M-11.2 282.8L-8.7 310.1L-18.6 357.2Q0.0 360.9 18.6 357.2L8.7 310.1L11.2 282.8Q0.0 277.8 -11.2 282.8Z"/><path pathLength="1" d="M-5.0 358.4L-9.3 382.0"/><path pathLength="1" d="M5.0 358.4L9.3 382.0"/><path pathLength="1" d="M-11.2 285.3L-12.6 317.5"/><path pathLength="1" d="M11.2 285.3L12.6 317.5"/><circle pathLength="1" cx="-34.0" cy="301.9" r="5.7"/><path pathLength="1" d="M-40.2 298.4Q-34.0 288.7 -27.8 298.4"/><path pathLength="1" d="M-41.9 311.6L-40.2 331.0L-47.2 364.4Q-34.0 367.0 -20.8 364.4L-27.8 331.0L-26.1 311.6Q-34.0 308.1 -41.9 311.6Z"/><path pathLength="1" d="M-37.5 365.3L-40.6 382.0"/><path pathLength="1" d="M-30.5 365.3L-27.4 382.0"/><path pathLength="1" d="M-41.9 313.4L-46.1 336.2"/><path pathLength="1" d="M-26.1 313.4L-21.9 336.2"/></g><g class="wk" data-x="290" data-d="1" data-v="0.16" style="transform: translate(290px, 0px)"><circle pathLength="1" cx="0.0" cy="252.8" r="9.2"/><path pathLength="1" d="M-9.9 247.1Q0.0 231.5 9.9 247.1"/><path pathLength="1" d="M-12.8 268.4L-9.9 299.6L-21.3 353.6Q0.0 357.9 21.3 353.6L9.9 299.6L12.8 268.4Q0.0 262.7 -12.8 268.4Z"/><path pathLength="1" d="M-5.7 355.0L-12.6 382.0"/><path pathLength="1" d="M5.7 355.0L12.6 382.0"/><path pathLength="1" d="M-12.8 271.2L-18.5 245.7L-15.6 234.3"/><path pathLength="1" d="M12.8 271.2L17.0 299.6"/><path pathLength="1" d="M-24.1 234.3L24.1 234.3L15.6 244.3L-15.6 244.3Z"/><circle pathLength="1" cx="-12.8" cy="228.6" r="4.5"/><circle pathLength="1" cx="-4.3" cy="228.6" r="4.5"/><circle pathLength="1" cx="4.3" cy="228.6" r="4.5"/><circle pathLength="1" cx="12.8" cy="228.6" r="4.5"/></g><g class="wk" data-x="370" data-d="-1" data-v="0.12" style="transform: translate(370px, 0px)"><circle pathLength="1" cx="0.0" cy="258.2" r="8.8"/><path pathLength="1" d="M-12.2 273.2L-10.9 318.1L10.9 318.1L12.2 273.2Q0.0 267.8 -12.2 273.2Z"/><path pathLength="1" d="M-9.5 318.1L-16.3 382.0"/><path pathLength="1" d="M9.5 318.1L16.3 382.0"/><path pathLength="1" d="M0.0 318.1L0.0 330.3"/><path pathLength="1" d="M-12.2 275.9L-12.2 311.3"/><path pathLength="1" d="M12.2 275.9L12.2 311.3"/></g><g class="wk" data-x="600" data-d="1" data-v="0.1" style="transform: translate(600px, 0px)"><circle pathLength="1" cx="0.0" cy="263.7" r="8.5"/><path pathLength="1" d="M-9.1 258.5Q0.0 244.2 9.1 258.5"/><path pathLength="1" d="M-11.7 278.0L-9.1 306.6L-19.5 356.0Q0.0 359.9 19.5 356.0L9.1 306.6L11.7 278.0Q0.0 272.8 -11.7 278.0Z"/><path pathLength="1" d="M-5.2 357.3L-9.8 382.0"/><path pathLength="1" d="M5.2 357.3L9.8 382.0"/><path pathLength="1" d="M-11.7 280.6L-18.7 314.4"/><path pathLength="1" d="M11.7 280.6L18.7 314.4"/><path pathLength="1" d="M10.9 314.4L9.6 337.8L27.8 337.8L26.5 314.4"/><path pathLength="1" d="M13.5 314.4Q18.7 306.6 23.9 314.4"/></g><g class="wk" data-x="930" data-d="-1" data-v="0.14" style="transform: translate(930px, 0px)"><circle pathLength="1" cx="0.0" cy="245.5" r="9.8"/><path pathLength="1" d="M-13.5 262.0L-12.0 311.5L12.0 311.5L13.5 262.0Q0.0 256.0 -13.5 262.0Z"/><path pathLength="1" d="M-10.5 311.5L-19.5 382.0"/><path pathLength="1" d="M10.5 311.5L19.5 382.0"/><path pathLength="1" d="M0.0 311.5L0.0 325.0"/><path pathLength="1" d="M-13.5 265.0L-23.4 304.0"/><path pathLength="1" d="M13.5 265.0L23.4 304.0"/><path pathLength="1" d="M-32.4 304.0L-33.9 331.0L-12.9 331.0L-14.4 304.0"/><path pathLength="1" d="M-29.4 304.0Q-23.4 295.0 -17.4 304.0"/></g><g class="wk" data-x="-70" data-d="1" data-v="0.22" style="transform: translate(-70px, 0px)"><circle pathLength="1" cx="0.0" cy="254.6" r="9.1"/><path pathLength="1" d="M-12.6 270.0L-11.2 316.2L11.2 316.2L12.6 270.0Q0.0 264.4 -12.6 270.0Z"/><path pathLength="1" d="M-9.8 316.2L-18.2 382.0"/><path pathLength="1" d="M9.8 316.2L18.2 382.0"/><path pathLength="1" d="M0.0 316.2L0.0 328.8"/><path pathLength="1" d="M-12.6 272.8L-21.0 309.2"/><path pathLength="1" d="M12.6 272.8L21.0 309.2"/><path pathLength="1" d="M12.6 309.2L11.2 334.4L30.8 334.4L29.4 309.2"/><path pathLength="1" d="M15.4 309.2Q21.0 300.8 26.6 309.2"/></g><g class="wk" data-x="1270" data-d="-1" data-v="0.19" style="transform: translate(1270px, 0px)"><circle pathLength="1" cx="0.0" cy="256.4" r="9.0"/><path pathLength="1" d="M-9.7 250.9Q0.0 235.7 9.7 250.9"/><path pathLength="1" d="M-12.4 271.6L-9.7 302.0L-20.7 354.4Q0.0 358.5 20.7 354.4L9.7 302.0L12.4 271.6Q0.0 266.1 -12.4 271.6Z"/><path pathLength="1" d="M-5.5 355.8L-12.3 382.0"/><path pathLength="1" d="M5.5 355.8L12.3 382.0"/><path pathLength="1" d="M-12.4 274.4L-17.9 249.5L-15.2 238.5"/><path pathLength="1" d="M12.4 274.4L16.6 302.0"/><path pathLength="1" d="M-23.5 238.5L23.5 238.5L15.2 248.1L-15.2 248.1Z"/><circle pathLength="1" cx="-12.4" cy="233.0" r="4.4"/><circle pathLength="1" cx="-4.1" cy="233.0" r="4.4"/><circle pathLength="1" cx="4.1" cy="233.0" r="4.4"/><circle pathLength="1" cx="12.4" cy="233.0" r="4.4"/></g><g class="wk" data-x="-160" data-d="1" data-v="0.15" style="transform: translate(-160px, 0px)"><circle pathLength="1" cx="0.0" cy="267.3" r="8.2"/><path pathLength="1" d="M-8.8 262.3Q0.0 248.4 8.8 262.3"/><path pathLength="1" d="M-11.3 281.2L-8.8 308.9L-18.9 356.8Q0.0 360.6 18.9 356.8L8.8 308.9L11.3 281.2Q0.0 276.2 -11.3 281.2Z"/><path pathLength="1" d="M-5.0 358.1L-10.3 382.0"/><path pathLength="1" d="M5.0 358.1L10.3 382.0"/><path pathLength="1" d="M-11.3 283.7L-18.1 316.5"/><path pathLength="1" d="M11.3 283.7L18.1 316.5"/><circle pathLength="1" cx="30.0" cy="305.6" r="5.5"/><path pathLength="1" d="M22.4 314.8L23.3 342.5L36.7 342.5L37.6 314.8Q30.0 311.4 22.4 314.8Z"/><path pathLength="1" d="M24.1 342.5L20.8 382.0"/><path pathLength="1" d="M35.9 342.5L39.2 382.0"/><path pathLength="1" d="M30.0 342.5L30.0 350.1"/><path pathLength="1" d="M22.4 316.5L18.4 338.3"/><path pathLength="1" d="M37.6 316.5L41.6 338.3"/></g><g class="wk" data-x="1380" data-d="-1" data-v="0.21" style="transform: translate(1380px, 0px)"><circle pathLength="1" cx="0.0" cy="251.0" r="9.4"/><path pathLength="1" d="M-13.0 266.8L-11.5 314.3L11.5 314.3L13.0 266.8Q0.0 261.0 -13.0 266.8Z"/><path pathLength="1" d="M-10.1 314.3L-18.7 382.0"/><path pathLength="1" d="M10.1 314.3L18.7 382.0"/><path pathLength="1" d="M0.0 314.3L0.0 327.3"/><path pathLength="1" d="M-13.0 269.7L-13.8 307.1"/><path pathLength="1" d="M13.0 269.7L13.8 307.1"/></g></g>
+</svg></div>
+        <div class="pcard">
+          <form class="chat dark" id="ask-form" novalidate>
+            <button type="button" class="chat-theme" id="chat-theme" aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="ct-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 12.3A6 6 0 0 1 7.7 4.5a6 6 0 1 0 7.8 7.8z"/></svg><svg class="ct-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.2"/><path d="M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7l1.3 1.3M14 14l1.3 1.3M4.7 15.3L6 14M14 6l1.3-1.3"/></svg></button>
+            <label class="vh" for="ask-input">What do you need to understand?</label>
+            <div class="chat-body">
+              <textarea id="ask-input" rows="2" maxlength="500" placeholder="Where should we launch our product first?"></textarea>
+            </div>
+            <ul class="att-list" id="att-list" aria-label="Attached files" hidden></ul>
+            <div class="chat-foot">
+              <div class="chips" role="group" aria-label="Example questions">
+                <div class="attach">
+                  <button type="button" class="add-btn" id="add-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="add-menu" aria-label="Add files or choose a market"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+                  <div class="add-menu" id="add-menu" role="menu" aria-label="Add to your question" hidden>
+                    <button type="button" role="menuitem" data-pick="pick-image"><svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2.5" y="3.5" width="13" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="6.5" cy="7.3" r="1.3" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M3 13l4-4 3 3 2-2 3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Add images</button>
+                    <button type="button" role="menuitem" data-pick="pick-file"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2.5h5.5L14 6v9.5H5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10.5 2.5V6H14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Add files</button>
+                    <button type="button" role="menuitem" id="pick-market" class="add-sep"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 14.5s4.5-4.2 4.5-7.8a4.5 4.5 0 0 0-9 0c0 3.6 4.5 7.8 4.5 7.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="6.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>Choose market<span class="add-val" id="pick-market-val">All markets</span></button>
+                  </div>
+                  <ul class="place-menu" id="place-menu" role="menu" aria-label="Choose a market" hidden><li><button type="button" role="menuitemradio" aria-checked="true" data-place="All markets">All markets</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Nigeria">Nigeria</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Ghana">Ghana</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Kenya">Kenya</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="South Africa">South Africa</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Côte d’Ivoire">Côte d’Ivoire</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Egypt">Egypt</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Morocco">Morocco</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Senegal">Senegal</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Ethiopia">Ethiopia</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-place="Tanzania">Tanzania</button></li></ul>
+                  <input type="file" id="pick-image" accept="image/*" multiple hidden>
+                  <input type="file" id="pick-file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,image/*" multiple hidden>
+                </div>
+                <span class="place-tag" id="place-tag" hidden><button type="button" class="place-tag-b" id="place-tag-b" aria-label="Change market"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 14.5s4.5-4.2 4.5-7.8a4.5 4.5 0 0 0-9 0c0 3.6 4.5 7.8 4.5 7.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="6.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span id="place-label">All markets</span></button><button type="button" class="place-tag-x" id="place-tag-x" aria-label="Clear market"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 2l6 6M8 2l-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></span>
+                <button type="button" class="chip" aria-pressed="false" data-q="What does the market for our product look like?">Explore a market</button>
+                <button type="button" class="chip" aria-pressed="false" data-q="Where should we launch first?">Compare locations</button>
+                <button type="button" class="chip" aria-pressed="false" data-q="What don't we know yet that could change our plan?">Investigate a gap</button>
+              </div>
+              <button type="submit" class="send-q">Send question <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+            <p class="ask-note" id="ask-note" aria-live="polite"></p>
+          </form>
+          <p class="ask-promise"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l5 1.9v4.1c0 3-2 5.3-5 6.6-3-1.3-5-3.6-5-6.6V3.7z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.8 8.1l1.5 1.5 2.9-3.1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Every answer shows the evidence behind it, how confident it is, and what is still unknown.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec how" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-title">Start with the decision.</h2>
+      <p class="how-sub">One question. The evidence that matters. A clearer next step.</p>
+      <ol class="how-steps">
+        <li><span class="hn">01</span><h3>Ask</h3><p>Start with a market question. Add your goals and relevant business context.</p></li>
+        <li><span class="hn">02</span><h3>Connect</h3><p>Bring together existing intelligence, signals, and supporting evidence.</p></li>
+        <li><span class="hn">03</span><h3>Investigate</h3><p>Identify gaps, validate assumptions, and gather evidence where it matters.</p></li>
+        <li><span class="hn">04</span><h3>Decide</h3><p>Compare findings, assess uncertainty, and choose your next move.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="platform" aria-labelledby="platform-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="platform-title">The connected intelligence layer for African markets.</h2>
+        <p>Verisavo connects what the market shows with what your company knows, supported by verified Ground-Level Intelligence.</p>
+      </div>
+      <div class="apbox">
+        <div class="ap-head"><p class="eyebrow">What makes Verisavo different</p></div>
+        <div class="ap-grid2">
+          <div class="ap-side">
+            <p class="ap-group">Approaches</p>
+            <div class="ap-list" role="tablist" aria-label="Approaches" aria-orientation="vertical"><button role="tab" id="ap0" aria-controls="apchart" aria-selected="true" data-ap="0">Market reports</button><button role="tab" id="ap1" aria-controls="apchart" aria-selected="false" tabindex="-1" data-ap="1">Research agencies</button><button role="tab" id="ap2" aria-controls="apchart" aria-selected="false" tabindex="-1" data-ap="2">Data providers</button><button role="tab" id="ap3" aria-controls="apchart" aria-selected="false" tabindex="-1" data-ap="3">General AI tools</button></div>
+          </div>
+          <div class="ap-panel">
+            <div class="ap-legend"><span class="lg lg-v"><i></i>Verisavo</span><span class="lg lg-s"><i></i>Competitors</span></div>
+            <p class="ap-cap ap-cap-y" aria-hidden="true">↑ Updated as evidence arrives</p>
+            <svg class="apchart" id="apchart" data-layouts='[[[164, 235], [278, 273], [372, 176], [455, 219], [538, 62]], [[205, 203], [242, 257], [392, 143], [434, 251], [517, 52]], [[143, 219], [299, 246], [340, 165], [486, 208], [548, 73]], [[184, 181], [257, 278], [320, 133], [403, 224], [528, 68]]]' viewBox="0 0 620 350" role="img" aria-label="Illustrative positioning: Verisavo is the most connected across sources and the most updated as evidence arrives">
+  <g class="ap-grid"><line x1="70" x2="590" y1="300" y2="300"/><line x1="70" x2="590" y1="232" y2="232"/><line x1="70" x2="590" y1="165" y2="165"/><line x1="70" x2="590" y1="98" y2="98"/><line x1="70" x2="590" y1="30" y2="30"/></g>
+  <line class="ap-axis" x1="70" y1="300" x2="590" y2="300"/><line class="ap-axis" x1="70" y1="30" x2="70" y2="300"/>
+  <text class="ap-tick" x="60" y="34" text-anchor="end">High</text>
+  <text class="ap-tick" x="62" y="316" text-anchor="end">Low</text><text class="ap-tick" x="590" y="322" text-anchor="end">High</text>
+  <text class="ap-lab" x="330" y="342" text-anchor="middle">CONNECTED ACROSS SOURCES</text>
+  <text class="ap-lab" transform="translate(18 165) rotate(-90)" text-anchor="middle">UPDATED AS EVIDENCE ARRIVES</text>
+  <g class="apt" data-i="0" style="transform: translate(164px, 241px)"><title>Market reports</title><circle r="7"/></g><g class="apt" data-i="1" style="transform: translate(247px, 262px)"><title>Research agencies</title><circle r="7"/></g><g class="apt" data-i="2" style="transform: translate(340px, 170px)"><title>Data providers</title><circle r="7"/></g><g class="apt" data-i="3" style="transform: translate(413px, 230px)"><title>General AI tools</title><circle r="7"/></g>
+  <g class="apv" style="transform: translate(538px, 62px)"><title>Verisavo</title><circle r="9"/></g>
+</svg>
+            <p class="ap-cap ap-cap-x" aria-hidden="true">Connected across sources →</p>
+            <p class="ap-hint" aria-hidden="true">Swipe the chart or tap an approach to compare</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="trust" aria-labelledby="trust-title">
+    <div class="wrap">
+      <div class="trust-head">
+        <h2 id="trust-title">Built on Trust</h2>
+        <p class="lead">Know what the evidence supports, where it falls short, and what remains in your control.</p>
+      </div>
+      <div class="tgrid-wrap"><div class="tgrid"><article class="tc"><span class="tc-ic"><svg viewBox="0 0 22 22" aria-hidden="true"><rect x="5" y="10" width="12" height="8" rx="2" stroke="#4362B2" stroke-width="1.7" fill="none"/><path d="M8 10V7.5a3 3 0 0 1 6 0V10" stroke="#4362B2" stroke-width="1.7" fill="none"/></svg></span><h3>Private by Default</h3><p>Your company data stays private, secure, and fully under your control.</p></article><article class="tc"><span class="tc-ic"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M5 6h12M5 11h12M5 16h7" stroke="#4362B2" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg></span><h3>Traceable Evidence</h3><p>Every insight is linked to its source, location, timing, and confidence level.</p></article><article class="tc"><span class="tc-ic"><svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="7.5" stroke="#4362B2" stroke-width="1.7" stroke-dasharray="3 3" fill="none"/><path d="M9 9a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6 1v.6M11 15v.1" stroke="#4362B2" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg></span><h3>Unknowns Made Clear</h3><p>When evidence is incomplete, we clearly show what is unknown and what to explore next.</p></article><article class="tc"><span class="tc-ic"><svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="7.5" r="3.2" stroke="#4362B2" stroke-width="1.7" fill="none"/><path d="M4.5 18c.9-3.2 3.4-4.8 6.5-4.8s5.6 1.6 6.5 4.8" stroke="#4362B2" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg></span><h3>Human Decisions</h3><p>Verisavo provides clarity and context. The final decision always remains with your team.</p></article></div></div>
+    </div>
+  </section>
+
+  <section class="sec faq-sec" id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq">
+      <div class="faq-intro">
+        <p class="eyebrow">FAQs</p>
+        <h2 id="faq-title">Clear answers.<br><span class="tone2">Grounded in evidence.</span></h2>
+        <p class="faq-talk">Need help with a specific market decision? <button type="button" class="linkbtn" data-access>Talk to our team.</button></p>
+      </div>
+      <div class="qa">
+        <details open><summary>What is Verisavo?<span aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#1F273F" stroke-width="1.5" stroke-linecap="round"/></svg></span></summary>
+          <p>Verisavo is the connected intelligence layer for African markets, combining market intelligence, business context, and verified ground-level evidence to support better decisions.</p></details>
+        <details><summary>Where does the intelligence come from?<span aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#1F273F" stroke-width="1.5" stroke-linecap="round"/></svg></span></summary>
+          <p>From public sources, your company’s data, and Ground-Level Intelligence collected by SavoScouts where other sources fall short.</p></details>
+        <details><summary>What if the answer isn’t available?<span aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#1F273F" stroke-width="1.5" stroke-linecap="round"/></svg></span></summary>
+          <p>We make that clear. Verisavo shows what’s missing, what’s unknown, and where further evidence is needed.</p></details>
+        <details><summary>Is my company information private?<span aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#1F273F" stroke-width="1.5" stroke-linecap="round"/></svg></span></summary>
+          <p>Yes. Your data remains private, secure, and under your control. It is never shared with other customers.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-wrap">
+    <div class="wrap">
+      <div class="cta">
+        <p class="eyebrow">Ask. Understand. Act.</p>
+        <h2>Make your next move<br>with confidence.</h2>
+        <p>Understand your market, see what the evidence supports and uncover what’s missing before you act.</p>
+        <div class="ctas">
+          <button type="button" class="btn btn-blue" data-access>Get early access</button>
+          <button type="button" class="btn btn-outline-w" data-href="index.html">Explore Verisavo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="foot-brand">
+      <a class="logo" href="index.html" aria-label="Verisavo home"><span>Verisavo</span></a>
+      <span>The connected intelligence layer for African markets.</span>
+    </div>
+    <div class="foot-bar">
+      <span>© <span id="year">2026</span> Verisavo. All rights reserved.</span>
+      <nav aria-label="Legal"><button type="button" data-legal="terms">Terms of Service</button><button type="button" data-legal="privacy">Privacy Policy</button></nav>
+    </div>
+  </div>
+</footer>
+
+<dialog id="access" aria-labelledby="access-h">
+  <div class="dlg">
+    <div class="dlg-top">
+      <button type="button" class="x" id="x" aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="#1F273F" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    </div>
+
+    <form class="stp" id="step1" novalidate>
+      <h2 id="access-h">Get early access</h2>
+      <p>Enter your number. We'll send a one-time code to confirm it's yours.</p>
+      <div style="display:grid;gap:8px">
+        <span class="field-label" id="phone-l">Your number</span>
+        <div class="phone" id="phone-box" role="group" aria-labelledby="phone-l">
+          <label for="cc" class="vh">Country code</label>
+          <select id="cc" autocomplete="tel-country-code"></select>
+          <label for="tel" class="vh">Phone number</label>
+          <input id="tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="801 234 5678" maxlength="20">
+        </div>
+      </div>
+      <label class="consent"><input type="checkbox" id="consent"><span>I agree to receive a verification code and early-access messages from Verisavo.</span></label>
+      <p class="msg" id="m1" aria-live="polite"></p>
+      <button type="submit" class="btn btn-primary wide" id="send-code">Send code</button>
+    </form>
+
+    <form class="stp" id="step2" novalidate hidden>
+      <h2>Enter your code</h2>
+      <p>We sent a 6-digit code to <span class="num" id="num-show"></span></p>
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend class="vh">6-digit verification code</legend>
+        <div class="otp" id="otp"></div>
+      </fieldset>
+      <p class="msg" id="m2" aria-live="polite"></p>
+      <button type="submit" class="btn btn-primary wide" id="verify">Verify</button>
+      <div class="row">
+        <button type="button" class="textbtn" id="change">Change number</button>
+        <button type="button" class="textbtn" id="resend" disabled>Resend code</button>
+      </div>
+    </form>
+
+    <div class="stp" id="step3" hidden tabindex="-1">
+      <div class="ok" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 30 30"><path d="M8 15.5l4.5 4.5L22 10.5" fill="none" stroke="#1F273F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>You're verified</h2>
+      <p>Continue to WhatsApp to start your early-access conversation with our team.</p>
+      <div class="preview"><small>Your first message</small><p id="wa-text"></p></div>
+      <a class="btn btn-primary wide" id="wa-link" href="#" target="_blank" rel="noopener noreferrer">Open WhatsApp
+        <svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <p class="msg" id="m3"></p>
+    </div>
+  </div>
+</dialog>
+
+
+
+<dialog id="soon" aria-labelledby="soon-h">
+  <div class="dlg">
+    <div class="dlg-top"><button type="button" class="x" data-soon-close aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="#1F273F" stroke-width="1.6" stroke-linecap="round"/></svg></button></div>
+    <div class="stp">
+      <div class="ok soon-ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="#1F273F" stroke-width="1.3" stroke-linecap="round"><path d="M8 14.5s4.5-4.2 4.5-7.6a4.5 4.5 0 0 0-9 0c0 3.4 4.5 7.6 4.5 7.6z"/><circle cx="8" cy="6.8" r="1.6"/></svg></div>
+      <p class="soon-lab">Coming soon</p>
+      <h2 id="soon-h">Deploy a Scout</h2>
+      <p>Soon you will be able to send SavoScouts to gather and verify Ground-Level Intelligence where existing information falls short. We are preparing this now.</p>
+      <button type="button" class="btn btn-primary wide" data-soon-close>Got it</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="legal" class="legal" aria-labelledby="lh-privacy">
+  <div class="dlg">
+    <div class="l-top">
+      <button type="button" class="x" id="l-x" aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="#1F273F" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    </div>
+    <article class="ldoc" id="l-privacy" tabindex="0">
+      <h2 id="lh-privacy">Privacy Policy</h2>
+      <p class="ldate">Last updated 1 October 2026</p>
+      <p>Verisavo is a connected intelligence layer for African markets and is currently in private early access. This policy explains what personal information we collect when you use this website, the Verisavo Intelligence Assistant and the early-access programme (together, "the service"), why we collect it, how we use and protect it, and the choices you have.</p>
+      <p>In this policy, "Verisavo", "we", "us" and "our" mean the company that operates the service. "You" means any person who visits the website or uses the service, including people acting on behalf of an organisation.</p>
+
+      <h4>1. Information you give us</h4>
+      <ul>
+        <li><b>Early access.</b> Your phone number and country code, your consent to receive a verification code, and confirmation that you verified the number.</li>
+        <li><b>Accounts.</b> Your name, organisation and work email if you create an account, and basic sign-in details if you choose to sign in with Google.</li>
+        <li><b>Questions and requests.</b> The market questions you type into the Intelligence Assistant or the question bar, requests to deploy a SavoScout, and any context you add to them.</li>
+        <li><b>Files.</b> Images, documents and other files you attach to a question.</li>
+        <li><b>Contact form.</b> Your name, work email and the message you send.</li>
+        <li><b>Conversations.</b> Messages you exchange with our team, including on WhatsApp if you choose to continue there.</li>
+      </ul>
+
+      <h4>2. Information collected automatically</h4>
+      <ul>
+        <li><b>Technical information.</b> When your browser loads the site it sends standard details such as your IP address, browser type, device type, operating system and the time of the request. Our hosting and security providers may record these in server logs.</li>
+        <li><b>Browser storage.</b> When you type a question on the homepage and move to the Intelligence Assistant, your question is held briefly in your browser's session storage so it can appear in the question box. It is deleted as soon as it arrives and is never sent to us through this mechanism.</li>
+      </ul>
+      <p>The website does not use advertising cookies, cross-site tracking or third-party analytics.</p>
+
+      <h4>3. How we use your information</h4>
+      <ul>
+        <li>To verify your phone number and manage your place in the early-access programme.</li>
+        <li>To create and secure your account and let you sign in.</li>
+        <li>To answer your questions and provide the service, including any field investigation you have agreed with us.</li>
+        <li>To reply to messages and contact you about early access and your use of the service.</li>
+        <li>To keep the service secure, prevent misuse and fix problems.</li>
+        <li>To improve the service, using information in aggregated or de-identified form wherever possible.</li>
+        <li>To meet our legal obligations and enforce our Terms of Service.</li>
+      </ul>
+      <p>We do not sell personal information, and we do not use it for advertising.</p>
+
+      <h4>4. Our legal grounds</h4>
+      <p>Where data protection law requires a legal basis, we rely on: your consent, for example to receive a verification code and early-access messages; the need to perform our agreement with you or take steps you have asked for; our legitimate interests in running, securing and improving the service, balanced against your rights; and compliance with legal obligations. You can withdraw consent at any time, without affecting processing that has already taken place.</p>
+
+      <h4>5. Your company data</h4>
+      <p>Company data, questions and files you share remain private, protected and under your control. They are used only to provide the service to you. Your private company information is never shown to, or shared with, other customers, and it is not used to answer other customers' questions.</p>
+
+      <h4>6. Who we share information with</h4>
+      <ul>
+        <li><b>Service providers</b> who help us run Verisavo, such as hosting, verification-code and messaging services, email delivery and customer support tools. They may only use your information to provide their services to us.</li>
+        <li><b>WhatsApp</b>, if you choose to continue your conversation there. WhatsApp's own terms and privacy policy apply to that conversation.</li>
+        <li><b>Content providers.</b> This website loads fonts from Google Fonts and code libraries from cdnjs. Your browser sends your IP address to them when it requests those files.</li>
+        <li><b>SavoScouts</b>, only where you have agreed an investigation with us and only the information needed to carry it out. SavoScouts are bound by confidentiality obligations.</li>
+        <li><b>Authorities and advisers</b>, where the law requires it, to protect our rights or the safety of others, or with our professional advisers under confidentiality.</li>
+        <li><b>A successor organisation</b>, if Verisavo is reorganised, merged or acquired, in which case this policy will continue to apply to your information.</li>
+      </ul>
+
+      <h4>7. International transfers</h4>
+      <p>Our service providers may store or process information in countries other than your own. When we transfer personal information across borders, we take steps required by applicable law to keep it protected, such as contractual safeguards with our providers.</p>
+
+      <h4>8. How long we keep information</h4>
+      <p>We keep personal information only for as long as we need it for the purposes in this policy. Early-access and contact details are kept while the programme runs and you remain interested, account information for as long as your account is open, and questions and files for as long as you use the service. After that, we delete or anonymise information unless the law requires us to keep it longer.</p>
+
+      <h4>9. How we protect information</h4>
+      <p>We use technical and organisational measures appropriate to the risk, including encryption in transit, access controls and limiting access to people who need it. No system is perfectly secure, so we cannot guarantee absolute security, but we will tell you and the relevant authorities about a breach where the law requires.</p>
+
+      <h4>10. Your rights</h4>
+      <p>Depending on where you live, you may have the right to access the personal information we hold about you, correct it, delete it, restrict or object to how we use it, receive a copy in a portable format, and withdraw consent. You can also ask us to stop sending you messages at any time. To exercise these rights, <button type="button" class="linkbtn" data-legal-contact>talk to our team</button>. We may need to confirm your identity before acting on a request. You also have the right to complain to your local data protection authority.</p>
+
+      <h4>11. Children</h4>
+      <p>The service is designed for organisations and professionals. It is not directed at children, and we do not knowingly collect personal information from anyone under 18. If you believe a child has given us information, please contact us and we will delete it.</p>
+
+      <h4>12. Changes and contact</h4>
+      <p>We will update this policy when our practices or the service change, and show the date of the latest version at the top. If changes are significant, we will take reasonable steps to let you know. For any privacy question or request, <button type="button" class="linkbtn" data-legal-contact>talk to our team</button>.</p>
+    </article>
+    <article class="ldoc" id="l-terms" tabindex="0" hidden>
+      <h2 id="lh-terms">Terms of Service</h2>
+      <p class="ldate">Last updated 1 October 2026</p>
+      <p>These terms govern your use of the Verisavo website, the Verisavo Intelligence Assistant and the early-access programme (together, "the service"). By using the service, you agree to these terms. If you use the service on behalf of an organisation, you confirm that you are authorised to accept these terms for it, and "you" includes that organisation.</p>
+
+      <h4>1. Early access</h4>
+      <p>Verisavo is an early-stage product. During early access, features may change, be limited, be withdrawn or be unavailable at times while we develop the platform. Some features, such as deploying a SavoScout, may be shown before they are generally available. Access is at our discretion and may be limited to selected organisations.</p>
+
+      <h4>2. Eligibility and accounts</h4>
+      <p>You must be at least 18 and able to enter a binding agreement to use the service. You are responsible for keeping your sign-in details and verification codes confidential, for activity under your account, and for telling us promptly if you suspect unauthorised use. The information you give us, including your phone number and work email, must be accurate.</p>
+
+      <h4>3. Acceptable use</h4>
+      <p>Use the service lawfully and for genuine business purposes. You must not:</p>
+      <ul>
+        <li>break any law, or infringe the rights or privacy of others;</li>
+        <li>upload content you do not have the right to share, or content that is unlawful, harmful or misleading;</li>
+        <li>attempt to access accounts, data or systems that do not belong to you, or probe, scan or test the service's security;</li>
+        <li>disrupt or overload the service, or use automated means to access it without our permission;</li>
+        <li>copy, scrape, resell, reverse engineer or build a competing product from the service;</li>
+        <li>use the service, or ask SavoScouts, to track, profile or collect personal information about private individuals.</li>
+      </ul>
+
+      <h4>4. Intelligence and your decisions</h4>
+      <p>Verisavo is designed to show what the evidence supports, where it falls short and what remains unknown, and to label information as fact, inference, hypothesis, assumption or unknown. Market information can be incomplete, out of date or wrong, and conclusions depend on the evidence available. The service supports your decisions but does not make them. It is not legal, financial, investment, tax or other professional advice. You are responsible for your decisions and for checking information before relying on it.</p>
+
+      <h4>5. SavoScout investigations</h4>
+      <p>A request to deploy a SavoScout is a request for us to consider a targeted field investigation. We are not obliged to accept a request. Whether, when and how an investigation takes place, its scope and any fees are agreed with you separately in writing. SavoScouts gather Ground-Level Intelligence lawfully, respectfully and safely, and do not collect personal information about individuals beyond what an agreed investigation requires. We may decline or stop an investigation that would be unlawful, unsafe or inconsistent with these terms.</p>
+
+      <h4>6. Your content</h4>
+      <p>You keep ownership of the company data, questions, files and other content you share ("your content"). You give us a limited licence to host, process and use your content only to provide and secure the service for you. You confirm that you have the rights needed to share your content and that doing so does not break any law or agreement. We handle personal information in your content as described in our Privacy Policy.</p>
+
+      <h4>7. Our service and intellectual property</h4>
+      <p>The Verisavo platform, software, design, illustrations, text and brand belong to Verisavo or its licensors and are protected by law. We give you a limited, non-exclusive, non-transferable right to use the service under these terms. If you send us feedback or suggestions, we may use them without obligation to you.</p>
+
+      <h4>8. Illustrative content</h4>
+      <p>The market scene, signals, figures, locations and examples shown on this website illustrate how Verisavo is designed to work. They are not real market data and should not be relied on.</p>
+
+      <h4>9. Fees</h4>
+      <p>Early access is currently offered without charge unless we agree otherwise with you in writing. We will tell you in advance before any paid features or fees apply to you.</p>
+
+      <h4>10. Third-party services</h4>
+      <p>The service may link to or work with third-party services, such as WhatsApp or Google sign-in. Their own terms apply, and we are not responsible for them.</p>
+
+      <h4>11. Availability and changes</h4>
+      <p>We aim to keep the service available but do not guarantee that it will be uninterrupted, error-free or secure at all times. We may change, suspend or discontinue any part of the service, and will give reasonable notice of significant changes where we can.</p>
+
+      <h4>12. Disclaimers and liability</h4>
+      <p>During early access the service is provided "as is" and "as available". To the extent the law allows, we disclaim all warranties not expressly stated in these terms, including fitness for a particular purpose and accuracy of information. To the extent the law allows, Verisavo is not liable for indirect, incidental, special or consequential losses, or for loss of profit, revenue, data or opportunity, arising from your use of the service. Nothing in these terms limits liability that cannot be limited by law.</p>
+
+      <h4>13. Indemnity</h4>
+      <p>You agree to compensate Verisavo for reasonable losses and costs arising from your breach of these terms or your unlawful use of the service, including claims that your content infringes someone else's rights.</p>
+
+      <h4>14. Suspension and ending access</h4>
+      <p>You can stop using the service at any time. We may suspend or end your access if you break these terms, if your use creates risk for us or others, or if we stop offering the service. Sections that by their nature should continue, such as ownership, disclaimers, liability and indemnity, continue after access ends.</p>
+
+      <h4>15. Governing law and disputes</h4>
+      <p>These terms are governed by the laws of the country in which Verisavo is established, unless the law where you live requires otherwise. Before starting formal proceedings, both sides agree to try to resolve any dispute in good faith by contacting each other first.</p>
+
+      <h4>16. General</h4>
+      <p>These terms, together with our Privacy Policy and any written agreement with you, are the whole agreement between us about the service. If any part is found unenforceable, the rest remains in effect. Our failure to enforce a term is not a waiver. You may not transfer your rights under these terms without our consent.</p>
+
+      <h4>17. Changes and contact</h4>
+      <p>We may update these terms as the product develops and will show the date of the latest version at the top. If changes are significant, we will take reasonable steps to let you know before they take effect. For questions, <button type="button" class="linkbtn" data-legal-contact>talk to our team</button>.</p>
+    </article>
+  </div>
+</dialog>
+
+<dialog id="va" class="va" aria-label="Verisavo Intelligence Assistant">
+  <div class="va-app">
+    <aside class="va-side" id="va-side" aria-label="Assistant navigation">
+      <div class="va-brand">
+        <span class="va-word">Verisavo</span>
+        <button type="button" class="va-ib va-side-x" id="va-side-x" aria-label="Hide sidebar"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2.5"/><path d="M8 4v12"/></svg></button>
+      </div>
+      <button type="button" class="va-new" id="va-new"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg><span>New question</span></button>
+      <ul class="va-list">
+        <li><button type="button" class="va-nav" id="va-search-btn" aria-expanded="false" aria-controls="va-search"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.2"/><path d="M13 13l3.5 3.5"/></svg><span>Search</span></button></li>
+        <li><button type="button" class="va-nav va-soon" id="va-scouts" aria-disabled="true" aria-describedby="va-soon-tag"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 17s-5-4.6-5-8.4a5 5 0 0 1 10 0C15 12.4 10 17 10 17z"/><circle cx="10" cy="8.6" r="1.8"/></svg><span>SavoScouts</span><em class="va-soon-tag" id="va-soon-tag">Coming soon</em></button></li>
+      </ul>
+      <div class="va-search" id="va-search" hidden><input id="va-search-in" type="search" placeholder="Search your questions" aria-label="Search your questions" autocomplete="off"></div>
+      <p class="va-h va-h-recent">Recent</p>
+      <ul class="va-list va-recent" id="va-recent"></ul>
+      <p class="va-empty" id="va-recent-empty">Questions you ask appear here.</p>
+      <div class="va-user">
+        <span class="va-av" id="va-av">V</span>
+        <span class="va-who"><b id="va-name">You</b><small>Early access</small></span>
+        <div class="va-pop-wrap">
+          <button type="button" class="va-ib" id="va-gear" aria-haspopup="menu" aria-expanded="false" aria-controls="va-gear-menu" aria-label="Account settings" title="Account settings"><svg class="vi" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+          <div class="va-pop va-pop-up" id="va-gear-menu" role="menu" hidden>
+            <button type="button" role="menuitem" data-legal="privacy">Privacy Policy</button>
+            <button type="button" role="menuitem" data-legal="terms">Terms of Service</button>
+            <button type="button" role="menuitem" id="va-signout">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div class="va-scrim" id="va-scrim" hidden></div>
+    <section class="va-main va-dark">
+      <header class="va-top">
+        <button type="button" class="va-ib va-open-side" id="va-open-side" aria-label="Show sidebar" aria-controls="va-side" aria-expanded="false"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M4 10h12M4 14h12"/></svg></button>
+        <div class="va-pop-wrap">
+          <button type="button" class="va-scope" id="va-scope" aria-haspopup="menu" aria-expanded="false" aria-controls="va-scope-menu"><span id="va-scope-label">All markets</span><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 8l4 4 4-4"/></svg></button>
+          <ul class="va-pop" id="va-scope-menu" role="menu" aria-label="Market scope" hidden><li><button type="button" role="menuitemradio" aria-checked="true" data-market="All markets">All markets</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Nigeria">Nigeria</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Ghana">Ghana</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Kenya">Kenya</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="South Africa">South Africa</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Côte d’Ivoire">Côte d’Ivoire</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Egypt">Egypt</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Morocco">Morocco</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Senegal">Senegal</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Ethiopia">Ethiopia</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-market="Tanzania">Tanzania</button></li></ul>
+        </div>
+        <div class="va-top-r">
+          <button type="button" class="va-ib va-theme" id="va-theme" aria-pressed="true" aria-label="Switch to light theme" title="Switch to light theme"><svg class="vi va-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.2"/><path d="M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7l1.3 1.3M14 14l1.3 1.3M4.7 15.3L6 14M14 6l1.3-1.3"/></svg><svg class="vi va-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 12.3A6 6 0 0 1 7.7 4.5a6 6 0 1 0 7.8 7.8z"/></svg></button>
+          <div class="va-pop-wrap">
+            <button type="button" class="va-ib va-shield" id="va-shield" aria-expanded="false" aria-controls="va-shield-tip" aria-label="Privacy"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3l5.5 2v4.6c0 3.4-2.3 5.9-5.5 7.4-3.2-1.5-5.5-4-5.5-7.4V5z"/><path d="M7.6 10.1l1.7 1.7 3.2-3.4"/></svg></button>
+            <div class="va-pop va-tip" id="va-shield-tip" hidden><b>Private by default</b>Your company data stays private, secure and under your control. It is never shared with other customers.</div>
+          </div>
+          <button type="button" class="va-ib" id="va-new2" aria-label="New question"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 16h3l8.2-8.2a1.8 1.8 0 0 0-3-3L4 13z"/><path d="M11 6l3 3"/></svg></button>
+          <div class="va-pop-wrap">
+            <button type="button" class="va-ib" id="va-more" aria-haspopup="menu" aria-expanded="false" aria-controls="va-more-menu" aria-label="More options"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="10" r="1.1"/><circle cx="10" cy="10" r="1.1"/><circle cx="15" cy="10" r="1.1"/></svg></button>
+            <div class="va-pop va-pop-r" id="va-more-menu" role="menu" hidden>
+              <button type="button" role="menuitem" id="va-clear">Clear this conversation</button>
+              <button type="button" role="menuitem" id="va-clear-all">Clear all recent questions</button>
+            </div>
+          </div>
+          <button type="button" class="va-ib" id="va-x" aria-label="Close assistant"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+        </div>
+      </header>
+      <div class="va-body" id="va-body">
+        <div class="va-hello" id="va-hello">
+          <h2 id="va-greet">What do you need to understand?</h2>
+        </div>
+        <ol class="va-thread" id="va-thread" aria-live="polite"></ol>
+      </div>
+      <div class="va-dock" id="va-dock">
+        <form class="va-composer" id="va-form" novalidate>
+          <ul class="va-files" id="va-files" hidden></ul>
+          <div class="va-row">
+            <button type="button" class="va-ib va-add" id="va-add" aria-label="Add images or files"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg></button>
+            <input type="file" id="va-file" multiple hidden accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,image/*">
+            <label class="vh" for="va-in">Message Verisavo</label>
+            <textarea id="va-in" rows="1" maxlength="1000" placeholder="Ask about a market, a competitor or a decision"></textarea>
+            <button type="submit" class="va-send" id="va-send" aria-label="Send question" disabled><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15.5V5M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+          </div>
+        </form>
+        <div class="va-chips" id="va-chips"><button type="button" class="va-chip" data-q="What does the market for our product look like?">Explore a market</button><button type="button" class="va-chip" data-q="Where should we launch first, and why?">Compare locations</button><button type="button" class="va-chip" data-q="What don’t we know yet that could change our plan?">Investigate a gap</button><button type="button" class="va-chip" data-q="What evidence supports or contradicts our main assumption?">Test an assumption</button><button type="button" class="va-chip va-more-chip" data-q="How have prices in our category changed recently?" hidden>Track prices</button><button type="button" class="va-chip va-more-chip" data-q="Where do stockouts happen most often?" hidden>Map stockouts</button><button type="button" class="va-chip va-more-chip" data-q="What has changed about our main competitor recently?" hidden>Check a competitor</button><button type="button" class="va-chip va-dots" id="va-chip-more" aria-label="More examples" aria-expanded="false"><svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="10" r="1.1"/><circle cx="10" cy="10" r="1.1"/><circle cx="15" cy="10" r="1.1"/></svg></button></div>
+        <p class="va-foot">Verisavo separates evidence from assumptions. Check what matters before you act.</p>
+      </div>
+    </section>
+  </div>
+</dialog>
+
+<dialog id="auth" aria-labelledby="a-title">
+  <div class="dlg">
+    <div class="a-top">
+      <div class="a-tabs" role="tablist" aria-label="Account">
+        <button role="tab" data-mode="in" aria-selected="true">Sign in</button>
+        <button role="tab" data-mode="up" aria-selected="false" tabindex="-1">Sign up</button>
+      </div>
+      <button type="button" class="x" id="a-x" aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="#1F273F" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="stp">
+      <h2 id="a-title">Welcome back</h2>
+      <p id="a-lead">Sign in to your Verisavo account.</p>
+      <a class="btn a-google wide" id="a-google" href="#" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="6.5" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.2 15.5c.8-2.8 3-4.2 5.8-4.2s5 1.4 5.8 4.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Continue with Google
+      </a>
+      <div class="a-or"><span>or</span></div>
+      <form id="a-form" class="a-form" novalidate>
+        <div class="a-field a-up" hidden><label class="field-label" for="a-name">Full name</label><input id="a-name" autocomplete="name" maxlength="120"></div>
+        <div class="a-field a-up" hidden><label class="field-label" for="a-org">Organisation <span style="font-weight:400;color:var(--b600)">(optional)</span></label><input id="a-org" autocomplete="organization" maxlength="160"></div>
+        <div class="a-field"><label class="field-label" for="a-email">Email</label><input id="a-email" type="email" autocomplete="email" maxlength="160" placeholder="you@company.com"></div>
+        <button type="submit" class="btn btn-dark wide" id="a-submit">Continue with email</button>
+      </form>
+      <div id="a-sent" class="a-sent" hidden><b>Check your inbox</b><p>We sent a sign-in link to <span id="a-sent-to"></span>.</p></div>
+      <p class="msg a-msg" id="a-msg" aria-live="polite"></p>
+      <p class="a-switch"><span id="a-switch-text">New to Verisavo?</span> <button type="button" class="linkish" id="a-switch">Sign up</button></p>
+    </div>
+  </div>
+</dialog>
+
+<script>
+
+(() => {
+  /* ==================================================================
+   * DEPLOYMENT SETTINGS
+   * mode "demo": walks through the flow without sending anything (code 123456).
+   * mode "live": calls your backend. Generate and check codes on the server
+   *   (e.g. Twilio Verify, WhatsApp channel, or a WhatsApp Cloud API
+   *   authentication template). Never check codes in the browser.
+   * api.start  POST { phone, question } -> 2xx when the code was sent
+   * api.check  POST { phone, code }     -> { verified: true, whatsappUrl?: "https://wa.me/..." }
+   * whatsappNumber: Verisavo's WhatsApp number, international format, digits only.
+   * ================================================================== */
+  const CONFIG = { mode: "demo", api: { start: "", check: "" }, whatsappNumber: "", resendSeconds: 30 };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  $("#year").textContent = new Date().getFullYear();
+
+  /* In-page navigation: buttons that scroll, so nothing opens outside the page */
+  $$("[data-scroll]").forEach(btn => btn.addEventListener("click", () => {
+    const id = btn.dataset.scroll, el = document.getElementById(id);
+    if (!el) return;
+    const y = id === "main" ? 0 : el.getBoundingClientRect().top + scrollY - $("#top").offsetHeight - 8;
+    scrollTo({ top: Math.max(0, y), behavior: reduced ? "auto" : "smooth" });
+    if (id !== "main") { el.setAttribute("tabindex", "-1"); el.focus({ preventScroll: true }); }
+  }));
+
+  /* Header */
+  const top = $("#top");
+  const onScroll = () => top.classList.toggle("line", scrollY > 8);
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  const navLinks = $$(".links [data-scroll]");
+  const spy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) navLinks.forEach(a => a.classList.toggle("on", a.dataset.scroll === e.target.id)); }), { rootMargin: "-45% 0px -50% 0px" });
+  ["product", "how", "faq"].forEach(id => spy.observe(document.getElementById(id)));
+
+  /* Hero evidence network: market signals twinkle in and out like stars */
+  const cv = $("#net"), ctx = cv.getContext("2d");
+  const C = { line: "#A8C6E8", dot: "#80AADC", hot: "#4D74C3", label: "#618CD0", hotLabel: "#3A5292" };
+  const SIGNALS = ["Price change", "Stockout", "New competitor", "Supplier switch", "Delivery delay", "Brand switch", "Policy change", "Distribution gap", "Retail activity", "Shelf space"];
+  let W = 0, H = 0, nodes = [], pointer = null, running = true;
+  function build() {
+    const r = cv.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+    W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(60, Math.max(22, W * H / 18000)));
+    nodes = Array.from({ length: n }, (_, i) => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - .5) * .12, vy: (Math.random() - .5) * .12,
+      r: Math.random() * 1.1 + 0.9,
+      sp: 0.0004 + Math.random() * 0.0009,       // twinkle speed
+      ph: Math.random() * Math.PI * 2,           // twinkle phase
+      label: i < SIGNALS.length ? SIGNALS[i] : null
+    }));
+  }
+  const fade = x => W < 900 ? Math.max(0, Math.min(0.35, (x / W - 0.55) / 0.3)) : Math.max(0, Math.min(1, (x / W - 0.5) / 0.2));
+  // 0..1 brightness; labelled signals fully disappear between appearances
+  const glow = (n, t) => reduced ? 1 : 0.5 + 0.5 * Math.sin(t * n.sp + n.ph);
+  const ease = v => v * v * (3 - 2 * v);
+  function frame(t) {
+    ctx.clearRect(0, 0, W, H);
+    const f = pointer || { x: W * (0.74 + 0.1 * Math.sin(t / 5200)), y: H * (0.32 + 0.16 * Math.cos(t / 6100)) };
+    const link = Math.min(140, W / 7), reach = Math.min(210, W / 4.5);
+    if (!reduced) for (const n of nodes) { n.x += n.vx; n.y += n.vy; if (n.x < -20) n.x = W + 20; if (n.x > W + 20) n.x = -20; if (n.y < -20) n.y = H + 20; if (n.y > H + 20) n.y = -20; }
+    for (const n of nodes) n.g = glow(n, t);
+    ctx.lineWidth = 0.5;
+    ctx.strokeStyle = C.line;
+    for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d < link) {
+        const al = (1 - d / link) * fade((a.x + b.x) / 2) * Math.min(a.g, b.g);
+        if (al > 0.01) { ctx.globalAlpha = al; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+    }
+    for (const n of nodes) {
+      const a = fade(n.x); if (!a) continue;
+      const d = Math.hypot(n.x - f.x, n.y - f.y), near = d < reach;
+      const g = near ? Math.max(n.g, 0.85) : n.g;
+      if (near) { ctx.globalAlpha = (1 - d / reach) * 0.6 * a; ctx.strokeStyle = C.hot; ctx.beginPath(); ctx.moveTo(f.x, f.y); ctx.lineTo(n.x, n.y); ctx.stroke(); }
+      const star = a * (0.12 + 0.88 * g);
+      ctx.globalAlpha = star; ctx.fillStyle = near ? C.hot : C.dot;
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r * (0.8 + 0.5 * g), 0, Math.PI * 2); ctx.fill();
+      if (g > 0.8) {                                // brief star glint at peak brightness
+        const s = (g - 0.8) / 0.2 * 4;
+        ctx.globalAlpha = star * 0.6; ctx.strokeStyle = near ? C.hot : C.dot;
+        ctx.beginPath(); ctx.moveTo(n.x - s, n.y); ctx.lineTo(n.x + s, n.y); ctx.moveTo(n.x, n.y - s); ctx.lineTo(n.x, n.y + s); ctx.stroke();
+      }
+      if (n.label && W >= 700) {
+        const la = a * ease(Math.max(0, (g - 0.35) / 0.65));
+        if (la > 0.01) {
+          ctx.globalAlpha = la; ctx.fillStyle = near ? C.hotLabel : C.label;
+          ctx.font = "500 12px Geist, 'Helvetica Neue', Arial, sans-serif";
+          const tw = ctx.measureText(n.label).width, lx = n.x + 9 + tw > W - 12 ? n.x - 9 - tw : n.x + 9;
+          ctx.fillText(n.label, lx, Math.min(Math.max(n.y + 4, 14), H - 8));
+        }
+      }
+    }
+    ctx.globalAlpha = fade(f.x) * 0.8; ctx.strokeStyle = C.hot; ctx.beginPath(); ctx.arc(f.x, f.y, 4, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1;
+  }
+  function loop(t) { frame(t); if (running && !reduced) requestAnimationFrame(loop); }
+  build(); frame(0); if (!reduced) requestAnimationFrame(loop);
+  new ResizeObserver(() => { build(); frame(0); }).observe(cv);
+  const hero = $(".hero");
+  hero.addEventListener("pointermove", e => { const r = cv.getBoundingClientRect(); pointer = { x: e.clientX - r.left, y: e.clientY - r.top }; if (reduced) frame(0); });
+  hero.addEventListener("pointerleave", () => { pointer = null; if (reduced) frame(0); });
+  new IntersectionObserver(([e]) => { const was = running; running = e.isIntersecting; if (running && !was && !reduced) requestAnimationFrame(loop); }).observe(hero);
+
+  /* Question box */
+  const ask = $("#ask-input"), note = $("#ask-note"), chips = $$(".chip"), noteText = note.textContent;
+  const sync = () => chips.forEach(c => c.setAttribute("aria-pressed", String(c.dataset.q === ask.value)));
+  const grow = () => { ask.style.height = "auto"; ask.style.height = Math.min(ask.scrollHeight, 160) + "px"; };
+  const resetNote = () => { note.textContent = noteText; note.classList.remove("warn"); };
+  chips.forEach(c => c.addEventListener("click", () => { ask.value = c.dataset.q; sync(); grow(); resetNote(); ask.focus(); }));
+  ask.addEventListener("input", () => { sync(); grow(); resetNote(); });
+  ask.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#ask-form").requestSubmit(); } });
+
+
+  /* Market choice lives in the + menu; a chosen market shows as a removable tag */
+  let place = "All markets";
+  const placeMenu = $("#place-menu"), placeTag = $("#place-tag");
+  const setPlaceMenu = open => { placeMenu.hidden = !open; $("#add-btn").setAttribute("aria-expanded", String(open)); if (open) { const f = placeMenu.querySelector('[aria-checked="true"]'); if (f) f.focus(); } };
+  const setPlace = m => {
+    place = m; $("#place-label").textContent = m; $("#pick-market-val").textContent = m;
+    $$("#place-menu [data-place]").forEach(x => x.setAttribute("aria-checked", String(x.dataset.place === m)));
+    placeTag.hidden = m === "All markets";
+  };
+  $$("#place-menu [data-place]").forEach(b => b.addEventListener("click", () => { setPlace(b.dataset.place); setPlaceMenu(false); ask.focus(); }));
+  $("#place-tag-b").addEventListener("click", e => { e.stopPropagation(); setPlaceMenu(placeMenu.hidden); });
+  $("#place-tag-x").addEventListener("click", () => { setPlace("All markets"); ask.focus(); });
+  document.addEventListener("click", e => { if (!placeMenu.hidden && !e.target.closest("#place-menu, #pick-market, #place-tag-b")) setPlaceMenu(false); });
+  placeMenu.addEventListener("keydown", e => {
+    const its = $$("#place-menu [data-place]"), i = its.indexOf(document.activeElement);
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); its[(i + (e.key === "ArrowDown" ? 1 : -1) + its.length) % its.length].focus(); }
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); setPlaceMenu(false); $("#add-btn").focus(); }
+  });
+  window.vsOpenPlaceMenu = () => setPlaceMenu(true);
+  window.vsPlace = () => place;
+
+
+  /* Question box theme: light by default, dark on request (remembered in this browser when allowed) */
+  const chatForm = $("#ask-form"), chatTheme = $("#chat-theme");
+  const setChatTheme = dark => { chatForm.classList.toggle("dark", dark); chatTheme.setAttribute("aria-pressed", String(dark)); const l = dark ? "Switch to light mode" : "Switch to dark mode"; chatTheme.setAttribute("aria-label", l); chatTheme.title = l; };
+  let askLight = false; try { askLight = localStorage.getItem("verisavo-ask-theme") === "light"; } catch (e) {}
+  setChatTheme(!askLight);
+  chatTheme.addEventListener("click", () => { const d = !chatForm.classList.contains("dark"); setChatTheme(d); try { localStorage.setItem("verisavo-ask-theme", d ? "dark" : "light"); } catch (e) {} });
+
+  /* Typing placeholder: example questions type in letter by letter, pause, erase, and cycle */
+  const QUESTIONS = [
+    "Where should we launch our product first?",
+    "Who are our main competitors in this market?",
+    "How are prices changing across retail channels?",
+    "Where do stockouts happen most often?",
+    "What don't we know yet that could change our plan?"
+  ];
+  if (!reduced) {
+    let qi = 0, ci = 0, deleting = false;
+    let askSeen = false;   // only sound the typing while the question box is on screen
+    if ("IntersectionObserver" in window) new IntersectionObserver(es => { askSeen = es[0].isIntersecting; }, { threshold: .4 }).observe(ask);
+    const tick = () => {
+      if (ask.value) { ask.placeholder = ""; return setTimeout(tick, 600); }   // visitor is typing: step aside
+      const q = QUESTIONS[qi];
+      if (!deleting) {
+        ci++;
+        ask.placeholder = q.slice(0, ci) + (ci < q.length ? "|" : "");
+        if (window.vsSound && askSeen && ci % 2) window.vsSound.type();
+        if (ci === q.length) { deleting = true; return setTimeout(tick, 2200); }   // hold the full question
+        return setTimeout(tick, 45 + Math.random() * 55);                          // natural typing rhythm
+      }
+      ci--;
+      ask.placeholder = q.slice(0, ci);
+      if (ci === 0) { deleting = false; qi = (qi + 1) % QUESTIONS.length; return setTimeout(tick, 450); }
+      return setTimeout(tick, 22);
+    };
+    ask.placeholder = "";
+    setTimeout(tick, 700);
+  }
+  $$("#ask-cta, [data-to-ask]").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.q) { ask.value = b.dataset.q; ask.dispatchEvent(new Event("input")); }
+    $("#ask-form").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
+    ask.focus({ preventScroll: true });
+  }));
+  $("#ask-form").addEventListener("submit", e => {
+    e.preventDefault();
+    if (ask.value.trim().length < 6) { note.textContent = "Type your question first, or choose an example."; note.classList.add("warn"); ask.focus(); return; }
+    if (window.vaSignedIn && window.vaSignedIn()) { if (window.vaSetScope) window.vaSetScope(place); window.vaOpen(null, ask.value); return; }
+    openAuth("up"); $("#a-lead").textContent = "Create an account or sign in to send your question.";
+  });
+
+
+
+
+  /* Generic tab groups: [data-tabs] container with [role=tab] buttons controlling panels */
+  $$("[data-tabs]").forEach(group => {
+    const ts = $$("[role=tab]", group);
+    const pick = i => ts.forEach((t, k) => { const on = k === i; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; document.getElementById(t.getAttribute("aria-controls")).hidden = !on; });
+    ts.forEach((t, i) => {
+      t.addEventListener("click", () => pick(i));
+      t.addEventListener("keydown", e => { const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (d) { e.preventDefault(); const n = (i + d + ts.length) % ts.length; pick(n); ts[n].focus(); } });
+    });
+  });
+
+  /* Comparison chart: select an approach from the list or the chart */
+  const apTabs = $$(".ap-list [role=tab]");
+  const apLayouts = JSON.parse(($("#apchart") || {}).dataset?.layouts || "[]");
+  let apCur = 0;
+  const apPick = i => {
+    apCur = i;
+    apTabs.forEach((t, k) => { const on = k === i; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; });
+    const tl = apTabs[i], lst = tl && tl.parentElement; if (lst && lst.scrollWidth > lst.clientWidth) lst.scrollTo({ left: tl.offsetLeft - lst.offsetLeft - 4, behavior: "smooth" });
+    $$(".apt").forEach(g => g.classList.toggle("on", +g.dataset.i === i));
+    const L = apLayouts[i]; if (L) { $$(".apt").forEach(g => { const [x, y] = L[+g.dataset.i]; g.style.transform = `translate(${x}px, ${y}px)`; }); const [vx, vy] = L[4]; $(".apv").style.transform = `translate(${vx}px, ${vy}px)`; }
+  };
+  apTabs.forEach((t, i) => {
+    t.addEventListener("click", () => apPick(i));
+    t.addEventListener("keydown", e => { const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]; if (d) { e.preventDefault(); const n = (i + d + apTabs.length) % apTabs.length; apPick(n); apTabs[n].focus(); } });
+  });
+  $$(".apt").forEach(g => { g.style.cursor = "pointer"; g.addEventListener("click", () => apPick(+g.dataset.i)); });
+  const apSvg = $("#apchart");
+  if (apSvg) {  // swipe the chart left or right to move between approaches
+    let sx = null, sy = null;
+    apSvg.addEventListener("pointerdown", e => { sx = e.clientX; sy = e.clientY; });
+    apSvg.addEventListener("pointerup", e => {
+      if (sx === null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) apPick((apCur + (dx < 0 ? 1 : -1) + apTabs.length) % apTabs.length);
+    });
+    apSvg.addEventListener("pointercancel", () => { sx = null; });
+  }
+  if (apTabs.length) apPick(0);
+
+  /* Copy buttons on record blocks */
+  $$("[data-copy]").forEach(btn => btn.addEventListener("click", async () => {
+    const pre = document.getElementById(btn.dataset.copy), label = btn.querySelector("span");
+    try { await navigator.clipboard.writeText(pre.textContent); label.textContent = "Copied"; }
+    catch { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); label.textContent = "Selected"; }
+    setTimeout(() => label.textContent = "Copy", 1600);
+  }));
+
+  /* Early access: WhatsApp number -> code -> WhatsApp */
+  const COUNTRIES = [["NG","Nigeria","234"],["GH","Ghana","233"],["KE","Kenya","254"],["ZA","South Africa","27"],["CI","Côte d'Ivoire","225"],["SN","Senegal","221"],["CM","Cameroon","237"],["EG","Egypt","20"],["MA","Morocco","212"],["ET","Ethiopia","251"],["TZ","Tanzania","255"],["UG","Uganda","256"],["RW","Rwanda","250"],["ZM","Zambia","260"],["GB","United Kingdom","44"],["US","United States","1"],["FR","France","33"],["AE","United Arab Emirates","971"]];
+  const cc = $("#cc");
+  COUNTRIES.forEach(([c, name, dial]) => { const o = document.createElement("option"); o.value = dial; o.textContent = c + " +" + dial; o.setAttribute("aria-label", name + " +" + dial); cc.appendChild(o); });
+
+  const dlg = $("#access"), stepsEl = [$("#step1"), $("#step2"), $("#step3")];
+  const tel = $("#tel"), consent = $("#consent"), box = $("#phone-box"), m1 = $("#m1"), m2 = $("#m2"), m3 = $("#m3");
+  let phone = "", opener = null, resendTimer = 0, verified = false, checking = false;
+
+  function show(n) {
+    stepsEl.forEach((s, i) => s.hidden = i !== n);
+  }
+  function openAccess() {
+    opener = document.activeElement;
+    if (!verified) { show(0); m1.textContent = ""; }
+    dlg.showModal ? dlg.showModal() : dlg.setAttribute("open", "");
+    setTimeout(() => (verified ? $("#wa-link") : tel).focus(), 30);
+  }
+  const close = () => dlg.close ? dlg.close() : dlg.removeAttribute("open");
+  dlg.addEventListener("close", () => opener && opener.focus && opener.focus());
+  $("#x").addEventListener("click", close);
+  dlg.addEventListener("click", e => { if (e.target === dlg) close(); });
+  $$("[data-access]").forEach(b => b.addEventListener("click", openAccess));
+  tel.addEventListener("input", () => { tel.value = tel.value.replace(/[^\d\s-]/g, ""); box.classList.remove("bad"); m1.textContent = ""; });
+  consent.addEventListener("change", () => m1.textContent = "");
+
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const busy = (btn, on, label) => { btn.disabled = on; btn.innerHTML = on ? '<span class="spin" aria-hidden="true"></span>' + label : label; };
+  async function post(url, body) {
+    const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
+    let data = {}; try { data = await r.json(); } catch {}
+    if (!r.ok) throw Object.assign(new Error("failed"), { status: r.status });
+    return data;
+  }
+  async function sendCode() {
+    if (CONFIG.mode !== "live") return wait(700);
+    if (!CONFIG.api.start) throw { config: true };
+    return post(CONFIG.api.start, { phone: "+" + phone, question: ask.value.trim() });
+  }
+  async function checkCode(code) {
+    if (CONFIG.mode !== "live") { await wait(600); return { verified: code === "123456" }; }
+    if (!CONFIG.api.check) throw { config: true };
+    return post(CONFIG.api.check, { phone: "+" + phone, code });
+  }
+
+  $("#step1").addEventListener("submit", async e => {
+    e.preventDefault();
+    const digits = tel.value.replace(/\D/g, "").replace(/^0+/, "");
+    if (digits.length < 7 || (cc.value + digits).length > 15) { box.classList.add("bad"); m1.textContent = "Enter a valid number without the country code."; tel.focus(); return; }
+    if (!consent.checked) { m1.textContent = "Tick the box to receive the code."; consent.focus(); return; }
+    phone = cc.value + digits;
+    const btn = $("#send-code"); busy(btn, true, "Sending…");
+    try {
+      await sendCode();
+      $("#num-show").textContent = "+" + cc.value + " " + tel.value.trim().replace(/^0+/, "");
+      buildOtp(); show(1); startResend(); $$("#otp input")[0].focus();
+    } catch (err) {
+      m1.textContent = err.config ? "Verification isn't connected yet. Please try again later." : err.status === 429 ? "Too many attempts. Try again in a few minutes." : "We couldn't send the code. Check the number and try again.";
+    } finally { busy(btn, false, "Send code"); }
+  });
+
+  function buildOtp() {
+    const otp = $("#otp"); otp.innerHTML = ""; otp.classList.remove("bad"); m2.textContent = "";
+    for (let i = 0; i < 6; i++) { const inp = document.createElement("input"); inp.type = "text"; inp.inputMode = "numeric"; inp.maxLength = 1; inp.setAttribute("aria-label", "Digit " + (i + 1) + " of 6"); if (!i) inp.autocomplete = "one-time-code"; otp.appendChild(inp); }
+    const ins = $$("#otp input");
+    const fill = (str, from) => { str.slice(0, 6 - from).split("").forEach((ch, k) => { ins[from + k].value = ch; ins[from + k].classList.add("filled"); }); (ins.find(x => !x.value) || ins[5]).focus(); if (ins.every(x => x.value)) $("#step2").requestSubmit(); };
+    ins.forEach((inp, i) => {
+      inp.addEventListener("input", () => {
+        const v = inp.value.replace(/\D/g, "");
+        if (v.length > 1) return fill(v, i);
+        inp.value = v; inp.classList.toggle("filled", !!v); otp.classList.remove("bad"); m2.textContent = "";
+        if (v && i < 5) ins[i + 1].focus();
+        if (ins.every(x => x.value)) $("#step2").requestSubmit();
+      });
+      inp.addEventListener("keydown", e => {
+        if (e.key === "Backspace" && !inp.value && i > 0) { e.preventDefault(); ins[i - 1].value = ""; ins[i - 1].classList.remove("filled"); ins[i - 1].focus(); }
+        if (e.key === "ArrowLeft" && i > 0) ins[i - 1].focus();
+        if (e.key === "ArrowRight" && i < 5) ins[i + 1].focus();
+      });
+      inp.addEventListener("paste", e => { e.preventDefault(); fill((e.clipboardData.getData("text") || "").replace(/\D/g, ""), i); });
+      inp.addEventListener("focus", () => inp.select());
+    });
+  }
+  function startResend() {
+    const btn = $("#resend"); let s = CONFIG.resendSeconds; clearInterval(resendTimer);
+    btn.disabled = true; btn.textContent = "Resend in " + s + "s";
+    resendTimer = setInterval(() => { s--; if (s <= 0) { clearInterval(resendTimer); btn.disabled = false; btn.textContent = "Resend code"; } else btn.textContent = "Resend in " + s + "s"; }, 1000);
+  }
+  $("#resend").addEventListener("click", async () => { try { await sendCode(); m2.textContent = ""; startResend(); $$("#otp input")[0].focus(); } catch { m2.textContent = "We couldn't resend the code. Try again shortly."; } });
+  $("#change").addEventListener("click", () => { clearInterval(resendTimer); show(0); tel.focus(); });
+
+  $("#step2").addEventListener("submit", async e => {
+    e.preventDefault();
+    if (checking) return;
+    const otp = $("#otp"), code = $$("#otp input").map(x => x.value).join("");
+    if (code.length < 6) { otp.classList.add("bad"); m2.textContent = "Enter all 6 digits."; return; }
+    checking = true; const btn = $("#verify"); busy(btn, true, "Checking…");
+    try {
+      const res = await checkCode(code);
+      if (!res || !res.verified) throw { wrong: true };
+      verified = true; clearInterval(resendTimer); finish(res.whatsappUrl);
+    } catch (err) {
+      otp.classList.remove("shake"); void otp.offsetWidth; otp.classList.add("bad", "shake");
+      m2.textContent = err.wrong || err.status === 400 || err.status === 401 ? "That code doesn't match. Try again." : err.status === 429 ? "Too many attempts. Request a new code." : "We couldn't check the code. Try again.";
+      $$("#otp input").forEach(x => { x.value = ""; x.classList.remove("filled"); }); $$("#otp input")[0].focus();
+    } finally { checking = false; busy(btn, false, "Verify"); }
+  });
+
+  function finish(url) {
+    const q = ask.value.trim();
+    const text = "Hi Verisavo, I'd like early access." + (q ? "\n\nMy question: " + q : "");
+    $("#wa-text").textContent = text;
+    const link = $("#wa-link");
+    const href = url || (CONFIG.whatsappNumber ? "https://wa.me/" + CONFIG.whatsappNumber.replace(/\D/g, "") + "?text=" + encodeURIComponent(text) : "");
+    if (href) { link.href = href; link.removeAttribute("aria-disabled"); link.removeAttribute("tabindex"); m3.textContent = ""; }
+    else { link.href = "#"; link.setAttribute("aria-disabled", "true"); link.tabIndex = -1; m3.textContent = "The Verisavo WhatsApp number hasn't been added to this page yet."; }
+    show(2); $("#step3").focus();
+  }
+
+  /* ---------- Sign in / Sign up ----------
+   * AUTH.googleUrl: your OAuth start URL (e.g. https://app.verisavo.com/auth/google). Leave empty until it exists.
+   * AUTH.emailEndpoint: POST { mode, email, name?, organisation? } -> 2xx when a sign-in link or code was sent.
+   */
+  const AUTH = { googleUrl: "", emailEndpoint: "", demo: true };
+  const finishDemo = user => { auth.dataset.handoff = "1"; closeAuth(); try { sessionStorage.setItem("verisavo-user", JSON.stringify(user)); } catch (e) {} const q = ($("#ask-input") || {}).value || ""; if (q.trim() && window.vaSetScope && window.vsPlace) window.vaSetScope(window.vsPlace()); if (window.vaOpen) window.vaOpen(user, q); };
+  const auth = $("#auth"), aTabs = $$("#auth [role=tab]"), aMsg = $("#a-msg"), aForm = $("#a-form"), aSent = $("#a-sent");
+  let aMode = "in", aOpener = null;
+  function setAuth(mode) {
+    aMode = mode;
+    aTabs.forEach(t => { const on = t.dataset.mode === mode; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; });
+    $("#a-title").textContent = mode === "in" ? "Welcome back" : "Create your account";
+    $("#a-lead").textContent = mode === "in" ? "Sign in to your Verisavo account." : "Sign up to start with Verisavo.";
+    $$(".a-up").forEach(el => el.hidden = mode === "in");
+    $("#a-submit").textContent = mode === "in" ? "Continue with email" : "Create account";
+    $("#a-switch-text").textContent = mode === "in" ? "New to Verisavo?" : "Already have an account?";
+    $("#a-switch").textContent = mode === "in" ? "Sign up" : "Sign in";
+    aMsg.textContent = ""; aForm.hidden = false; aSent.hidden = true;
+  }
+  function openAuth(mode) {
+    aOpener = document.activeElement; setAuth(mode || "in");
+    auth.showModal ? auth.showModal() : auth.setAttribute("open", "");
+    setTimeout(() => $("#a-google").focus(), 30);
+  }
+  const closeAuth = () => auth.close ? auth.close() : auth.removeAttribute("open");
+  auth.addEventListener("close", () => { if (!auth.dataset.handoff && aOpener && aOpener.focus) aOpener.focus(); delete auth.dataset.handoff; });
+  auth.addEventListener("click", e => { if (e.target === auth) closeAuth(); });
+  $("#a-x").addEventListener("click", closeAuth);
+  aTabs.forEach(t => t.addEventListener("click", () => setAuth(t.dataset.mode)));
+  $("#a-switch").addEventListener("click", () => setAuth(aMode === "in" ? "up" : "in"));
+  $$("[data-login]").forEach(b => b.addEventListener("click", () => window.vaSignedIn && window.vaSignedIn() ? window.vaOpen() : openAuth("in")));
+  $$("[data-signup]").forEach(b => b.addEventListener("click", () => openAuth("up")));
+  const notReady = () => { aMsg.innerHTML = 'Accounts are not open yet. Verisavo is in private early access. <button type="button" class="linkish" id="a-ea">Get early access</button>'; $("#a-ea").addEventListener("click", () => { closeAuth(); openAccess(); }); };
+  $("#a-google").addEventListener("click", e => {
+    if (AUTH.googleUrl) { $("#a-google").href = AUTH.googleUrl + (AUTH.googleUrl.includes("?") ? "&" : "?") + "mode=" + aMode; return; }
+    e.preventDefault(); if (AUTH.demo) finishDemo({ name: "", email: "", via: "google" }); else notReady();
+  });
+  aForm.addEventListener("submit", async e => {
+    e.preventDefault(); aMsg.textContent = "";
+    const email = $("#a-email").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { aMsg.textContent = "Enter a valid email address."; $("#a-email").focus(); return; }
+    if (aMode === "up" && !$("#a-name").value.trim()) { aMsg.textContent = "Enter your name."; $("#a-name").focus(); return; }
+    if (!AUTH.emailEndpoint) { if (AUTH.demo) finishDemo({ name: $("#a-name").value.trim(), email, organisation: $("#a-org").value.trim() }); else notReady(); return; }
+    const btn = $("#a-submit"), label = btn.textContent; btn.disabled = true; btn.textContent = "Sending…";
+    try {
+      const r = await fetch(AUTH.emailEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode: aMode, email, name: $("#a-name").value.trim(), organisation: $("#a-org").value.trim() }) });
+      if (!r.ok) throw new Error(r.status);
+      $("#a-sent-to").textContent = email; aForm.hidden = true; aSent.hidden = false;
+    } catch { aMsg.textContent = "We couldn't send that. Please try again."; }
+    finally { btn.disabled = false; btn.textContent = label; }
+  });
+
+  /* Market scene: lines draw in on load; the crowd walks in on load and keeps walking as the page scrolls.
+     People leave one side and come back in from the other, so new faces keep arriving. */
+  const scene = document.querySelector(".scene");
+  if (scene && !reduced) {
+    const lyrs = [...scene.querySelectorAll(".lyr")].map(g => ({ g, k: +g.dataset.k }));
+    const wks = [...scene.querySelectorAll(".wk")].map(g => ({ g, x: +g.dataset.x, d: +g.dataset.d, v: +g.dataset.v }));
+    const t0 = performance.now(), INTRO = 3200, WALK_IN = 170, SPAN = 1480, LEFT = -140;
+    let cur = scrollY, vis = true, raf = 0;
+    const tick = now => {
+      raf = 0;
+      const t = Math.min(1, (now - t0) / INTRO), e = 1 - Math.pow(1 - t, 3);
+      cur += (scrollY - cur) * 0.1;
+      lyrs.forEach(({ g, k }) => { g.style.transform = `translateX(${(k * cur).toFixed(2)}px)`; });
+      wks.forEach(({ g, x, d, v }) => {
+        const pos = x + d * (v * cur - WALK_IN * (1 - e));
+        const px = ((pos - LEFT) % SPAN + SPAN) % SPAN + LEFT;
+        const bob = -Math.abs(Math.sin(pos * 0.09)) * 2.2;
+        g.style.transform = `translate(${px.toFixed(2)}px, ${bob.toFixed(2)}px)`;
+      });
+      if (vis && (t < 1 || Math.abs(scrollY - cur) > 0.3)) raf = requestAnimationFrame(tick);
+    };
+    const kick = () => { if (!raf && vis) raf = requestAnimationFrame(tick); };
+    addEventListener("scroll", kick, { passive: true });
+    new IntersectionObserver(([en]) => { vis = en.isIntersecting; kick(); }).observe(scene.closest(".stage"));
+    kick();
+  }
+
+  /* Legal dialog: shows only the document that was clicked */
+  const legalDlg = $("#legal");
+  if (legalDlg) {
+    let lOpener = null;
+    const openLegal = doc => {
+      lOpener = document.activeElement;
+      ["privacy", "terms"].forEach(d => { const el = $("#l-" + d); el.hidden = d !== doc; el.scrollTop = 0; });
+      legalDlg.setAttribute("aria-labelledby", "lh-" + doc);
+      legalDlg.showModal ? legalDlg.showModal() : legalDlg.setAttribute("open", "");
+      setTimeout(() => $("#l-" + doc).focus(), 30);
+    };
+    const closeLegal = () => legalDlg.close ? legalDlg.close() : legalDlg.removeAttribute("open");
+    $$("[data-legal]").forEach(b => b.addEventListener("click", () => openLegal(b.dataset.legal)));
+    $("#l-x").addEventListener("click", closeLegal);
+    legalDlg.addEventListener("click", e => { if (e.target === legalDlg) closeLegal(); });
+    legalDlg.addEventListener("close", () => { if (lOpener && lOpener.focus && !legalDlg.dataset.handoff) lOpener.focus(); delete legalDlg.dataset.handoff; });
+    $$("[data-legal-contact]").forEach(b => b.addEventListener("click", () => { legalDlg.dataset.handoff = "1"; closeLegal(); document.querySelector("[data-access]").click(); }));
+  }
+
+  /* Attachments: the + button adds images or files to the question */
+  const addBtn = $("#add-btn"), addMenu = $("#add-menu"), attList = $("#att-list");
+  if (addBtn) {
+    const MAX_FILES = 10, MAX_MB = 20, files = [];
+    const items = $$("#add-menu [role=menuitem]");
+    const openMenu = () => { addMenu.hidden = false; addBtn.setAttribute("aria-expanded", "true"); items[0].focus(); };
+    const closeMenu = (focusBtn) => { if (addMenu.hidden) return; addMenu.hidden = true; addBtn.setAttribute("aria-expanded", "false"); if (focusBtn) addBtn.focus(); };
+    addBtn.addEventListener("click", () => { if (!$("#place-menu").hidden) { $("#place-menu").hidden = true; addBtn.setAttribute("aria-expanded", "false"); return; } addMenu.hidden ? openMenu() : closeMenu(true); });
+    addMenu.addEventListener("keydown", e => {
+      const i = items.indexOf(document.activeElement);
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length].focus(); }
+      if (e.key === "Escape") { e.preventDefault(); closeMenu(true); }
+      if (e.key === "Tab") closeMenu(false);
+    });
+    document.addEventListener("click", e => { if (!e.target.closest(".attach")) closeMenu(false); });
+    items.forEach(b => b.addEventListener("click", e => { closeMenu(false); if (b.dataset.pick) $("#" + b.dataset.pick).click(); else { e.stopPropagation(); window.vsOpenPlaceMenu(); } }));
+    const fmt = n => n < 1024 * 1024 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1048576).toFixed(1) + " MB";
+    const docIcon = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2.5h5.5L14 6v9.5H5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10.5 2.5V6H14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+    const render = () => {
+      attList.innerHTML = "";
+      files.forEach((f, i) => {
+        const li = document.createElement("li"); li.className = "att";
+        const th = document.createElement("span"); th.className = "att-thumb";
+        if (f.url) { const im = document.createElement("img"); im.src = f.url; im.alt = ""; th.appendChild(im); } else th.innerHTML = docIcon;
+        const meta = document.createElement("span"); meta.className = "att-meta";
+        const nm = document.createElement("span"); nm.className = "att-name"; nm.textContent = f.file.name; nm.title = f.file.name;
+        const sz = document.createElement("span"); sz.className = "att-size"; sz.textContent = fmt(f.file.size);
+        meta.append(nm, sz);
+        const x = document.createElement("button"); x.type = "button"; x.className = "att-x"; x.setAttribute("aria-label", "Remove " + f.file.name);
+        x.innerHTML = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+        x.addEventListener("click", () => { if (f.url) URL.revokeObjectURL(f.url); files.splice(i, 1); render(); (attList.querySelector(".att-x") || addBtn).focus(); });
+        li.append(th, meta, x); attList.appendChild(li);
+      });
+      attList.hidden = files.length === 0;
+    };
+    const take = input => {
+      let skipped = 0;
+      [...input.files].forEach(file => {
+        if (files.length >= MAX_FILES || file.size > MAX_MB * 1048576) { skipped++; return; }
+        files.push({ file, url: file.type.startsWith("image/") ? URL.createObjectURL(file) : "" });
+      });
+      input.value = "";
+      render();
+      note.classList.toggle("warn", skipped > 0);
+      note.textContent = skipped ? `Some files were not added. You can attach up to ${MAX_FILES} files, each under ${MAX_MB} MB.` : "";
+    };
+    ["pick-image", "pick-file"].forEach(id => $("#" + id).addEventListener("change", e => take(e.target)));
+  }
+
+  /* Mobile menu */
+  const mBtn = $("#menu-btn"), mMenu = $("#m-menu");
+  if (mBtn) {
+    const setMenu = open => { mMenu.hidden = !open; mBtn.setAttribute("aria-expanded", open); mBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu"); };
+    mBtn.addEventListener("click", () => { const open = mMenu.hidden; setMenu(open); if (open) mMenu.querySelector("button").focus(); });
+    mMenu.addEventListener("click", () => setMenu(false), true);
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && !mMenu.hidden) { setMenu(false); mBtn.focus(); } });
+    document.addEventListener("click", e => { if (!mMenu.hidden && !e.target.closest("#top")) setMenu(false); });
+    matchMedia("(min-width: 821px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
+  }
+
+  /* Full-screen menu, the same as on the homepage */
+  const vBtn = $("#vmenu-btn"), vMenu = $("#vmenu"), vLab = $("#vmenu-lab");
+  const setV = open => {
+    vMenu.classList.toggle("open", open); vMenu.setAttribute("aria-hidden", String(!open));
+    document.body.classList.toggle("menu-open", open);
+    vBtn.setAttribute("aria-expanded", String(open)); vLab.textContent = open ? "Close" : "Menu";
+    if (open) setTimeout(() => { const f = vMenu.querySelector("button, a"); if (f) f.focus({ preventScroll: true }); }, 350);
+  };
+  vBtn.addEventListener("click", () => setV(!vMenu.classList.contains("open")));
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && vMenu.classList.contains("open")) { setV(false); vBtn.focus(); } });
+  vMenu.addEventListener("click", e => {
+    const it = e.target.closest("button, a"); if (!it) return;
+    if (!it.dataset.mn && !it.hasAttribute("data-access") && !it.hasAttribute("data-login") && !it.hasAttribute("data-legal") && !it.href) return;
+    setV(false);
+    if (it.dataset.mn === "platform") { $("#ask-form").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); ask.focus({ preventScroll: true }); }
+    if (it.dataset.mn === "scout") { ask.value = "Check which kiosks near the main bus park stock our 200ml pack, and how often they reorder."; ask.dispatchEvent(new Event("input")); openAccess(); }
+  });
+
+  /* Links to the story homepage */
+  /* remember that the visitor opened a homepage page from here, so its Back link can return to this page */
+  const markFrom = href => { if (/#(about-us|research|contact|pricing|careers)$/.test(href)) { try { sessionStorage.setItem("verisavo-from", "assistant.html"); } catch (e) {} } };
+  $$("[data-href]").forEach(b => b.addEventListener("click", () => { markFrom(b.dataset.href); location.href = b.dataset.href; }));
+  $$('a[href^="index.html#"]').forEach(l => l.addEventListener("click", () => markFrom(l.getAttribute("href"))));
+
+  /* ---------- Verisavo Intelligence Assistant ----------
+   * ASSISTANT.endpoint: POST { question, scope, user } -> JSON { answer } (plain text).
+   * Leave empty until the assistant service exists; questions are then shown with a "not connected yet" status,
+   * never with a made-up answer.
+   */
+  const ASSISTANT = { endpoint: "" };
+  const va = $("#va");
+  if (va) {
+    const app = $(".va-app", va), vin = $("#va-in"), vsend = $("#va-send"), thread = $("#va-thread"), recentEl = $("#va-recent");
+    const state = { user: null, scope: "All markets", convs: [], cur: null, files: [] };
+    const esc = t => t.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const isNarrow = () => matchMedia("(max-width: 760px)").matches;
+
+    const grow = () => { vin.style.height = "auto"; vin.style.height = Math.min(vin.scrollHeight, 168) + "px"; vsend.disabled = !vin.value.trim(); };
+    vin.addEventListener("input", grow);
+    vin.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); if (vin.value.trim()) send(vin.value); } });
+    $("#va-form").addEventListener("submit", e => { e.preventDefault(); if (vin.value.trim()) send(vin.value); });
+
+
+    /* theme: dark galaxy by default, light on request (remembered in this browser when allowed) */
+    const vaMain = $(".va-main", va), themeBtn = $("#va-theme");
+    const setTheme = dark => {
+      vaMain.classList.toggle("va-dark", dark);
+      themeBtn.setAttribute("aria-pressed", dark);
+      const lbl = dark ? "Switch to light theme" : "Switch to dark theme";
+      themeBtn.setAttribute("aria-label", lbl); themeBtn.title = lbl;
+    };
+    try { if (localStorage.getItem("verisavo-va-theme") === "light") setTheme(false); } catch (e) {}
+    themeBtn.addEventListener("click", () => { const dark = !vaMain.classList.contains("va-dark"); setTheme(dark); try { localStorage.setItem("verisavo-va-theme", dark ? "dark" : "light"); } catch (e) {} });
+
+    /* popovers: scope, more, gear, privacy tip */
+    const pops = [["#va-scope", "#va-scope-menu"], ["#va-more", "#va-more-menu"], ["#va-gear", "#va-gear-menu"], ["#va-shield", "#va-shield-tip"]];
+    const closePops = except => pops.forEach(([b, m]) => { if (b !== except) { $(m).hidden = true; $(b).setAttribute("aria-expanded", "false"); } });
+    pops.forEach(([b, m]) => $(b).addEventListener("click", e => { e.stopPropagation(); const open = $(m).hidden; closePops(b); $(m).hidden = !open; $(b).setAttribute("aria-expanded", open); if (open) { const f = $(m).querySelector("button"); if (f) f.focus(); } }));
+    va.addEventListener("click", e => { if (!e.target.closest(".va-pop-wrap")) closePops(); });
+    va.addEventListener("keydown", e => { if (e.key === "Escape") { const openPop = pops.find(([, m]) => !$(m).hidden); if (openPop) { e.preventDefault(); closePops(); $(openPop[0]).focus(); } else if (app.classList.contains("va-drawer")) { e.preventDefault(); setDrawer(false); } } });
+    $$("#va-scope-menu [data-market]").forEach(b => b.addEventListener("click", () => {
+      state.scope = b.dataset.market; $("#va-scope-label").textContent = state.scope;
+      $$("#va-scope-menu [data-market]").forEach(x => x.setAttribute("aria-checked", x === b));
+      closePops(); vin.focus();
+    }));
+
+    /* sidebar: collapse on desktop, drawer on phones */
+    const setDrawer = open => { app.classList.toggle("va-drawer", open); $("#va-scrim").hidden = !open; $("#va-open-side").setAttribute("aria-expanded", open); };
+    $("#va-side-x").addEventListener("click", () => { if (isNarrow()) setDrawer(false); else { app.classList.add("va-collapsed"); $("#va-open-side").focus(); } });
+    $("#va-open-side").addEventListener("click", () => { if (isNarrow()) setDrawer(true); else { app.classList.remove("va-collapsed"); $("#va-side-x").focus(); } });
+    $("#va-scrim").addEventListener("click", () => setDrawer(false));
+    const afterNav = () => { if (isNarrow()) setDrawer(false); };
+
+    /* search recent questions */
+    $("#va-search-btn").addEventListener("click", () => { const box = $("#va-search"), open = box.hidden; box.hidden = !open; $("#va-search-btn").setAttribute("aria-expanded", open); if (open) $("#va-search-in").focus(); else { $("#va-search-in").value = ""; renderRecent(); } });
+    $("#va-search-in").addEventListener("input", () => renderRecent());
+
+    /* starters, chips */
+    const prefill = q => { vin.value = q; grow(); vin.focus(); vin.setSelectionRange(q.length, q.length); };
+    $$(".va-nav[data-starter]").forEach(b => b.addEventListener("click", () => { newConv(); prefill(b.dataset.starter); afterNav(); }));
+    $$(".va-chip[data-q]").forEach(b => b.addEventListener("click", () => prefill(b.dataset.q)));
+    $("#va-chip-more").addEventListener("click", () => { const show = $(".va-more-chip").hidden; $$(".va-more-chip").forEach(c => c.hidden = !show); $("#va-chip-more").setAttribute("aria-expanded", show); });
+
+    /* attachments */
+    const MAX_FILES = 10, MAX_MB = 20;
+    const renderFiles = () => {
+      const ul = $("#va-files"); ul.innerHTML = "";
+      state.files.forEach((f, i) => { const li = document.createElement("li"); const s = document.createElement("span"); s.textContent = f.name; s.title = f.name; const x = document.createElement("button"); x.type = "button"; x.setAttribute("aria-label", "Remove " + f.name); x.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'; x.addEventListener("click", () => { state.files.splice(i, 1); renderFiles(); vin.focus(); }); li.append(s, x); ul.appendChild(li); });
+      ul.hidden = !state.files.length;
+    };
+    $("#va-add").addEventListener("click", () => $("#va-file").click());
+    $("#va-file").addEventListener("change", e => { [...e.target.files].forEach(f => { if (state.files.length < MAX_FILES && f.size <= MAX_MB * 1048576) state.files.push(f); }); e.target.value = ""; renderFiles(); vin.focus(); });
+
+    /* conversations (kept for this session only) */
+    const newConv = () => { state.cur = null; thread.innerHTML = ""; va.classList.remove("va-has-thread"); renderRecent(); vin.value = ""; grow(); };
+    const renderRecent = () => {
+      const qf = ($("#va-search-in").value || "").toLowerCase();
+      recentEl.innerHTML = "";
+      state.convs.filter(c => c.title.toLowerCase().includes(qf)).slice().reverse().forEach(c => {
+        const li = document.createElement("li"), b = document.createElement("button"); b.type = "button";
+        b.innerHTML = '<svg class="vi" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M10 6.5V10l2.5 1.6"/></svg>';
+        const s = document.createElement("span"); s.textContent = c.title; b.title = c.title; b.appendChild(s);
+        if (c === state.cur) b.setAttribute("aria-current", "true");
+        b.addEventListener("click", () => { openConv(c); afterNav(); });
+        li.appendChild(b); recentEl.appendChild(li);
+      });
+      $("#va-recent-empty").hidden = state.convs.length > 0;
+      $("#va-recent-empty").textContent = state.convs.length ? "" : "Questions you ask appear here.";
+    };
+    const openConv = c => { state.cur = c; thread.innerHTML = ""; c.items.forEach(renderItem); va.classList.toggle("va-has-thread", c.items.length > 0); renderRecent(); scrollEnd(); vin.focus(); };
+    const scrollEnd = () => { const b = $("#va-body"); b.scrollTop = b.scrollHeight; };
+    const renderItem = it => {
+      const li = document.createElement("li");
+      if (it.role === "u") {
+        li.className = "va-msg-u"; li.textContent = it.text;
+        const meta = []; if (it.scope && it.scope !== "All markets") meta.push("Scope: " + it.scope); if (it.files) meta.push(it.files + (it.files === 1 ? " file attached" : " files attached"));
+        if (meta.length) { const m = document.createElement("span"); m.className = "va-meta"; m.textContent = meta.join(" · "); li.appendChild(m); }
+      } else {
+        li.className = "va-msg-a";
+        li.innerHTML = '<span class="va-mark" aria-hidden="true">V</span><div class="va-card"></div>';
+        const card = $(".va-card", li);
+        if (it.pending) card.innerHTML = '<span class="vh">Working on it</span><span class="va-typing" aria-hidden="true"><i></i><i></i><i></i></span>';
+        else if (it.answer) { card.innerHTML = '<span class="va-state">Answer</span><p></p>'; $("p", card).textContent = it.answer; }
+        else { card.innerHTML = '<span class="va-state">Not connected yet</span><b></b><p></p>'; $("b", card).textContent = it.title; $("p", card).textContent = it.body; }
+      }
+      thread.appendChild(li);
+      return li;
+    };
+    async function send(text) {
+      text = text.trim(); if (!text) return;
+      if (!state.cur) { state.cur = { title: text.length > 60 ? text.slice(0, 58) + "…" : text, items: [] }; state.convs.push(state.cur); }
+      const c = state.cur;
+      const u = { role: "u", text, scope: state.scope, files: state.files.length };
+      c.items.push(u); va.classList.add("va-has-thread"); renderItem(u);
+      vin.value = ""; grow(); state.files = []; renderFiles(); renderRecent();
+      const a = { role: "a", pending: true }; c.items.push(a); const node = renderItem(a); scrollEnd();
+      if (ASSISTANT.endpoint) {
+        try {
+          const r = await fetch(ASSISTANT.endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: text, scope: state.scope, user: state.user }) });
+          if (!r.ok) throw new Error(r.status);
+          const data = await r.json(); a.answer = String(data.answer || ""); if (!a.answer) throw new Error("empty");
+        } catch { a.title = "We couldn’t reach the assistant"; a.body = "Please try again in a moment."; }
+      } else {
+        await new Promise(r => setTimeout(r, 700));
+        a.title = "Your question is saved";
+        a.body = "The Intelligence Assistant isn’t connected in this preview, so there is no answer yet. Your question stays in Recent for this session.";
+      }
+      a.pending = false;
+      if (state.cur === c && node.isConnected) { thread.replaceChild(renderItem(a), node); scrollEnd(); }
+    }
+
+    $("#va-new").addEventListener("click", () => { newConv(); vin.focus(); afterNav(); });
+    $("#va-new2").addEventListener("click", () => { newConv(); vin.focus(); });
+    $("#va-clear").addEventListener("click", () => { if (state.cur) state.convs.splice(state.convs.indexOf(state.cur), 1); closePops(); newConv(); vin.focus(); });
+    $("#va-clear-all").addEventListener("click", () => { state.convs = []; closePops(); newConv(); vin.focus(); });
+    const closeVa = () => va.close ? va.close() : va.removeAttribute("open");
+    $("#va-x").addEventListener("click", closeVa);
+    $("#va-signout").addEventListener("click", () => {
+      state.user = null; state.convs = []; try { sessionStorage.removeItem("verisavo-user"); } catch (e) {} newConv(); closePops(); closeVa();
+    });
+    $$("#va-gear-menu [data-legal]").forEach(b => b.addEventListener("click", () => closePops()));
+
+    window.vaOpen = (user, question) => {
+      if (user) {
+        state.user = user;
+        const nm = (user.name || (user.email || "").split("@")[0] || "You").trim();
+        $("#va-name").textContent = nm;
+        $("#va-av").textContent = nm.split(/[\s._-]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "V";
+        $("#va-greet").textContent = (user.name ? "Hello " + user.name.split(" ")[0] + ". " : "") + "What do you need to understand?";
+      }
+      setDrawer(false); closePops();
+      va.showModal ? va.showModal() : va.setAttribute("open", "");
+      if (question && question.trim()) { newConv(); send(question); } else { grow(); }
+      setTimeout(() => vin.focus(), 40);
+    };
+    window.vaSignedIn = () => !!state.user;
+    window.vaSetScope = m => { const b = $$("#va-scope-menu [data-market]").find(x => x.dataset.market === m); if (!b) return; state.scope = m; $("#va-scope-label").textContent = m; $$("#va-scope-menu [data-market]").forEach(x => x.setAttribute("aria-checked", x === b)); };
+    window.vaRestore = user => { state.user = user; const nm = (user.name || (user.email || "").split("@")[0] || "You").trim(); $("#va-name").textContent = nm; $("#va-av").textContent = nm.split(/[\s._-]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "V"; $("#va-greet").textContent = (user.name ? "Hello " + user.name.split(" ")[0] + ". " : "") + "What do you need to understand?"; };
+  }
+
+  /* Signed in earlier in this browser session (here or on the homepage) */
+  let savedUser = null;
+  try { savedUser = JSON.parse(sessionStorage.getItem("verisavo-user") || "null"); } catch (e) {}
+
+  /* Arriving from the homepage: carry the visitor's question in, or open early access / sign in */
+  let carried = "";
+  try { carried = sessionStorage.getItem("verisavo-q") || ""; sessionStorage.removeItem("verisavo-q"); } catch (e) {}
+  const arrive = location.hash.slice(1);
+  if (carried) { ask.value = carried; ask.dispatchEvent(new Event("input")); }
+  if (savedUser && window.vaRestore) window.vaRestore(savedUser);
+  if (arrive === "app") setTimeout(() => window.vaOpen(savedUser || { name: "", email: "" }, carried), 80);
+  else if (arrive === "scout") setTimeout(openAccess, 80);
+  else if (arrive === "ask" || carried) {
+    setTimeout(() => { $("#ask-form").scrollIntoView({ behavior: "auto", block: "center" }); ask.focus({ preventScroll: true }); ask.setSelectionRange(ask.value.length, ask.value.length); }, 80);
+  } else if (arrive === "access") setTimeout(openAccess, 80);
+  else if (arrive === "signin") setTimeout(() => openAuth("in"), 80);
+  else if (arrive === "how") setTimeout(() => { const el = document.getElementById("how"); scrollTo({ top: el.getBoundingClientRect().top + scrollY - $("#top").offsetHeight - 8, behavior: "auto" }); }, 80);
+  else if (arrive === "terms" || arrive === "privacy") setTimeout(() => { const b = document.querySelector('[data-legal="' + arrive + '"]'); if (b) b.click(); }, 80);
+
+  /* Scroll reveal: each block fades and rises into place once, the first time it enters view */
+  if (!reduced && "IntersectionObserver" in window) {
+    const groups = ["#how .eyebrow, #how h2, #how .how-sub", "#how .how-steps > li",
+      "#platform .band-head > *", "#platform .apbox",
+      "#trust .trust-head > *", "#trust .tc",
+      "#faq .faq-intro > *", "#faq .qa > details",
+      ".cta > *"];
+    const rvIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rvIO.unobserve(e.target); } }), { rootMargin: "0px 0px -6% 0px", threshold: 0.08 });
+    groups.forEach(sel => $$(sel).forEach((el, i) => { el.classList.add("rv"); el.style.setProperty("--rv-d", Math.min(i * 130, 520) + "ms"); rvIO.observe(el); }));
+    document.documentElement.classList.add("rv-on");
+
+    /* Chart dots gather at the origin, then travel to their places when the chart first comes into view */
+    const chartEl = $("#apchart"), dots = $$(".apt, .apv");
+    if (chartEl && dots.length) {
+      dots.forEach(g => { g.dataset.to = g.style.transform; g.style.transition = "none"; g.style.transform = "translate(70px, 300px)"; g.style.opacity = "0"; });
+      const dotIO = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return; dotIO.disconnect();
+        requestAnimationFrame(() => {
+          dots.forEach((g, i) => { g.style.transition = `transform 1.4s cubic-bezier(.16,1,.3,1) ${300 + i * 150}ms, opacity .7s ease ${300 + i * 150}ms`; g.style.opacity = "1"; });
+          apPick(apCur);
+          setTimeout(() => dots.forEach(g => { g.style.transition = ""; }), 2600);
+        });
+      }, { threshold: 0.35 });
+      dotIO.observe(chartEl);
+    }
+  }
+})();
+
+</script>
+
+
+<script>
+/* "Coming soon" for Deploy a Scout in the menu */
+(() => {
+  const d = document.getElementById("soon");
+  const open = () => { if (d.showModal) d.showModal(); else d.setAttribute("open", ""); setTimeout(() => d.querySelector(".btn").focus(), 30); };
+  const close = () => d.close ? d.close() : d.removeAttribute("open");
+  document.addEventListener("click", e => {
+    if (e.target.closest("[data-soon]")) open();
+    if (e.target.closest("[data-soon-close]")) close();
+  });
+  d.addEventListener("click", e => { if (e.target === d) close(); });
+})();
+</script>
+
+
+
+<script src="sound.js"></script>
+</body>
+</html>
