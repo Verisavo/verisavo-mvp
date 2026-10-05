@@ -19,6 +19,7 @@ Node.js 20 or newer is required.
 |---|---|
 | `/` | Homepage: the 3D market story in eight chapters. About us, Research, Contact, Pricing and Careers open over the scene at `/#about-us`, `/#research`, `/#contact`, `/#pricing` and `/#careers`. |
 | `/platform` | Platform page: the question box, sign in and the Verisavo Intelligence Assistant window. |
+| `/simulation` | Market Simulation MVP prototype: decision, evidence, scenarios, outcomes and Intelligence Gaps, working end to end on example data. |
 
 `/about-us`, `/research`, `/contact`, `/pricing` and `/careers` redirect to the matching homepage page. The old file names `/index.html` and `/assistant.html` redirect to `/` and `/platform`.
 
@@ -55,6 +56,18 @@ Moving between `/` and `/platform` uses full page loads, so each page keeps only
 - **Intelligence Assistant** answers show "Not connected yet" until `ASSISTANT.endpoint` is set in `lib/platform/main.js`.
 - **Early access** runs in demo mode (code `123456`). Set `CONFIG.mode`, `CONFIG.api` and `CONFIG.whatsappNumber` in `lib/home/auth.js` and `lib/platform/main.js`.
 - **Contact form**: set `CONTACT_ENDPOINT` in `lib/home/scene.js`. Until then nothing is sent.
+- **Market Simulation** runs entirely in the browser on example data for a fictional brand. The model in `lib/simulation/model.js` is a simple price-response calculation, not calibrated to real evidence, and the evidence list in `lib/simulation/evidence.js` is illustrative. "Add returned evidence" on the Gaps step stands in for a real SavoScouts investigation.
+
+## Market Simulation code
+
+```
+app/simulation/           route and styles (same tokens and fonts as the Platform page)
+components/simulation/    SimulationApp.jsx holds the state; one component per step,
+                          plus Sidebar, StepNav, Loading and StateChip
+lib/simulation/
+  model.js                runs, ranges (middle 80%), drivers and helpers
+  evidence.js             evidence items, intelligence states and sources
+```
 
 ## Music licence
 
