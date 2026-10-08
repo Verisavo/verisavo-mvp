@@ -526,10 +526,30 @@ body.menu-open { overflow: hidden; }
 
 /* ---------- Intelligence Assistant window ---------- */
 dialog.va { width: min(1120px, calc(100% - 32px)); height: min(760px, calc(100% - 32px)); max-height: none; padding: 0; border: 1px solid var(--b200); border-radius: 16px; overflow: hidden; background: var(--white); box-shadow: 0 40px 90px -40px #1F273F; }
-dialog.va::backdrop { background: rgba(31,39,63,.6); -webkit-backdrop-filter: blur(26px) saturate(.8); backdrop-filter: blur(26px) saturate(.8); }   /* blur the page behind the assistant so it does not distract */
-/* while the assistant is open, the page behind it is softly blurred so it does not distract */
+dialog.va::backdrop { background: rgba(31,39,63,.38); }
+/* full screen */
+dialog.va { transition: width .35s cubic-bezier(.16,1,.3,1), height .35s cubic-bezier(.16,1,.3,1), border-radius .35s; }
+dialog.va.va-full { width: 100vw; height: 100vh; height: 100dvh; max-width: 100vw; max-height: 100dvh; margin: 0; inset: 0; border-radius: 0; border: 0; }
+.va-fullbtn .vi-shr { display: none; }
+.va-full .va-fullbtn .vi-exp { display: none; }
+.va-full .va-fullbtn .vi-shr { display: inline; }
+@media (max-width: 640px) { .va-fullbtn { display: none !important; } }
+/* the tab that holds a collapsed conversation */
+.va-tab { position: fixed; z-index: 60; right: clamp(14px, 2vw, 24px); bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(14px, 2vw, 24px)); display: flex; align-items: center; gap: 12px; max-width: min(360px, calc(100vw - 28px)); padding: 10px 14px 10px 10px; border: 1px solid #3A5292; border-radius: 14px; background: #1F273F; color: #FFFFFF; text-align: left; cursor: pointer; box-shadow: 0 18px 40px -18px rgba(31,39,63,.7); opacity: 0; transform: translateY(10px); transition: opacity .25s ease, transform .25s cubic-bezier(.16,1,.3,1), border-color .2s; font: inherit; }
+.va-tab.in { opacity: 1; transform: none; }
+.va-tab[hidden] { display: none; }
+.va-tab:hover { border-color: #618CD0; transform: translateY(-2px); }
+.va-tab:focus-visible { outline: 2px solid #80AADC; outline-offset: 3px; }
+.va-tab-mark { flex: none; width: 30px; height: 30px; border-radius: 8px; background: #E3EBF8; color: #1F273F; display: grid; place-items: center; font-weight: 700; font-size: .875rem; }
+.va-tab-txt { display: grid; gap: 2px; min-width: 0; }
+.va-tab-txt b { font-size: .8125rem; font-weight: 600; color: #FFFFFF; }
+.va-tab-txt span { font-size: .75rem; color: #A8C6E8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.va-tab-up { flex: none; width: 18px; height: 18px; color: #CCDDF1; margin-left: 4px; }
+@media (max-width: 640px) { .va-tab { left: 12px; right: 12px; max-width: none; } }
+
+/* while the assistant is open, the page behind it is lightly blurred and dimmed: still visible, but not distracting */
 body > :not(dialog):not(script) { transition: filter .35s ease; }
-body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(12px) saturate(.85); }
+body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) saturate(.9); }
 .va .vi { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .va-app { display: grid; grid-template-columns: 252px minmax(0, 1fr); height: 100%; }
 .va-app.va-collapsed { grid-template-columns: 0 minmax(0, 1fr); }
