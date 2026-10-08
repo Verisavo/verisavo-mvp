@@ -12,6 +12,7 @@ export default function PlatformClient() {
     (async () => {
       (await import("@/lib/platform/main")).default();
       (await import("@/lib/platform/particles")).default();
+      (await import("@/lib/platform/dotbed")).default();
       (await import("@/lib/platform/soon")).default();
       (await import("@/lib/sound")).default();
     })();
