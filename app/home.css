@@ -579,30 +579,40 @@ body.page-open .pill { background: rgba(255,255,255,.08); box-shadow: inset 0 0 
 
 /* Pricing */
 .pr-head { justify-items: center; text-align: center; margin-inline: auto; }
-.pr-plans { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.2fr) minmax(0, .85fr); gap: 16px; align-items: start; }
-.pg-in.pg-narrow:has(.pr-plans) { width: min(1000px, calc(100% - 40px)); }
-.pr-next { border-style: dashed; border-color: rgba(168,198,232,.35); }
-.pr-soon { margin: 0; font: 500 clamp(1.7rem, 1.3rem + 1.2vw, 2.2rem)/1.1 var(--sans) !important; letter-spacing: -0.03em; color: var(--b300) !important; }
-.pr-ghost { display: grid; gap: 10px; margin-top: 8px; }
-.pr-ghost i { display: block; height: 9px; border-radius: 5px; background: linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.16), rgba(255,255,255,.08)); background-size: 200% 100%; animation: prshim 2.4s linear infinite; }
-.pr-ghost i:nth-child(2) { width: 80%; } .pr-ghost i:nth-child(3) { width: 90%; } .pr-ghost i:nth-child(4) { width: 60%; }
-@keyframes prshim { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-@media (prefers-reduced-motion: reduce) { .pr-ghost i { animation: none; } }
-@media (max-width: 860px) { .pr-plans { grid-template-columns: 1fr 1fr; } .pr-next { grid-column: 1 / -1; } }
-.pr-card { padding: 28px 26px; display: grid; gap: 12px; align-content: start; border-radius: 8px; }
+.pr-lead { max-width: 560px; margin: 0 auto; color: var(--b200) !important; font-size: 1.05rem; line-height: 1.55; }
+.pr-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.pg-in.pg-narrow:has(.pr-plans) { width: min(1040px, calc(100% - 40px)); }
+.pr-card { padding: 28px 26px; display: flex; flex-direction: column; gap: 12px; border-radius: 8px; }
+.pr-card > * { margin: 0; }
 .pr-main { background: var(--white); color: var(--indigo); box-shadow: 0 30px 60px -30px rgba(0,0,0,.7); }
 .pr-main .lab { color: var(--b700); }
-.pr-price { margin: 0; font: 500 clamp(2.6rem, 1.8rem + 2.4vw, 3.6rem)/1 var(--sans) !important; letter-spacing: -0.04em; color: inherit !important; }
+.pr-next { border-style: dashed; border-color: rgba(168,198,232,.35); }
+.pr-tier { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.pr-tier .lab { margin: 0; }
+.pr-tag { font: 600 .6875rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; padding: 6px 9px; border-radius: 999px; background: var(--b100); color: var(--b800); }
+.pr-tag-soon { background: rgba(168,198,232,.14); color: var(--b200); }
+.pr-price { font: 500 clamp(2.6rem, 1.8rem + 2.4vw, 3.4rem)/1 var(--sans) !important; letter-spacing: -0.04em; color: inherit !important; }
 .pr-card.glass .pr-price { color: var(--white) !important; }
 .pr-price span { font-size: 1rem; letter-spacing: 0; color: var(--b700); }
-.pr-line { color: var(--white) !important; font-size: 1rem; }
-.pr-unlock { margin: 6px 0 0; color: var(--indigo) !important; font-weight: 600; }
-.pr-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.pr-list li { display: flex; gap: 10px; align-items: center; font-size: .98rem; color: var(--indigo); }
-.pr-list svg { width: 16px; height: 16px; flex: none; color: var(--b600); }
-.pr-one { margin: 6px 0 0; padding-top: 14px; border-top: 1px solid var(--b200); color: var(--b800) !important; font-size: .95rem; }
-.pr-main .obtn.solid { background: var(--indigo); color: var(--white); border-color: var(--indigo); justify-self: start; }
+.pr-name { font-weight: 600; font-size: 1.05rem; color: var(--white) !important; }
+.pr-soon { font: 500 clamp(1.9rem, 1.4rem + 1.4vw, 2.6rem)/1.05 var(--sans) !important; letter-spacing: -0.03em; color: var(--b200) !important; }
+.pr-line { color: var(--b200) !important; font-size: .98rem; line-height: 1.5; }
+.pr-main .pr-line { color: var(--b800) !important; }
+.pr-with { margin-top: 4px !important; font: 600 .75rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--b300) !important; }
+.pr-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+.pr-list li { display: flex; gap: 10px; align-items: flex-start; font-size: .96rem; line-height: 1.35; color: var(--indigo); }
+.pr-card.glass .pr-list li { color: var(--b100); }
+.pr-list svg { width: 16px; height: 16px; flex: none; margin-top: 1px; color: var(--b600); }
+.pr-card.glass .pr-list svg { color: var(--b400); }
+.pr-list-soon li { color: var(--b200) !important; }
+.pr-list-soon i { flex: none; width: 6px; height: 6px; margin: 7px 5px 0; border-radius: 50%; border: 1px solid var(--b400); }
+.pr-one { padding-top: 14px; border-top: 1px solid var(--b200); color: var(--b800) !important; font-size: .92rem; }
+.pr-cta { margin-top: auto !important; align-self: flex-start; }
+.pr-list { margin-bottom: 10px !important; }
+.pr-main .obtn.solid { background: var(--indigo); color: var(--white); border-color: var(--indigo); }
 .pr-main .obtn.solid:hover { background: var(--b800); }
+.pr-card.glass .obtn:hover { background: rgba(255,255,255,.08); }
+@media (max-width: 900px) { .pr-plans { grid-template-columns: 1fr 1fr; } .pr-next { grid-column: 1 / -1; } }
 @media (max-width: 640px) { .pr-plans { grid-template-columns: 1fr; } }
 
 /* Careers */
