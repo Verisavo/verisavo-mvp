@@ -316,8 +316,10 @@ section[id] { scroll-margin-top: 80px; }
 .ap-tip-v { background: var(--indigo); border-color: var(--indigo); }
 .ap-tip-v b { color: var(--white); }
 .ap-tip-v span { color: var(--b200); border-left-color: rgba(168,198,232,.3); }
+.ap-tip i { font-style: normal; color: var(--b500); margin-right: 2px; }
+.ap-tip-v i { color: var(--b400); }
 .apt.tip circle { fill: var(--b700); }
-@media (max-width: 640px) { .ap-try { display: none; } .ap-tip { font-size: 11.5px; padding: 4px 8px; } }
+@media (max-width: 640px) { .ap-try { display: none; } .ap-tip { font-size: 11.5px; padding: 4px 8px; } .ap-tip i { display: none; } }
 .apd { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; animation: rise .35s var(--ease); }
 .apd[hidden] { display: none; }
 .apd > div { background: var(--white); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; }
