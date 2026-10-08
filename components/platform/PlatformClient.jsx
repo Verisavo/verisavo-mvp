@@ -11,6 +11,7 @@ export default function PlatformClient() {
     document.body.setAttribute("data-sound-sections", "");   // each section of this page shifts the soundtrack
     (async () => {
       (await import("@/lib/platform/main")).default();
+      (await import("@/lib/platform/particles")).default();
       (await import("@/lib/platform/soon")).default();
       (await import("@/lib/sound")).default();
     })();

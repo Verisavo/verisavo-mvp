@@ -121,19 +121,14 @@ a.logo { text-decoration: none; }
 .stage-sec { padding-block: clamp(56px, 7vw, 88px) clamp(40px, 5vw, 64px); }
 
 .stage { position: relative; isolation: isolate; }
-.stage-bg { position: relative; overflow: hidden; height: clamp(250px, 30vw, 360px); border-radius: 20px; border: 1px solid var(--b200); background: #E3EBF8; }
-.stage .pcard { z-index: 1; margin-top: calc(-1 * clamp(64px, 8vw, 100px)); padding-inline: 16px; }
-@media (max-width: 640px) { .stage-bg { height: 230px; } .stage .pcard { margin-top: -36px; padding-inline: 10px; } }
-.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
-.scene .lyr, .scene .wk { will-change: transform; }
-.scene [pathLength] { stroke-dasharray: 1; stroke-dashoffset: 0; }
-@media (prefers-reduced-motion: no-preference) {
-  .scene [pathLength] { animation: draw 2.4s cubic-bezier(.4,0,.2,1) both; }
-  .scene .far [pathLength] { animation-delay: .1s; }
-  .scene .mid [pathLength] { animation-delay: .35s; }
-  .scene .crowd [pathLength], .scene .shop [pathLength] { animation-delay: .5s; }
-}
-@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.stage-bg { position: relative; overflow: hidden; height: clamp(320px, 36vw, 440px); border-radius: 20px; border: 1px solid #2A3557; background: #1F273F; }
+.stage .pcard { z-index: 1; margin-top: calc(-1 * clamp(70px, 8vw, 104px)); padding-inline: 16px; }
+@media (max-width: 640px) { .stage-bg { height: 300px; } .stage .pcard { margin-top: -44px; padding-inline: 10px; } }
+.pfield { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.pf-cap { position: absolute; left: clamp(16px, 2.4vw, 28px); top: clamp(14px, 2vw, 22px); margin: 0; display: flex; align-items: center; gap: 8px; font: 500 0.6875rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #A8C6E8; opacity: 0; transform: translateY(3px); transition: opacity .3s ease, transform .3s ease; pointer-events: none; }
+.pf-cap::before { content: ""; width: 14px; height: 1px; background: #618CD0; }
+.pf-cap.in { opacity: 1; transform: none; }
+.stage .chat.dark { border-color: #3A5292; box-shadow: 0 30px 70px -30px #0B0F1C, 0 0 0 1px rgba(97,140,208,.12); }
 
 .mpin { position: absolute; z-index: -1; width: 30px; height: 30px; border-radius: 50%; background: var(--white); border: 1px solid var(--b300); display: grid; place-items: center; box-shadow: 0 8px 18px -10px #3A5292; }
 .mpin i { width: 10px; height: 10px; border-radius: 50%; background: var(--b600); }
