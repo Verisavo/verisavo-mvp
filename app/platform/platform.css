@@ -248,7 +248,7 @@ section[id] { scroll-margin-top: 80px; }
 @media (max-width: 520px) { .how-steps { grid-template-columns: minmax(0, 1fr); } }
 
 /* Platform band */
-.band { background: linear-gradient(180deg, #1F273F 0%, #1F273F 55%, #3A5292 100%); color: var(--white); padding-block: clamp(72px, 9vw, 112px); }
+.band { background: #1F273F; color: var(--white); padding-block: clamp(72px, 9vw, 112px); }
 .band-head { display: grid; justify-items: center; text-align: center; gap: 14px; margin-bottom: clamp(32px, 5vw, 48px); }
 .band-head .eyebrow { color: var(--b300); }
 .band-head h2 { font-size: var(--h2); color: var(--white); max-width: 26ch; }
