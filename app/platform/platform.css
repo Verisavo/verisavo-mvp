@@ -545,7 +545,13 @@ dialog.va.va-full { width: 100vw; height: 100vh; height: 100dvh; max-width: 100v
 .va-tab-txt b { font-size: .8125rem; font-weight: 600; color: #FFFFFF; }
 .va-tab-txt span { font-size: .75rem; color: #A8C6E8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .va-tab-up { flex: none; width: 18px; height: 18px; color: #CCDDF1; margin-left: 4px; }
-@media (max-width: 640px) { .va-tab { left: 12px; right: 12px; max-width: none; } }
+/* phones: just the V, in the bottom-left corner, with a dot to show a conversation is waiting */
+@media (max-width: 640px) {
+  .va-tab { left: 14px; right: auto; padding: 7px; gap: 0; border-radius: 14px; }
+  .va-tab-txt, .va-tab-up { display: none; }
+  .va-tab-mark { width: 34px; height: 34px; border-radius: 9px; font-size: .9375rem; }
+  .va-tab::after { content: ""; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border-radius: 50%; background: #80AADC; box-shadow: 0 0 0 2px #FFFFFF; }
+}
 
 /* while the assistant is open, the page behind it is lightly blurred and dimmed: still visible, but not distracting */
 body > :not(dialog):not(script) { transition: filter .35s ease; }
