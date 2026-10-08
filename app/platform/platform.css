@@ -625,8 +625,6 @@ dialog.va::backdrop { background: #1F273F; opacity: .45; }
 .va-chip[hidden] { display: none; }
 .va-dots { border-color: transparent; padding: 6px 8px; }
 .va-dots .vi { width: 18px; height: 18px; fill: currentColor; stroke: none; }
-.va-foot { max-width: 720px; margin: 12px auto 0; text-align: center; font-size: 0.75rem; color: var(--b400); }
-.va.va-has-thread .va-foot { margin-top: 8px; }
 .va [id="va-more"] .vi { fill: currentColor; stroke: none; }
 .va-scrim { display: none; }
 @media (max-width: 760px) {
@@ -697,7 +695,6 @@ dialog.va::backdrop { background: #1F273F; opacity: .45; }
 .va-dark .va-files button:hover { background: rgba(227,235,248,.12); }
 .va-dark .va-chip { background: rgba(31,39,63,.55); border-color: rgba(168,198,232,.25); color: #CCDDF1; }
 .va-dark .va-chip:hover { background: rgba(227,235,248,.08); border-color: rgba(168,198,232,.5); }
-.va-dark .va-foot { color: #80AADC; }
 .va-theme .va-sun { display: none; }
 .va-dark .va-theme .va-sun { display: block; }
 .va-dark .va-theme .va-moon { display: none; }

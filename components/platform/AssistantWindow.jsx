@@ -247,7 +247,6 @@ export default function AssistantWindow() {
               </button>
             </div>
             {" "}
-            <p className="va-foot">{"Verisavo separates evidence from assumptions. Check what matters before you act."}</p>
             {" "}
           </div>
           {" "}
