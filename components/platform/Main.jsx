@@ -633,6 +633,7 @@ export default function Main() {
                 <div className="ap-legend">
                   <span className="lg lg-v"><i></i>{"Verisavo"}</span>
                   <span className="lg lg-s"><i></i>{"Competitors"}</span>
+                  <span className="ap-illus ap-try">{"Hover an approach or dot to compare"}</span>
                 </div>
                 {" "}
                 <p className="ap-cap ap-cap-y" aria-hidden="true">{"↑ Updated as evidence arrives"}</p>
@@ -659,18 +660,19 @@ export default function Main() {
                   {" "}
                   <text className="ap-lab" transform="translate(18 165) rotate(-90)" textAnchor="middle">{"UPDATED AS EVIDENCE ARRIVES"}</text>
                   {" "}
-                  <g className="apt" data-i="0" style={{ transform: "translate(164px, 241px)" }}><circle r="7"></circle></g>
-                  <g className="apt" data-i="1" style={{ transform: "translate(247px, 262px)" }}><circle r="7"></circle></g>
-                  <g className="apt" data-i="2" style={{ transform: "translate(340px, 170px)" }}><circle r="7"></circle></g>
-                  <g className="apt" data-i="3" style={{ transform: "translate(413px, 230px)" }}><circle r="7"></circle></g>
+                  <g className="apt" data-i="0" tabIndex="0" role="button" aria-label="Market reports: where it falls short" style={{ transform: "translate(164px, 241px)" }}><circle r="7"></circle></g>
+                  <g className="apt" data-i="1" tabIndex="0" role="button" aria-label="Research agencies: where it falls short" style={{ transform: "translate(247px, 262px)" }}><circle r="7"></circle></g>
+                  <g className="apt" data-i="2" tabIndex="0" role="button" aria-label="Data providers: where it falls short" style={{ transform: "translate(340px, 170px)" }}><circle r="7"></circle></g>
+                  <g className="apt" data-i="3" tabIndex="0" role="button" aria-label="General AI tools: where it falls short" style={{ transform: "translate(413px, 230px)" }}><circle r="7"></circle></g>
                   {" "}
-                  <g className="apv" style={{ transform: "translate(538px, 62px)" }}><circle r="9"></circle></g>
+                  <g className="apv" tabIndex="0" role="button" aria-label="Verisavo: what makes it different" style={{ transform: "translate(538px, 62px)" }}><circle r="9"></circle></g>
                   {" "}
                 </svg>
                 {" "}
                 <p className="ap-cap ap-cap-x" aria-hidden="true">{"Connected across sources →"}</p>
                 {" "}
-                <p className="ap-hint" aria-hidden="true">{"Swipe the chart or tap an approach to compare"}</p>
+                <p className="ap-hint" aria-hidden="true">{"Tap an approach or a dot to compare"}</p>
+                <div className="ap-tip" id="ap-tip" role="status" aria-live="polite" hidden></div>
                 {" "}
               </div>
               {" "}
@@ -784,6 +786,19 @@ export default function Main() {
               {" "}
               <p>
                 {"From public sources, your company’s data, and Ground-Level Intelligence collected by SavoScouts where other sources fall short."}
+              </p>
+            </details>
+            {" "}
+            <details>
+              <summary>
+                {"What are SavoScouts?"}
+                <span aria-hidden="true">
+                  <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#1F273F" strokeWidth="1.5" strokeLinecap="round"></path></svg>
+                </span>
+              </summary>
+              {" "}
+              <p>
+                {"SavoScouts are Verisavo’s network of local contributors. They capture verified, on-the-ground evidence where other sources fall short."}
               </p>
             </details>
             {" "}
