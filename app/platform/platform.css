@@ -526,7 +526,10 @@ body.menu-open { overflow: hidden; }
 
 /* ---------- Intelligence Assistant window ---------- */
 dialog.va { width: min(1120px, calc(100% - 32px)); height: min(760px, calc(100% - 32px)); max-height: none; padding: 0; border: 1px solid var(--b200); border-radius: 16px; overflow: hidden; background: var(--white); box-shadow: 0 40px 90px -40px #1F273F; }
-dialog.va::backdrop { background: #1F273F; opacity: .45; }
+dialog.va::backdrop { background: rgba(31,39,63,.6); -webkit-backdrop-filter: blur(26px) saturate(.8); backdrop-filter: blur(26px) saturate(.8); }   /* blur the page behind the assistant so it does not distract */
+/* while the assistant is open, the page behind it is softly blurred so it does not distract */
+body > :not(dialog):not(script) { transition: filter .35s ease; }
+body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(12px) saturate(.85); }
 .va .vi { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .va-app { display: grid; grid-template-columns: 252px minmax(0, 1fr); height: 100%; }
 .va-app.va-collapsed { grid-template-columns: 0 minmax(0, 1fr); }
