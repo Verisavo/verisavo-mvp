@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { released } from "@/lib/release";
 import { getSessionUser } from "@/lib/server/auth";
+import { createSupabase } from "@/lib/server/supabase";
+import { hasRecoveryGrant } from "@/lib/server/recovery";
 import AccountHeader from "../AccountHeader";
 import ResetForm from "./ResetForm";
 
@@ -11,11 +13,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false }
 };
 
-// Reached from the password-reset email via /auth/confirm, which signs the user in for this one step
+// Reached from the password-reset email via /auth/confirm. The form only shows in the session that link created,
+// for 15 minutes (lib/server/recovery.ts); changing the password otherwise needs the current one (dashboard).
 export default async function ResetPasswordPage() {
   await connection();   // always render per request, never prerender at build time
   if (!released(1)) notFound();
-  const user = await getSessionUser();
+  const grant = await hasRecoveryGrant(await createSupabase());
+  const user = grant ? await getSessionUser() : null;
 
   return (
     <>

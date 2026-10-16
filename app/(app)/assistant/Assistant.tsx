@@ -7,7 +7,7 @@ import DotFloor, { type FloorApi } from "./DotFloor";
 import { ACCEPT, CHIPS, HANDOFF_KEY, MARKETS, MAX_FILES, MAX_MB, MORE_CHIPS } from "./data";
 import * as I from "./icons";
 
-export type AssistantUser = { name: string; email: string };
+export type AssistantUser = { id: string; name: string; email: string };
 
 type UserItem = { id: string; role: "u"; text: string; scope: string; files: number };
 type AnswerItem = { id: string; role: "a"; pending: boolean; title?: string; body?: string; answer?: string };
@@ -15,7 +15,7 @@ type Item = UserItem | AnswerItem;
 type Conv = { id: string; title: string; items: Item[] };
 type Pop = "scope" | "more" | "gear" | "shield" | null;
 
-const CONVS_KEY = "verisavo-convs";
+const CONVS_PREFIX = "verisavo-convs";   // + ":" + user id, so a shared browser never shows someone else's questions
 const THEME_KEY = "verisavo-va-theme";
 const FULL_KEY = "verisavo-va-full";
 const uid = () => crypto.randomUUID();
@@ -61,6 +61,7 @@ export default function Assistant({ user }: { user: AssistantUser }) {
 
   const cur = convs.find(c => c.id === curId) ?? null;
   const hasThread = Boolean(cur?.items.length);
+  const convsKey = `${CONVS_PREFIX}:${user.id}`;
   const displayName = (user.name || user.email.split("@")[0]).trim();
   const firstName = user.name.trim().split(" ")[0];
   const recent = convs.filter(c => c.title.toLowerCase().includes(query.trim().toLowerCase())).reverse();
@@ -100,7 +101,9 @@ export default function Assistant({ user }: { user: AssistantUser }) {
     try { if (localStorage.getItem(THEME_KEY) === "light") setDark(false); } catch {}
     try { if (sessionStorage.getItem(FULL_KEY) === "1") setFull(true); } catch {}
     try {
-      const saved = JSON.parse(sessionStorage.getItem(CONVS_KEY) || "[]") as Conv[];
+      // drop anything another user left in this browser tab
+      Object.keys(sessionStorage).filter(k => k.startsWith(CONVS_PREFIX) && k !== convsKey).forEach(k => sessionStorage.removeItem(k));
+      const saved = JSON.parse(sessionStorage.getItem(convsKey) || "[]") as Conv[];
       if (Array.isArray(saved) && saved.length) {
         setConvs(saved.map(c => ({ ...c, items: c.items.map(it => (it.role === "a" && it.pending ? { ...it, pending: false, title: "No answer", body: "This question was interrupted. Please ask it again." } : it)) })));
       }
@@ -117,8 +120,8 @@ export default function Assistant({ user }: { user: AssistantUser }) {
 
   useEffect(() => {
     if (!loaded.current) return;
-    try { sessionStorage.setItem(CONVS_KEY, JSON.stringify(convs.slice(-30))); } catch {}
-  }, [convs]);
+    try { sessionStorage.setItem(convsKey, JSON.stringify(convs.slice(-30))); } catch {}
+  }, [convs, convsKey]);
 
   useEffect(() => { popRef.current = pop; }, [pop]);
 
@@ -166,8 +169,8 @@ export default function Assistant({ user }: { user: AssistantUser }) {
     try { localStorage.setItem(THEME_KEY, next ? "dark" : "light"); } catch {}
   };
   async function signOut() {
-    try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
-    try { sessionStorage.removeItem(CONVS_KEY); } catch {}
+    try { await fetch("/api/auth/logout", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }); } catch {}
+    try { sessionStorage.removeItem(convsKey); } catch {}
     location.href = "/";
   }
 

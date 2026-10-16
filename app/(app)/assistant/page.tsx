@@ -17,5 +17,5 @@ export default async function AssistantPage() {
   await connection();   // depends on the signed-in user, so render per request
   if (!released(1)) notFound();
   const user = await requireUser();
-  return <Assistant user={{ name: user.profile.name, email: user.email }} />;
+  return <Assistant user={{ id: user.id, name: user.profile.name, email: user.email }} />;
 }

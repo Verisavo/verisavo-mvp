@@ -5,6 +5,19 @@ export const json = (body: unknown, status = 200) => Response.json(body, { statu
 
 export const notFound = () => json({ error: "not_found" }, 404);
 
+export const tooMany = () => json({ error: "rate_limited", message: "Too many attempts. Please wait a few minutes and try again." }, 429);
+
+export const forbidden = () => json({ error: "forbidden" }, 403);
+
+// Only accept JSON sent by our own pages. A form on another site can't send application/json, and a cross-site
+// fetch carries a foreign Origin, so this blocks login CSRF and other forged posts to the API.
+export function fromOurSite(request: Request): boolean {
+  if (!(request.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json")) return false;
+  const origin = request.headers.get("origin");
+  if (!origin) return true;   // non-browser clients; browsers always send Origin on POST
+  try { return new URL(origin).host === request.headers.get("host"); } catch { return false; }
+}
+
 export async function readJson(request: Request): Promise<Record<string, unknown> | null> {
   try {
     const value: unknown = await request.json();

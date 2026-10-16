@@ -63,6 +63,17 @@ Sign up, email confirmation, sign in and password reset use Supabase Auth with e
 
    These links work on any device, because the server checks them; the default links only work in the same browser.
 5. **Email sender.** Until Verisavo's domain is set up, Supabase's built-in sender is used. It's rate-limited and only delivers to the project's team members. After that, set Resend as the custom SMTP sender (Authentication → Emails → SMTP Settings).
+6. **Authentication → Rate Limits.** Only our server talks to Supabase, so Supabase sees one address for every visitor. Its per-IP limits must therefore be site-wide, and the per-visitor limits live in the app (`lib/server/rate-limit.ts`). Raise these to about:
+   - **Sign-ups and sign-ins:** 300 per 5 minutes
+   - **Token verifications:** 300 per 5 minutes
+   - **Token refreshes:** 1800 per 5 minutes
+7. **Access token lifetime.** Set it to about **600 seconds** (Project Settings → JWT Keys). A copied login token then stops working within 10 minutes of sign-out.
+
+Email links open `/auth/confirm`, which only asks the user to press a button. Nothing happens until then, so email scanners can't use links up. A password-reset link allows one password change, only in the browser session it opened, for 15 minutes.
+
+**Before public launch** (not needed for reviews):
+- Add a CAPTCHA (e.g. Cloudflare Turnstile, via Supabase's CAPTCHA protection) to sign-up and forgot-password.
+- Add a Vercel Firewall rate-limit rule on `/api/auth/*`.
 
 `RELEASE_STAGE` switches milestones on in a deployment (see `lib/release.ts`): 1 = accounts and dashboard, up to 5 = everything. Below 1, the sign-in dialog runs the old demo.
 

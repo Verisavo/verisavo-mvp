@@ -72,7 +72,11 @@ export default function setupAuthDialog({ onSignedIn, onDemo }: Options) {
 
   // Arriving from an expired or reused email link (/auth/confirm sends people to ?auth=link-expired#signin)
   const params = new URLSearchParams(location.search);
-  let notice = params.get("auth") === "link-expired" ? "That link has expired or was already used. Sign in, or ask for a new email." : "";
+  const NOTICES: Record<string, string> = {
+    "link-expired": "That link has expired or was already used. Sign in, or ask for a new email.",
+    "too-many": "Too many attempts. Please wait a few minutes and try again."
+  };
+  let notice = NOTICES[params.get("auth") ?? ""] ?? "";
   if (params.has("auth")) {
     params.delete("auth");
     const qs = params.toString();

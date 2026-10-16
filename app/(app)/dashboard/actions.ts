@@ -9,7 +9,10 @@ import { conversations, profiles } from "@/db/schema";
 import { getSessionUser, requireUser } from "@/lib/server/auth";
 import { createSupabase } from "@/lib/server/supabase";
 import { audit } from "@/lib/server/audit";
+import { allow, LIMITS } from "@/lib/server/rate-limit";
 import { cleanEmail, cleanText, isRateLimited, passwordProblem } from "@/lib/server/http";
+
+const TOO_MANY = { error: "Too many attempts. Please wait a few minutes and try again." };
 
 export type FormState = { ok?: string; error?: string } | null;
 
@@ -34,16 +37,19 @@ export async function changeEmail(_state: FormState, formData: FormData): Promis
   const email = cleanEmail(formData.get("email"));
   if (!email) return { error: "Enter a valid email address." };
   if (email === user.email.toLowerCase()) return { error: "That's already your email address." };
+  if (!(await allow(LIMITS.accountChange(user.id)))) return TOO_MANY;
+  const almostDone = { ok: `Almost done: open the confirmation links we sent to your current address and to ${email}.` };
   const supabase = await createSupabase();
   const { error } = await supabase.auth.updateUser({ email });
-  if (isRateLimited(error)) return { error: "Too many requests. Please wait a few minutes and try again." };
+  if (isRateLimited(error)) return TOO_MANY;
   if (error) {
-    if (error.code === "email_exists") return { error: "That email address can't be used. Try another one." };
+    // Same answer as success, so this form can't be used to find out which emails have accounts
+    if (error.code === "email_exists") return almostDone;
     console.error("[dashboard/changeEmail]", error.code, error.message);
     return { error: "We couldn't change your email. Please try again." };
   }
   await audit("auth.email_change_requested", { actorId: user.id });
-  return { ok: `Almost done: open the confirmation links we sent to your current address and to ${email}.` };
+  return almostDone;
 }
 
 export async function changePassword(_state: FormState, formData: FormData): Promise<FormState> {
@@ -52,6 +58,7 @@ export async function changePassword(_state: FormState, formData: FormData): Pro
   const password = String(formData.get("password") ?? "");
   const weak = passwordProblem(password);
   if (weak) return { error: weak };
+  if (!(await allow(LIMITS.accountChange(user.id)))) return TOO_MANY;
 
   const supabase = await createSupabase();
   // Ask for the current password first, so an unattended signed-in browser can't be used to take over the account

@@ -66,3 +66,19 @@ export const auditEvents = pgTable("audit_events", {
 export type Profile = typeof profiles.$inferSelect;
 export type Conversation = typeof conversations.$inferSelect;
 export type Message = typeof messages.$inferSelect;
+
+// Security: app-side rate limits. Only our server talks to Supabase Auth, so Supabase sees one address for every
+// visitor and its own per-IP limits can't tell people apart. These counters can (see lib/server/rate-limit.ts).
+export const rateLimits = pgTable("rate_limits", {
+  key: text("key").primaryKey(),   // e.g. "login:ip:203.0.113.7" or "forgot:email:a@b.co"
+  windowStart: timestamp("window_start", { withTimezone: true }).notNull().defaultNow(),
+  count: bigint("count", { mode: "number" }).notNull().default(0)
+}).enableRLS();
+
+// A password-reset link allows one password change, only in the session that link created
+// (written by /auth/confirm, used up by /api/auth/reset; see lib/server/recovery.ts)
+export const recoveryGrants = pgTable("recovery_grants", {
+  sessionId: text("session_id").primaryKey(),
+  userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull()
+}).enableRLS();
