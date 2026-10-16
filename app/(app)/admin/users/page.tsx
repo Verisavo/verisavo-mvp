@@ -1,6 +1,6 @@
 import { connection } from "next/server";
 import { requireAdmin } from "@/lib/server/admin";
-import { fmtDay, fmtWhen } from "../format";
+import { fmtDay, fmtWhen, pageParam } from "../format";
 import { listUsers } from "../queries";
 import UserToggle from "./UserToggle";
 
@@ -12,7 +12,7 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
   const admin = await requireAdmin();
   const p = await searchParams;
   const q = typeof p.q === "string" ? p.q.trim().slice(0, 120) : "";
-  const page = Math.max(1, Number(p.page) || 1);
+  const page = pageParam(p.page);
   const { rows, more } = await listUsers(q, page);
   const href = (n: number) => `/admin/users?${new URLSearchParams({ ...(q ? { q } : {}), page: String(n) })}`;
 

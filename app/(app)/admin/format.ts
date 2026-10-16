@@ -5,6 +5,12 @@ const dayTime = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short
 export const fmtDay = (d: Date | string | null | undefined) => (d ? day.format(new Date(d)) : "—");
 export const fmtWhen = (d: Date | string | null | undefined) => (d ? dayTime.format(new Date(d)) : "—");
 
+// ?page=N from the address bar: a whole number from 1 to 1000; anything else (1e309, -3, "x") is page 1
+export const pageParam = (value: unknown): number => {
+  const n = Number(value);
+  return Number.isSafeInteger(n) && n >= 1 ? Math.min(n, 1000) : 1;
+};
+
 // Plain-English names for the activity log
 const ACTIONS: Record<string, string> = {
   "auth.sign_up": "Signed up",

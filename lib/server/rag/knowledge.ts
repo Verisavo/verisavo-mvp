@@ -1,10 +1,10 @@
 import "server-only";
-import { eq, ne } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { db } from "@/lib/server/db";
 import { kbChunks, kbDocuments, kbVersions } from "@/db/schema";
 import { audit } from "@/lib/server/audit";
 import { saveAiSettings, searchSetup } from "@/lib/server/ai/settings";
-import type { EmbeddingId } from "@/lib/server/ai/providers";
+import { describeAiError, type EmbeddingId } from "@/lib/server/ai/providers";
 import { chunkText } from "./chunk";
 import { embedTexts } from "./embed";
 
@@ -53,6 +53,7 @@ export async function saveDocument(id: string, fields: Fields, actorId: string):
 export async function publishDocument(id: string, actorId: string, action = "kb.publish"): Promise<KbResult> {
   const doc = await getDocument(id);
   if (!doc || !doc.currentVersionId) return { ok: false, error: "This document no longer exists." };
+  if (doc.status === "archived") return { ok: false, error: "This document is archived. Restore it before publishing." };
   const search = await searchSetup();
   if (search.problem) return { ok: false, error: `${search.problem} Documents can't be published until it is (see AI settings).` };
   if (!search.saved) await saveAiSettings({}, actorId);   // pin the automatic choice once something is indexed with it
@@ -64,22 +65,28 @@ export async function publishDocument(id: string, actorId: string, action = "kb.
   try {
     vectors = await embedTexts(search.id, pieces);
   } catch (err) {
-    const detail = err instanceof Error ? err.message : String(err);
-    console.error("[kb/publish] embedding failed:", detail);
-    await db.update(kbDocuments).set({ embedError: detail.slice(0, 500), updatedAt: new Date() }).where(eq(kbDocuments.id, id));
+    console.error("[kb/publish] embedding failed:", err instanceof Error ? err.message : err);
+    await db.update(kbDocuments).set({ embedError: describeAiError(err), updatedAt: new Date() }).where(eq(kbDocuments.id, id));
     return { ok: false, error: "The AI service couldn't process the document. Please try again in a moment." };
   }
 
-  await db.transaction(async tx => {
+  const swapped = await db.transaction(async tx => {
+    // Lock the document so publishes and archives of it run one at a time, then check nothing changed while the
+    // embeddings were being made (archived, or edited to a newer version that another publish is handling).
+    const [now] = await tx.select({ status: kbDocuments.status, versionId: kbDocuments.currentVersionId, markets: kbDocuments.markets })
+      .from(kbDocuments).where(eq(kbDocuments.id, id)).for("update");
+    if (!now || now.status === "archived" || now.versionId !== version.id) return false;
     await tx.delete(kbChunks).where(eq(kbChunks.documentId, id));
     for (let i = 0; i < pieces.length; i += 100) {
       await tx.insert(kbChunks).values(pieces.slice(i, i + 100).map((content, k) => ({
-        documentId: id, versionId: version.id, chunkIndex: i + k, content, markets: doc.markets, embedding: vectors[i + k], embeddingModel: search.id
+        documentId: id, versionId: version.id, chunkIndex: i + k, content, markets: now.markets, embedding: vectors[i + k], embeddingModel: search.id
       })));
     }
     await tx.update(kbDocuments).set({ status: "published", publishedAt: new Date(), archivedAt: null, chunkCount: pieces.length, embedError: null, updatedAt: new Date() }).where(eq(kbDocuments.id, id));
+    return true;
   });
-  await audit(action, { actorId, targetType: "kb_document", targetId: id, metadata: { chunks: pieces.length, version: version.id, embeddings: search.id } });
+  if (!swapped) return { ok: false, error: "The document changed while it was being published (edited or archived). Reload the page and try again." };
+  await audit(action,{ actorId, targetType: "kb_document", targetId: id, metadata: { chunks: pieces.length, version: version.id, embeddings: search.id } });
   return { ok: true, message: `Published: ${pieces.length} ${pieces.length === 1 ? "section is" : "sections are"} now searchable.` };
 }
 
@@ -105,18 +112,25 @@ export async function reindexStale(actorId: string, budgetMs = 40_000): Promise<
 
 // Archiving takes the document out of search immediately; its text and versions are kept
 export async function archiveDocument(id: string, actorId: string): Promise<KbResult> {
-  if (!(await getDocument(id))) return { ok: false, error: "This document no longer exists." };
-  await db.transaction(async tx => {
+  const archived = await db.transaction(async tx => {
+    // the same lock as publishing, so a publish that is finishing can't leave chunks behind
+    const [now] = await tx.select({ id: kbDocuments.id }).from(kbDocuments).where(eq(kbDocuments.id, id)).for("update");
+    if (!now) return false;
     await tx.delete(kbChunks).where(eq(kbChunks.documentId, id));
     await tx.update(kbDocuments).set({ status: "archived", archivedAt: new Date(), chunkCount: 0, updatedAt: new Date() }).where(eq(kbDocuments.id, id));
+    return true;
   });
+  if (!archived) return { ok: false, error: "This document no longer exists." };
   await audit("kb.archive", { actorId, targetType: "kb_document", targetId: id });
   return { ok: true, message: "Archived. It no longer appears in answers." };
 }
 
+// Only from archived (which has no chunks), so a stale "Restore" button can't turn a published document into a
+// "draft" that is still searchable
 export async function restoreDocument(id: string, actorId: string): Promise<KbResult> {
-  if (!(await getDocument(id))) return { ok: false, error: "This document no longer exists." };
-  await db.update(kbDocuments).set({ status: "draft", archivedAt: null, updatedAt: new Date() }).where(eq(kbDocuments.id, id));
+  const [restored] = await db.update(kbDocuments).set({ status: "draft", archivedAt: null, updatedAt: new Date() })
+    .where(and(eq(kbDocuments.id, id), eq(kbDocuments.status, "archived"))).returning({ id: kbDocuments.id });
+  if (!restored) return { ok: false, error: "Only archived documents can be restored. Reload the page to see its current state." };
   await audit("kb.restore", { actorId, targetType: "kb_document", targetId: id });
   return { ok: true, message: "Restored as a draft. Publish it to make it searchable again." };
 }

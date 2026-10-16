@@ -18,7 +18,7 @@ import { describeAiError, EMBEDDINGS, isEmbedding, isProvider, keySet, MODEL_ID,
 import { generateText } from "ai";
 
 export type ActionState = { ok?: string; error?: string } | null;
-const UUID = /^[0-9a-f-]{36}$/i;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const toState = (r: KbResult): ActionState => (r.ok ? { ok: r.message } : { error: r.error });
 const marketsFrom = (formData: FormData) => formData.getAll("markets").map(String).filter(m => COUNTRY_MARKETS.includes(m));
 const MAX_BODY = 500_000;   // characters, about 250 pages of text
@@ -97,7 +97,8 @@ export async function testKbSearch(_state: SearchState, formData: FormData): Pro
   try {
     return { query, hits: await searchKnowledge(query, { market, limit: 5 }) };
   } catch (err) {
-    console.error("[admin/kb] search failed:", err instanceof Error ? err.message : err);
+    // not err.message: a database error's message includes the query's parameters (the question and its vector)
+    console.error("[admin/kb] search failed:", err instanceof Error ? err.name : "error", (err as { cause?: { code?: string } })?.cause?.code ?? "", describeAiError(err));
     return { query, hits: [], error: `Search failed. ${describeAiError(err)}` };
   }
 }

@@ -18,11 +18,19 @@ export async function getAiSettings(): Promise<AiSettings> {
   return { answerProvider, answerModel: PROVIDERS[answerProvider].answerModels[0], embeddingId, saved: false };
 }
 
-export async function saveAiSettings(change: Partial<Omit<AiSettings, "saved">>, actorId: string): Promise<AiSettings> {
+// Only the changed columns are written to an existing row, so two admins saving different settings at once don't
+// undo each other. The first save stores the whole (automatic) choice.
+export async function saveAiSettings(change: Partial<Omit<AiSettings, "saved">>, actorId: string): Promise<void> {
   const next = { ...(await getAiSettings()), ...change };
-  const values = { answerProvider: next.answerProvider, answerModel: next.answerModel, embeddingModel: next.embeddingId, updatedBy: actorId, updatedAt: new Date() };
-  await db.insert(aiSettings).values({ id: 1, ...values }).onConflictDoUpdate({ target: aiSettings.id, set: values });
-  return { ...next, saved: true };
+  const meta = { updatedBy: actorId, updatedAt: new Date() };
+  const set = {
+    ...(change.answerProvider && { answerProvider: change.answerProvider }),
+    ...(change.answerModel && { answerModel: change.answerModel }),
+    ...(change.embeddingId && { embeddingModel: change.embeddingId }),
+    ...meta
+  };
+  await db.insert(aiSettings).values({ id: 1, answerProvider: next.answerProvider, answerModel: next.answerModel, embeddingModel: next.embeddingId, ...meta })
+    .onConflictDoUpdate({ target: aiSettings.id, set });
 }
 
 // The model that answers questions (the assistant, from M3), or why it can't

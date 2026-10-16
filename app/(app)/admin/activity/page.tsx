@@ -1,6 +1,6 @@
 import { connection } from "next/server";
 import { requireAdmin } from "@/lib/server/admin";
-import { ACTION_GROUPS, actionLabel, fmtWhen } from "../format";
+import { ACTION_GROUPS, actionLabel, fmtWhen, pageParam } from "../format";
 import { listActivity } from "../queries";
 
 type Params = Promise<Record<string, string | string[] | undefined>>;
@@ -11,7 +11,7 @@ export default async function AdminActivity({ searchParams }: { searchParams: Pa
   await requireAdmin();
   const p = await searchParams;
   const group = ACTION_GROUPS.some(g => g.value === p.type) ? String(p.type) : "";
-  const page = Math.max(1, Number(p.page) || 1);
+  const page = pageParam(p.page);
   const { rows, more } = await listActivity(group, page);
   const href = (n: number) => `/admin/activity?${new URLSearchParams({ ...(group ? { type: group } : {}), page: String(n) })}`;
 

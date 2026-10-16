@@ -1,5 +1,5 @@
 import "server-only";
-import { APICallError, type EmbeddingModel, type LanguageModel } from "ai";
+import { APICallError, RetryError, type EmbeddingModel, type LanguageModel } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
@@ -46,6 +46,7 @@ export function embeddingModel(id: EmbeddingId): EmbeddingModel {
 
 // A message an admin can act on. Provider errors don't contain the key, but they're still kept short.
 export function describeAiError(err: unknown): string {
+  if (RetryError.isInstance(err)) return describeAiError(err.lastError);   // the SDK retries 429s and 5xxs, then wraps the last one
   if (APICallError.isInstance(err)) {
     const s = err.statusCode;
     if (s === 401 || s === 403 || (s === 400 && /api key/i.test(err.message))) return "The service refused the key. Check it in the hosting settings.";   // Gemini answers 400

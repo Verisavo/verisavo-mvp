@@ -28,7 +28,7 @@ export async function searchKnowledge(question: string, { market = ALL_MARKETS a
       .select({ documentId: kbChunks.documentId, title: kbDocuments.title, content: kbChunks.content, similarity: sql<number>`1 - (${distance})` })
       .from(kbChunks)
       .innerJoin(kbDocuments, eq(kbDocuments.id, kbChunks.documentId))
-      .where(and(eq(kbChunks.embeddingModel, id), forMarket))
+      .where(and(eq(kbDocuments.status, "published"), eq(kbChunks.embeddingModel, id), forMarket))
       .orderBy(distance)
       .limit(limit);
   });

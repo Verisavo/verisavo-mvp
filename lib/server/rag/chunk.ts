@@ -7,8 +7,10 @@ const HARD_MAX = 3600;
 
 function splitLong(text: string): string[] {
   if (text.length <= HARD_MAX) return [text];
-  // sentences first, then a plain cut for text without punctuation
-  const sentences = text.match(/[^.!?\n]+[.!?]+["')\]]*\s*|[^.!?\n]+$/g) ?? [text];
+  // Sentences and lines first (PDF text ends every visual line with a single \n), then a plain cut for anything still
+  // too long. Every character lands in exactly one piece and the pattern never backtracks: nothing is lost, and
+  // megabytes of text split in milliseconds.
+  const sentences = text.match(/[^.!?\n]+(?:[.!?]+["')\]]*[ \t]*|\n+|$)|[.!?]+["')\]]*[ \t]*|\n+/g) ?? [text];
   const out: string[] = [];
   let buf = "";
   for (const s of sentences) {

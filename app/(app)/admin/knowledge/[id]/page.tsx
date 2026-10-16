@@ -20,7 +20,7 @@ export default async function AdminKnowledgeDoc({ params, searchParams }: { para
   await connection();
   await requireAdmin();
   const { id } = await params;
-  if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) notFound();
   const [doc] = await db.select().from(kbDocuments).where(eq(kbDocuments.id, id)).limit(1);
   if (!doc) notFound();
   const versions = await db
