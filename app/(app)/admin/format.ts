@@ -26,7 +26,10 @@ const ACTIONS: Record<string, string> = {
   "kb.update": "Edited a knowledge-base document",
   "kb.publish": "Published a knowledge-base document",
   "kb.archive": "Archived a knowledge-base document",
-  "kb.restore": "Restored a knowledge-base document"
+  "kb.restore": "Restored a knowledge-base document",
+  "kb.reindex": "Re-indexed a knowledge-base document",
+  "ai.answers_change": "Changed the AI service for answers",
+  "ai.search_change": "Changed the knowledge search model"
 };
 export const actionLabel = (action: string) => ACTIONS[action] ?? action;
 
@@ -36,5 +39,6 @@ export const ACTION_GROUPS = [
   { value: "profile.", label: "Profile changes" },
   { value: "kb.", label: "Knowledge base" },
   { value: "admin.", label: "Admin actions" },
+  { value: "ai.", label: "AI settings" },
   { value: "conversation.", label: "Conversations" }
 ];
