@@ -85,6 +85,7 @@ Email links open `/auth/confirm`, which only asks the user to press a button. No
 | `/platform` | Platform page: the question box and sign in. A signed-in user's question opens `/assistant`; signed-out visitors are asked to sign up or sign in first. |
 | `/assistant` | Signed-in users only: the Verisavo Intelligence Assistant, as a window that switches to full screen. `/platform#app` leads here. |
 | `/dashboard` | Signed-in users only: plan and billing, conversations, profile, email and password. |
+| `/admin` | Admins only (everyone else gets a 404): overview, users, knowledge base, activity log. Make someone an admin with `npm run admin:grant -- their@email` (add `--prod` for the live database). |
 
 `/about-us`, `/research`, `/contact`, `/pricing` and `/careers` redirect to the matching homepage page. The old file names `/index.html` and `/assistant.html` redirect to `/` and `/platform`.
 
@@ -100,12 +101,13 @@ app/
   page.jsx  home.css      homepage route and its styles
   platform/
     page.jsx  platform.css
-  (app)/                  app pages (assistant, dashboard, reset password, later admin), styled with Tailwind (only these load it)
-    assistant/            /assistant: the Intelligence Assistant (sign-in only), a window with a full-screen toggle
+  (app)/                  app pages (assistant, dashboard, admin, reset password), styled with Tailwind (only these load it)
     app.css               Tailwind + Verisavo colours and fonts
+    assistant/            /assistant: the Intelligence Assistant (sign-in only), a window with a full-screen toggle
     dashboard/            /dashboard: plan and billing, conversations, profile, email, password (server actions in actions.ts)
+    admin/                /admin: overview, users, knowledge base (upload, edit, publish, archive, try a question), activity
     reset-password/       /reset-password: choose a new password after the reset email
-  auth/confirm/route.ts   target of the links in Supabase's emails (confirm sign-up, reset, email change)
+    auth/confirm/         /auth/confirm: where Supabase's email links land; verifies only when the user presses the button
   api/
     health/route.ts       GET /api/health: checks the database and pgvector
     auth/                 signup, login, logout, forgot, reset, resend, me
@@ -122,10 +124,15 @@ lib/
   authDialog.ts           the sign in / sign up / reset dialog, shared by both landing pages
   release.ts              RELEASE_STAGE: which milestones are switched on
   plan.ts                 plan numbers (5 free questions, 100 messages a month)
+  markets.ts              market list shared by the assistant and the knowledge base
   server/                 server-only code; never imported by the browser
     db.ts                 database client (Drizzle + postgres-js, set up for Supabase's pooler)
     supabase.ts  auth.ts  Supabase Auth client and the current user; auth-cookies.ts holds the cookie settings
     http.ts  audit.ts     API helpers and the admin activity log
+    rate-limit.ts         per-visitor limits for everything that calls Supabase Auth
+    recovery.ts           one-time password-reset grants
+    admin.ts              requireAdmin() for every admin page and action
+    rag/                  knowledge base: extract (PDF/Word/text), chunk, embed (OpenAI), publish/archive, search
 db/
   schema.ts               database tables (Drizzle)
   migrations/             SQL migrations, applied with npm run db:migrate

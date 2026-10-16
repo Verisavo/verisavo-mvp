@@ -35,6 +35,7 @@ export default async function DashboardPage() {
     <>
       <AccountHeader>
         <nav className="flex items-center gap-2" aria-label="Account">
+          {user.profile.role === "admin" && released(2) && <a className="btn btn-ghost max-sm:hidden" href="/admin">{"Admin"}</a>}
           <a className="btn max-sm:hidden" href="/assistant">{"Ask Verisavo"}</a>
           <form action={signOutAction}><button className="btn btn-ghost" type="submit">{"Sign out"}</button></form>
         </nav>

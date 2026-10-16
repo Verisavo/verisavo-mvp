@@ -29,6 +29,13 @@
       "when": 1792176491192,
       "tag": "0003_auth-hardening",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792176829592,
+      "tag": "0004_m2-knowledge-base",
+      "breakpoints": true
     }
   ]
 }

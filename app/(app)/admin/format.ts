@@ -1,0 +1,40 @@
+// Small display helpers for the admin pages
+const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
+const dayTime = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+
+export const fmtDay = (d: Date | string | null | undefined) => (d ? day.format(new Date(d)) : "—");
+export const fmtWhen = (d: Date | string | null | undefined) => (d ? dayTime.format(new Date(d)) : "—");
+
+// Plain-English names for the activity log
+const ACTIONS: Record<string, string> = {
+  "auth.sign_up": "Signed up",
+  "auth.email_confirmed": "Confirmed email",
+  "auth.sign_in": "Signed in",
+  "auth.sign_out": "Signed out",
+  "auth.recovery_link": "Opened a password-reset link",
+  "auth.password_reset": "Reset password",
+  "auth.password_change": "Changed password",
+  "auth.email_change_requested": "Asked to change email",
+  "auth.email_changed": "Changed email",
+  "profile.update": "Updated profile",
+  "conversation.delete": "Deleted a conversation",
+  "admin.user_disable": "Disabled a user",
+  "admin.user_enable": "Re-enabled a user",
+  "admin.role_granted": "Was made an admin",
+  "admin.role_revoked": "Stopped being an admin",
+  "kb.create": "Added a knowledge-base document",
+  "kb.update": "Edited a knowledge-base document",
+  "kb.publish": "Published a knowledge-base document",
+  "kb.archive": "Archived a knowledge-base document",
+  "kb.restore": "Restored a knowledge-base document"
+};
+export const actionLabel = (action: string) => ACTIONS[action] ?? action;
+
+export const ACTION_GROUPS = [
+  { value: "", label: "All activity" },
+  { value: "auth.", label: "Sign-in and accounts" },
+  { value: "profile.", label: "Profile changes" },
+  { value: "kb.", label: "Knowledge base" },
+  { value: "admin.", label: "Admin actions" },
+  { value: "conversation.", label: "Conversations" }
+];

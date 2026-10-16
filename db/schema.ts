@@ -2,7 +2,7 @@
 // then `npm run db:migrate` to apply it. Every table enables RLS: our server connects as the table owner
 // and is not affected, but nothing is readable through Supabase's public API.
 import { sql } from "drizzle-orm";
-import { bigint, check, index, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { bigint, check, index, integer, jsonb, pgTable, text, timestamp, uuid, vector } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
@@ -62,7 +62,57 @@ export const auditEvents = pgTable("audit_events", {
   index("audit_events_actor_idx").on(t.actorId)
 ]).enableRLS();
 
+// M2: the knowledge base. A document has versions (each edit is a new version). Publishing splits the current
+// version into chunks and stores their embeddings in kb_chunks. Only published documents have chunks, so search never
+// needs a status check, and archiving a document deletes its chunks.
+export const EMBEDDING_DIMENSIONS = 1536;   // must match EMBEDDING_MODEL in lib/server/rag/embed.ts
+
+export const kbDocuments = pgTable("kb_documents", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  status: text("status").notNull().default("draft"),
+  markets: text("markets").array().notNull().default(sql`'{}'::text[]`),   // empty = applies to all markets
+  sourceName: text("source_name"),                                            // original file name, if uploaded
+  currentVersionId: uuid("current_version_id"),
+  chunkCount: integer("chunk_count").notNull().default(0),
+  embedError: text("embed_error"),                                            // last publishing problem, shown to admins
+  createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  archivedAt: timestamp("archived_at", { withTimezone: true })
+}, t => [
+  check("kb_documents_status_check", sql`${t.status} in ('draft', 'published', 'archived')`),
+  index("kb_documents_status_idx").on(t.status, t.updatedAt.desc())
+]).enableRLS();
+
+export const kbVersions = pgTable("kb_versions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  documentId: uuid("document_id").notNull().references(() => kbDocuments.id, { onDelete: "cascade" }),
+  body: text("body").notNull(),
+  createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt: createdAt()
+}, t => [
+  index("kb_versions_document_idx").on(t.documentId, t.createdAt.desc())
+]).enableRLS();
+
+export const kbChunks = pgTable("kb_chunks", {
+  id: bigint("id", { mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
+  documentId: uuid("document_id").notNull().references(() => kbDocuments.id, { onDelete: "cascade" }),
+  versionId: uuid("version_id").notNull().references(() => kbVersions.id, { onDelete: "cascade" }),
+  chunkIndex: integer("chunk_index").notNull(),
+  content: text("content").notNull(),
+  markets: text("markets").array().notNull().default(sql`'{}'::text[]`),
+  embedding: vector("embedding", { dimensions: EMBEDDING_DIMENSIONS }).notNull(),
+  embeddingModel: text("embedding_model").notNull()
+}, t => [
+  index("kb_chunks_embedding_idx").using("hnsw", t.embedding.op("vector_cosine_ops")),
+  index("kb_chunks_document_idx").on(t.documentId)
+]).enableRLS();
+
 // Row types for server code
+export type KbDocument = typeof kbDocuments.$inferSelect;
+export type KbVersion = typeof kbVersions.$inferSelect;
 export type Profile = typeof profiles.$inferSelect;
 export type Conversation = typeof conversations.$inferSelect;
 export type Message = typeof messages.$inferSelect;

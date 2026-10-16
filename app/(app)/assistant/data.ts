@@ -1,8 +1,5 @@
-// Content of the assistant page: market scopes and example questions (same as the original assistant window)
-export const MARKETS = [
-  "All markets", "Nigeria", "Ghana", "Kenya", "South Africa", "Côte d’Ivoire",
-  "Egypt", "Morocco", "Senegal", "Ethiopia", "Tanzania"
-] as const;
+// Content of the assistant page: example questions (same as the original assistant window); markets live in lib/markets.ts
+export { MARKETS } from "@/lib/markets";
 
 export const CHIPS = [
   { label: "Explore a market", q: "What does the market for our product look like?" },
