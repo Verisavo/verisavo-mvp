@@ -4,18 +4,18 @@ import { db } from "@/lib/server/db";
 import { kbChunks, kbDocuments } from "@/db/schema";
 import { ALL_MARKETS } from "@/lib/markets";
 import { searchSetup } from "@/lib/server/ai/settings";
+import { EMBEDDINGS } from "@/lib/server/ai/providers";
 import { embedQuery } from "./embed";
 
 export type KbHit = { documentId: string; title: string; content: string; similarity: number };
 
 // The knowledge-base sections closest to a question, optionally for one market (documents with no market apply
-// everywhere). Weak matches are dropped, so the assistant can say it doesn't know instead of using them.
-// MIN_SIMILARITY is a starting point; tune it with real questions (see the verisavo-assistant-rag skill).
+// everywhere). Matches below the model's minSimilarity (lib/server/ai/providers.ts) are dropped, so the assistant can
+// say it doesn't know instead of using them.
 // Only chunks embedded with the current model are compared (see embed.ts). Callers check searchSetup().problem first.
-const MIN_SIMILARITY = 0.25;
-
 export async function searchKnowledge(question: string, { market = ALL_MARKETS as string, limit = 6 } = {}): Promise<KbHit[]> {
   const { id } = await searchSetup();
+  const minSimilarity = EMBEDDINGS[id].minSimilarity;
   const vector = await embedQuery(id, question);
   const distance = cosineDistance(kbChunks.embedding, vector);
   const forMarket = market && market !== ALL_MARKETS
@@ -32,5 +32,5 @@ export async function searchKnowledge(question: string, { market = ALL_MARKETS a
       .orderBy(distance)
       .limit(limit);
   });
-  return rows.map(r => ({ ...r, similarity: Number(r.similarity) })).filter(r => r.similarity >= MIN_SIMILARITY);
+  return rows.map(r => ({ ...r, similarity: Number(r.similarity) })).filter(r => r.similarity >= minSimilarity);
 }

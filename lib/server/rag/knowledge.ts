@@ -80,7 +80,7 @@ export async function publishDocument(id: string, actorId: string, action = "kb.
     await tx.update(kbDocuments).set({ status: "published", publishedAt: new Date(), archivedAt: null, chunkCount: pieces.length, embedError: null, updatedAt: new Date() }).where(eq(kbDocuments.id, id));
   });
   await audit(action, { actorId, targetType: "kb_document", targetId: id, metadata: { chunks: pieces.length, version: version.id, embeddings: search.id } });
-  return { ok: true, message: `Published: ${pieces.length} ${pieces.length === 1 ? "section" : "sections"} are now searchable.` };
+  return { ok: true, message: `Published: ${pieces.length} ${pieces.length === 1 ? "section is" : "sections are"} now searchable.` };
 }
 
 // Published documents still indexed with another embedding model. Search skips them until they're re-indexed.

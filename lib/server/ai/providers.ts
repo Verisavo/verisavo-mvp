@@ -18,11 +18,14 @@ export const PROVIDERS: Record<ProviderId, { label: string; envKey: string; answ
 
 // Knowledge-search embeddings. Anthropic has no embedding model, so search runs on OpenAI or Gemini. Every option
 // returns EMBEDDING_DIMENSIONS (1536) numbers, so switching needs no database change, only re-indexing.
+// minSimilarity: weaker matches are dropped so the assistant can say it doesn't know. Each model scores on its own
+// scale: Gemini gave unrelated questions 48–55% and related ones 64–74% (dev test, 2026-10-17). OpenAI's 25% is
+// a starting point. Tune both with real questions in "Try a question".
 export const EMBEDDINGS = {
-  "openai:text-embedding-3-small": { provider: "openai", model: "text-embedding-3-small", label: "OpenAI text-embedding-3-small" },
-  "openai:text-embedding-3-large": { provider: "openai", model: "text-embedding-3-large", label: "OpenAI text-embedding-3-large" },
-  "google:gemini-embedding-001": { provider: "google", model: "gemini-embedding-001", label: "Gemini gemini-embedding-001" }
-} as const satisfies Record<string, { provider: ProviderId; model: string; label: string }>;
+  "openai:text-embedding-3-small": { provider: "openai", model: "text-embedding-3-small", label: "OpenAI text-embedding-3-small", minSimilarity: 0.25 },
+  "openai:text-embedding-3-large": { provider: "openai", model: "text-embedding-3-large", label: "OpenAI text-embedding-3-large", minSimilarity: 0.25 },
+  "google:gemini-embedding-001": { provider: "google", model: "gemini-embedding-001", label: "Gemini gemini-embedding-001", minSimilarity: 0.6 }
+} as const satisfies Record<string, { provider: ProviderId; model: string; label: string; minSimilarity: number }>;
 export type EmbeddingId = keyof typeof EMBEDDINGS;
 
 export const isProvider = (v: unknown): v is ProviderId => PROVIDER_IDS.includes(v as ProviderId);

@@ -82,9 +82,9 @@ export function SearchForm({ options, current, stale }: { options: SearchOption[
         <form action={cont} className="grid gap-2 rounded-xl bg-[#FFFAEB] p-3.5 text-sm text-[#93370D]">
           <p>{`${stale} published ${stale === 1 ? "document still uses" : "documents still use"} the previous search model and won't appear in answers until re-indexed.`}</p>
           <div><button className="btn" type="submit" disabled={continuing}>{continuing ? "Re-indexing…" : "Continue re-indexing"}</button></div>
-          <Note state={more} />
         </form>
       )}
+      <Note state={more} />{/* outside the box, which disappears once nothing is left to re-index */}
       <TestButton action={testSearch} label="Test search" />
     </div>
   );
