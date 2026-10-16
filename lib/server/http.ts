@@ -32,7 +32,9 @@ export function cleanEmail(value: unknown): string {
   return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? email : "";
 }
 
-export const cleanText = (value: unknown, max: number): string => String(value ?? "").replace(/\s+/g, " ").trim().slice(0, max);
+// One line of plain text: control characters (Postgres refuses NUL) and runs of whitespace become single spaces
+export const cleanText = (value: unknown, max: number): string =>
+  String(value ?? "").replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 
 // The same rule is configured in Supabase (Authentication -> Providers -> Email), so both sides agree
 export function passwordProblem(password: unknown): string {
