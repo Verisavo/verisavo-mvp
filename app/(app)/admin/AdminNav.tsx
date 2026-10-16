@@ -5,6 +5,7 @@ const LINKS = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/knowledge", label: "Knowledge base" },
+  { href: "/admin/ai", label: "AI settings" },
   { href: "/admin/activity", label: "Activity" }
 ];
 

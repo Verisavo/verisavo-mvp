@@ -5,7 +5,7 @@ import { changeKbStatus, createKbDocument, saveKbDocument, testKbSearch, type Ac
 
 const KB_ACCEPT = ".pdf,.docx,.txt,.md";   // same as lib/server/rag/extract.ts
 
-function Note({ state }: { state: ActionState }) {
+export function Note({ state }: { state: ActionState }) {
   if (!state) return null;
   return <p role="status" className={`text-sm leading-snug ${state.error ? "text-danger" : "text-success"}`}>{state.error || state.ok}</p>;
 }

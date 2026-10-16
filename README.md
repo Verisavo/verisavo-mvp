@@ -75,6 +75,19 @@ Email links open `/auth/confirm`, which only asks the user to press a button. No
 - Add a CAPTCHA (e.g. Cloudflare Turnstile, via Supabase's CAPTCHA protection) to sign-up and forgot-password.
 - Add a Vercel Firewall rate-limit rule on `/api/auth/*`.
 
+## AI services
+
+Answers and knowledge search go through the Vercel AI SDK. An admin chooses the services in **Admin → AI settings**:
+- **Answers:** Claude (Anthropic), OpenAI or Gemini (Google). Any model ID the service offers can be used.
+- **Knowledge search:** OpenAI or Gemini embeddings, because Anthropic has no embedding model.
+  - Every option produces vectors of 1536 numbers, so switching needs no migration.
+  - When the model changes, the page re-indexes the published documents with the new one.
+
+Set a key for each service the admin may choose, in `.env.local` or the hosting env: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`.
+- Use API keys from each service's developer console, on an account the business owns, with a monthly spending limit. Never use a personal Claude Code or ChatGPT login.
+- Keys are never stored in the database.
+- The **Test** buttons send one tiny request to check a key and model work.
+
 `RELEASE_STAGE` switches milestones on in a deployment (see `lib/release.ts`): 1 = accounts and dashboard, up to 5 = everything. Below 1, the sign-in dialog runs the old demo.
 
 ## Pages
@@ -85,7 +98,7 @@ Email links open `/auth/confirm`, which only asks the user to press a button. No
 | `/platform` | Platform page: the question box and sign in. A signed-in user's question opens `/assistant`; signed-out visitors are asked to sign up or sign in first. |
 | `/assistant` | Signed-in users only: the Verisavo Intelligence Assistant, as a window that switches to full screen. `/platform#app` leads here. |
 | `/dashboard` | Signed-in users only: plan and billing, conversations, profile, email and password. |
-| `/admin` | Admins only (everyone else gets a 404): overview, users, knowledge base, activity log. Make someone an admin with `npm run admin:grant -- their@email` (add `--prod` for the live database). |
+| `/admin` | Admins only (everyone else gets a 404): overview, users, knowledge base, AI settings, activity log. Make someone an admin with `npm run admin:grant -- their@email` (add `--prod` for the live database). |
 
 `/about-us`, `/research`, `/contact`, `/pricing` and `/careers` redirect to the matching homepage page. The old file names `/index.html` and `/assistant.html` redirect to `/` and `/platform`.
 
@@ -105,7 +118,8 @@ app/
     app.css               Tailwind + Verisavo colours and fonts
     assistant/            /assistant: the Intelligence Assistant (sign-in only), a window with a full-screen toggle
     dashboard/            /dashboard: plan and billing, conversations, profile, email, password (server actions in actions.ts)
-    admin/                /admin: overview, users, knowledge base (upload, edit, publish, archive, try a question), activity
+    admin/                /admin: overview, users, knowledge base (upload, edit, publish, archive, try a question),
+                          AI settings (which service answers and which one searches), activity
     reset-password/       /reset-password: choose a new password after the reset email
     auth/confirm/         /auth/confirm: where Supabase's email links land; verifies only when the user presses the button
   api/
@@ -132,7 +146,8 @@ lib/
     rate-limit.ts         per-visitor limits for everything that calls Supabase Auth
     recovery.ts           one-time password-reset grants
     admin.ts              requireAdmin() for every admin page and action
-    rag/                  knowledge base: extract (PDF/Word/text), chunk, embed (OpenAI), publish/archive, search
+    ai/                   providers.ts (Claude, OpenAI, Gemini) and settings.ts (the admin's choice of service)
+    rag/                  knowledge base: extract (PDF/Word/text), chunk, embed, publish/archive/re-index, search
 db/
   schema.ts               database tables (Drizzle)
   migrations/             SQL migrations, applied with npm run db:migrate

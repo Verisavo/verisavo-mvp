@@ -10,9 +10,12 @@ import { audit } from "@/lib/server/audit";
 import { cleanText } from "@/lib/server/http";
 import { COUNTRY_MARKETS, ALL_MARKETS } from "@/lib/markets";
 import { ExtractError, extractText, tidyText } from "@/lib/server/rag/extract";
-import { archiveDocument, createDocument, publishDocument, restoreDocument, saveDocument, type KbResult } from "@/lib/server/rag/knowledge";
+import { archiveDocument, createDocument, publishDocument, reindexStale, restoreDocument, saveDocument, type KbResult } from "@/lib/server/rag/knowledge";
 import { searchKnowledge, type KbHit } from "@/lib/server/rag/search";
-import { aiConfigured } from "@/lib/server/rag/embed";
+import { embedQuery } from "@/lib/server/rag/embed";
+import { answerSetup, getAiSettings, saveAiSettings, searchSetup } from "@/lib/server/ai/settings";
+import { describeAiError, EMBEDDINGS, isEmbedding, isProvider, keySet, MODEL_ID, PROVIDERS } from "@/lib/server/ai/providers";
+import { generateText } from "ai";
 
 export type ActionState = { ok?: string; error?: string } | null;
 const UUID = /^[0-9a-f-]{36}$/i;
@@ -89,11 +92,86 @@ export async function testKbSearch(_state: SearchState, formData: FormData): Pro
   const query = cleanText(formData.get("q"), 500);
   const market = String(formData.get("market") ?? ALL_MARKETS);
   if (!query) return { query, hits: [], error: "Type a question first." };
-  if (!aiConfigured()) return { query, hits: [], error: "The AI service isn't set up yet (OPENAI_API_KEY)." };
+  const { problem } = await searchSetup();
+  if (problem) return { query, hits: [], error: problem };
   try {
     return { query, hits: await searchKnowledge(query, { market, limit: 5 }) };
   } catch (err) {
     console.error("[admin/kb] search failed:", err instanceof Error ? err.message : err);
-    return { query, hits: [], error: "Search failed. Please try again." };
+    return { query, hits: [], error: `Search failed. ${describeAiError(err)}` };
+  }
+}
+
+// ---------- AI settings (decision D6): which service answers, which one powers search ----------
+
+export async function saveAnswerSettings(_state: ActionState, formData: FormData): Promise<ActionState> {
+  const admin = await requireAdmin();
+  const provider = formData.get("provider");
+  const model = cleanText(formData.get("model"), 80);
+  if (!isProvider(provider)) return { error: "Choose a service." };
+  if (!keySet(provider)) return { error: `Add ${PROVIDERS[provider].envKey} in the hosting settings first.` };
+  if (!MODEL_ID.test(model)) return { error: "Enter a model ID, e.g. one of the suggestions." };
+  const before = await getAiSettings();
+  await saveAiSettings({ answerProvider: provider, answerModel: model }, admin.id);
+  await audit("ai.answers_change", { actorId: admin.id, targetType: "ai_settings", metadata: { from: `${before.answerProvider}/${before.answerModel}`, to: `${provider}/${model}` } });
+  revalidatePath("/admin/ai");
+  return { ok: `Saved. Answers now come from ${PROVIDERS[provider].label}, ${model}. Press Test to check it works.` };
+}
+
+const reindexMessage = (r: { done: number; failed: number; left: number }) =>
+  r.left ? `${r.done} re-indexed, ${r.left} still to go${r.failed ? ` (${r.failed} failed: see the knowledge base)` : ""}. Press "Continue re-indexing".`
+    : `${r.done ? `All ${r.done} published ${r.done === 1 ? "document is" : "documents are"} re-indexed.` : "Nothing needed re-indexing."}`;
+
+export async function saveSearchSettings(_state: ActionState, formData: FormData): Promise<ActionState> {
+  const admin = await requireAdmin();
+  const id = formData.get("embedding");
+  if (!isEmbedding(id)) return { error: "Choose a search model." };
+  const provider = EMBEDDINGS[id].provider;
+  if (!keySet(provider)) return { error: `Add ${PROVIDERS[provider].envKey} in the hosting settings first.` };
+  const before = await getAiSettings();
+  if (before.saved && before.embeddingId === id) return { ok: "That's already the search model." };
+  await saveAiSettings({ embeddingId: id }, admin.id);
+  await audit("ai.search_change", { actorId: admin.id, targetType: "ai_settings", metadata: { from: before.embeddingId, to: id } });
+  const result = await reindexStale(admin.id);
+  revalidatePath("/admin/ai"); revalidatePath("/admin/knowledge");
+  return { ok: `Saved. Search now uses ${EMBEDDINGS[id].label}. ${reindexMessage(result)}` };
+}
+
+export async function continueReindex(_state: ActionState): Promise<ActionState> {
+  const admin = await requireAdmin();
+  const { problem } = await searchSetup();
+  if (problem) return { error: problem };
+  const result = await reindexStale(admin.id);
+  revalidatePath("/admin/ai"); revalidatePath("/admin/knowledge");
+  return { ok: reindexMessage(result) };
+}
+
+// "Test": one tiny request with the saved choice, so an admin sees straight away whether the key and model work
+export async function testAnswers(_state: ActionState): Promise<ActionState> {
+  await requireAdmin();
+  const setup = await answerSetup();
+  if (!setup.ok) return { error: setup.problem };
+  const started = Date.now();
+  try {
+    const { text } = await generateText({ model: setup.model, prompt: "Reply with the single word OK.", maxOutputTokens: 1000 });
+    return { ok: `Working: ${setup.label} ${setup.modelId} replied${text.trim() ? ` "${text.trim().slice(0, 40)}"` : ""} in ${Date.now() - started} ms.` };
+  } catch (err) {
+    console.error("[admin/ai] answer test failed:", err instanceof Error ? err.message : err);
+    return { error: describeAiError(err) };
+  }
+}
+
+export async function testSearch(_state: ActionState): Promise<ActionState> {
+  await requireAdmin();
+  const { id, problem } = await searchSetup();
+  if (problem) return { error: problem };
+  const started = Date.now();
+  try {
+    const vector = await embedQuery(id, "Test question about Lagos retail prices");
+    if (vector.length !== 1536) return { error: `${EMBEDDINGS[id].label} returned ${vector.length} numbers instead of 1536.` };
+    return { ok: `Working: ${EMBEDDINGS[id].label} answered in ${Date.now() - started} ms.` };
+  } catch (err) {
+    console.error("[admin/ai] search test failed:", err instanceof Error ? err.message : err);
+    return { error: describeAiError(err) };
   }
 }

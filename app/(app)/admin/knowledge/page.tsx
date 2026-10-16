@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { db } from "@/lib/server/db";
 import { kbDocuments } from "@/db/schema";
 import { requireAdmin } from "@/lib/server/admin";
-import { aiConfigured } from "@/lib/server/rag/embed";
+import { searchSetup } from "@/lib/server/ai/settings";
 import { fmtDay } from "../format";
 import { NewDocumentForm, SearchTester } from "./forms";
 
@@ -20,13 +20,14 @@ export default async function AdminKnowledge() {
   await connection();
   await requireAdmin();
   const docs = await db.select().from(kbDocuments).orderBy(desc(kbDocuments.updatedAt)).limit(200);
+  const { problem } = await searchSetup();
 
   return (
     <>
       <div>
         <h1 className="font-serif text-[clamp(1.9rem,1.4rem+1.6vw,2.5rem)] leading-tight font-medium tracking-[-0.03em]">{"Knowledge base"}</h1>
         <p className="mt-1 text-brand-800">{"The approved Verisavo content the Intelligence Assistant answers from. Only published documents are used."}</p>
-        {!aiConfigured() && <p className="mt-3 rounded-xl bg-[#FFFAEB] p-3 text-sm text-[#93370D]">{"The AI service isn't set up yet (OPENAI_API_KEY), so documents can be added and edited but not published or searched."}</p>}
+        {problem && <p className="mt-3 rounded-xl bg-[#FFFAEB] p-3 text-sm text-[#93370D]">{`${problem} Documents can be added and edited, but not published or searched, until it is. See `}<a href="/admin/ai">{"AI settings"}</a>{"."}</p>}
       </div>
 
       <section className="card overflow-x-auto p-0 sm:p-0" aria-label="Documents">

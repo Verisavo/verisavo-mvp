@@ -1,10 +1,12 @@
 import "server-only";
-import { eq } from "drizzle-orm";
+import { eq, ne } from "drizzle-orm";
 import { db } from "@/lib/server/db";
 import { kbChunks, kbDocuments, kbVersions } from "@/db/schema";
 import { audit } from "@/lib/server/audit";
+import { saveAiSettings, searchSetup } from "@/lib/server/ai/settings";
+import type { EmbeddingId } from "@/lib/server/ai/providers";
 import { chunkText } from "./chunk";
-import { aiConfigured, embedTexts, EMBEDDING_MODEL } from "./embed";
+import { embedTexts } from "./embed";
 
 // The knowledge base's lifecycle (M2.5–M2.6): draft → published → archived.
 // Only published documents have chunks, so search can never return a draft or an archived document.
@@ -48,17 +50,19 @@ export async function saveDocument(id: string, fields: Fields, actorId: string):
 }
 
 // Chunk and embed the current version, then swap its chunks in, in one transaction (search never sees half a document)
-export async function publishDocument(id: string, actorId: string): Promise<KbResult> {
+export async function publishDocument(id: string, actorId: string, action = "kb.publish"): Promise<KbResult> {
   const doc = await getDocument(id);
   if (!doc || !doc.currentVersionId) return { ok: false, error: "This document no longer exists." };
-  if (!aiConfigured()) return { ok: false, error: "The AI service isn't set up yet (OPENAI_API_KEY), so documents can't be published." };
+  const search = await searchSetup();
+  if (search.problem) return { ok: false, error: `${search.problem} Documents can't be published until it is (see AI settings).` };
+  if (!search.saved) await saveAiSettings({}, actorId);   // pin the automatic choice once something is indexed with it
   const [version] = await db.select().from(kbVersions).where(eq(kbVersions.id, doc.currentVersionId)).limit(1);
   const pieces = chunkText(doc.title, version?.body ?? "");
   if (!pieces.length) return { ok: false, error: "The document has no text to publish." };
 
   let vectors: number[][];
   try {
-    vectors = await embedTexts(pieces);
+    vectors = await embedTexts(search.id, pieces);
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);
     console.error("[kb/publish] embedding failed:", detail);
@@ -70,13 +74,33 @@ export async function publishDocument(id: string, actorId: string): Promise<KbRe
     await tx.delete(kbChunks).where(eq(kbChunks.documentId, id));
     for (let i = 0; i < pieces.length; i += 100) {
       await tx.insert(kbChunks).values(pieces.slice(i, i + 100).map((content, k) => ({
-        documentId: id, versionId: version.id, chunkIndex: i + k, content, markets: doc.markets, embedding: vectors[i + k], embeddingModel: EMBEDDING_MODEL
+        documentId: id, versionId: version.id, chunkIndex: i + k, content, markets: doc.markets, embedding: vectors[i + k], embeddingModel: search.id
       })));
     }
     await tx.update(kbDocuments).set({ status: "published", publishedAt: new Date(), archivedAt: null, chunkCount: pieces.length, embedError: null, updatedAt: new Date() }).where(eq(kbDocuments.id, id));
   });
-  await audit("kb.publish", { actorId, targetType: "kb_document", targetId: id, metadata: { chunks: pieces.length, version: version.id } });
+  await audit(action, { actorId, targetType: "kb_document", targetId: id, metadata: { chunks: pieces.length, version: version.id, embeddings: search.id } });
   return { ok: true, message: `Published: ${pieces.length} ${pieces.length === 1 ? "section" : "sections"} are now searchable.` };
+}
+
+// Published documents still indexed with another embedding model. Search skips them until they're re-indexed.
+export async function staleDocumentIds(current: EmbeddingId): Promise<string[]> {
+  const rows = await db.selectDistinct({ id: kbChunks.documentId }).from(kbChunks).where(ne(kbChunks.embeddingModel, current));
+  return rows.map(r => r.id);
+}
+
+// After the search service changes: re-index stale documents until the time budget runs out (one request stays well
+// inside the page's 60-second limit); the admin presses "Continue" for the rest.
+export async function reindexStale(actorId: string, budgetMs = 40_000): Promise<{ done: number; failed: number; left: number }> {
+  const { id, problem } = await searchSetup();
+  if (problem) return { done: 0, failed: 0, left: (await staleDocumentIds(id)).length };
+  const started = Date.now();
+  let done = 0, failed = 0;
+  for (const docId of await staleDocumentIds(id)) {
+    if (Date.now() - started > budgetMs) break;
+    if ((await publishDocument(docId, actorId, "kb.reindex")).ok) done++; else failed++;
+  }
+  return { done, failed, left: (await staleDocumentIds(id)).length };
 }
 
 // Archiving takes the document out of search immediately; its text and versions are kept

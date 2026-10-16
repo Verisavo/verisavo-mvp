@@ -2,7 +2,7 @@
 // then `npm run db:migrate` to apply it. Every table enables RLS: our server connects as the table owner
 // and is not affected, but nothing is readable through Supabase's public API.
 import { sql } from "drizzle-orm";
-import { bigint, check, index, integer, jsonb, pgTable, text, timestamp, uuid, vector } from "drizzle-orm/pg-core";
+import { bigint, check, index, integer, jsonb, pgTable, smallint, text, timestamp, uuid, vector } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
@@ -65,7 +65,7 @@ export const auditEvents = pgTable("audit_events", {
 // M2: the knowledge base. A document has versions (each edit is a new version). Publishing splits the current
 // version into chunks and stores their embeddings in kb_chunks. Only published documents have chunks, so search never
 // needs a status check, and archiving a document deletes its chunks.
-export const EMBEDDING_DIMENSIONS = 1536;   // must match EMBEDDING_MODEL in lib/server/rag/embed.ts
+export const EMBEDDING_DIMENSIONS = 1536;   // every option in EMBEDDINGS (lib/server/ai/providers.ts) is asked for this size
 
 export const kbDocuments = pgTable("kb_documents", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -108,6 +108,20 @@ export const kbChunks = pgTable("kb_chunks", {
 }, t => [
   index("kb_chunks_embedding_idx").using("hnsw", t.embedding.op("vector_cosine_ops")),
   index("kb_chunks_document_idx").on(t.documentId)
+]).enableRLS();
+
+// M2: which AI service answers questions and which one powers knowledge search, chosen in Admin → AI (decision D6).
+// A single row. The keys are never stored here; they live in the hosting environment.
+export const aiSettings = pgTable("ai_settings", {
+  id: smallint("id").primaryKey().default(1),
+  answerProvider: text("answer_provider").notNull(),
+  answerModel: text("answer_model").notNull(),
+  embeddingModel: text("embedding_model").notNull(),   // an EMBEDDINGS key, e.g. "openai:text-embedding-3-small"
+  updatedBy: uuid("updated_by").references(() => profiles.id, { onDelete: "set null" }),
+  updatedAt: updatedAt()
+}, t => [
+  check("ai_settings_single_row", sql`${t.id} = 1`),
+  check("ai_settings_answer_provider_check", sql`${t.answerProvider} in ('anthropic', 'openai', 'google')`)
 ]).enableRLS();
 
 // Row types for server code

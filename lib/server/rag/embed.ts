@@ -1,19 +1,19 @@
 import "server-only";
 import { embed, embedMany } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { EMBEDDING_DIMENSIONS } from "@/db/schema";
+import { EMBEDDINGS, embeddingModel, type EmbeddingId } from "@/lib/server/ai/providers";
 
-// OpenAI embeddings through the Vercel AI SDK (decision D6). The model's size must equal EMBEDDING_DIMENSIONS in
-// db/schema.ts (1536); changing the model means re-publishing every document.
-export const EMBEDDING_MODEL = "text-embedding-3-small";
+// Knowledge-base embeddings from the service chosen in Admin → AI (decision D6). Vectors from different models can't be
+// compared, so each chunk records its model, search only uses chunks from the current one, and switching re-indexes.
+const options = (id: EmbeddingId, task: "RETRIEVAL_DOCUMENT" | "RETRIEVAL_QUERY") =>
+  EMBEDDINGS[id].provider === "google" ? { google: { taskType: task } } : undefined;
 
-export const aiConfigured = (): boolean => Boolean(process.env.OPENAI_API_KEY);
-
-export async function embedTexts(values: string[]): Promise<number[][]> {
-  const { embeddings } = await embedMany({ model: openai.embeddingModel(EMBEDDING_MODEL), values, maxParallelCalls: 2 });
+export async function embedTexts(id: EmbeddingId, values: string[]): Promise<number[][]> {
+  const { embeddings } = await embedMany({ model: embeddingModel(id), values, dimensions: EMBEDDING_DIMENSIONS, providerOptions: options(id, "RETRIEVAL_DOCUMENT"), maxParallelCalls: 2 });
   return embeddings;
 }
 
-export async function embedQuery(value: string): Promise<number[]> {
-  const { embedding } = await embed({ model: openai.embeddingModel(EMBEDDING_MODEL), value });
+export async function embedQuery(id: EmbeddingId, value: string): Promise<number[]> {
+  const { embedding } = await embed({ model: embeddingModel(id), value, dimensions: EMBEDDING_DIMENSIONS, providerOptions: options(id, "RETRIEVAL_QUERY") });
   return embedding;
 }
