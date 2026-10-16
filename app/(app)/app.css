@@ -1,0 +1,55 @@
+/* Tailwind for the app pages only (assistant, dashboard, reset password, later admin).
+   The landing page keeps its own CSS: Tailwind's base reset would change its design.
+   source(none) + @source "./" means only the files in this route group are scanned for classes. */
+@import "tailwindcss" source(none);
+@source "./";
+
+/* dark: utilities apply inside an element with .theme-dark (the assistant's chat area), not the whole page */
+@custom-variant dark (&:where(.theme-dark, .theme-dark *));
+
+@theme {
+  --color-ink: #1F273F;
+  --color-brand-100: #E3EBF8;
+  --color-brand-200: #CCDDF1;
+  --color-brand-300: #A8C6E8;
+  --color-brand-400: #80AADC;
+  --color-brand-500: #618CD0;
+  --color-brand-600: #4D74C3;
+  --color-brand-700: #4362B2;
+  --color-brand-800: #3A5292;
+  --color-canvas: #F5F8FD;
+  --color-danger: #B42318;
+  --color-success: #067647;
+  --font-sans: "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --animate-rise: rise .3s cubic-bezier(.2, .7, .2, 1);
+  --animate-blink: blink 1s infinite;
+
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes blink { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+}
+
+@layer base {
+  body { @apply bg-canvas font-sans text-ink antialiased; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-brand-600; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  /* account pages */
+  .btn { @apply inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-ink px-4 text-sm font-semibold whitespace-nowrap text-white no-underline transition-colors hover:bg-brand-800 disabled:cursor-default disabled:opacity-60; }
+  .btn-ghost { @apply border-brand-200 bg-white text-ink hover:border-brand-500 hover:bg-white; }
+  .card { @apply grid min-w-0 content-start gap-3.5 rounded-2xl border border-brand-200 bg-white p-5 sm:p-6; }
+  .eyebrow { @apply text-xs font-semibold tracking-[0.08em] text-brand-700 uppercase; }
+  .label { @apply text-[13px] font-semibold; }
+  .input { @apply min-h-11 w-full rounded-[10px] border border-brand-200 bg-white px-3.5 text-base text-ink placeholder:text-brand-500 focus:border-brand-600 focus:ring-4 focus:ring-brand-100 focus:outline-none read-only:bg-canvas read-only:text-brand-800; }
+  .hint { @apply text-xs text-brand-600; }
+
+  /* assistant: line icons, icon buttons and pop-up menus */
+  .vi { @apply size-[18px] flex-none fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.5]; }
+  .ib { @apply grid size-[34px] flex-none cursor-pointer place-items-center rounded-lg border-0 bg-transparent text-brand-800 hover:bg-brand-200 hover:text-ink aria-expanded:bg-brand-200 aria-expanded:text-ink dark:text-brand-200 dark:hover:bg-[rgba(227,235,248,.1)] dark:hover:text-white dark:aria-expanded:bg-[rgba(227,235,248,.1)] dark:aria-expanded:text-white; }
+  .pop { @apply absolute top-[calc(100%+6px)] left-0 z-30 m-0 grid max-h-80 min-w-[190px] list-none gap-0.5 overflow-y-auto rounded-xl border border-brand-200 bg-white p-1.5 shadow-[0_18px_40px_-18px_#3A5292]; }
+  .pop-item { @apply block w-full cursor-pointer rounded-lg border-0 bg-transparent px-2.5 py-[9px] text-left text-sm leading-tight font-medium text-ink no-underline hover:bg-brand-100 focus-visible:bg-brand-100 focus-visible:outline-none aria-checked:bg-brand-100 aria-checked:font-semibold; }
+}

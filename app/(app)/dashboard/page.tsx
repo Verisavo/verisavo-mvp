@@ -1,0 +1,109 @@
+import type { Metadata } from "next";
+import { desc, eq } from "drizzle-orm";
+import { notFound } from "next/navigation";
+import { connection } from "next/server";
+import { released } from "@/lib/release";
+import { PLAN } from "@/lib/plan";
+import { requireUser } from "@/lib/server/auth";
+import { db } from "@/lib/server/db";
+import { conversations } from "@/db/schema";
+import AccountHeader from "../AccountHeader";
+import { signOutAction } from "./actions";
+import { DeleteConversation, EmailForm, PasswordForm, ProfileForm } from "./forms";
+
+export const metadata: Metadata = {
+  title: "Your dashboard · Verisavo",
+  robots: { index: false, follow: false }
+};
+
+const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+// The user's workspace (M1.4): plan and billing, conversations, profile, email and password
+export default async function DashboardPage() {
+  await connection();   // always render per request, never prerender at build time
+  if (!released(1)) notFound();
+  const user = await requireUser();
+  const convs = await db
+    .select({ id: conversations.id, title: conversations.title, updatedAt: conversations.updatedAt })
+    .from(conversations)
+    .where(eq(conversations.userId, user.id))
+    .orderBy(desc(conversations.updatedAt))
+    .limit(50);
+  const firstName = user.profile.name.split(" ")[0];
+
+  return (
+    <>
+      <AccountHeader>
+        <nav className="flex items-center gap-2" aria-label="Account">
+          <a className="btn max-sm:hidden" href="/assistant">{"Ask Verisavo"}</a>
+          <form action={signOutAction}><button className="btn btn-ghost" type="submit">{"Sign out"}</button></form>
+        </nav>
+      </AccountHeader>
+
+      <main className="mx-auto grid max-w-5xl gap-6 px-5 pt-7 pb-20 sm:pt-10">
+        <div>
+          <h1 className="font-serif text-[clamp(2rem,1.4rem+2vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.03em]">
+            {firstName ? `Hello ${firstName}.` : "Your dashboard"}
+          </h1>
+          <p className="mt-2 text-brand-800">{"Your Verisavo workspace: conversations, plan and account settings."}</p>
+        </div>
+
+        <div className="grid items-start gap-6 md:grid-cols-2">
+          <section className="card" aria-labelledby="plan-h">
+            <p className="eyebrow">{"Plan & billing"}</p>
+            <h2 id="plan-h" className="flex flex-wrap items-center gap-2.5">
+              <span className="font-serif text-3xl leading-none font-medium tracking-tight">{"Free"}</span>
+              <span className="rounded-full bg-brand-100 px-2.5 py-1 text-xs font-semibold text-brand-800">{"Current plan"}</span>
+            </h2>
+            <dl className="grid gap-2 text-[15px]">
+              <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Included"}</dt><dd>{`${PLAN.FREE_QUESTIONS} free questions`}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Channels"}</dt><dd>{"Web"}</dd></div>
+            </dl>
+            <hr className="border-brand-100" />
+            <p className="text-sm leading-snug">{`Verisavo Monthly adds ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month across web and WhatsApp, file and image uploads, and PDF reports.`}</p>
+            {!released(3) && <p className="hint">{"Upgrading opens soon. Your invoices and billing settings will appear here."}</p>}
+          </section>
+
+          <section className="card" aria-labelledby="profile-h">
+            <p className="eyebrow">{"Profile"}</p>
+            <h2 id="profile-h" className="text-[17px] font-semibold">{"Your details"}</h2>
+            <ProfileForm name={user.profile.name} organisation={user.profile.organisation} />
+          </section>
+
+          <section className="card md:col-span-2" aria-labelledby="conv-h">
+            <p className="eyebrow">{"Conversations"}</p>
+            <h2 id="conv-h" className="text-[17px] font-semibold">{"Your questions to the Intelligence Assistant"}</h2>
+            {convs.length ? (
+              <ul className="grid divide-y divide-brand-100">
+                {convs.map(c => (
+                  <li key={c.id} className="flex items-center gap-3 py-3 first:pt-0">
+                    <span className="min-w-0 flex-1 truncate font-medium" title={c.title}>{c.title}</span>
+                    <time className="text-[13px] whitespace-nowrap text-brand-800" dateTime={c.updatedAt.toISOString()}>{day.format(c.updatedAt)}</time>
+                    <DeleteConversation id={c.id} title={c.title} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="rounded-xl bg-canvas p-4 text-[15px] text-brand-800">
+                {"No conversations yet. Your questions and answers will be saved here. "}
+                <a className="font-semibold text-ink" href="/assistant">{"Ask your first question"}</a>
+              </p>
+            )}
+          </section>
+
+          <section className="card" aria-labelledby="email-h">
+            <p className="eyebrow">{"Sign-in email"}</p>
+            <h2 id="email-h" className="text-[17px] font-semibold">{"Email address"}</h2>
+            <EmailForm email={user.email} />
+          </section>
+
+          <section className="card" aria-labelledby="pw-h">
+            <p className="eyebrow">{"Security"}</p>
+            <h2 id="pw-h" className="text-[17px] font-semibold">{"Password"}</h2>
+            <PasswordForm />
+          </section>
+        </div>
+      </main>
+    </>
+  );
+}

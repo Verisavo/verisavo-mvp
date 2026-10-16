@@ -75,6 +75,8 @@ export default function AssistantWindow() {
                 {" "}
                 <button type="button" role="menuitem" data-legal="terms">{"Terms of Service"}</button>
                 {" "}
+                <button type="button" role="menuitem" id="va-dashboard" hidden>{"Your dashboard"}</button>
+                {" "}
                 <button type="button" role="menuitem" id="va-signout">{"Sign out"}</button>
                 {" "}
               </div>

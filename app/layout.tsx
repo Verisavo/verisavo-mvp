@@ -1,10 +1,14 @@
-export const viewport = {
+import type { ReactNode } from "react";
+import type { Viewport } from "next";
+import { releaseStage } from "@/lib/release";
+
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover"
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <head>
@@ -13,7 +17,8 @@ export default function RootLayout({ children }) {
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" />
       </head>
-      <body>{children}</body>
+      {/* data-release tells the page scripts which milestones are live (see lib/release.ts) */}
+      <body data-release={releaseStage}>{children}</body>
     </html>
   );
 }
