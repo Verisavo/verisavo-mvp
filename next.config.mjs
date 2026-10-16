@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // knowledge-base uploads go through a server action; the hosting platform caps a request at about 4.5 MB
-    serverActions: { bodySizeLimit: "4mb" }
+    // knowledge-base uploads go through a server action; the hosting platform caps a request at about 4.5 MB.
+    // Files are limited to 4 MB (lib/server/rag/extract.ts), so the form's other fields still fit.
+    serverActions: { bodySizeLimit: "4.5mb" }
   },
   async redirects() {
     // old static file names, and tidy paths for the pages that open over the homepage scene

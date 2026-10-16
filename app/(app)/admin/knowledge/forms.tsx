@@ -1,9 +1,10 @@
 "use client";
-import { useActionState, type FormEvent } from "react";
+import { useActionState, useState, type FormEvent } from "react";
 import { MARKETS, COUNTRY_MARKETS } from "@/lib/markets";
 import { changeKbStatus, createKbDocument, saveKbDocument, testKbSearch, type ActionState, type SearchState } from "../actions";
 
 const KB_ACCEPT = ".pdf,.docx,.txt,.md";   // same as lib/server/rag/extract.ts
+const KB_MAX_BYTES = 4 * 1024 * 1024;     // same as lib/server/rag/extract.ts
 
 export function Note({ state }: { state: ActionState }) {
   if (!state) return null;
@@ -28,8 +29,16 @@ function MarketPicker({ selected = [] }: { selected?: string[] }) {
 
 export function NewDocumentForm() {
   const [state, action, pending] = useActionState(createKbDocument, null);
+  const [tooBig, setTooBig] = useState(false);
+  // a file over the limit would be cut off before it reaches the server, so stop it here with a clear message
+  const checkSize = (e: FormEvent<HTMLFormElement>) => {
+    const file = new FormData(e.currentTarget).get("file");
+    const over = file instanceof File && file.size > KB_MAX_BYTES;
+    setTooBig(over);
+    if (over) e.preventDefault();
+  };
   return (
-    <form action={action} className="grid gap-4">
+    <form action={action} onSubmit={checkSize} className="grid gap-4">
       <div className="grid gap-1.5">
         <label className="label" htmlFor="kb-title">{"Title "}<span className="font-normal text-brand-600">{"(optional for uploads: the file name is used)"}</span></label>
         <input className="input" id="kb-title" name="title" maxLength={200} placeholder="e.g. Nigeria FMCG distribution, 2026" />
@@ -49,7 +58,7 @@ export function NewDocumentForm() {
         <button className="btn" type="submit" disabled={pending}>{pending ? "Reading the document…" : "Add as draft"}</button>
         <span className="hint">{"Drafts aren't used in answers until you publish them."}</span>
       </div>
-      <Note state={state} />
+      <Note state={tooBig ? { error: "That file is larger than 4 MB. Split it, or paste its text instead." } : state} />
     </form>
   );
 }

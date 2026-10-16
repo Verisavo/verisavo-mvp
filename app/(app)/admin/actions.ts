@@ -50,7 +50,7 @@ export async function createKbDocument(_state: ActionState, formData: FormData):
       return { error: "We couldn't read that file. Try another format, or paste the text instead." };
     }
   }
-  if (!body) return { error: "Upload a file or paste the document's text." };
+  if (!body) return { error: sourceName ? "We couldn't find any text in that file. Scanned PDFs have no text: paste it instead." : "Upload a file or paste the document's text." };
   if (body.length > MAX_BODY) return { error: "That document is too long. Split it into smaller documents." };
   const title = cleanText(formData.get("title"), 200) || cleanText(sourceName?.replace(/\.[a-z0-9]+$/i, ""), 200) || "Untitled document";
   const id = await createDocument({ title, body, markets: marketsFrom(formData), sourceName }, admin.id);
