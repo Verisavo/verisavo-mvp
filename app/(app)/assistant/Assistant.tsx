@@ -197,7 +197,7 @@ export default function Assistant({ user }: { user: AssistantUser }) {
       <aside
         id="va-side"
         aria-label="Assistant navigation"
-        className={`flex min-w-0 flex-col gap-1 overflow-x-hidden overflow-y-auto border-r border-brand-200 bg-brand-100 px-3 pt-4 pb-3.5 max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-40 max-md:w-[min(290px,84%)] max-md:transition-transform max-md:duration-300 ${drawer ? "max-md:translate-x-0 max-md:shadow-[20px_0_40px_-30px_#1F273F]" : "max-md:-translate-x-[102%]"} ${collapsed ? "md:invisible" : ""}`}
+        className={`flex min-w-0 flex-col gap-1 overflow-hidden border-r border-brand-200 bg-brand-100 px-3 pt-4 pb-3.5 max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-40 max-md:w-[min(290px,84%)] max-md:transition-transform max-md:duration-300 ${drawer ? "max-md:translate-x-0 max-md:shadow-[20px_0_40px_-30px_#1F273F]" : "max-md:-translate-x-[102%]"} ${collapsed ? "md:invisible" : ""}`}
       >
         <div className="flex items-center justify-between px-1.5 pt-0.5 pb-2.5">
           <a href="/" title="Verisavo home" className="text-[19px] leading-none font-bold tracking-[-0.02em] text-ink no-underline">{"Verisavo"}</a>
@@ -232,7 +232,8 @@ export default function Assistant({ user }: { user: AssistantUser }) {
 
         <p className="mx-3 mt-8 mb-1 border-t border-brand-200 pt-4 text-xs leading-none font-semibold text-brand-700">{"Recent"}</p>
         {recent.length ? (
-          <ul className="m-0 grid min-w-0 list-none gap-0.5 p-0">
+          // only the list scrolls, with its scrollbar hidden: the buttons above and the account row below stay put
+          <ul className="m-0 grid min-h-0 min-w-0 flex-1 list-none content-start gap-0.5 overflow-x-hidden overflow-y-auto p-0 [scrollbar-width:none] [&_button:focus-visible]:outline-offset-[-2px] [&::-webkit-scrollbar]:hidden">
             {recent.map(c => (
               <li key={c.id} className="min-w-0">
                 <button type="button" title={c.title} aria-current={c.id === curId ? "true" : undefined} onClick={() => { setCurId(c.id); afterNav(); focusInput(); }}
