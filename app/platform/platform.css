@@ -3,9 +3,9 @@
   --indigo: #1F273F; --white: #FFFFFF;
   --b100: #E3EBF8; --b200: #CCDDF1; --b300: #A8C6E8; --b400: #80AADC; --b500: #618CD0; --b600: #4D74C3; --b700: #4362B2; --b800: #3A5292;
   --fg: var(--indigo); --muted: var(--b800); --accent: var(--b700); --line: var(--b200);
-  --sans: "Geist", "Helvetica Neue", Arial, sans-serif;
-  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
-  --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sans: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Poppins", "Helvetica Neue", Arial, sans-serif;
   --h1: clamp(2.4rem, 1.4rem + 3.8vw, 4rem);
   --h2: clamp(1.9rem, 1.3rem + 2vw, 2.75rem);
   --ease: cubic-bezier(.2,.7,.2,1);

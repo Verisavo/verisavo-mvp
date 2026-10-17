@@ -3,8 +3,8 @@
   --indigo: #1F273F; --white: #FFFFFF; --paper: #F5F8FC;
   --b100: #E3EBF8; --b200: #CCDDF1; --b300: #A8C6E8; --b400: #80AADC; --b500: #618CD0; --b600: #4D74C3; --b700: #4362B2; --b800: #3A5292;
   --dark: rgba(31,39,63,.9);
-  --sans: "Geist", "Helvetica Neue", Arial, sans-serif;
-  --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sans: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Poppins", "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(.2,.7,.2,1);
   --left: clamp(20px, 8vw, 150px);
   color-scheme: light;

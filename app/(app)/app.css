@@ -20,8 +20,9 @@
   --color-canvas: #F5F8FD;
   --color-danger: #B42318;
   --color-success: #067647;
-  --font-sans: "Geist", "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Poppins", "Helvetica Neue", Arial, sans-serif;
   --animate-rise: rise .3s cubic-bezier(.2, .7, .2, 1);
   --animate-blink: blink 1s infinite;
 
