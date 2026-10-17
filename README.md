@@ -96,6 +96,10 @@ The plan is Verisavo Monthly: 100 messages per billing period, shared across web
    - Create the product "Verisavo Monthly" with one recurring monthly price ($5), and put the price ID in `STRIPE_PRICE_MONTHLY`.
    - Put the secret key in `STRIPE_SECRET_KEY`.
    - Turn on the **Customer portal** (Settings → Billing → Customer portal) with cancelling, updating the payment method and invoice history.
+     - Set cancellation to **at the end of the billing period**. Immediate cancellation lets someone cancel and resubscribe for a fresh 100 messages.
+     - Leave plan switching **off**, because there is only one plan.
+   - Under Settings → Billing → Subscriptions → Manage failed payments, choose **cancel the subscription** once all retries fail.
+     - The app treats a past-due subscription as paid for at most 21 days anyway.
 2. Webhook:
    - **Local:** run `stripe listen --forward-to localhost:3000/api/stripe/webhook` and put the `whsec_…` it prints in `STRIPE_WEBHOOK_SECRET`.
    - **Live:** add an endpoint at `https://<site>/api/stripe/webhook` with API version `2026-09-30.endive` (the version the installed `stripe` package uses). Subscribe it to `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` and `invoice.payment_failed`, and use that endpoint's own signing secret.

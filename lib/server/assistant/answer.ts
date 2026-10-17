@@ -73,15 +73,17 @@ function providerOptionsFor(provider: ProviderId): PreparedAnswer["providerOptio
   return provider === "anthropic" ? { anthropic: { thinking: { type: "adaptive" } } } : undefined;
 }
 
-export async function prepareAnswer({ userId, conversationId, question, market, attachmentIds = [] }:
-  { userId: string; conversationId: string | null; question: string; market: string; attachmentIds?: string[] }): Promise<PreparedAnswer> {
+// withFiles: the user's plan includes uploads; a former subscriber's old files stay out of new answers
+export async function prepareAnswer({ userId, conversationId, question, market, attachmentIds = [], withFiles }:
+  { userId: string; conversationId: string | null; question: string; market: string; attachmentIds?: string[]; withFiles: boolean }): Promise<PreparedAnswer> {
   const setup = await answerSetup();
   if (!setup.ok) throw new AssistantUnavailable(setup.problem);
   const search = await searchSetup();
   if (search.problem) throw new AssistantUnavailable(search.problem);
 
   const [history, hits, files] = await Promise.all([
-    recentHistory(conversationId), searchKnowledge(question, { market, limit: 6 }), attachmentsForPrompt(userId, conversationId, attachmentIds)
+    recentHistory(conversationId), searchKnowledge(question, { market, limit: 6 }),
+    withFiles ? attachmentsForPrompt(userId, conversationId, attachmentIds) : Promise.resolve({ documents: [], images: [], names: [] })
   ]);
   const scope = market === ALL_MARKETS ? "all African markets" : market;
   const sources = [...new Map(hits.map(h => [h.documentId, { documentId: h.documentId, title: h.title }])).values()];

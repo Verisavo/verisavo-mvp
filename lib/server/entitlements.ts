@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { db } from "@/lib/server/db";
 import { freeUsage, subscriptions, usageEvents, usagePeriods } from "@/db/schema";
 import { PLAN, type UsageView } from "@/lib/plan";
@@ -21,12 +21,17 @@ export type Entitlements = {
   features: Record<Feature, boolean>;
 };
 
-// Decision D9: access continues while Stripe retries a failed payment (past_due); unpaid or canceled ends it
-const PAID_STATUSES = ["active", "trialing", "past_due"];
+// Who is paid, as a condition on the subscriptions table (also used by the admin pages):
+// - active or trialing, up to 3 days past the period end (a renewal webhook can be late; it shouldn't cut anyone off,
+//   but a cancellation the webhook never delivered can't keep someone paid for ever either)
+// - past_due (decision D9: Stripe is retrying a failed payment) for at most 21 days into the period
+// unpaid and canceled never count. Constant SQL, no user input.
+export const PAID_SQL = sql.raw(`((status in ('active', 'trialing') and current_period_end > now() - interval '3 days')
+  or (status = 'past_due' and current_period_start > now() - interval '21 days'))`);
 
 async function currentSubscription(userId: string) {
   const [sub] = await db.select().from(subscriptions)
-    .where(and(eq(subscriptions.userId, userId), inArray(subscriptions.status, PAID_STATUSES)))
+    .where(and(eq(subscriptions.userId, userId), PAID_SQL))
     .orderBy(desc(subscriptions.currentPeriodEnd)).limit(1);
   return sub ?? null;
 }

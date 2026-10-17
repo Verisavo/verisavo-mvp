@@ -8,7 +8,7 @@ import fontkit from "@pdf-lib/fontkit";
 // site's own font (OFL, lib/server/pdf/fonts). next.config.mjs includes the font files in the deployed route.
 
 export type ReportItem = { question: string; answer: string; market: string | null; files: string[] };
-export type Report = { title: string; preparedFor: string; items: ReportItem[]; date: Date };
+export type Report = { title: string; preparedFor: string; items: ReportItem[]; date: Date; shortened?: boolean };
 
 const INK = rgb(0x1f / 255, 0x27 / 255, 0x3f / 255);
 const BRAND_800 = rgb(0x3a / 255, 0x52 / 255, 0x92 / 255);
@@ -33,19 +33,34 @@ function printable(text: string, charset: Set<number>): string {
   return out;
 }
 
-function wrap(text: string, font: PDFFont, size: number, width: number): string[] {
+// Text width as the sum of cached per-character widths: linear in the text, where measuring whole prefixes again and
+// again was cubic for very long words. Kerning is ignored, so lines keep a small margin.
+function measurer(font: PDFFont, size: number) {
+  const cache = new Map<string, number>();
+  return (s: string) => {
+    let w = 0;
+    for (const ch of s) {
+      let c = cache.get(ch);
+      if (c === undefined) { c = font.widthOfTextAtSize(ch, size); cache.set(ch, c); }
+      w += c;
+    }
+    return w;
+  };
+}
+
+function wrap(text: string, measure: (s: string) => number, width: number): string[] {
   const lines: string[] = [];
-  let line = "";
+  const space = measure(" ");
+  let line = "", lineW = 0;
   for (const word of text.split(/ +/)) {
-    const next = line ? `${line} ${word}` : word;
-    if (font.widthOfTextAtSize(next, size) <= width) { line = next; continue; }
-    if (line) lines.push(line);
-    line = word;
-    while (font.widthOfTextAtSize(line, size) > width) {   // a word longer than the line: cut it
-      let cut = line.length - 1;
-      while (cut > 1 && font.widthOfTextAtSize(line.slice(0, cut), size) > width) cut--;
-      lines.push(line.slice(0, cut));
-      line = line.slice(cut);
+    const w = measure(word);
+    if (line && lineW + space + w <= width) { line += " " + word; lineW += space + w; continue; }
+    if (line) { lines.push(line); line = ""; lineW = 0; }
+    if (w <= width) { line = word; lineW = w; continue; }
+    for (const ch of word) {   // a word longer than the line: cut it
+      const cw = measure(ch);
+      if (line && lineW + cw > width) { lines.push(line); line = ""; lineW = 0; }
+      line += ch; lineW += cw;
     }
   }
   lines.push(line);
@@ -76,9 +91,12 @@ export async function buildReport(report: Report): Promise<Uint8Array> {
   };
   // draws wrapped text, starting a new page whenever the next line wouldn't fit
   type Style = { font?: PDFFont; size?: number; lead?: number; color?: typeof INK; indent?: number; hang?: number };
+  const measurers = new Map<string, (s: string) => number>();
   const write = (text: string, { font = regular, size = 10.5, lead, color = INK, indent = 0, hang = 0 }: Style = {}) => {
     lead ??= size * 1.48;
-    const lines = wrap(printable(text, charset), font, size, W - 2 * MX - indent - hang);
+    const key = `${font === semi ? "s" : "r"}${size}`;
+    if (!measurers.has(key)) measurers.set(key, measurer(font, size));
+    const lines = wrap(printable(text, charset), measurers.get(key)!, W - 2 * MX - indent - hang - 2);
     lines.forEach((ln, i) => {
       if (y - lead < BOTTOM) newPage();
       y -= lead;
@@ -120,6 +138,8 @@ export async function buildReport(report: Report): Promise<Uint8Array> {
       gap(6);
     }
   });
+
+  if (report.shortened) { gap(8); write("This conversation is too long for one report, so its later questions were left out. Download single answers for those.", { size: 9.5, color: BRAND_800 }); }
 
   // footer on every page, once the page count is known
   const pages = pdf.getPages();

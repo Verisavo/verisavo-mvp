@@ -151,7 +151,7 @@ function PlanCard({ ent, checkout }: { ent: Entitlements; checkout: "success" | 
       ) : (
         <>
           <p className="text-sm leading-snug">{`Verisavo Monthly (${PLAN.PRICE_TEXT}) gives you ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month across web and WhatsApp, file and image uploads, and PDF reports.`}</p>
-          <BillingButton kind="subscribe" label={`Subscribe · ${PLAN.PRICE_TEXT}`} />
+          {checkout !== "success" && <BillingButton kind="subscribe" label={`Subscribe · ${PLAN.PRICE_TEXT}`} />}
         </>
       )}
     </section>

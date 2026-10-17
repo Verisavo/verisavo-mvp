@@ -46,8 +46,8 @@ export async function POST(request: Request) {
   if (conversationId && !(await ownsConversation(user.id, conversationId))) return notFound();
 
   // paid-only features are refused before anything is counted; files must be the user's own
+  const ent = await getEntitlements(user.id);
   if (attachmentIds.length) {
-    const ent = await getEntitlements(user.id);
     if (!ent.features.uploads) return blocked("feature_requires_subscription", ent);
     if (!(await claimAttachments(user.id, attachmentIds, conversationId))) return json({ error: "invalid_attachments", message: "One of the files is no longer available. Remove it and attach it again." }, 400);
   }
@@ -57,16 +57,25 @@ export async function POST(request: Request) {
     return blocked(consumed.reason, await getEntitlements(user.id));
   }
 
+  const unavailable = () => json({ error: "unavailable", message: "The assistant isn't available right now. Your question wasn't counted. Please try again later." }, 503);
   let prepared: PreparedAnswer;
+  let saved: Awaited<ReturnType<typeof saveQuestion>>;
+  let bound: string[];
   try {
-    prepared = await prepareAnswer({ userId: user.id, conversationId, question, market, attachmentIds });
+    prepared = await prepareAnswer({ userId: user.id, conversationId, question, market, attachmentIds, withFiles: ent.features.uploads });
   } catch (err) {
     await refundMessage(consumed.usageEventId);
     console.error("[assistant] not ready:", errorName(err));
-    return json({ error: "unavailable", message: "The assistant isn't available right now. Your question wasn't counted. Please try again later." }, 503);
+    return unavailable();
   }
-  const saved = await saveQuestion({ userId: user.id, conversationId, question, market });
-  await bindAttachments(attachmentIds, saved.conversationId, saved.messageId);
+  try {
+    saved = await saveQuestion({ userId: user.id, conversationId, question, market });
+    bound = await bindAttachments(attachmentIds, saved.conversationId, saved.messageId);
+  } catch (err) {   // e.g. the conversation was deleted in another tab meanwhile
+    await refundMessage(consumed.usageEventId);
+    console.error("[assistant] saving the question failed:", errorName(err));
+    return unavailable();
+  }
 
   // Stream the answer as it's written. The work runs to the end even if the browser goes away (after() keeps the
   // function alive), so a finished answer is always saved and a failed one always refunded.
@@ -99,13 +108,15 @@ export async function POST(request: Request) {
       failure = err;
     }
     try {
-      if (failure || !text.trim()) {
+      if (failure) {   // only a provider or stream error is refunded (decision D4)
         console.error("[assistant] answer failed:", errorName(failure), describeAiError(failure));
         await refundMessage(consumed.usageEventId);
-        await releaseAttachments(attachmentIds);   // before undoQuestion, which may delete a new conversation and its files
+        await releaseAttachments(bound);   // before undoQuestion, which may delete a new conversation and its files
         await undoQuestion(saved);
         send({ type: "error", message: "The assistant couldn't answer just now. Your question wasn't counted. Please try again.", remaining: consumed.remaining + 1 });
       } else {
+        // the model finished but wrote nothing visible: the question still counts, and the user is told
+        if (!text.trim()) { text = "I couldn’t put an answer together for that. Please rephrase your question or ask about something more specific."; send({ type: "delta", text }); }
         const messageId = await saveAnswer({ userId: user.id, conversationId: saved.conversationId, text: text.trim(), sources: prepared.sources, model: prepared.modelName, usage });
         send({ type: "done", messageId });
       }

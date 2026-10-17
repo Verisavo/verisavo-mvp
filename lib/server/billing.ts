@@ -5,11 +5,19 @@ import { profiles, stripeEvents, subscriptions, usagePeriods } from "@/db/schema
 import { PLAN } from "@/lib/plan";
 import { audit } from "@/lib/server/audit";
 import { stripe, type Stripe } from "@/lib/server/stripe";
+import { createSupabase } from "@/lib/server/supabase";
 
 // Stripe billing (M3.2–M3.3, see the verisavo-stripe-billing skill): customers, checkout, the billing portal, and the
 // webhook handler that keeps the subscriptions table in sync. Entitlements read that table; nothing here counts usage.
 
 const appUrl = () => (process.env.APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
+
+// Billing pages act on money and personal data, so the session is confirmed with Supabase (getUser), not only from
+// the signed token: a token copied before sign-out stops working here at once (the same check as requireAdmin)
+export async function sessionConfirmed(userId: string): Promise<boolean> {
+  const { data, error } = await (await createSupabase()).auth.getUser();
+  return !error && data.user?.id === userId;
+}
 const PAID = ["active", "trialing", "past_due"];   // decision D9, the same list as lib/server/entitlements.ts
 
 // The user's Stripe customer, created on their first checkout and stored on their profile
@@ -28,10 +36,23 @@ export async function getOrCreateCustomer(user: { id: string; email: string; nam
   return again?.customerId ?? customer.id;
 }
 
-export async function createCheckout(user: { id: string; email: string; name: string }): Promise<string> {
+// Never two subscriptions: Stripe itself is asked first, because our table can lag behind it (the webhook may not have
+// arrived yet). A live subscription sends the user to the portal; one whose first payment is still in progress waits;
+// a checkout page left open in another tab is closed before a new one opens.
+export type CheckoutResult = { url: string } | { pending: true };
+const LIVE = ["active", "trialing", "past_due", "unpaid"];
+
+export async function createCheckout(user: { id: string; email: string; name: string }): Promise<CheckoutResult> {
+  const customer = await getOrCreateCustomer(user);
+  const subs = await stripe().subscriptions.list({ customer, status: "all", limit: 20 });
+  if (subs.data.some(s => LIVE.includes(s.status))) return { url: await createPortal(customer) };
+  if (subs.data.some(s => s.status === "incomplete")) return { pending: true };
+  const open = await stripe().checkout.sessions.list({ customer, status: "open", limit: 20 });
+  for (const s of open.data) await stripe().checkout.sessions.expire(s.id);
+
   const session = await stripe().checkout.sessions.create({
     mode: "subscription",
-    customer: await getOrCreateCustomer(user),
+    customer,
     line_items: [{ price: process.env.STRIPE_PRICE_MONTHLY, quantity: 1 }],
     client_reference_id: user.id,
     subscription_data: { metadata: { userId: user.id } },
@@ -39,7 +60,7 @@ export async function createCheckout(user: { id: string; email: string; name: st
     cancel_url: `${appUrl()}/dashboard?checkout=cancel#plan`
   });
   if (!session.url) throw new Error("Stripe returned no checkout URL");
-  return session.url;
+  return { url: session.url };
 }
 
 export async function createPortal(customerId: string): Promise<string> {

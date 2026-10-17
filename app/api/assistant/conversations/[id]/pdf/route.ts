@@ -6,7 +6,10 @@ import { getEntitlements, usageView } from "@/lib/server/entitlements";
 import { getConversation } from "@/lib/server/assistant/conversations";
 import { buildReport, reportFileName, type ReportItem } from "@/lib/server/pdf/report";
 
+export const maxDuration = 30;
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const MAX_REPORT_CHARS = 250_000;   // about 100 pages; longer conversations are cut, with a note
 
 // GET -> a branded PDF of the whole conversation, or ?message=<answer id> for one answer with its question (M3.7).
 // Paid only (402 otherwise); doesn't count as a message (decision D4). Only the owner's conversations.
@@ -30,11 +33,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     if (m.role === "user") question = m;
     else if (question) items.push({ answerId: m.id, question: question.content, market: question.market, files: question.files, answer: m.content });
   }
-  const chosen = messageId ? items.filter(i => i.answerId === messageId) : items;
-  if (!chosen.length) return notFound();
+  const matching = messageId ? items.filter(i => i.answerId === messageId) : items;
+  if (!matching.length) return notFound();
+  let chars = 0;
+  const chosen = matching.filter(i => (chars += i.question.length + i.answer.length) <= MAX_REPORT_CHARS || i === matching[0]);
 
   const title = messageId ? (chosen[0].question.length > 90 ? chosen[0].question.slice(0, 88) + "…" : chosen[0].question) : conv.title;
-  const bytes = await buildReport({ title, preparedFor: user.profile.name || user.email, items: chosen, date: new Date() });
+  const bytes = await buildReport({ title, preparedFor: user.profile.name || user.email, items: chosen, date: new Date(), shortened: chosen.length < matching.length });
   return new Response(Buffer.from(bytes), {
     headers: {
       "Content-Type": "application/pdf",
