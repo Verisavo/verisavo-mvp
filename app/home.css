@@ -82,6 +82,16 @@ body.menu-open #menu-btn .b-ic { display: none; }
   .mnav-foot { grid-template-columns: 1fr; justify-items: end; text-align: right; }
 }
 @media (prefers-reduced-motion: reduce) { .mnav, .mnav.open, .mnav li { transition: none !important; } }
+/* >>> menu-fit */
+/* Menu fits short screens: type and spacing scale with height, and the panel scrolls if it still runs out of room */
+.mnav { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; grid-template-rows: minmax(min-content, 1fr) auto; row-gap: 24px; }
+.mnav::-webkit-scrollbar { display: none; }
+.mnav-main { gap: clamp(18px, 4.5vh, 64px); margin-top: clamp(0px, 4vh, 70px); }
+.mnav-big button, .mnav-big a { font-size: clamp(1.5rem, min(1rem + 3.2vw, 7vh), 3.9rem); }
+.mnav-small { gap: clamp(8px, 1.6vh, 14px); }
+@media (max-height: 760px) and (min-width: 701px) { .mnav { padding-top: calc(env(safe-area-inset-top, 0px) + 92px); } }
+@media (max-width: 700px) { .mnav-big button, .mnav-big a { font-size: clamp(1.4rem, min(1rem + 3vw, 6vh), 2.2rem); } }
+/* <<< menu-fit */
 
 /* Stage */
 #story { position: relative; height: 1100vh; }
