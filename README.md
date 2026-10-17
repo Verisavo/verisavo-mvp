@@ -2,6 +2,17 @@
 
 The connected intelligence layer for African markets. Built with [Next.js](https://nextjs.org) (App Router), React, TypeScript and Tailwind CSS, on Supabase (Postgres + pgvector, Auth).
 
+## Documentation
+
+| Doc | For |
+|---|---|
+| [docs/SETUP.md](docs/SETUP.md) | Running it locally against a dev database |
+| [docs/ENV.md](docs/ENV.md) | Every environment variable: what it is and where it comes from |
+| [docs/DEPLOY.md](docs/DEPLOY.md) | The live deploy: Supabase, Vercel, domain, Stripe, Meta, weekly `RELEASE_STAGE` releases, smoke test |
+| [docs/RUNBOOKS.md](docs/RUNBOOKS.md) | What to do when payments, WhatsApp, the knowledge base or an AI provider need attention |
+| [docs/TESTING.md](docs/TESTING.md) | The end-to-end test suite (`npm run test:e2e`) |
+| [docs/ADMIN-GUIDE.md](docs/ADMIN-GUIDE.md) | A walkthrough of the admin dashboard for the team running the service |
+
 ## Run it
 
 ```bash

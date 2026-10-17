@@ -13,7 +13,8 @@
     "db:studio": "drizzle-kit studio",
     "admin:grant": "node scripts/grant-admin.mjs",
     "plan:grant": "node scripts/grant-plan.mjs",
-    "seed:test-users": "node scripts/seed-test-users.mjs"
+    "seed:test-users": "node scripts/seed-test-users.mjs",
+    "test:e2e": "node --test --test-concurrency=1 \"tests/e2e/*.test.mjs\""
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.81",
