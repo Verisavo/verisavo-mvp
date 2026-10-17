@@ -43,6 +43,13 @@
       "when": 1792178461380,
       "tag": "0005_m2-ai-settings",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792185433646,
+      "tag": "0006_m3-billing-usage",
+      "breakpoints": true
     }
   ]
 }

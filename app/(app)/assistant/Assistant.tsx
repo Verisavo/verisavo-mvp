@@ -1,19 +1,24 @@
 "use client";
 // The Verisavo Intelligence Assistant at /assistant (sign-in only), in the design of the original assistant window:
 // it opens as a window and the full-screen button switches between window and full screen (remembered for the visit).
-// Conversations are kept for this browser session until M3 stores them in the database.
+// Live (M3): questions go to /api/assistant, answers stream in, conversations are saved on the server and the plan's
+// limits are enforced there. Before M3 is released, questions are kept for this browser session and not answered.
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
+import { PLAN, type UsageView } from "@/lib/plan";
 import DotFloor, { type FloorApi } from "./DotFloor";
 import { ACCEPT, CHIPS, HANDOFF_KEY, MARKETS, MAX_FILES, MAX_MB, MORE_CHIPS } from "./data";
 import * as I from "./icons";
 
 export type AssistantUser = { id: string; name: string; email: string };
+type BlockReason = "free_exhausted" | "period_exhausted" | "feature_requires_subscription";
 
 type UserItem = { id: string; role: "u"; text: string; scope: string; files: number };
-type AnswerItem = { id: string; role: "a"; pending: boolean; title?: string; body?: string; answer?: string };
-type Item = UserItem | AnswerItem;
-type Conv = { id: string; title: string; items: Item[] };
+type AnswerItem = { id: string; role: "a"; pending: boolean; streaming?: boolean; title?: string; body?: string; answer?: string; error?: string };
+type PaywallItem = { id: string; role: "p"; reason: BlockReason; usage: UsageView };
+type Item = UserItem | AnswerItem | PaywallItem;
+type Conv = { id: string; title: string; items: Item[]; loaded: boolean };
 type Pop = "scope" | "more" | "gear" | "shield" | null;
+type StoredMessage = { id: string; role: "user" | "assistant"; content: string; market: string | null };
 
 const CONVS_PREFIX = "verisavo-convs";   // + ":" + user id, so a shared browser never shows someone else's questions
 const THEME_KEY = "verisavo-va-theme";
@@ -22,9 +27,8 @@ const uid = () => crypto.randomUUID();
 const initials = (name: string) => name.split(/[\s._-]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "V";
 const isNarrow = () => matchMedia("(max-width: 767px)").matches;
 
-// The answer to a question. Until the Intelligence Assistant is connected (M3) it says so, and never makes one up.
-// M3 replaces this with a call to /api/chat.
-async function askAssistant(_question: string, _scope: string): Promise<Pick<AnswerItem, "title" | "body" | "answer">> {
+// Before M3 is released the assistant says it isn't connected yet, and never makes an answer up
+async function previewAnswer(): Promise<Pick<AnswerItem, "title" | "body">> {
   await new Promise(resolve => setTimeout(resolve, 700));
   return {
     title: "Your question is saved",
@@ -32,11 +36,31 @@ async function askAssistant(_question: string, _scope: string): Promise<Pick<Ans
   };
 }
 
+const toItems = (msgs: StoredMessage[]): Item[] => msgs.map(m => (m.role === "user"
+  ? { id: m.id, role: "u", text: m.content, scope: m.market ?? MARKETS[0], files: 0 }
+  : { id: m.id, role: "a", pending: false, answer: m.content }));
+
+const planLabel = (u: UsageView | null) => !u ? "Free plan"
+  : u.plan === "paid" ? `Monthly plan · ${u.remaining} left` : `Free plan · ${u.remaining} of ${u.limit} left`;
+
+// Subscribe: Stripe Checkout once billing is connected; until then the dashboard explains the plan
+async function subscribe() {
+  try {
+    const r = await fetch("/api/billing/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    const data = await r.json().catch(() => null) as { url?: string } | null;
+    if (r.ok && data?.url) { location.href = data.url; return; }
+  } catch {}
+  location.href = "/dashboard#plan";
+}
+
 const navBtn = "flex w-full cursor-pointer items-center gap-2.5 rounded-lg border-0 bg-transparent px-3 py-[9px] text-left text-[14.4px] leading-[1.2] font-medium text-ink no-underline hover:bg-brand-200";
 
-export default function Assistant({ user }: { user: AssistantUser }) {
+export default function Assistant({ user, live, usage: initialUsage, conversations }:
+  { user: AssistantUser; live: boolean; usage: UsageView | null; conversations: { id: string; title: string }[] }) {
   const [full, setFull] = useState(false);              // window or full screen (phones are always full screen)
-  const [convs, setConvs] = useState<Conv[]>([]);
+  // the server lists newest first; the sidebar shows this list reversed
+  const [convs, setConvs] = useState<Conv[]>(() => conversations.map(c => ({ ...c, items: [], loaded: false })).reverse());
+  const [usage, setUsage] = useState<UsageView | null>(initialUsage);
   const [curId, setCurId] = useState<string | null>(null);
   const [scope, setScope] = useState<string>(MARKETS[0]);
   const [dark, setDark] = useState(true);
@@ -60,7 +84,7 @@ export default function Assistant({ user }: { user: AssistantUser }) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const cur = convs.find(c => c.id === curId) ?? null;
-  const hasThread = Boolean(cur?.items.length);
+  const hasThread = Boolean(cur && (cur.items.length || !cur.loaded));
   const convsKey = `${CONVS_PREFIX}:${user.id}`;
   const displayName = (user.name || user.email.split("@")[0]).trim();
   const firstName = user.name.trim().split(" ")[0];
@@ -78,34 +102,122 @@ export default function Assistant({ user }: { user: AssistantUser }) {
     const sc = scopeOverride ?? scope;
     const u: UserItem = { id: uid(), role: "u", text: question, scope: sc, files: files.length };
     const a: AnswerItem = { id: uid(), role: "a", pending: true };
-    const convId = curId && convs.some(c => c.id === curId) ? curId : uid();
+    const existing = curId && convs.some(c => c.id === curId) ? curId : null;
+    let convId = existing ?? uid();   // a new conversation gets its real id from the server's first line
     setConvs(prev => prev.some(c => c.id === convId)
       ? prev.map(c => (c.id === convId ? { ...c, items: [...c.items, u, a] } : c))
-      : [...prev, { id: convId, title: question.length > 60 ? question.slice(0, 58) + "…" : question, items: [u, a] }]);
+      : [...prev, { id: convId, title: question.length > 60 ? question.slice(0, 58) + "…" : question, items: [u, a], loaded: true }]);
     setCurId(convId); setText(""); setFiles([]);
     rippleFromComposer(1.4);
 
-    const result = await askAssistant(question, sc);
-    setConvs(prev => prev.map(c => (c.id !== convId ? c : { ...c, items: c.items.map(it => (it.id === a.id ? { ...a, pending: false, ...result } : it)) })));
-    // an answer arriving sends a softer wave from where it appears
-    requestAnimationFrame(() => {
+    const setAnswer = (patch: Partial<AnswerItem> | ((it: AnswerItem) => Item)) => setConvs(prev => prev.map(c => (c.id !== convId ? c : {
+      ...c, items: c.items.map(it => (it.id !== a.id || it.role !== "a" ? it : typeof patch === "function" ? patch(it) : { ...it, ...patch }))
+    })));
+    const waveFromAnswer = () => requestAnimationFrame(() => {
       const el = document.querySelector(`[data-answer="${a.id}"]`), m = mainRef.current;
       if (el && m) { const r = m.getBoundingClientRect(), b = el.getBoundingClientRect(); ripple(b.left - r.left + 40, b.top - r.top + b.height / 2, .8); }
     });
+
+    if (!live) {
+      setAnswer({ pending: false, ...(await previewAnswer()) });
+      waveFromAnswer();
+      return;
+    }
+
+    const fail = (error: string) => setAnswer({ pending: false, streaming: false, error });
+    let res: Response;
+    try {
+      res = await fetch("/api/assistant", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, market: sc, requestId: crypto.randomUUID(), conversationId: existing, attachments: u.files })
+      });
+    } catch {
+      fail("We couldn’t reach Verisavo. Check your connection and try again.");
+      return;
+    }
+    if (res.status === 401) { location.href = "/platform#signin"; return; }
+    if (!(res.headers.get("content-type") ?? "").includes("ndjson")) {
+      const data = await res.json().catch(() => null) as { reason?: BlockReason; usage?: UsageView; message?: string } | null;
+      if (res.status === 402 && data?.reason && data.usage) {
+        const blocked = data.usage;
+        setUsage(blocked);
+        setAnswer(() => ({ id: a.id, role: "p", reason: data.reason!, usage: blocked }));
+      } else if (res.status === 429) fail("You’re asking very quickly. Please wait a minute and try again.");
+      else fail(data?.message ?? "The assistant couldn’t answer just now. Please try again.");
+      return;
+    }
+
+    // the answer streams in as JSON lines: start, delta..., then done or error
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+    let buffered = "", started = false;
+    const handle = (msg: { type: string; conversationId?: string; remaining?: number; text?: string; message?: string }) => {
+      if (msg.type === "start") {
+        if (msg.conversationId && msg.conversationId !== convId) {
+          const real = msg.conversationId, temp = convId;
+          convId = real;
+          setConvs(prev => prev.map(c => (c.id === temp ? { ...c, id: real } : c)));
+          setCurId(id => (id === temp ? real : id));
+        }
+        if (typeof msg.remaining === "number") setUsage(prev => (prev ? { ...prev, remaining: msg.remaining!, used: prev.limit - msg.remaining! } : prev));
+      } else if (msg.type === "delta" && msg.text) {
+        if (!started) { started = true; waveFromAnswer(); }
+        const piece = msg.text;
+        setAnswer(it => ({ ...(it as AnswerItem), pending: false, streaming: true, answer: ((it as AnswerItem).answer ?? "") + piece }));
+      } else if (msg.type === "done") {
+        setAnswer({ streaming: false });
+      } else if (msg.type === "error") {
+        if (typeof msg.remaining === "number") setUsage(prev => (prev ? { ...prev, remaining: msg.remaining!, used: prev.limit - msg.remaining! } : prev));
+        fail(msg.message ?? "The assistant couldn’t answer just now. Please try again.");
+      }
+    };
+    try {
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffered += decoder.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buffered.indexOf("\n")) >= 0) {
+          const lineText = buffered.slice(0, nl).trim();
+          buffered = buffered.slice(nl + 1);
+          if (lineText) try { handle(JSON.parse(lineText)); } catch {}
+        }
+      }
+    } catch {
+      fail("The connection dropped while the answer was arriving. It will be in this conversation when you reopen it.");
+    }
+    setAnswer(it => ((it as AnswerItem).pending ? { ...(it as AnswerItem), pending: false, error: "No answer arrived. Please try again." } : { ...(it as AnswerItem), streaming: false }));
   }
 
-  // First load: theme, this session's conversations, and a question handed over from the landing page
+  // Opening a saved conversation loads its messages the first time
+  async function openConv(id: string) {
+    setCurId(id);
+    const c = convs.find(x => x.id === id);
+    if (!live || !c || c.loaded) return;
+    try {
+      const r = await fetch(`/api/assistant/conversations/${id}`);
+      if (r.status === 401) { location.href = "/platform#signin"; return; }
+      const data = r.ok ? await r.json() as { messages: StoredMessage[] } : null;
+      setConvs(prev => (data ? prev.map(x => (x.id === id ? { ...x, items: toItems(data.messages), loaded: true } : x)) : prev.filter(x => x.id !== id)));
+      if (!data) setCurId(null);
+    } catch {
+      setConvs(prev => prev.map(x => (x.id === id ? { ...x, loaded: true, items: [{ id: uid(), role: "a", pending: false, error: "This conversation couldn’t be loaded. Check your connection and try again." }] } : x)));
+    }
+  }
+
+  // First load: theme, conversations (saved on the server when live, else this session's), and a question handed
+  // over from the landing page
   useEffect(() => {
     if (loaded.current) return;
     loaded.current = true;
     try { if (localStorage.getItem(THEME_KEY) === "light") setDark(false); } catch {}
     try { if (sessionStorage.getItem(FULL_KEY) === "1") setFull(true); } catch {}
     try {
-      // drop anything another user left in this browser tab
-      Object.keys(sessionStorage).filter(k => k.startsWith(CONVS_PREFIX) && k !== convsKey).forEach(k => sessionStorage.removeItem(k));
-      const saved = JSON.parse(sessionStorage.getItem(convsKey) || "[]") as Conv[];
+      // drop anything another user left in this browser tab (and, once live, this session's preview copy too)
+      Object.keys(sessionStorage).filter(k => k.startsWith(CONVS_PREFIX) && (live || k !== convsKey)).forEach(k => sessionStorage.removeItem(k));
+      const saved = live ? [] : JSON.parse(sessionStorage.getItem(convsKey) || "[]") as Conv[];
       if (Array.isArray(saved) && saved.length) {
-        setConvs(saved.map(c => ({ ...c, items: c.items.map(it => (it.role === "a" && it.pending ? { ...it, pending: false, title: "No answer", body: "This question was interrupted. Please ask it again." } : it)) })));
+        setConvs(saved.map(c => ({ ...c, loaded: true, items: c.items.map(it => (it.role === "a" && it.pending ? { ...it, pending: false, title: "No answer", body: "This question was interrupted. Please ask it again." } : it)) })));
       }
     } catch {}
     let handoff: { q?: string; scope?: string } | null = null;
@@ -119,9 +231,9 @@ export default function Assistant({ user }: { user: AssistantUser }) {
   }, []);
 
   useEffect(() => {
-    if (!loaded.current) return;
+    if (!loaded.current || live) return;
     try { sessionStorage.setItem(convsKey, JSON.stringify(convs.slice(-30))); } catch {}
-  }, [convs, convsKey]);
+  }, [convs, convsKey, live]);
 
   useEffect(() => { popRef.current = pop; }, [pop]);
 
@@ -152,8 +264,18 @@ export default function Assistant({ user }: { user: AssistantUser }) {
   const showSide = () => (isNarrow() ? setDrawer(true) : setCollapsed(false));
   const focusInput = () => requestAnimationFrame(() => inputRef.current?.focus());
   const newConv = () => { setCurId(null); setText(""); setPop(null); focusInput(); };
-  const clearCurrent = () => { if (curId) setConvs(prev => prev.filter(c => c.id !== curId)); newConv(); };
-  const clearAll = () => { setConvs([]); newConv(); };
+  const removeOnServer = (path: string) => {
+    if (live) void fetch(path, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: "{}" }).catch(() => {});
+  };
+  const clearCurrent = () => {
+    if (curId) { removeOnServer(`/api/assistant/conversations/${curId}`); setConvs(prev => prev.filter(c => c.id !== curId)); }
+    newConv();
+  };
+  const clearAll = () => {
+    if (live && convs.length && !window.confirm("Delete all your conversations? This can’t be undone.")) { setPop(null); return; }
+    removeOnServer("/api/assistant/conversations");
+    setConvs([]); newConv();
+  };
   const prefill = (q: string) => {
     setText(q);
     requestAnimationFrame(() => { const el = inputRef.current; if (el) { el.focus(); el.setSelectionRange(q.length, q.length); } });
@@ -236,7 +358,7 @@ export default function Assistant({ user }: { user: AssistantUser }) {
           <ul className="m-0 grid min-h-0 min-w-0 flex-1 list-none content-start gap-0.5 overflow-x-hidden overflow-y-auto p-0 [scrollbar-width:none] [&_button:focus-visible]:outline-offset-[-2px] [&::-webkit-scrollbar]:hidden">
             {recent.map(c => (
               <li key={c.id} className="min-w-0">
-                <button type="button" title={c.title} aria-current={c.id === curId ? "true" : undefined} onClick={() => { setCurId(c.id); afterNav(); focusInput(); }}
+                <button type="button" title={c.title} aria-current={c.id === curId ? "true" : undefined} onClick={() => { void openConv(c.id); afterNav(); focusInput(); }}
                   className={`${navBtn} ${c.id === curId ? "bg-brand-200" : ""}`}>
                   <I.Clock /><span className="min-w-0 truncate">{c.title}</span>
                 </button>
@@ -251,7 +373,7 @@ export default function Assistant({ user }: { user: AssistantUser }) {
           <span className="grid size-[34px] flex-none place-items-center rounded-full bg-ink text-[13px] font-semibold text-white">{initials(displayName)}</span>
           <span className="grid min-w-0 flex-1 gap-[3px]">
             <b className="truncate text-sm leading-tight font-semibold text-ink">{displayName}</b>
-            <small className="text-xs text-brand-700">{"Free plan"}</small>
+            <small className="text-xs text-brand-700">{planLabel(usage)}</small>
           </span>
           <div className="relative" data-pop>
             <button type="button" className="ib" aria-haspopup="menu" aria-expanded={pop === "gear"} aria-controls="va-gear-menu" aria-label="Account settings" title="Account settings" onClick={() => toggle("gear")}>
@@ -334,8 +456,8 @@ export default function Assistant({ user }: { user: AssistantUser }) {
 
         <div ref={bodyRef} className={`relative z-10 flex min-h-0 flex-col overflow-y-auto px-6 max-md:px-4 ${hasThread ? "flex-1" : "mt-auto flex-none"}`}>
           {hasThread && cur ? (
-            <ol aria-live="polite" className="m-0 mx-auto grid w-full max-w-[720px] list-none content-start gap-[18px] p-0 pt-2 pb-6">
-              {cur.items.map(it => <Message key={it.id} item={it} />)}
+            <ol aria-live="polite" aria-busy={!cur.loaded} className="m-0 mx-auto grid w-full max-w-[720px] list-none content-start gap-[18px] p-0 pt-2 pb-6">
+              {cur.loaded ? cur.items.map(it => <Message key={it.id} item={it} />) : <Message item={{ id: "loading", role: "a", pending: true }} />}
             </ol>
           ) : (
             <div className="pb-7 text-center">
@@ -412,6 +534,8 @@ function Message({ item }: { item: Item }) {
   }
   const tag = "justify-self-start rounded-md bg-brand-100 px-2 py-1 text-[11px] leading-none font-semibold tracking-[.08em] text-brand-700 uppercase dark:bg-[rgba(128,170,220,.16)] dark:text-brand-300";
   const para = "m-0 text-[14.4px] leading-[1.6] whitespace-pre-wrap text-brand-800 dark:text-brand-300";
+  const title = "text-[15px] leading-[1.3] font-semibold text-ink dark:text-white";
+  if (item.role === "p") return <Paywall item={item} tag={tag} para={para} title={title} />;
   return (
     <li data-answer={item.id} className="grid animate-rise grid-cols-[30px_minmax(0,1fr)] gap-3">
       <span aria-hidden="true" className="grid size-[30px] place-items-center rounded-lg bg-ink text-[13px] font-bold text-white dark:bg-brand-100 dark:text-ink">{"V"}</span>
@@ -423,14 +547,49 @@ function Message({ item }: { item: Item }) {
               {[0, 1, 2].map(i => <i key={i} className="size-1.5 animate-blink rounded-full bg-brand-400" style={{ animationDelay: `${i * .15}s` }} />)}
             </span>
           </>
+        ) : item.error ? (
+          <>
+            {item.answer && <p className={para}>{item.answer}</p>}
+            <span className={`${tag} bg-[#FEF3F2] text-danger dark:bg-[rgba(240,68,56,.15)] dark:text-[#FDA29B]`}>{"Couldn’t answer"}</span>
+            <p className={para}>{item.error}</p>
+          </>
         ) : item.answer ? (
-          <><span className={tag}>{"Answer"}</span><p className={para}>{item.answer}</p></>
+          <>
+            <span className={tag}>{"Answer"}</span>
+            <p className={para}>{item.answer}{item.streaming && <span aria-hidden="true" className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[3px] animate-blink bg-brand-500" />}</p>
+          </>
         ) : (
           <>
             <span className={tag}>{"Not connected yet"}</span>
-            <b className="text-[15px] leading-[1.3] font-semibold text-ink dark:text-white">{item.title}</b>
+            <b className={title}>{item.title}</b>
             <p className={para}>{item.body}</p>
           </>
+        )}
+      </div>
+    </li>
+  );
+}
+
+// The hard stop (M3.4 / M3.5): the server refused the question, so nothing was sent to the model
+function Paywall({ item, tag, para, title }: { item: PaywallItem; tag: string; para: string; title: string }) {
+  const resets = item.usage.resetsAt ? new Date(item.usage.resetsAt).toLocaleDateString("en-GB", { day: "numeric", month: "long" }) : null;
+  const copy = item.reason === "period_exhausted"
+    ? { head: `You’ve used all ${item.usage.limit} messages this month`, body: resets ? `Your messages reset on ${resets}.` : "Your messages reset when your next billing period starts.", cta: false }
+    : item.reason === "feature_requires_subscription"
+      ? { head: "File and image uploads are part of Verisavo Monthly", body: `Subscribe for ${PLAN.PRICE_TEXT} to attach files, get ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month on web and WhatsApp, and download PDF reports. You can also ask without the files.`, cta: true }
+      : { head: `You’ve used your ${PLAN.FREE_QUESTIONS} free questions`, body: `Subscribe to Verisavo Monthly for ${PLAN.PRICE_TEXT}: ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month on web and WhatsApp, file uploads and PDF reports.`, cta: true };
+  return (
+    <li data-answer={item.id} className="grid animate-rise grid-cols-[30px_minmax(0,1fr)] gap-3">
+      <span aria-hidden="true" className="grid size-[30px] place-items-center rounded-lg bg-ink text-[13px] font-bold text-white dark:bg-brand-100 dark:text-ink">{"V"}</span>
+      <div className="grid gap-2 rounded-xl border border-brand-300 bg-brand-100/60 px-4 py-3.5 dark:border-[rgba(168,198,232,.35)] dark:bg-[rgba(31,39,63,.75)]">
+        <span className={tag}>{item.usage.plan === "paid" ? "Monthly limit reached" : "Free questions used"}</span>
+        <b className={title}>{copy.head}</b>
+        <p className={para}>{copy.body}</p>
+        {copy.cta && (
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <button type="button" onClick={() => void subscribe()} className="cursor-pointer rounded-full border-0 bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800 dark:bg-brand-100 dark:text-ink dark:hover:bg-white">{`Subscribe · ${PLAN.PRICE_TEXT}`}</button>
+            <a href="/dashboard#plan" className="text-sm font-semibold text-brand-700 dark:text-brand-200">{"See your plan"}</a>
+          </div>
         )}
       </div>
     </li>

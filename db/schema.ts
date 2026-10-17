@@ -2,7 +2,7 @@
 // then `npm run db:migrate` to apply it. Every table enables RLS: our server connects as the table owner
 // and is not affected, but nothing is readable through Supabase's public API.
 import { sql } from "drizzle-orm";
-import { bigint, check, index, integer, jsonb, pgTable, smallint, text, timestamp, uuid, vector } from "drizzle-orm/pg-core";
+import { bigint, boolean, check, index, integer, jsonb, pgTable, primaryKey, smallint, text, timestamp, uniqueIndex, uuid, vector } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
@@ -16,6 +16,7 @@ export const profiles = pgTable("profiles", {
   organisation: text("organisation"),
   role: text("role").notNull().default("user"),
   disabledAt: timestamp("disabled_at", { withTimezone: true }),
+  stripeCustomerId: text("stripe_customer_id").unique(),   // M3: set on first checkout
   createdAt: createdAt(),
   updatedAt: updatedAt()
 }, t => [
@@ -40,7 +41,10 @@ export const messages = pgTable("messages", {
   role: text("role").notNull(),
   channel: text("channel").notNull().default("web"),
   content: text("content").notNull(),
-  sources: jsonb("sources"),
+  sources: jsonb("sources"),                 // assistant: the knowledge-base sections it was given [{ documentId, title }]
+  market: text("market"),                    // user: the market scope the question was asked in
+  model: text("model"),                      // assistant: "<provider>:<model id>" that wrote the answer
+  usage: jsonb("usage"),                     // assistant: { inputTokens, outputTokens }, for cost tracking
   createdAt: createdAt()
 }, t => [
   index("messages_conversation_created_idx").on(t.conversationId, t.createdAt),
@@ -122,6 +126,65 @@ export const aiSettings = pgTable("ai_settings", {
 }, t => [
   check("ai_settings_single_row", sql`${t.id} = 1`),
   check("ai_settings_answer_provider_check", sql`${t.answerProvider} in ('anthropic', 'openai', 'google')`)
+]).enableRLS();
+
+// M3: Stripe subscriptions, one row per Stripe subscription, kept in sync by the webhook (see verisavo-stripe-billing).
+// A user is paid while a row is active, trialing or past_due (decision D9: access continues while Stripe retries).
+export const subscriptions = pgTable("subscriptions", {
+  id: text("id").primaryKey(),
+  userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  status: text("status").notNull(),
+  priceId: text("price_id"),
+  currentPeriodStart: timestamp("current_period_start", { withTimezone: true }).notNull(),
+  currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }).notNull(),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+  updatedAt: updatedAt()
+}, t => [
+  index("subscriptions_user_idx").on(t.userId)
+]).enableRLS();
+
+// Webhook events already handled, so a redelivered event does nothing
+export const stripeEvents = pgTable("stripe_events", {
+  id: text("id").primaryKey(),
+  type: text("type").notNull(),
+  receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow()
+}).enableRLS();
+
+// M3: usage (see verisavo-entitlements; decision D4: each question counts 1, refunded if the AI fails to answer).
+// Counters only change through lib/server/entitlements.ts, with conditional updates so parallel requests can't
+// get past the limit.
+export const freeUsage = pgTable("free_usage", {
+  userId: uuid("user_id").primaryKey().references(() => profiles.id, { onDelete: "cascade" }),
+  used: integer("used").notNull().default(0)
+}).enableRLS();
+
+// One row per paid billing period (from Stripe); a renewal starts a new row, which is the monthly reset
+export const usagePeriods = pgTable("usage_periods", {
+  userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  periodStart: timestamp("period_start", { withTimezone: true }).notNull(),
+  periodEnd: timestamp("period_end", { withTimezone: true }).notNull(),
+  allowance: integer("allowance").notNull(),
+  used: integer("used").notNull().default(0)
+}, t => [
+  primaryKey({ columns: [t.userId, t.periodStart] })
+]).enableRLS();
+
+// Every counted question. (channel, external_id) is unique, so a retried request (double click, WhatsApp
+// redelivery) is never counted twice; bucket and period_start say which counter a refund goes back to.
+export const usageEvents = pgTable("usage_events", {
+  id: bigint("id", { mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  channel: text("channel").notNull(),
+  externalId: text("external_id").notNull(),   // web: the browser's request id; WhatsApp: the message id
+  bucket: text("bucket").notNull(),
+  periodStart: timestamp("period_start", { withTimezone: true }),
+  refundedAt: timestamp("refunded_at", { withTimezone: true }),
+  createdAt: createdAt()
+}, t => [
+  uniqueIndex("usage_events_channel_external_idx").on(t.channel, t.externalId),
+  index("usage_events_user_created_idx").on(t.userId, t.createdAt.desc()),
+  check("usage_events_channel_check", sql`${t.channel} in ('web', 'whatsapp')`),
+  check("usage_events_bucket_check", sql`${t.bucket} in ('free', 'paid')`)
 ]).enableRLS();
 
 // Row types for server code

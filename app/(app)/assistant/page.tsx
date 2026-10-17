@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { released } from "@/lib/release";
 import { requireUser } from "@/lib/server/auth";
+import { getEntitlements, usageView } from "@/lib/server/entitlements";
+import { listConversations } from "@/lib/server/assistant/conversations";
 import Assistant from "./Assistant";
 
 export const metadata: Metadata = {
@@ -17,5 +19,8 @@ export default async function AssistantPage() {
   await connection();   // depends on the signed-in user, so render per request
   if (!released(1)) notFound();
   const user = await requireUser();
-  return <Assistant user={{ id: user.id, name: user.profile.name, email: user.email }} />;
+  // answers, saved conversations and the plan's limits arrive with M3; before that the page says it isn't connected
+  const live = released(3);
+  const [usage, convs] = live ? await Promise.all([getEntitlements(user.id).then(usageView), listConversations(user.id)]) : [null, []];
+  return <Assistant user={{ id: user.id, name: user.profile.name, email: user.email }} live={live} usage={usage} conversations={convs.map(c => ({ id: c.id, title: c.title }))} />;
 }

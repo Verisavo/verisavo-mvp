@@ -38,8 +38,8 @@ export async function answerSetup() {
   const s = await getAiSettings();
   const { label, envKey } = PROVIDERS[s.answerProvider];
   return keySet(s.answerProvider)
-    ? { ok: true as const, label, modelId: s.answerModel, model: languageModel(s.answerProvider, s.answerModel) }
-    : { ok: false as const, label, modelId: s.answerModel, problem: `Answers use ${label}, but ${envKey} isn't set.` };
+    ? { ok: true as const, provider: s.answerProvider, label, modelId: s.answerModel, model: languageModel(s.answerProvider, s.answerModel) }
+    : { ok: false as const, provider: s.answerProvider, label, modelId: s.answerModel, problem: `Answers use ${label}, but ${envKey} isn't set.` };
 }
 
 // The embedding model knowledge search uses, or why it can't
