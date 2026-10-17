@@ -12,6 +12,7 @@ export type UserRow = {
   id: string; name: string; organisation: string | null; role: string; disabled_at: string | null; created_at: string;
   email: string; last_sign_in_at: string | null; email_confirmed_at: string | null; questions: number;
   sub_status: string | null; renews_at: string | null; cancel_at_period_end: boolean | null; used: number; allowance: number;
+  whatsapp: boolean;
 };
 
 // Plan and allowance follow the same rules as lib/server/entitlements.ts (PAID_SQL, counted per billing period);
@@ -23,7 +24,8 @@ export async function listUsers(q: string, page: number) {
            (select count(*) from messages m where m.user_id = p.id and m.role = 'user')::int as questions,
            s.status as sub_status, s.current_period_end as renews_at, s.cancel_at_period_end,
            (case when s.status is null then coalesce(f.used, 0) else coalesce(up.used, 0) end)::int as used,
-           (case when s.status is null then ${PLAN.FREE_QUESTIONS} else coalesce(up.allowance, ${PLAN.PAID_MESSAGES_PER_PERIOD}) end)::int as allowance
+           (case when s.status is null then ${PLAN.FREE_QUESTIONS} else coalesce(up.allowance, ${PLAN.PAID_MESSAGES_PER_PERIOD}) end)::int as allowance,
+           exists (select 1 from whatsapp_links w where w.user_id = p.id) as whatsapp
     from profiles p join auth.users u on u.id = p.id
     left join lateral (
       select status, current_period_start, current_period_end, cancel_at_period_end from subscriptions

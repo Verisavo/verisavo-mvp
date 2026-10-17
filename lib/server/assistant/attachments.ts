@@ -92,6 +92,14 @@ export async function releaseAttachments(ids: string[]): Promise<void> {
   await db.update(attachments).set({ conversationId: null, messageId: null }).where(inArray(attachments.id, ids));
 }
 
+// WhatsApp: files sent without a caption in the last hour wait for the user's next question
+export async function recentUnsentIds(userId: string, minutes = 60): Promise<string[]> {
+  const rows = await db.select({ id: attachments.id }).from(attachments)
+    .where(and(eq(attachments.userId, userId), isNull(attachments.conversationId), sql`${attachments.createdAt} > now() - make_interval(mins => ${minutes})`))
+    .orderBy(desc(attachments.createdAt)).limit(ATTACH.PER_QUESTION);
+  return rows.map(r => r.id);
+}
+
 export async function deleteUnsentAttachment(userId: string, id: string): Promise<boolean> {
   const removed = await db.delete(attachments).where(and(eq(attachments.id, id), eq(attachments.userId, userId), isNull(attachments.conversationId))).returning({ id: attachments.id });
   return removed.length > 0;

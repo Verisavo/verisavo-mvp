@@ -32,6 +32,10 @@ const ACTIONS: Record<string, string> = {
   "billing.cancel_undone": "Kept their subscription",
   "billing.ended": "Subscription ended",
   "billing.payment_failed": "Payment failed",
+  "billing.manual_granted": "Was given the paid plan (no Stripe)",
+  "billing.manual_revoked": "Had the manual paid plan removed",
+  "whatsapp.linked": "Linked a WhatsApp number",
+  "whatsapp.unlinked": "Unlinked their WhatsApp number",
   "admin.user_disable": "Disabled a user",
   "admin.user_enable": "Re-enabled a user",
   "admin.renewal_change_failed": "Couldn't change a user's plan renewal in Stripe (do it in the Stripe dashboard)",
@@ -56,5 +60,6 @@ export const ACTION_GROUPS = [
   { value: "admin.", label: "Admin actions" },
   { value: "ai.", label: "AI settings" },
   { value: "billing.", label: "Subscriptions" },
+  { value: "whatsapp.", label: "WhatsApp" },
   { value: "conversation.", label: "Conversations" }
 ];

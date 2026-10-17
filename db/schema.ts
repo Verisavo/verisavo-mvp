@@ -210,6 +210,40 @@ export const attachments = pgTable("attachments", {
   check("attachments_kind_check", sql`${t.kind} in ('document', 'image')`)
 ]).enableRLS();
 
+// M4: WhatsApp. A verified number belongs to exactly one account and an account has at most one number (M4.2).
+// Numbers are stored as digits only, the way WhatsApp sends them ("447700900123").
+export const whatsappLinks = pgTable("whatsapp_links", {
+  userId: uuid("user_id").primaryKey().references(() => profiles.id, { onDelete: "cascade" }),
+  phone: text("phone").notNull().unique(),
+  verifiedAt: timestamp("verified_at", { withTimezone: true }).notNull().defaultNow()
+}).enableRLS();
+
+// A pending link: one per user. The code is stored only as a salted hash; it expires after 10 minutes or 5 wrong tries.
+// method "otp": we sent the code by template and the user types it in the dashboard; "reverse": the user sends
+// "LINK <code>" from that number to ours (decision D13).
+export const whatsappCodes = pgTable("whatsapp_codes", {
+  userId: uuid("user_id").primaryKey().references(() => profiles.id, { onDelete: "cascade" }),
+  phone: text("phone").notNull(),
+  method: text("method").notNull(),
+  codeHash: text("code_hash").notNull(),
+  salt: text("salt").notNull(),
+  attempts: integer("attempts").notNull().default(0),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow()
+}, t => [
+  index("whatsapp_codes_phone_idx").on(t.phone),
+  check("whatsapp_codes_method_check", sql`${t.method} in ('otp', 'reverse')`)
+]).enableRLS();
+
+// Every incoming WhatsApp message id we've handled, so a redelivered webhook is never answered twice, even for
+// messages that don't count toward the allowance. Rows older than a week are removed as new ones arrive.
+export const whatsappSeen = pgTable("whatsapp_seen", {
+  id: text("id").primaryKey(),
+  receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow()
+}, t => [
+  index("whatsapp_seen_received_idx").on(t.receivedAt)
+]).enableRLS();
+
 // Row types for server code
 export type KbDocument = typeof kbDocuments.$inferSelect;
 export type KbVersion = typeof kbVersions.$inferSelect;

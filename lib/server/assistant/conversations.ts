@@ -9,7 +9,7 @@ import { attachmentNamesByMessage } from "./attachments";
 // Conversations and their messages (M3.1). Every read and write is scoped to the signed-in user's id.
 
 export type ConversationSummary = { id: string; title: string; updatedAt: Date };
-export type StoredMessage = { id: string; role: "user" | "assistant"; content: string; market: string | null; sources: Source[] | null; createdAt: Date };
+export type StoredMessage = { id: string; role: "user" | "assistant"; channel: "web" | "whatsapp"; content: string; market: string | null; sources: Source[] | null; createdAt: Date };
 
 const titleFrom = (question: string) => (question.length > 60 ? question.slice(0, 58).trimEnd() + "…" : question);
 
@@ -23,12 +23,21 @@ export async function ownsConversation(userId: string, id: string): Promise<bool
   return Boolean(row);
 }
 
+// Decision D5: a WhatsApp message continues the conversation the user was active in during the last 30 minutes
+// (on either channel); otherwise it starts a new one
+export async function activeConversation(userId: string, minutes = 30): Promise<string | null> {
+  const [conv] = await db.select({ id: conversations.id }).from(conversations)
+    .where(and(eq(conversations.userId, userId), sql`${conversations.updatedAt} > now() - make_interval(mins => ${minutes})`))
+    .orderBy(desc(conversations.updatedAt)).limit(1);
+  return conv?.id ?? null;
+}
+
 export async function getConversation(userId: string, id: string) {
   const [conv] = await db.select({ id: conversations.id, title: conversations.title }).from(conversations)
     .where(and(eq(conversations.id, id), eq(conversations.userId, userId))).limit(1);
   if (!conv) return null;
   const [rows, files] = await Promise.all([
-    db.select({ id: messages.id, role: messages.role, content: messages.content, market: messages.market, sources: messages.sources, createdAt: messages.createdAt })
+    db.select({ id: messages.id, role: messages.role, channel: messages.channel, content: messages.content, market: messages.market, sources: messages.sources, createdAt: messages.createdAt })
       .from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt)).limit(400),
     attachmentNamesByMessage(id)
   ]);

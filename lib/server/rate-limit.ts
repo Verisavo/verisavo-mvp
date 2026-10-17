@@ -62,5 +62,12 @@ export const LIMITS = {
   billing: (userId: string): Rule[] => [{ key: `billing:user:${userId}`, limit: 10, windowSeconds: 600 }],
   // M3.6 / M3.7: attaching files (each is read and stored) and making PDF reports
   upload: (userId: string): Rule[] => [{ key: `upload:user:${userId}`, limit: 30, windowSeconds: 3600 }],
-  pdf: (userId: string): Rule[] => [{ key: `pdf:user:${userId}`, limit: 20, windowSeconds: 600 }]
+  pdf: (userId: string): Rule[] => [{ key: `pdf:user:${userId}`, limit: 20, windowSeconds: 600 }],
+  // M4: messages from one WhatsApp number (anything over is dropped quietly), and sending / checking link codes
+  whatsappIn: (phone: string): Rule[] => [{ key: `wa:in:${phone}`, limit: 30, windowSeconds: 3600 }],
+  whatsappCode: (userId: string, phone: string): Rule[] => [
+    { key: `wa:code:user:${userId}`, limit: 5, windowSeconds: 3600 },
+    { key: `wa:code:phone:${phone}`, limit: 5, windowSeconds: 3600 }
+  ],
+  whatsappVerify: (userId: string): Rule[] => [{ key: `wa:verify:user:${userId}`, limit: 20, windowSeconds: 3600 }]
 };

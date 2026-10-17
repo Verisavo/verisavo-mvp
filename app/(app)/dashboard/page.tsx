@@ -9,7 +9,9 @@ import { db } from "@/lib/server/db";
 import { conversations } from "@/db/schema";
 import AccountHeader from "../AccountHeader";
 import { signOutAction } from "./actions";
-import { BillingButton, CheckoutNotice, DeleteConversation, EmailForm, PasswordForm, ProfileForm } from "./forms";
+import { BillingButton, CheckoutNotice, DeleteConversation, EmailForm, PasswordForm, ProfileForm, UnlinkWhatsApp, WhatsAppLink } from "./forms";
+import { getLink, maskPhone } from "@/lib/server/whatsapp/links";
+import { verisavoNumber } from "@/lib/server/whatsapp/api";
 import { getEntitlements, type Entitlements } from "@/lib/server/entitlements";
 
 export const metadata: Metadata = {
@@ -77,6 +79,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <ProfileForm name={user.profile.name} organisation={user.profile.organisation} />
           </section>
 
+          {released(4) && ent && <WhatsAppCard paid={ent.features.whatsapp} link={await getLink(user.id)} />}
+
           <section className="card md:col-span-2" aria-labelledby="conv-h">
             <p className="eyebrow">{"Conversations"}</p>
             <h2 id="conv-h" className="text-[17px] font-semibold">{"Your questions to the Intelligence Assistant"}</h2>
@@ -112,6 +116,37 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
       </main>
     </>
+  );
+}
+
+// WhatsApp (M4.2): subscribers link one number; the same assistant, history and allowance as the web
+function WhatsAppCard({ paid, link }: { paid: boolean; link: { phone: string; verifiedAt: Date } | null }) {
+  const waUrl = verisavoNumber() ? `https://wa.me/${verisavoNumber()}` : null;
+  return (
+    <section className="card md:col-span-2" aria-labelledby="wa-h" id="whatsapp">
+      <p className="eyebrow">{"WhatsApp"}</p>
+      <h2 id="wa-h" className="text-[17px] font-semibold">{"Ask Verisavo on WhatsApp"}</h2>
+      {!paid ? (
+        <>
+          <p className="text-sm leading-snug">{`WhatsApp is part of Verisavo Monthly (${PLAN.PRICE_TEXT}). Your questions and answers there join your conversations here, and use the same ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month.`}</p>
+          <BillingButton kind="subscribe" label={`Subscribe · ${PLAN.PRICE_TEXT}`} />
+        </>
+      ) : link ? (
+        <>
+          <p className="text-[15px]">{"Linked number: "}<b className="font-semibold tabular-nums">{maskPhone(link.phone)}</b><span className="text-brand-800">{` · since ${day.format(link.verifiedAt)}`}</span></p>
+          <p className="text-sm text-brand-800">{"Send your questions to Verisavo on WhatsApp. They appear in your conversations here, and follow-ups within 30 minutes continue the same conversation."}</p>
+          <div className="flex flex-wrap gap-2">
+            {waUrl && <a className="btn" href={waUrl} target="_blank" rel="noopener noreferrer">{"Open WhatsApp"}</a>}
+            <UnlinkWhatsApp />
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="text-sm leading-snug">{"Link your number to ask Verisavo on WhatsApp. Your WhatsApp questions join your conversations here and use the same monthly messages."}</p>
+          <WhatsAppLink waUrl={waUrl} />
+        </>
+      )}
+    </section>
   );
 }
 

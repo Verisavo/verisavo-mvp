@@ -73,9 +73,13 @@ function providerOptionsFor(provider: ProviderId): PreparedAnswer["providerOptio
   return provider === "anthropic" ? { anthropic: { thinking: { type: "adaptive" } } } : undefined;
 }
 
+const WHATSAPP_STYLE = `
+
+The user is reading this on WhatsApp: keep the answer short (under about 1,200 characters), with at most five "- " points.`;
+
 // withFiles: the user's plan includes uploads; a former subscriber's old files stay out of new answers
-export async function prepareAnswer({ userId, conversationId, question, market, attachmentIds = [], withFiles }:
-  { userId: string; conversationId: string | null; question: string; market: string; attachmentIds?: string[]; withFiles: boolean }): Promise<PreparedAnswer> {
+export async function prepareAnswer({ userId, conversationId, question, market, attachmentIds = [], withFiles, channel = "web" }:
+  { userId: string; conversationId: string | null; question: string; market: string; attachmentIds?: string[]; withFiles: boolean; channel?: "web" | "whatsapp" }): Promise<PreparedAnswer> {
   const setup = await answerSetup();
   if (!setup.ok) throw new AssistantUnavailable(setup.problem);
   const search = await searchSetup();
@@ -94,7 +98,7 @@ export async function prepareAnswer({ userId, conversationId, question, market, 
   return {
     model: setup.model,
     modelName: `${setup.provider}:${setup.modelId}`,
-    instructions: INSTRUCTIONS,
+    instructions: channel === "whatsapp" ? INSTRUCTIONS + WHATSAPP_STYLE : INSTRUCTIONS,
     messages: [...history, { role: "user", content } as ModelMessage],
     sources,
     providerOptions: providerOptionsFor(setup.provider),

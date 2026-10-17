@@ -57,6 +57,13 @@
       "when": 1792219119942,
       "tag": "0007_m3-attachments",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792226215453,
+      "tag": "0008_m4-whatsapp",
+      "breakpoints": true
     }
   ]
 }

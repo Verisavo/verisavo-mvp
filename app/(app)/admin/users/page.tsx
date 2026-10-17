@@ -61,6 +61,7 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
                 <td className="px-3 py-3">
                   {u.sub_status ? PLAN_STATUS[u.sub_status] ?? "Monthly" : "Free"}
                   {u.sub_status && u.renews_at && <span className="block text-[12px] text-brand-800">{`${u.cancel_at_period_end ? "Ends" : "Renews"} ${fmtDay(u.renews_at)}`}</span>}
+                  {u.whatsapp && <span className="block text-[12px] text-brand-800">{"WhatsApp linked"}</span>}
                 </td>
                 <td className={`px-3 py-3 text-right tabular-nums ${u.used >= u.allowance ? "font-semibold text-danger" : ""}`}>{`${u.used} / ${u.allowance}`}</td>
                 <td className="px-3 py-3 text-right tabular-nums">{u.questions}</td>

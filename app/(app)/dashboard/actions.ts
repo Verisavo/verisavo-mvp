@@ -11,6 +11,8 @@ import { createSupabase } from "@/lib/server/supabase";
 import { audit } from "@/lib/server/audit";
 import { allow, LIMITS } from "@/lib/server/rate-limit";
 import { cleanEmail, cleanText, isRateLimited, passwordProblem } from "@/lib/server/http";
+import { getEntitlements } from "@/lib/server/entitlements";
+import { normalizePhone, startLink, unlink, verifyCode } from "@/lib/server/whatsapp/links";
 
 const TOO_MANY = { error: "Too many attempts. Please wait a few minutes and try again." };
 
@@ -92,4 +94,41 @@ export async function signOutAction(): Promise<void> {
   await supabase.auth.signOut({ scope: "local" });   // this device only, not every device the user is signed in on
   if (user) await audit("auth.sign_out", { actorId: user.id });
   redirect("/");
+}
+
+// ---------- WhatsApp (M4.2): link a number with a code, or unlink it ----------
+
+export type WhatsAppState = { error?: string; step?: "code" | "reverse"; phone?: string; code?: string; url?: string; linked?: boolean } | null;
+
+async function whatsappUser() {
+  if (!released(4)) redirect("/dashboard");
+  const user = await requireUser();
+  return { user, paid: (await getEntitlements(user.id)).features.whatsapp };
+}
+
+export async function startWhatsAppLink(_state: WhatsAppState, formData: FormData): Promise<WhatsAppState> {
+  const { user, paid } = await whatsappUser();
+  if (!paid) return { error: "WhatsApp is part of Verisavo Monthly. Subscribe first." };
+  const phone = normalizePhone(formData.get("phone"));
+  if (!phone) return { error: "Enter your WhatsApp number with its country code, e.g. +234 803 123 4567." };
+  if (!(await allow(LIMITS.whatsappCode(user.id, phone)))) return { error: "Too many codes requested. Please wait an hour and try again." };
+  const started = await startLink(user.id, phone);
+  if (!started.ok) return { error: started.error, phone };
+  return started.method === "otp" ? { step: "code", phone } : { step: "reverse", phone, code: started.code, url: started.url };
+}
+
+export async function verifyWhatsAppLink(_state: WhatsAppState, formData: FormData): Promise<WhatsAppState> {
+  const { user, paid } = await whatsappUser();
+  if (!paid) return { error: "WhatsApp is part of Verisavo Monthly. Subscribe first." };
+  if (!(await allow(LIMITS.whatsappVerify(user.id)))) return { error: "Too many tries. Please wait an hour and try again.", step: "code" };
+  const result = await verifyCode(user.id, String(formData.get("code") ?? "").replace(/\D/g, ""));
+  if (!result.ok) return { error: result.error, step: "code", phone: String(formData.get("phone") ?? "") };
+  revalidatePath("/dashboard");
+  return { linked: true };
+}
+
+export async function unlinkWhatsApp(): Promise<void> {
+  const { user } = await whatsappUser();
+  await unlink(user.id);
+  revalidatePath("/dashboard");
 }

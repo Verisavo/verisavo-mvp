@@ -11,7 +11,9 @@
     "db:migrate": "drizzle-kit migrate",
     "db:migrate:prod": "node scripts/migrate-prod.mjs",
     "db:studio": "drizzle-kit studio",
-    "admin:grant": "node scripts/grant-admin.mjs"
+    "admin:grant": "node scripts/grant-admin.mjs",
+    "plan:grant": "node scripts/grant-plan.mjs",
+    "seed:test-users": "node scripts/seed-test-users.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.81",

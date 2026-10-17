@@ -1,7 +1,7 @@
 "use client";
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { changeEmail, changePassword, deleteConversation, updateProfile, type FormState } from "./actions";
+import { changeEmail, changePassword, deleteConversation, startWhatsAppLink, unlinkWhatsApp, updateProfile, verifyWhatsAppLink, type FormState } from "./actions";
 
 // Back from Stripe Checkout. The redirect isn't proof of payment, so the plan only shows as paid once the webhook has
 // confirmed it; meanwhile the page refreshes itself for up to half a minute.
@@ -110,6 +110,67 @@ export function DeleteConversation({ id, title }: { id: string; title: string })
     <form action={deleteConversation} onSubmit={e => { if (!window.confirm(`Delete “${title}”? This can't be undone.`)) e.preventDefault(); }}>
       <input type="hidden" name="id" value={id} />
       <button type="submit" aria-label={`Delete “${title}”`} className="cursor-pointer rounded-lg px-2 py-1.5 text-[13px] font-semibold text-brand-800 hover:bg-brand-100 hover:text-ink">{"Delete"}</button>
+    </form>
+  );
+}
+
+// WhatsApp (M4.2): a subscriber links one number. Either we send a code to it (typed in here), or, until Meta has
+// approved the code template, they send a code from it to us; this card then refreshes until the link appears.
+export function WhatsAppLink({ waUrl }: { waUrl: string | null }) {
+  const router = useRouter();
+  const [start, startAction, starting] = useActionState(startWhatsAppLink, null);
+  const [check, checkAction, checking] = useActionState(verifyWhatsAppLink, null);
+  const step = check?.linked ? null : start?.step;
+  useEffect(() => { if (check?.linked) router.refresh(); }, [check, router]);
+  useEffect(() => {   // reverse: wait for their WhatsApp message to arrive (up to 10 minutes)
+    if (step !== "reverse") return;
+    const timer = setInterval(() => router.refresh(), 3000);
+    const stop = setTimeout(() => clearInterval(timer), 10 * 60 * 1000);
+    return () => { clearInterval(timer); clearTimeout(stop); };
+  }, [step, router]);
+
+  return (
+    <div className="grid gap-3">
+      <form action={startAction} className="grid gap-2">
+        <label className="label" htmlFor="wa-phone">{"Your WhatsApp number"}</label>
+        <div className="flex flex-wrap gap-2">
+          <input className="input min-w-0 flex-1 basis-48" id="wa-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel"
+            defaultValue={start?.phone ? `+${start.phone}` : ""} placeholder="+234 803 123 4567" required />
+          <button className="btn" type="submit" disabled={starting}>{starting ? "Sending…" : step ? "Send a new code" : "Send code"}</button>
+        </div>
+        <p className="hint">{"Include your country code. One number per account."}</p>
+        {start?.error && <p role="status" className="text-sm text-danger">{start.error}</p>}
+      </form>
+
+      {step === "code" && (
+        <form action={checkAction} className="grid gap-2 rounded-xl bg-canvas p-3.5">
+          <label className="label" htmlFor="wa-code">{"Enter the 6-digit code we sent to your WhatsApp"}</label>
+          <div className="flex flex-wrap gap-2">
+            <input className="input w-36 tracking-[.3em]" id="wa-code" name="code" inputMode="numeric" autoComplete="one-time-code" maxLength={6} pattern="\d{6}" required />
+            <input type="hidden" name="phone" value={start?.phone ?? ""} />
+            <button className="btn" type="submit" disabled={checking}>{checking ? "Checking…" : "Link number"}</button>
+          </div>
+          {check?.error && <p role="status" className="text-sm text-danger">{check.error}</p>}
+        </form>
+      )}
+
+      {step === "reverse" && start?.url && (
+        <div className="grid gap-2 rounded-xl bg-canvas p-3.5 text-sm">
+          <p>{"To prove the number is yours, send this code to Verisavo from that WhatsApp:"}</p>
+          <p className="font-mono text-2xl font-semibold tracking-[.3em]">{start.code}</p>
+          <div><a className="btn" href={start.url} target="_blank" rel="noopener noreferrer">{"Send it on WhatsApp"}</a></div>
+          <p className="hint" role="status">{"Waiting for your message… This page updates as soon as it arrives. The code works for 10 minutes."}</p>
+        </div>
+      )}
+      {check?.linked && <p role="status" className="text-sm text-success">{"Linked. You can ask Verisavo on WhatsApp now."}{waUrl && <> <a href={waUrl} target="_blank" rel="noopener noreferrer">{"Open WhatsApp"}</a></>}</p>}
+    </div>
+  );
+}
+
+export function UnlinkWhatsApp() {
+  return (
+    <form action={unlinkWhatsApp} onSubmit={e => { if (!window.confirm("Unlink this number? Messages from it will no longer be answered.")) e.preventDefault(); }}>
+      <button className="btn btn-ghost" type="submit">{"Unlink"}</button>
     </form>
   );
 }

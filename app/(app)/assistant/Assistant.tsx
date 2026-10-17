@@ -12,7 +12,7 @@ import * as I from "./icons";
 export type AssistantUser = { id: string; name: string; email: string };
 type BlockReason = "free_exhausted" | "period_exhausted" | "feature_requires_subscription";
 
-type UserItem = { id: string; role: "u"; text: string; scope: string; files: string[] };
+type UserItem = { id: string; role: "u"; text: string; scope: string; files: string[]; whatsapp?: boolean };
 type AnswerItem = { id: string; role: "a"; pending: boolean; streaming?: boolean; title?: string; body?: string; answer?: string; error?: string; serverId?: string };
 // a file picked for the next question: uploaded straight away (live), sent with the question by id
 type FilePick = { key: string; name: string; status: "uploading" | "ready" | "error"; id?: string; error?: string };
@@ -21,7 +21,7 @@ type PaywallItem = { id: string; role: "p"; reason: BlockReason; usage: UsageVie
 type Item = UserItem | AnswerItem | PaywallItem;
 type Conv = { id: string; title: string; items: Item[]; loaded: boolean };
 type Pop = "scope" | "more" | "gear" | "shield" | null;
-type StoredMessage = { id: string; role: "user" | "assistant"; content: string; market: string | null; files?: string[] };
+type StoredMessage = { id: string; role: "user" | "assistant"; channel?: "web" | "whatsapp"; content: string; market: string | null; files?: string[] };
 
 const CONVS_PREFIX = "verisavo-convs";   // + ":" + user id, so a shared browser never shows someone else's questions
 const THEME_KEY = "verisavo-va-theme";
@@ -40,7 +40,7 @@ async function previewAnswer(): Promise<Pick<AnswerItem, "title" | "body">> {
 }
 
 const toItems = (msgs: StoredMessage[]): Item[] => msgs.map(m => (m.role === "user"
-  ? { id: m.id, role: "u", text: m.content, scope: m.market ?? MARKETS[0], files: m.files ?? [] }
+  ? { id: m.id, role: "u", text: m.content, scope: m.market ?? MARKETS[0], files: m.files ?? [], whatsapp: m.channel === "whatsapp" }
   : { id: m.id, role: "a", pending: false, answer: m.content, serverId: m.id }));
 
 // M3.7: a PDF of one answer or the whole conversation, saved by the browser; 402 means the plan doesn't include it
@@ -591,6 +591,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
 function Message({ item, onPdf }: { item: Item; onPdf?: (messageId: string) => void }) {
   if (item.role === "u") {
     const meta = [
+      item.whatsapp ? "via WhatsApp" : "",
       item.scope !== MARKETS[0] ? `Scope: ${item.scope}` : "",
       item.files.length ? `Attached: ${item.files.join(", ")}` : ""
     ].filter(Boolean).join(" · ");

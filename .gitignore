@@ -6,3 +6,6 @@ out/
 npm-debug.log*
 next-env.d.ts
 *.tsbuildinfo
+
+# dev test account sign-ins (npm run seed:test-users)
+test-accounts.local.md

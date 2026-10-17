@@ -114,6 +114,46 @@ A user stays paid while Stripe retries a failed payment (`past_due`) and drops t
   - Documents are kept as extracted text and images as bytes, only for that user and conversation (`attachments` table). They never go into the knowledge base.
 - **PDF reports:** one answer or a whole conversation, in Verisavo's colours and its Poppins font (`lib/server/pdf/`, fonts under the SIL Open Font License).
 
+## WhatsApp
+
+Subscribers link one WhatsApp number in their dashboard and ask Verisavo there.
+- It's the same assistant, with the same 100 messages a month.
+- Their WhatsApp messages join their conversations on the web. A message within 30 minutes of their last activity continues that conversation.
+- Images and documents work as they do on the web.
+- Unlinked or unpaid numbers get a short reply with a link instead of an answer.
+
+The code is in `lib/server/whatsapp/` and `app/api/whatsapp/webhook/route.ts`.
+
+1. **In Meta (Henry's Business account):**
+   - Create an app with the WhatsApp product and a phone number.
+   - Create a **System User** permanent token with `whatsapp_business_messaging` permission.
+   - Set the webhook URL to `https://<site>/api/whatsapp/webhook`, with a verify token you choose.
+   - Subscribe it to the `messages` field.
+2. **Env:** fill in every value listed in `.env.example`:
+   - `WHATSAPP_TOKEN`
+   - `WHATSAPP_PHONE_NUMBER_ID`
+   - `WHATSAPP_APP_SECRET` (it checks Meta's signature on every webhook)
+   - `WHATSAPP_VERIFY_TOKEN`
+   - `WHATSAPP_GRAPH_VERSION`
+   - `WHATSAPP_NUMBER`: the number in digits, for wa.me links
+3. **Link codes:**
+   - In WhatsApp Manager, create an **Authentication** template with a copy-code button, and put its name in `WHATSAPP_OTP_TEMPLATE`. Codes are then sent to the user's WhatsApp.
+   - Until Meta approves it, leave that empty. Users then link by sending "LINK 123456" from their WhatsApp with one tap, which proves the number is theirs.
+4. **Testing without Meta:**
+   - `node scripts/whatsapp-fake-inbound.mjs --from 2348031234567 --text "Hello"` posts a correctly signed fake message to the local webhook.
+   - Point `WHATSAPP_API_BASE` at a local stand-in for the Graph API to capture replies. Leave it empty in real use.
+
+## Test accounts (dev only)
+
+- `npm run seed:test-users` creates or resets dummy accounts on the dev database, each in a different state:
+  - free
+  - free with the questions used up
+  - subscriber
+  - disabled
+
+  Their sign-in details go in `test-accounts.local.md`, which is git-ignored.
+- `npm run plan:grant -- someone@example.com [--days 30] [--revoke]` gives an account the paid plan without Stripe, for testing or a complimentary account. Stripe never changes these "manual" plans.
+
 `RELEASE_STAGE` switches milestones on in a deployment (see `lib/release.ts`): 1 = accounts and dashboard, up to 5 = everything. Below 1, the sign-in dialog runs the old demo.
 
 ## Pages
@@ -179,7 +219,8 @@ db/
   migrations/             SQL migrations, applied with npm run db:migrate
 drizzle.config.ts         drizzle-kit settings (reads .env.local)
 proxy.ts                  refreshes the login session and keeps signed-out visitors out of /dashboard
-scripts/migrate-prod.mjs  npm run db:migrate:prod
+scripts/                  migrate-prod (npm run db:migrate:prod), grant-admin, grant-plan, seed-test-users,
+                          whatsapp-fake-inbound (signed test messages for the WhatsApp webhook)
 public/
   home-music.mp3          homepage music: "Elsweyr Beat" (Joseph Beg), looped on a bar
   bg-music.mp3            About us music: "I'm Yours" (Xack), remixed without drums and bass
