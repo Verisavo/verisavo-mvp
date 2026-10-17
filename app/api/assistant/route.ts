@@ -11,7 +11,8 @@ import { ownsConversation, saveAnswer, saveQuestion, undoQuestion } from "@/lib/
 import { ATTACH, bindAttachments, claimAttachments, releaseAttachments } from "@/lib/server/assistant/attachments";
 import { describeAiError } from "@/lib/server/ai/providers";
 
-export const maxDuration = 60;   // a long answer from a large model can take a while
+export const maxDuration = 120;   // a long answer from a large model can take a while
+const ANSWER_TIMEOUT_MS = 105_000;   // the model is stopped (and the question refunded) before the route's limit
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const MAX_QUESTION = 1000;   // same as the message box
@@ -94,7 +95,8 @@ export async function POST(request: Request) {
     try {
       const result = streamText({
         model: prepared.model, instructions: prepared.instructions, messages: prepared.messages,
-        providerOptions: prepared.providerOptions, maxOutputTokens: prepared.maxOutputTokens
+        providerOptions: prepared.providerOptions, maxOutputTokens: prepared.maxOutputTokens,
+        abortSignal: AbortSignal.timeout(ANSWER_TIMEOUT_MS)
       });
       for await (const part of result.fullStream) {
         if (part.type === "text-delta") { text += part.text; send({ type: "delta", text: part.text }); }

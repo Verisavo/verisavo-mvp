@@ -139,6 +139,9 @@ The code is in `lib/server/whatsapp/` and `app/api/whatsapp/webhook/route.ts`.
 3. **Link codes:**
    - In WhatsApp Manager, create an **Authentication** template with a copy-code button, and put its name in `WHATSAPP_OTP_TEMPLATE`. Codes are then sent to the user's WhatsApp.
    - Until Meta approves it, leave that empty. Users then link by sending "LINK 123456" from their WhatsApp with one tap, which proves the number is theirs.
+   - The phone always has the last word. The link confirmation names the account it was linked to, and replying **UNLINK** removes the link.
+   - Admins can also unlink a number under Admin → Users.
+   - When WhatsApp reports that a number changed, its link is removed.
 4. **Testing without Meta:**
    - `node scripts/whatsapp-fake-inbound.mjs --from 2348031234567 --text "Hello"` posts a correctly signed fake message to the local webhook.
    - Point `WHATSAPP_API_BASE` at a local stand-in for the Graph API to capture replies. Leave it empty in real use.

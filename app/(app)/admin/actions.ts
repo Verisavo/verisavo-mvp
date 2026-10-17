@@ -18,6 +18,7 @@ import { answerSetup, getAiSettings, saveAiSettings, searchSetup } from "@/lib/s
 import { describeAiError, EMBEDDINGS, isEmbedding, isProvider, keySet, MODEL_ID, PROVIDERS } from "@/lib/server/ai/providers";
 import { generateText } from "ai";
 import { resetAllowance } from "@/lib/server/entitlements";
+import { unlink } from "@/lib/server/whatsapp/links";
 
 export type ActionState = { ok?: string; error?: string } | null;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -41,6 +42,15 @@ export async function setUserDisabled(formData: FormData): Promise<void> {
     console.error("[admin] couldn't change the user's renewal in Stripe:", err instanceof Error ? err.name : "error");
     await audit("admin.renewal_change_failed", { actorId: admin.id, targetType: "user", targetId: id, metadata: { disable } });
   }
+  revalidatePath("/admin/users");
+}
+
+// M4 security review: an admin can remove a WhatsApp link (e.g. a number linked by mistake or by a trick)
+export async function unlinkUserWhatsApp(formData: FormData): Promise<void> {
+  const admin = await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!UUID.test(id)) return;
+  await unlink(id, { actorId: admin.id, reason: "admin" });
   revalidatePath("/admin/users");
 }
 

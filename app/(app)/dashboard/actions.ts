@@ -111,7 +111,7 @@ export async function startWhatsAppLink(_state: WhatsAppState, formData: FormDat
   if (!paid) return { error: "WhatsApp is part of Verisavo Monthly. Subscribe first." };
   const phone = normalizePhone(formData.get("phone"));
   if (!phone) return { error: "Enter your WhatsApp number with its country code, e.g. +234 803 123 4567." };
-  if (!(await allow(LIMITS.whatsappCode(user.id, phone)))) return { error: "Too many codes requested. Please wait an hour and try again." };
+  if (!(await allow(LIMITS.whatsappCode(user.id)))) return { error: "Too many codes requested. Please wait and try again later." };
   const started = await startLink(user.id, phone);
   if (!started.ok) return { error: started.error, phone };
   return started.method === "otp" ? { step: "code", phone } : { step: "reverse", phone, code: started.code, url: started.url };

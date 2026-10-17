@@ -1,17 +1,21 @@
 // Creates (or resets) dummy accounts on the DEV database for testing, each in a different state, and writes their
 // sign-in details to test-accounts.local.md (git-ignored). Never runs against the live database.
 // Usage: npm run seed:test-users
+//        npm run seed:test-users -- --no-live-file   only on a machine without .env.prod.local, when you're sure
+//                                                    .env.local is the dev database
 // The addresses use test.verisavo.dev, so no email can be delivered to them: they are confirmed already.
 import crypto from "node:crypto";
 import fs from "node:fs";
 import postgres from "postgres";
+import { devVersusLive, readUrl } from "./db-target.mjs";
 
-const line = fs.existsSync(".env.local") && fs.readFileSync(".env.local", "utf8").split(/\r?\n/).find(l => l.startsWith("DATABASE_URL_MIGRATE="));
-const url = line ? line.slice("DATABASE_URL_MIGRATE=".length).trim().replace(/^["']|["']$/g, "") : "";
+const url = readUrl(".env.local");
 if (!url) { console.error("DATABASE_URL_MIGRATE is missing in .env.local."); process.exit(1); }
-const prodLine = fs.existsSync(".env.prod.local") && fs.readFileSync(".env.prod.local", "utf8").split(/\r?\n/).find(l => l.startsWith("DATABASE_URL_MIGRATE="));
-if (prodLine && new URL(prodLine.slice(21).trim()).username === new URL(url).username) {
-  console.error(".env.local points at the live database. Dummy accounts are for dev only."); process.exit(1);
+const target = devVersusLive();
+if (target === "same") { console.error(".env.local points at the live database. Dummy accounts are for dev only."); process.exit(1); }
+if (target === "unknown" && !process.argv.includes("--no-live-file")) {
+  console.error("There's no .env.prod.local to check that .env.local isn't the live database. If you're sure it's dev, add --no-live-file.");
+  process.exit(1);
 }
 
 const USERS = [

@@ -7,6 +7,7 @@
 import fs from "node:fs";
 import readline from "node:readline/promises";
 import postgres from "postgres";
+import { devVersusLive } from "./db-target.mjs";
 
 const args = process.argv.slice(2);
 const email = (args.find(a => !a.startsWith("--") && !/^\d+$/.test(a)) ?? "").trim().toLowerCase();
@@ -21,6 +22,7 @@ const file = prod ? ".env.prod.local" : ".env.local";
 const line = fs.existsSync(file) && fs.readFileSync(file, "utf8").split(/\r?\n/).find(l => l.startsWith("DATABASE_URL_MIGRATE="));
 const url = line ? line.slice("DATABASE_URL_MIGRATE=".length).trim().replace(/^["']|["']$/g, "") : "";
 if (!url || url.includes("[YOUR-PASSWORD]")) { console.error(`DATABASE_URL_MIGRATE is missing in ${file}.`); process.exit(1); }
+if (!prod && devVersusLive() === "same") { console.error(".env.local points at the live database. Use --prod if you really mean the live one."); process.exit(1); }
 
 if (prod) {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });

@@ -12,13 +12,15 @@ import { activeConversation, saveAnswer, saveQuestion, undoQuestion } from "@/li
 import { AttachmentError, bindAttachments, recentUnsentIds, releaseAttachments, saveAttachment } from "@/lib/server/assistant/attachments";
 import { describeAiError } from "@/lib/server/ai/providers";
 import { downloadMedia, markRead, sendText } from "./api";
-import { userForPhone, verifyFromPhone } from "./links";
+import { unlink, unlinkPhone, userForPhone, verifyFromPhone } from "./links";
 
 // Incoming WhatsApp messages (M4.1–M4.5). Channel work only: dedupe, find the user, check the plan, read media, format
 // the reply. Counting, the knowledge base and the model are the same shared modules the web assistant uses.
 
 type Media = { id: string; mime_type?: string; caption?: string; filename?: string };
-type Inbound = { id?: string; from?: string; type?: string; text?: { body?: string }; image?: Media; document?: Media };
+type Inbound = { id?: string; from?: string; timestamp?: string; type?: string; text?: { body?: string }; image?: Media; document?: Media; system?: { type?: string } };
+const MAX_AGE_SECONDS = 6 * 24 * 3600;   // older messages are replays (Meta retries for up to a week; seen ids are kept a week)
+const ANSWER_TIMEOUT_MS = 75_000;          // fail (and refund) well inside the webhook's time limit
 
 const appUrl = () => (process.env.APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
 const errorName = (err: unknown) => (err instanceof AssistantUnavailable ? err.message : err instanceof Error ? err.name : "error");
@@ -31,7 +33,8 @@ export const WA = {
   unsupported: "I can read text messages, images and documents. Please send your question as text.",
   limit: (resets: Date | null) => `You've used all ${PLAN.PAID_MESSAGES_PER_PERIOD} messages for this month.${resets ? ` They reset on ${resets.toLocaleDateString("en-GB", { day: "numeric", month: "long" })}.` : ""} Your past answers are at ${appUrl()}/assistant`,
   sorry: "Sorry, I couldn't answer just now. Your question wasn't counted. Please try again in a moment.",
-  linked: "Your number is now linked to Verisavo. Ask me anything about your markets.",
+  unlinkedOk: "This number is no longer linked to Verisavo. To link it again, use your dashboard.",
+  notLinked: "This number isn't linked to a Verisavo account.",
   fileKept: (name: string) => `Got ${name}. What would you like to know about it?`,
   fileFailed: () => `I couldn't open that file. Please try again, or upload it on the web: ${appUrl()}/assistant`,
   empty: "I couldn't put an answer together for that. Please rephrase your question or ask about something more specific."
@@ -45,12 +48,15 @@ export const toWhatsApp = (text: string) => text.split("\n").map(line => {
 }).join("\n");
 
 export async function handleWebhook(payload: unknown): Promise<void> {
-  const entries = (payload as { entry?: { changes?: { field?: string; value?: { messages?: Inbound[] } }[] }[] })?.entry ?? [];
-  for (const entry of entries) {
-    for (const change of entry.changes ?? []) {
+  const ours = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const entries = (payload as { entry?: { changes?: { field?: string; value?: { metadata?: { phone_number_id?: string }; messages?: Inbound[] } }[] }[] })?.entry ?? [];
+  for (const entry of entries.slice(0, 20)) {
+    for (const change of (entry.changes ?? []).slice(0, 20)) {
       if (change.field !== "messages") continue;
+      // only messages to Verisavo's own number (another number on the same Meta app is not ours to answer)
+      if (ours && change.value?.metadata?.phone_number_id !== ours) continue;
       // status updates (delivered, read) for messages we sent have no "messages" array and are ignored
-      for (const message of change.value?.messages ?? []) {
+      for (const message of (change.value?.messages ?? []).slice(0, 20)) {
         try { await handleMessage(message); }
         catch (err) { console.error("[whatsapp] message failed:", errorName(err)); }
       }
@@ -60,6 +66,7 @@ export async function handleWebhook(payload: unknown): Promise<void> {
 
 async function handleMessage(m: Inbound): Promise<void> {
   if (!m.id || !m.from || !/^\d{8,15}$/.test(m.from)) return;
+  if (Number(m.timestamp) && Date.now() / 1000 - Number(m.timestamp) > MAX_AGE_SECONDS) return;
   // Meta redelivers webhooks: each message id is handled once, whatever it is
   const [fresh] = await db.insert(whatsappSeen).values({ id: m.id.slice(0, 200) }).onConflictDoNothing().returning({ id: whatsappSeen.id });
   if (!fresh) return;
@@ -71,11 +78,19 @@ async function handleMessage(m: Inbound): Promise<void> {
   const media = m.type === "image" ? m.image : m.type === "document" ? m.document : undefined;
   const text = (m.type === "text" ? m.text?.body ?? "" : media?.caption ?? "").replace(/\u0000/g, "").trim();
 
-  // "LINK 123456" from the dashboard's fallback linking (decision D13)
+  // WhatsApp says this number moved to a new one: the old number may go to someone else, so the link is removed
+  if (m.type === "system" && m.system?.type === "user_changed_number") { await unlinkPhone(phone, "number_changed"); return; }
+
+  // "LINK 123456" from the dashboard's fallback linking (decision D13); "UNLINK" lets the phone's owner undo a link
   const linkCode = m.type === "text" ? /^link\s+(\d{6})$/i.exec(text)?.[1] : undefined;
   if (linkCode) {
     const r = await verifyFromPhone(phone, linkCode);
-    await sendText(phone, r.ok ? WA.linked : r.error);
+    await sendText(phone, r.ok ? r.reply : r.error);
+    return;
+  }
+  if (m.type === "text" && /^unlink$/i.test(text)) {
+    const owner = await userForPhone(phone);
+    await sendText(phone, owner && (await unlink(owner, { actorId: owner, reason: "whatsapp" })) ? WA.unlinkedOk : WA.notLinked);
     return;
   }
 
@@ -108,12 +123,12 @@ async function handleMessage(m: Inbound): Promise<void> {
     return;
   }
 
-  // M4.4 / decision D5: continue the conversation active in the last 30 minutes, on either channel
-  const conversationId = await activeConversation(userId);
-  const attachmentIds = [...new Set([...fileIds, ...(await recentUnsentIds(userId))])];
   const question = text.slice(0, 1000);
   let prepared, saved, bound: string[] = [];
   try {
+    // M4.4 / decision D5: continue the conversation active in the last 30 minutes, on either channel
+    const conversationId = await activeConversation(userId);
+    const attachmentIds = [...new Set([...fileIds, ...(await recentUnsentIds(userId))])];
     prepared = await prepareAnswer({ userId, conversationId, question, market: ALL_MARKETS, attachmentIds, withFiles: true, channel: "whatsapp" });
     saved = await saveQuestion({ userId, conversationId, question, market: ALL_MARKETS, channel: "whatsapp" });
     bound = await bindAttachments(attachmentIds, saved.conversationId, saved.messageId);
@@ -129,7 +144,8 @@ async function handleMessage(m: Inbound): Promise<void> {
   try {
     const result = await generateText({
       model: prepared.model, instructions: prepared.instructions, messages: prepared.messages,
-      providerOptions: prepared.providerOptions, maxOutputTokens: prepared.maxOutputTokens
+      providerOptions: prepared.providerOptions, maxOutputTokens: prepared.maxOutputTokens,
+      abortSignal: AbortSignal.timeout(ANSWER_TIMEOUT_MS)
     });
     answer = result.text.trim() || WA.empty;
     usage = { inputTokens: result.totalUsage.inputTokens, outputTokens: result.totalUsage.outputTokens };

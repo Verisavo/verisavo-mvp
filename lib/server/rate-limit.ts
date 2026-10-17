@@ -65,9 +65,15 @@ export const LIMITS = {
   pdf: (userId: string): Rule[] => [{ key: `pdf:user:${userId}`, limit: 20, windowSeconds: 600 }],
   // M4: messages from one WhatsApp number (anything over is dropped quietly), and sending / checking link codes
   whatsappIn: (phone: string): Rule[] => [{ key: `wa:in:${phone}`, limit: 30, windowSeconds: 3600 }],
-  whatsappCode: (userId: string, phone: string): Rule[] => [
+  whatsappCode: (userId: string): Rule[] => [
     { key: `wa:code:user:${userId}`, limit: 5, windowSeconds: 3600 },
-    { key: `wa:code:phone:${phone}`, limit: 5, windowSeconds: 3600 }
+    { key: `wa:code:user-day:${userId}`, limit: 10, windowSeconds: 86_400 }
+  ],
+  // a paid template message to a number: per number and overall, counted only when one is really sent
+  whatsappTemplate: (phone: string): Rule[] => [
+    { key: `wa:tpl:phone:${phone}`, limit: 3, windowSeconds: 3600 },
+    { key: `wa:tpl:phone-day:${phone}`, limit: 5, windowSeconds: 86_400 },
+    { key: "wa:tpl:all-day", limit: 500, windowSeconds: 86_400 }
   ],
   whatsappVerify: (userId: string): Rule[] => [{ key: `wa:verify:user:${userId}`, limit: 20, windowSeconds: 3600 }]
 };

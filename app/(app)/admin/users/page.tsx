@@ -4,6 +4,7 @@ import { fmtDay, fmtWhen, pageParam } from "../format";
 import { listUsers } from "../queries";
 import UserToggle from "./UserToggle";
 import ResetAllowance from "./ResetAllowance";
+import UnlinkWhatsApp from "./UnlinkWhatsApp";
 
 const PLAN_STATUS: Record<string, string> = { active: "Monthly", trialing: "Monthly (trial)", past_due: "Monthly · payment retrying" };
 
@@ -71,6 +72,7 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
                 <td className="px-5 py-3">
                   <div className="flex justify-end gap-1">
                     {u.used > 0 && <ResetAllowance id={u.id} name={u.name || u.email} paid={Boolean(u.sub_status)} />}
+                    {u.whatsapp && <UnlinkWhatsApp id={u.id} name={u.name || u.email} />}
                     {u.id !== admin.id && <UserToggle id={u.id} name={u.name || u.email} disabled={Boolean(u.disabled_at)} />}
                   </div>
                 </td>

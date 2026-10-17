@@ -36,6 +36,7 @@ const ACTIONS: Record<string, string> = {
   "billing.manual_revoked": "Had the manual paid plan removed",
   "whatsapp.linked": "Linked a WhatsApp number",
   "whatsapp.unlinked": "Unlinked their WhatsApp number",
+  "admin.whatsapp_unlinked": "Unlinked a user's WhatsApp number",
   "admin.user_disable": "Disabled a user",
   "admin.user_enable": "Re-enabled a user",
   "admin.renewal_change_failed": "Couldn't change a user's plan renewal in Stripe (do it in the Stripe dashboard)",

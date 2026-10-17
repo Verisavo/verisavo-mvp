@@ -7,8 +7,11 @@ import "server-only";
 const MAX_TEXT = 4096;   // WhatsApp's limit for one text message
 const MAX_MEDIA_BYTES = 4 * 1024 * 1024;
 
+const GRAPH = "https://graph.facebook.com";
+// the stand-in is for local tests only: a production build always talks to Meta, so the token can't be sent elsewhere
+const testBase = () => (process.env.NODE_ENV !== "production" && process.env.WHATSAPP_API_BASE ? process.env.WHATSAPP_API_BASE : "");
 const cfg = () => ({
-  base: (process.env.WHATSAPP_API_BASE || "https://graph.facebook.com").replace(/\/$/, ""),
+  base: (testBase() || GRAPH).replace(/\/$/, ""),
   version: process.env.WHATSAPP_GRAPH_VERSION || "v23.0",
   token: process.env.WHATSAPP_TOKEN ?? "",
   phoneId: process.env.WHATSAPP_PHONE_NUMBER_ID ?? ""
@@ -23,7 +26,11 @@ export const waLink = (text?: string) => `https://wa.me/${verisavoNumber()}${tex
 
 async function post(payload: object): Promise<boolean> {
   const { base, version, token, phoneId } = cfg();
-  if (!token || !phoneId) { console.info("[whatsapp] not configured, would send:", JSON.stringify(payload).slice(0, 300)); return false; }
+  if (!token || !phoneId) {   // no message text or full number in the logs
+    const p = payload as { to?: string; type?: string; status?: string };
+    console.info("[whatsapp] not configured, would send:", p.type ?? p.status ?? "message", "to", p.to ? `…${p.to.slice(-4)}` : "-");
+    return false;
+  }
   try {
     const r = await fetch(`${base}/${version}/${phoneId}/messages`, {
       method: "POST",
@@ -83,8 +90,8 @@ export const markRead = (messageId: string) => post({ status: "read", message_id
 // (or the configured test stand-in)
 function trustedMediaHost(url: string): boolean {
   try {
-    const u = new URL(url), base = new URL(cfg().base);
-    if (u.host === base.host) return true;
+    const u = new URL(url);
+    if (testBase() && u.host === new URL(testBase()).host) return true;
     return u.protocol === "https:" && /(^|\.)(fbsbx\.com|facebook\.com|whatsapp\.net|fbcdn\.net)$/.test(u.hostname);
   } catch { return false; }
 }
