@@ -1,6 +1,25 @@
 "use client";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { changeEmail, changePassword, deleteConversation, updateProfile, type FormState } from "./actions";
+
+// Back from Stripe Checkout. The redirect isn't proof of payment, so the plan only shows as paid once the webhook has
+// confirmed it; meanwhile the page refreshes itself for up to half a minute.
+export function CheckoutNotice({ status, paid }: { status: "success" | "cancel"; paid: boolean }) {
+  const router = useRouter();
+  const [tries, setTries] = useState(0);
+  const waiting = status === "success" && !paid && tries < 15;
+  useEffect(() => {
+    if (!waiting) return;
+    const t = setTimeout(() => { setTries(n => n + 1); router.refresh(); }, 2000);
+    return () => clearTimeout(t);
+  }, [waiting, tries, router]);
+  const text = status === "cancel" ? "Checkout was cancelled. You haven’t been charged."
+    : paid ? "Thank you! You’re on Verisavo Monthly."
+    : waiting ? "Thank you! We’re confirming your payment with Stripe…"
+    : "Your payment is still being confirmed. Refresh this page in a minute; contact us if your plan doesn’t change.";
+  return <p role="status" className={`rounded-xl p-3 text-sm ${status === "success" && paid ? "bg-[#ECFDF3] text-success" : "bg-brand-100 text-brand-800"}`}>{text}</p>;
+}
 
 // Subscribe opens Stripe Checkout; Manage billing opens Stripe's billing portal (invoices, card, cancel)
 export function BillingButton({ kind, label }: { kind: "subscribe" | "manage"; label: string }) {

@@ -57,5 +57,7 @@ export const LIMITS = {
   reset: (ip: string): Rule[] => [{ key: `reset:ip:${ip}`, limit: 10, windowSeconds: 300 }],
   accountChange: (userId: string): Rule[] => [{ key: `account:user:${userId}`, limit: 5, windowSeconds: 900 }],
   // M3: questions to the assistant. The plan limits how many count; this stops bursts that would run the model in parallel
-  ask: (userId: string): Rule[] => [{ key: `ask:user:${userId}`, limit: 20, windowSeconds: 300 }]
+  ask: (userId: string): Rule[] => [{ key: `ask:user:${userId}`, limit: 20, windowSeconds: 300 }],
+  // M3: opening Stripe Checkout or the billing portal (each call creates a Stripe session)
+  billing: (userId: string): Rule[] => [{ key: `billing:user:${userId}`, limit: 10, windowSeconds: 600 }]
 };

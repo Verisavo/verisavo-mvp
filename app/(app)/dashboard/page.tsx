@@ -9,7 +9,7 @@ import { db } from "@/lib/server/db";
 import { conversations } from "@/db/schema";
 import AccountHeader from "../AccountHeader";
 import { signOutAction } from "./actions";
-import { BillingButton, DeleteConversation, EmailForm, PasswordForm, ProfileForm } from "./forms";
+import { BillingButton, CheckoutNotice, DeleteConversation, EmailForm, PasswordForm, ProfileForm } from "./forms";
 import { getEntitlements, type Entitlements } from "@/lib/server/entitlements";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
 // The user's workspace (M1.4): plan and billing, conversations, profile, email and password
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   await connection();   // always render per request, never prerender at build time
   if (!released(1)) notFound();
   const user = await requireUser();
@@ -32,6 +32,8 @@ export default async function DashboardPage() {
     .limit(50);
   const firstName = user.profile.name.split(" ")[0];
   const ent = released(3) ? await getEntitlements(user.id) : null;   // plans and limits arrive with M3
+  const { checkout } = await searchParams;
+  const checkoutStatus = checkout === "success" || checkout === "cancel" ? checkout : null;
 
   return (
     <>
@@ -52,7 +54,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid items-start gap-6 md:grid-cols-2">
-          {ent ? <PlanCard ent={ent} /> : (
+          {ent ? <PlanCard ent={ent} checkout={checkoutStatus} /> : (
             <section className="card" aria-labelledby="plan-h" id="plan">
               <p className="eyebrow">{"Plan & billing"}</p>
               <h2 id="plan-h" className="flex flex-wrap items-center gap-2.5">
@@ -114,13 +116,14 @@ export default async function DashboardPage() {
 }
 
 // Plan & billing (M1.4 with M3): plan, usage x / limit, renewal date, and Stripe checkout or billing portal
-function PlanCard({ ent }: { ent: Entitlements }) {
+function PlanCard({ ent, checkout }: { ent: Entitlements; checkout: "success" | "cancel" | null }) {
   const paid = ent.plan === "paid";
   const resets = ent.resetsAt ? day.format(ent.resetsAt) : null;
   const badge = !paid ? "Current plan" : ent.pastDue ? "Payment retrying" : ent.cancelAtPeriodEnd ? `Ends ${resets}` : "Active";
   return (
     <section className="card" aria-labelledby="plan-h" id="plan">
       <p className="eyebrow">{"Plan & billing"}</p>
+      {checkout && <CheckoutNotice status={checkout} paid={paid} />}
       <h2 id="plan-h" className="flex flex-wrap items-center gap-2.5">
         <span className="font-serif text-3xl leading-none font-medium tracking-tight">{paid ? "Monthly" : "Free"}</span>
         <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${ent.pastDue ? "bg-[#FEF3F2] text-danger" : "bg-brand-100 text-brand-800"}`}>{badge}</span>

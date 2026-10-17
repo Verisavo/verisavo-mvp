@@ -26,6 +26,12 @@ const ACTIONS: Record<string, string> = {
   "conversation.delete": "Deleted a conversation",
   "conversation.delete_all": "Deleted all their conversations",
   "admin.allowance_reset": "Reset a user's allowance",
+  "billing.subscribed": "Subscribed to Verisavo Monthly",
+  "billing.renewed": "Subscription renewed",
+  "billing.cancel_scheduled": "Cancelled (ends at the period end)",
+  "billing.cancel_undone": "Kept their subscription",
+  "billing.ended": "Subscription ended",
+  "billing.payment_failed": "Payment failed",
   "admin.user_disable": "Disabled a user",
   "admin.user_enable": "Re-enabled a user",
   "admin.role_granted": "Was made an admin",
@@ -48,5 +54,6 @@ export const ACTION_GROUPS = [
   { value: "kb.", label: "Knowledge base" },
   { value: "admin.", label: "Admin actions" },
   { value: "ai.", label: "AI settings" },
+  { value: "billing.", label: "Subscriptions" },
   { value: "conversation.", label: "Conversations" }
 ];

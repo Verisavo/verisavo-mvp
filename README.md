@@ -88,6 +88,23 @@ Set a key for each service the admin may choose, in `.env.local` or the hosting 
 - Keys are never stored in the database.
 - The **Test** buttons send one tiny request to check a key and model work.
 
+## Payments (Stripe)
+
+The plan is Verisavo Monthly: 100 messages per billing period, shared across web and WhatsApp. Free accounts get 5 questions. Checkout, the billing portal (invoices, card, cancelling) and the webhook live in `lib/server/billing.ts` and `app/api/billing/*`; usage limits live in `lib/server/entitlements.ts`.
+
+1. In Stripe (use **test mode** for development):
+   - Create the product "Verisavo Monthly" with one recurring monthly price ($5), and put the price ID in `STRIPE_PRICE_MONTHLY`.
+   - Put the secret key in `STRIPE_SECRET_KEY`.
+   - Turn on the **Customer portal** (Settings → Billing → Customer portal) with cancelling, updating the payment method and invoice history.
+2. Webhook:
+   - **Local:** run `stripe listen --forward-to localhost:3000/api/stripe/webhook` and put the `whsec_…` it prints in `STRIPE_WEBHOOK_SECRET`.
+   - **Live:** add an endpoint at `https://<site>/api/stripe/webhook` with API version `2026-09-30.endive` (the version the installed `stripe` package uses). Subscribe it to `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` and `invoice.payment_failed`, and use that endpoint's own signing secret.
+3. Test cards (any future date, any CVC):
+   - `4242 4242 4242 4242` succeeds.
+   - `4000 0000 0000 0341` fails when charged, to test failed payments.
+
+A user stays paid while Stripe retries a failed payment (`past_due`) and drops to free when the subscription ends. Each renewal starts a new usage period at 0.
+
 `RELEASE_STAGE` switches milestones on in a deployment (see `lib/release.ts`): 1 = accounts and dashboard, up to 5 = everything. Below 1, the sign-in dialog runs the old demo.
 
 ## Pages
