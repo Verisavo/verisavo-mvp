@@ -16,6 +16,8 @@ function $<T extends Element = HTMLElement>(selector: string): T {
 const $$ = <T extends Element = HTMLElement>(selector: string) => Array.from(document.querySelectorAll<T>(selector));
 
 export const authLive = (): boolean => Number(document.body.dataset.release || 0) >= 1;
+// M5.3: once M5 is released, the "early access" entry points open sign-up instead of the early-access demo
+export const startFreeLive = (): boolean => Number(document.body.dataset.release || 0) >= 5;
 
 async function post(url: string, body?: unknown): Promise<ApiResult> {
   const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body ?? {}) });
@@ -37,9 +39,14 @@ export async function signOut(): Promise<void> {
   if (authLive()) { try { await post("/api/auth/logout"); } catch {} }
 }
 
-// Signed in: the navigation's "Sign in" / "Log in" buttons become "Dashboard" (their click handlers go to /dashboard)
+// Signed in: the navigation's "Sign in" / "Log in" buttons become "Dashboard" (their click handlers go to /dashboard),
+// and "Start free" buttons become "Ask Verisavo" (their click handlers open the assistant)
 export function markSignedIn(): void {
   $$("[data-login], [data-dialog='signin']").forEach(el => { el.textContent = "Dashboard"; });
+  $$("[data-start]").forEach(el => {
+    const label = Array.from(el.childNodes).find(n => n.nodeType === Node.TEXT_NODE && n.textContent?.trim());
+    if (label) label.textContent = label.textContent?.endsWith(" ") ? "Ask Verisavo " : "Ask Verisavo";
+  });
 }
 
 // Opens the assistant (/assistant, sign-in only), handing over the visitor's question and market

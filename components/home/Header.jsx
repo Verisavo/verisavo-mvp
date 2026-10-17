@@ -1,5 +1,7 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+import { released } from "@/lib/release";
 export default function Header() {
+  const live = released(5);   // M5.3: early access becomes "Start free" (sign-up) once M5 is released
   return (
     <header className="top">
       {" "}
@@ -16,7 +18,7 @@ export default function Header() {
           </svg>
         </button>
         {" "}
-        <button type="button" className="pa" data-dialog="access">{"Get early access"}</button>
+        <button type="button" className="pa" data-dialog="access" data-start={live ? "" : undefined}>{live ? "Start free" : "Get early access"}</button>
         {" "}
         <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu">
           <span id="menu-lab">{"Menu"}</span>

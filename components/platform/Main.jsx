@@ -1,5 +1,7 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/platform/.
+import { released } from "@/lib/release";
 export default function Main() {
+  const live = released(5);   // M5.3: early access becomes "Start free" (sign-up) once M5 is released
   return (
     <main id="main">
       {" "}
@@ -499,7 +501,7 @@ export default function Main() {
             {" "}
             <div className="ctas">
               {" "}
-              <button type="button" className="btn btn-blue" data-access="">{"Get early access"}</button>
+              <button type="button" className="btn btn-blue" data-access="" data-start={live ? "" : undefined}>{live ? "Start free" : "Get early access"}</button>
               {" "}
               <button type="button" className="btn btn-outline-w" data-href="/">{"Explore Verisavo"}</button>
               {" "}

@@ -1,5 +1,7 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+import { released } from "@/lib/release";
 export default function AboutUsPage() {
+  const live = released(5);   // M5.3: early access becomes "Start free" (sign-up) once M5 is released
   return (
     <section className="pg" id="pg-about-us" aria-labelledby="about-h" aria-hidden="true">
       {" "}
@@ -639,11 +641,11 @@ export default function AboutUsPage() {
           {" "}
           <h2 id="work-h">{"Work "}<span className="acc">{"with us"}</span></h2>
           {" "}
-          <p>{"Questions about a market, partnerships or early access? We would like to hear from you."}</p>
+          <p>{live ? "Questions about a market or partnerships? We would like to hear from you." : "Questions about a market, partnerships or early access? We would like to hear from you."}</p>
           {" "}
           <div className="acts">
             <button type="button" className="obtn solid" data-page="contact">{"Contact us "}<span aria-hidden="true">{"→"}</span></button>
-            <button type="button" className="obtn" data-dialog="access">{"Get early access"}</button>
+            <button type="button" className="obtn" data-dialog="access" data-start={live ? "" : undefined}>{live ? "Start free" : "Get early access"}</button>
           </div>
           {" "}
         </section>

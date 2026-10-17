@@ -1,5 +1,7 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+import { released } from "@/lib/release";
 export default function PricingPage() {
+  const live = released(5);   // M5.3: signed-in visitors go to the assistant instead of sign-up
   return (
     <section className="pg" id="pg-pricing" aria-labelledby="pricing-h" aria-hidden="true">
       {" "}
@@ -24,7 +26,7 @@ export default function PricingPage() {
               <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Web access"}</span></li>
               <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"No card required"}</span></li>
             </ul>
-            <button type="button" className="obtn pr-cta" data-signup="">{"Start free "}<span aria-hidden="true">{"→"}</span></button>
+            <button type="button" className="obtn pr-cta" data-signup={live ? undefined : ""} data-dialog={live ? "access" : undefined} data-start={live ? "" : undefined}>{"Start free "}<span aria-hidden="true">{"→"}</span></button>
           </article>
           {" "}
           <article className="pr-card pr-main" aria-labelledby="pr-monthly">

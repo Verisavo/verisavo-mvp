@@ -1,5 +1,7 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+import { released } from "@/lib/release";
 export default function ContactPage() {
+  const live = released(5);   // M5.3: early access becomes "Start free" (sign-up) once M5 is released
   return (
     <section className="pg" id="pg-contact" aria-labelledby="contact-h" aria-hidden="true">
       {" "}
@@ -12,9 +14,9 @@ export default function ContactPage() {
         <div className="info3">
           {" "}
           <div>
-            <span className="lab">{"Early access"}</span>
-            <p>{"Try Verisavo with your team."}</p>
-            <button type="button" className="pg-link" data-dialog="access">{"Get early access "}<span aria-hidden="true">{"→"}</span></button>
+            <span className="lab">{live ? "Get started" : "Early access"}</span>
+            <p>{live ? "Ask your first 5 questions free. No card needed." : "Try Verisavo with your team."}</p>
+            <button type="button" className="pg-link" data-dialog="access" data-start={live ? "" : undefined}>{live ? "Start free " : "Get early access "}<span aria-hidden="true">{"→"}</span></button>
           </div>
           {" "}
           <div>

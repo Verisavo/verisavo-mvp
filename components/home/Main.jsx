@@ -1,5 +1,7 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+import { released } from "@/lib/release";
 export default function Main() {
+  const live = released(5);   // M5.3: early access becomes "Start free" (sign-up) once M5 is released
   return (
     <main>
       {" "}
@@ -198,7 +200,7 @@ export default function Main() {
             {" "}
             <div className="acts">
               {" "}
-              <button type="button" className="dbtn" data-dialog="access">{"Get early access "}<span className="ar">{"→"}</span></button>
+              <button type="button" className="dbtn" data-dialog="access" data-start={live ? "" : undefined}>{live ? "Start free " : "Get early access "}<span className="ar">{"→"}</span></button>
               {" "}
               <button type="button" className="dbtn" data-dialog="signin">{"Sign in "}<span className="ar">{"→"}</span></button>
               {" "}
