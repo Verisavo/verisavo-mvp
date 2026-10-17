@@ -29,7 +29,7 @@ export default function PricingPage() {
           {" "}
           <article className="pr-card pr-main" aria-labelledby="pr-monthly">
             <p className="pr-tier"><span className="lab" id="pr-monthly">{"Verisavo"}</span><span className="pr-tag">{"Monthly"}</span></p>
-            <p className="pr-price">{"$6.99 "}<span>{"/ month"}</span></p>
+            <p className="pr-price">{"$5 "}<span>{"/ month"}</span></p>
             <p className="pr-line">{"For businesses that need answers more often."}</p>
             <ul className="pr-list">
               <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Up to 100 messages per month"}</span></li>

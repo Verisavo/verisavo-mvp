@@ -191,7 +191,7 @@ Pages are linked with full page loads (plain `<a>`), so each one keeps only its 
 
 ## Not connected yet
 
-- **Intelligence Assistant** answers show "Not connected yet" until `ASSISTANT.endpoint` is set in `lib/platform/main.js`.
+- **Before `RELEASE_STAGE` 3,** the Intelligence Assistant shows "Not connected yet" instead of answers. From stage 3 it answers through `/api/assistant`.
 - **Early access** runs in demo mode (code `123456`). Set `CONFIG.mode`, `CONFIG.api` and `CONFIG.whatsappNumber` in `lib/home/auth.js` and `lib/platform/main.js`.
 - **Contact form**: set `CONTACT_ENDPOINT` in `lib/home/scene.js`. Until then nothing is sent.
 
