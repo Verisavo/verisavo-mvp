@@ -12,13 +12,16 @@ import * as I from "./icons";
 export type AssistantUser = { id: string; name: string; email: string };
 type BlockReason = "free_exhausted" | "period_exhausted" | "feature_requires_subscription";
 
-type UserItem = { id: string; role: "u"; text: string; scope: string; files: number };
-type AnswerItem = { id: string; role: "a"; pending: boolean; streaming?: boolean; title?: string; body?: string; answer?: string; error?: string };
+type UserItem = { id: string; role: "u"; text: string; scope: string; files: string[] };
+type AnswerItem = { id: string; role: "a"; pending: boolean; streaming?: boolean; title?: string; body?: string; answer?: string; error?: string; serverId?: string };
+// a file picked for the next question: uploaded straight away (live), sent with the question by id
+type FilePick = { key: string; name: string; status: "uploading" | "ready" | "error"; id?: string; error?: string };
+type Notice = { feature: "uploads" | "pdf" } | { error: string } | null;
 type PaywallItem = { id: string; role: "p"; reason: BlockReason; usage: UsageView };
 type Item = UserItem | AnswerItem | PaywallItem;
 type Conv = { id: string; title: string; items: Item[]; loaded: boolean };
 type Pop = "scope" | "more" | "gear" | "shield" | null;
-type StoredMessage = { id: string; role: "user" | "assistant"; content: string; market: string | null };
+type StoredMessage = { id: string; role: "user" | "assistant"; content: string; market: string | null; files?: string[] };
 
 const CONVS_PREFIX = "verisavo-convs";   // + ":" + user id, so a shared browser never shows someone else's questions
 const THEME_KEY = "verisavo-va-theme";
@@ -37,8 +40,26 @@ async function previewAnswer(): Promise<Pick<AnswerItem, "title" | "body">> {
 }
 
 const toItems = (msgs: StoredMessage[]): Item[] => msgs.map(m => (m.role === "user"
-  ? { id: m.id, role: "u", text: m.content, scope: m.market ?? MARKETS[0], files: 0 }
-  : { id: m.id, role: "a", pending: false, answer: m.content }));
+  ? { id: m.id, role: "u", text: m.content, scope: m.market ?? MARKETS[0], files: m.files ?? [] }
+  : { id: m.id, role: "a", pending: false, answer: m.content, serverId: m.id }));
+
+// M3.7: a PDF of one answer or the whole conversation, saved by the browser; 402 means the plan doesn't include it
+async function downloadPdf(conversationId: string, messageId?: string): Promise<"ok" | "paywall" | "error"> {
+  try {
+    const r = await fetch(`/api/assistant/conversations/${conversationId}/pdf${messageId ? `?message=${messageId}` : ""}`);
+    if (r.status === 402) return "paywall";
+    if (r.status === 401) { location.href = "/platform#signin"; return "error"; }
+    if (!r.ok) return "error";
+    const name = /filename="([^"]+)"/.exec(r.headers.get("content-disposition") ?? "")?.[1] ?? "verisavo-report.pdf";
+    const url = URL.createObjectURL(await r.blob());
+    const a = Object.assign(document.createElement("a"), { href: url, download: name });
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    return "ok";
+  } catch {
+    return "error";
+  }
+}
 
 const planLabel = (u: UsageView | null) => !u ? "Free plan"
   : u.plan === "paid" ? `Monthly plan · ${u.remaining} left` : `Free plan · ${u.remaining} of ${u.limit} left`;
@@ -70,7 +91,9 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [text, setText] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<FilePick[]>([]);
+  const [notice, setNotice] = useState<Notice>(null);   // a paid feature was tried on the free plan
+  const uploading = files.some(f => f.status === "uploading");
   const [moreChips, setMoreChips] = useState(false);
 
   const loaded = useRef(false);
@@ -98,9 +121,10 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
 
   async function send(raw: string, scopeOverride?: string) {
     const question = raw.trim();
-    if (!question) return;
+    if (!question || uploading) return;
     const sc = scopeOverride ?? scope;
-    const u: UserItem = { id: uid(), role: "u", text: question, scope: sc, files: files.length };
+    const sending = files.filter(f => f.status === "ready");
+    const u: UserItem = { id: uid(), role: "u", text: question, scope: sc, files: sending.map(f => f.name) };
     const a: AnswerItem = { id: uid(), role: "a", pending: true };
     const existing = curId && convs.some(c => c.id === curId) ? curId : null;
     let convId = existing ?? uid();   // a new conversation gets its real id from the server's first line
@@ -129,7 +153,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
     try {
       res = await fetch("/api/assistant", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, market: sc, requestId: crypto.randomUUID(), conversationId: existing, attachments: u.files })
+        body: JSON.stringify({ question, market: sc, requestId: crypto.randomUUID(), conversationId: existing, attachmentIds: sending.flatMap(f => (f.id ? [f.id] : [])) })
       });
     } catch {
       fail("We couldn’t reach Verisavo. Check your connection and try again.");
@@ -151,7 +175,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
     const reader = res.body!.getReader();
     const decoder = new TextDecoder();
     let buffered = "", started = false;
-    const handle = (msg: { type: string; conversationId?: string; remaining?: number; text?: string; message?: string }) => {
+    const handle = (msg: { type: string; conversationId?: string; remaining?: number; text?: string; message?: string; messageId?: string }) => {
       if (msg.type === "start") {
         if (msg.conversationId && msg.conversationId !== convId) {
           const real = msg.conversationId, temp = convId;
@@ -165,7 +189,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
         const piece = msg.text;
         setAnswer(it => ({ ...(it as AnswerItem), pending: false, streaming: true, answer: ((it as AnswerItem).answer ?? "") + piece }));
       } else if (msg.type === "done") {
-        setAnswer({ streaming: false });
+        setAnswer({ streaming: false, serverId: msg.messageId });
       } else if (msg.type === "error") {
         if (typeof msg.remaining === "number") setUsage(prev => (prev ? { ...prev, remaining: msg.remaining!, used: prev.limit - msg.remaining! } : prev));
         fail(msg.message ?? "The assistant couldn’t answer just now. Please try again.");
@@ -305,12 +329,51 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void send(text); }
   };
   const onSubmit = (e: FormEvent) => { e.preventDefault(); void send(text); };
+  // Files upload as soon as they're picked (one request each, paid plan only); the question sends their ids
+  const updatePick = (key: string, patch: Partial<FilePick>) => setFiles(prev => prev.map(f => (f.key === key ? { ...f, ...patch } : f)));
+  async function upload(pick: FilePick, file: File) {
+    const form = new FormData();
+    form.append("file", file);
+    try {
+      const r = await fetch("/api/assistant/attachments", { method: "POST", body: form });
+      const data = await r.json().catch(() => null) as { attachment?: { id: string }; message?: string; usage?: UsageView } | null;
+      if (r.status === 402) {
+        if (data?.usage) setUsage(data.usage);
+        setFiles(prev => prev.filter(f => f.key !== pick.key));
+        setNotice({ feature: "uploads" });
+      } else if (r.ok && data?.attachment) updatePick(pick.key, { status: "ready", id: data.attachment.id });
+      else updatePick(pick.key, { status: "error", error: data?.message ?? "This file couldn’t be attached." });
+    } catch {
+      updatePick(pick.key, { status: "error", error: "Upload failed. Check your connection." });
+    }
+  }
   const onFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    const picked = Array.from(e.target.files ?? []).filter(f => f.size <= MAX_MB * 1048576);
-    setFiles(prev => [...prev, ...picked].slice(0, MAX_FILES));
+    const room = MAX_FILES - files.length;
+    const picked = Array.from(e.target.files ?? []).slice(0, Math.max(0, room));
     e.target.value = "";
     focusInput();
+    if (live && usage?.plan !== "paid") { setNotice({ feature: "uploads" }); return; }
+    const picks = picked.map(file => {
+      const big = file.size > MAX_MB * 1048576;
+      const pick: FilePick = { key: uid(), name: file.name, status: !live ? "ready" : big ? "error" : "uploading", error: big ? `Larger than ${MAX_MB} MB` : undefined };
+      return { pick, file, big };
+    });
+    setFiles(prev => [...prev, ...picks.map(p => p.pick)]);
+    if (live) picks.filter(p => !p.big).forEach(p => void upload(p.pick, p.file));
   };
+  const removePick = (pick: FilePick) => {
+    setFiles(prev => prev.filter(f => f.key !== pick.key));
+    if (live && pick.id) void fetch(`/api/assistant/attachments/${pick.id}`, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: "{}" }).catch(() => {});
+    focusInput();
+  };
+  const pdf = async (messageId?: string) => {
+    if (!cur) return;
+    setPop(null);
+    const result = await downloadPdf(cur.id, messageId);
+    if (result === "paywall") setNotice({ feature: "pdf" });
+    else if (result === "error") setNotice({ error: "The PDF couldn’t be made just now. Please try again." });
+  };
+  const canPdf = live && Boolean(cur?.items.some(it => it.role === "a" && it.serverId && !it.streaming));
 
   return (
     <div className="grid h-dvh place-items-center overflow-hidden bg-[radial-gradient(1100px_520px_at_50%_-8%,#FFFFFF,transparent),linear-gradient(180deg,#E3EBF8,#CCDDF1)]">
@@ -441,6 +504,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
               </button>
               {pop === "more" && (
                 <div id="va-more-menu" role="menu" className="pop right-0 left-auto">
+                  {canPdf && <button type="button" role="menuitem" className="pop-item" onClick={() => void pdf()}>{"Download conversation as PDF"}</button>}
                   <button type="button" role="menuitem" className="pop-item" onClick={clearCurrent}>{"Clear this conversation"}</button>
                   <button type="button" role="menuitem" className="pop-item" onClick={clearAll}>{"Clear all recent questions"}</button>
                 </div>
@@ -457,7 +521,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
         <div ref={bodyRef} className={`relative z-10 flex min-h-0 flex-col overflow-y-auto px-6 max-md:px-4 ${hasThread ? "flex-1" : "mt-auto flex-none"}`}>
           {hasThread && cur ? (
             <ol aria-live="polite" aria-busy={!cur.loaded} className="m-0 mx-auto grid w-full max-w-[720px] list-none content-start gap-[18px] p-0 pt-2 pb-6">
-              {cur.loaded ? cur.items.map(it => <Message key={it.id} item={it} />) : <Message item={{ id: "loading", role: "a", pending: true }} />}
+              {cur.loaded ? cur.items.map(it => <Message key={it.id} item={it} onPdf={live ? pdf : undefined} />) : <Message item={{ id: "loading", role: "a", pending: true }} />}
             </ol>
           ) : (
             <div className="pb-7 text-center">
@@ -469,14 +533,19 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
         </div>
 
         <div className={`relative z-10 px-6 max-md:px-3 ${hasThread ? "pb-4 max-md:pb-3" : "mb-auto pb-14"}`}>
+          {notice && <NoticeCard notice={notice} onClose={() => setNotice(null)} />}
           <form ref={formRef} onSubmit={onSubmit} noValidate
             className="mx-auto max-w-[720px] rounded-[26px] border border-brand-300 bg-white shadow-[0_10px_30px_-22px_#3A5292] transition-[border-color,box-shadow] duration-200 focus-within:border-brand-500 focus-within:shadow-[0_0_0_3px_var(--color-brand-100),0_10px_30px_-22px_#3A5292] dark:border-[rgba(168,198,232,.3)] dark:bg-[rgba(31,39,63,.75)] dark:shadow-[0_14px_40px_-24px_#000] dark:backdrop-blur-[8px] dark:focus-within:border-brand-500 dark:focus-within:shadow-[0_0_0_3px_rgba(97,140,208,.22),0_14px_40px_-24px_#000]">
             {files.length > 0 && (
               <ul className="m-0 flex list-none flex-wrap gap-1.5 px-3.5 pt-2.5">
-                {files.map((f, i) => (
-                  <li key={`${f.name}-${i}`} className="inline-flex max-w-[220px] items-center gap-1.5 rounded-lg bg-brand-100 py-[5px] pr-1.5 pl-2.5 text-[13px] text-ink dark:bg-[rgba(227,235,248,.1)] dark:text-brand-100">
-                    <span className="truncate" title={f.name}>{f.name}</span>
-                    <button type="button" aria-label={`Remove ${f.name}`} onClick={() => { setFiles(prev => prev.filter((_, k) => k !== i)); focusInput(); }}
+                {files.map(f => (
+                  <li key={f.key} title={f.error ? `${f.name}: ${f.error}` : f.name}
+                    className={`inline-flex max-w-[260px] items-center gap-1.5 rounded-lg py-[5px] pr-1.5 pl-2.5 text-[13px] ${f.status === "error" ? "bg-[#FEF3F2] text-danger dark:bg-[rgba(240,68,56,.15)] dark:text-[#FDA29B]" : "bg-brand-100 text-ink dark:bg-[rgba(227,235,248,.1)] dark:text-brand-100"}`}>
+                    {f.status === "uploading" && <span aria-hidden="true" className="size-2 flex-none animate-blink rounded-full bg-brand-500" />}
+                    <span className="truncate">{f.name}</span>
+                    {f.status === "uploading" && <span className="sr-only">{"uploading"}</span>}
+                    {f.status === "error" && <span className="flex-none text-[12px] whitespace-nowrap">{f.error && f.error.length < 24 ? f.error : "can’t attach"}</span>}
+                    <button type="button" aria-label={`Remove ${f.name}`} onClick={() => removePick(f)}
                       className="grid size-5 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-brand-700 hover:bg-white dark:text-brand-300 dark:hover:bg-[rgba(227,235,248,.12)]">
                       <I.Close className="size-2.5 [stroke-width:2]" />
                     </button>
@@ -491,7 +560,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
               <textarea id="va-in" ref={inputRef} rows={1} maxLength={1000} value={text} onChange={onInput} onKeyDown={onKeyDown}
                 placeholder="Ask about a market, a competitor or a decision"
                 className="max-h-[168px] min-w-0 flex-1 resize-none border-0 bg-transparent px-1 py-[9px] text-[15px] leading-normal text-ink outline-none placeholder:text-brand-600 max-md:text-base dark:text-white dark:placeholder:text-brand-400" />
-              <button type="submit" disabled={!text.trim()} aria-label="Send question"
+              <button type="submit" disabled={!text.trim() || uploading} aria-label={uploading ? "Waiting for files to upload" : "Send question"}
                 className="grid size-[38px] flex-none cursor-pointer place-items-center rounded-full border-0 bg-ink text-white transition-colors disabled:cursor-default disabled:bg-brand-200 disabled:text-brand-600 dark:bg-brand-100 dark:text-ink dark:disabled:bg-[rgba(227,235,248,.12)] dark:disabled:text-brand-400">
                 <I.ArrowUp className="[stroke-width:2]" />
               </button>
@@ -519,11 +588,11 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
   );
 }
 
-function Message({ item }: { item: Item }) {
+function Message({ item, onPdf }: { item: Item; onPdf?: (messageId: string) => void }) {
   if (item.role === "u") {
     const meta = [
       item.scope !== MARKETS[0] ? `Scope: ${item.scope}` : "",
-      item.files ? `${item.files} ${item.files === 1 ? "file" : "files"} attached` : ""
+      item.files.length ? `Attached: ${item.files.join(", ")}` : ""
     ].filter(Boolean).join(" · ");
     return (
       <li className="max-w-[82%] animate-rise justify-self-end rounded-[16px_16px_4px_16px] bg-brand-100 px-4 py-3 text-[15px] leading-[1.55] [overflow-wrap:anywhere] whitespace-pre-wrap text-ink dark:bg-[rgba(168,198,232,.14)] dark:text-brand-100 dark:shadow-[inset_0_0_0_1px_rgba(168,198,232,.12)]">
@@ -557,6 +626,12 @@ function Message({ item }: { item: Item }) {
           <>
             <span className={tag}>{"Answer"}</span>
             <p className={para}>{item.answer}{item.streaming && <span aria-hidden="true" className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[3px] animate-blink bg-brand-500" />}</p>
+            {onPdf && item.serverId && !item.streaming && (
+              <button type="button" onClick={() => onPdf(item.serverId!)}
+                className="mt-1 cursor-pointer justify-self-end rounded-md border-0 bg-transparent px-2 py-1 text-xs font-semibold text-brand-700 hover:bg-brand-100 dark:text-brand-300 dark:hover:bg-[rgba(227,235,248,.08)]">
+                {"Download PDF"}
+              </button>
+            )}
           </>
         ) : (
           <>
@@ -567,6 +642,22 @@ function Message({ item }: { item: Item }) {
         )}
       </div>
     </li>
+  );
+}
+
+// Above the message box: a paid feature tried on the free plan (uploads, PDF), or a PDF that couldn't be made
+function NoticeCard({ notice, onClose }: { notice: NonNullable<Notice>; onClose: () => void }) {
+  const head = "error" in notice ? notice.error
+    : notice.feature === "pdf" ? "PDF reports are part of Verisavo Monthly" : "File and image uploads are part of Verisavo Monthly";
+  return (
+    <div role="status" className="mx-auto mb-2.5 flex max-w-[720px] flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-brand-300 bg-white px-4 py-3 text-sm text-ink shadow-[0_10px_30px_-22px_#3A5292] dark:border-[rgba(168,198,232,.35)] dark:bg-[rgba(31,39,63,.85)] dark:text-brand-100">
+      <span className="min-w-0 flex-1">
+        <b className="font-semibold">{head}</b>
+        {!("error" in notice) && <span className="block text-[13px] text-brand-800 dark:text-brand-300">{`${PLAN.PRICE_TEXT}: ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month on web and WhatsApp, file uploads and PDF reports.`}</span>}
+      </span>
+      {!("error" in notice) && <button type="button" onClick={() => void subscribe()} className="cursor-pointer rounded-full border-0 bg-ink px-3.5 py-1.5 text-[13px] font-semibold text-white hover:bg-brand-800 dark:bg-brand-100 dark:text-ink">{"Subscribe"}</button>}
+      <button type="button" className="ib" aria-label="Close" onClick={onClose}><I.Close className="size-3.5" /></button>
+    </div>
   );
 }
 

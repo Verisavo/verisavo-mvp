@@ -2,7 +2,7 @@
 // then `npm run db:migrate` to apply it. Every table enables RLS: our server connects as the table owner
 // and is not affected, but nothing is readable through Supabase's public API.
 import { sql } from "drizzle-orm";
-import { bigint, boolean, check, index, integer, jsonb, pgTable, primaryKey, smallint, text, timestamp, uniqueIndex, uuid, vector } from "drizzle-orm/pg-core";
+import { bigint, boolean, check, customType, index, integer, jsonb, pgTable, primaryKey, smallint, text, timestamp, uniqueIndex, uuid, vector } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
@@ -185,6 +185,29 @@ export const usageEvents = pgTable("usage_events", {
   index("usage_events_user_created_idx").on(t.userId, t.createdAt.desc()),
   check("usage_events_channel_check", sql`${t.channel} in ('web', 'whatsapp')`),
   check("usage_events_bucket_check", sql`${t.bucket} in ('free', 'paid')`)
+]).enableRLS();
+
+// M3.6: files and images a paid user attaches to a conversation. Only ever read for that user and that conversation,
+// and never added to the knowledge base (kb_chunks). Documents keep their extracted text, images their bytes (in the
+// database, so they're as private as the rest of the data). Unsent uploads are removed after a day.
+const bytea = customType<{ data: Buffer; driverData: Buffer }>({ dataType: () => "bytea" });
+
+export const attachments = pgTable("attachments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  conversationId: uuid("conversation_id").references(() => conversations.id, { onDelete: "cascade" }),   // null until sent
+  messageId: uuid("message_id").references(() => messages.id, { onDelete: "set null" }),                 // the question it came with
+  kind: text("kind").notNull(),
+  name: text("name").notNull(),
+  mediaType: text("media_type").notNull(),
+  size: integer("size").notNull(),
+  text: text("text"),
+  data: bytea("data"),
+  createdAt: createdAt()
+}, t => [
+  index("attachments_conversation_idx").on(t.conversationId, t.createdAt),
+  index("attachments_user_created_idx").on(t.userId, t.createdAt),
+  check("attachments_kind_check", sql`${t.kind} in ('document', 'image')`)
 ]).enableRLS();
 
 // Row types for server code

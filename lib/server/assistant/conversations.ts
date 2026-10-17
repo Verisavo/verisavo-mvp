@@ -4,6 +4,7 @@ import { db } from "@/lib/server/db";
 import { conversations, messages } from "@/db/schema";
 import { audit } from "@/lib/server/audit";
 import type { Source } from "./answer";
+import { attachmentNamesByMessage } from "./attachments";
 
 // Conversations and their messages (M3.1). Every read and write is scoped to the signed-in user's id.
 
@@ -26,9 +27,12 @@ export async function getConversation(userId: string, id: string) {
   const [conv] = await db.select({ id: conversations.id, title: conversations.title }).from(conversations)
     .where(and(eq(conversations.id, id), eq(conversations.userId, userId))).limit(1);
   if (!conv) return null;
-  const rows = await db.select({ id: messages.id, role: messages.role, content: messages.content, market: messages.market, sources: messages.sources, createdAt: messages.createdAt })
-    .from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt)).limit(400);
-  return { ...conv, messages: rows as StoredMessage[] };
+  const [rows, files] = await Promise.all([
+    db.select({ id: messages.id, role: messages.role, content: messages.content, market: messages.market, sources: messages.sources, createdAt: messages.createdAt })
+      .from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt)).limit(400),
+    attachmentNamesByMessage(id)
+  ]);
+  return { ...conv, messages: (rows as StoredMessage[]).map(m => ({ ...m, files: files.get(m.id) ?? [] })) };
 }
 
 // Saves the question before the model runs (a new conversation is created for the first question)
@@ -43,10 +47,11 @@ export async function saveQuestion({ userId, conversationId, question, market, c
 }
 
 export async function saveAnswer({ userId, conversationId, text, sources, model, usage, channel = "web" }:
-  { userId: string; conversationId: string; text: string; sources: Source[]; model: string; usage: { inputTokens?: number; outputTokens?: number } | null; channel?: "web" | "whatsapp" }) {
-  await db.transaction(async tx => {
-    await tx.insert(messages).values({ conversationId, userId, role: "assistant", channel, content: text, sources, model, usage });
+  { userId: string; conversationId: string; text: string; sources: Source[]; model: string; usage: { inputTokens?: number; outputTokens?: number } | null; channel?: "web" | "whatsapp" }): Promise<string> {
+  return db.transaction(async tx => {
+    const [msg] = await tx.insert(messages).values({ conversationId, userId, role: "assistant", channel, content: text, sources, model, usage }).returning({ id: messages.id });
     await tx.update(conversations).set({ updatedAt: sql`now()` }).where(eq(conversations.id, conversationId));
+    return msg.id;
   });
 }
 

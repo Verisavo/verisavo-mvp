@@ -14,10 +14,10 @@ export const MORE_CHIPS = [
   { label: "Check a competitor", q: "What has changed about our main competitor recently?" }
 ];
 
-// Attachments (paid only from M3; the server checks again)
-export const MAX_FILES = 10;
-export const MAX_MB = 20;
-export const ACCEPT = ".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,image/*";
+// Attachments (M3.6, paid only; the server enforces the same limits in lib/server/assistant/attachments.ts)
+export const MAX_FILES = 5;
+export const MAX_MB = 4;
+export const ACCEPT = ".pdf,.docx,.pptx,.xlsx,.csv,.txt,.md,image/png,image/jpeg,image/webp,image/gif";
 
 // How the landing page hands a question over: sessionStorage["verisavo-ask"] = JSON { q, scope }
 export const HANDOFF_KEY = "verisavo-ask";

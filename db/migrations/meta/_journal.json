@@ -50,6 +50,13 @@
       "when": 1792185433646,
       "tag": "0006_m3-billing-usage",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792219119942,
+      "tag": "0007_m3-attachments",
+      "breakpoints": true
     }
   ]
 }

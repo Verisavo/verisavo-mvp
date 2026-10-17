@@ -105,6 +105,11 @@ The plan is Verisavo Monthly: 100 messages per billing period, shared across web
 
 A user stays paid while Stripe retries a failed payment (`past_due`) and drops to free when the subscription ends. Each renewal starts a new usage period at 0.
 
+**Subscriber features:**
+- **Attachments:** up to 5 files of 4 MB each per question: PDF, Word, PowerPoint (.pptx), Excel (.xlsx), CSV, text and PNG/JPEG/WebP/GIF images.
+  - Documents are kept as extracted text and images as bytes, only for that user and conversation (`attachments` table). They never go into the knowledge base.
+- **PDF reports:** one answer or a whole conversation, in Verisavo's colours and its Geist font (`lib/server/pdf/`, fonts under the SIL Open Font License).
+
 `RELEASE_STAGE` switches milestones on in a deployment (see `lib/release.ts`): 1 = accounts and dashboard, up to 5 = everything. Below 1, the sign-in dialog runs the old demo.
 
 ## Pages

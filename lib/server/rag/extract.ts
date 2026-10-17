@@ -1,34 +1,93 @@
 import "server-only";
+import JSZip from "jszip";
 import mammoth from "mammoth";
 import { extractText as pdfToText, getDocumentProxy } from "unpdf";
 
-// Uploads go through a server action, and the hosting platform caps a request at about 4.5 MB
+// Uploads go through a server action or route, and the hosting platform caps a request at about 4.5 MB
 // (serverActions.bodySizeLimit in next.config.mjs). Longer documents can be pasted as text instead.
 export const KB_MAX_BYTES = 4 * 1024 * 1024;
+// What each upload accepts: the admin knowledge base, and a paid user's attachments in the assistant (M3.6)
 export const KB_ACCEPT = ".pdf,.docx,.txt,.md";
+export const ATTACHMENT_ACCEPT = ".pdf,.docx,.pptx,.xlsx,.csv,.txt,.md";
+const WRONG_TYPE: Record<string, string> = {
+  [KB_ACCEPT]: "Upload a PDF, Word (.docx), .txt or .md file.",
+  [ATTACHMENT_ACCEPT]: "Attach a PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx), CSV or text file, or an image."
+};
 // A small file can still unpack into gigabytes (a "zip bomb" .docx) or hold thousands of pages, so both are capped
-// before the parsers do the work. M3's user attachments must use these limits too.
+// before the parsers do the work.
 const MAX_UNZIPPED_BYTES = 40 * 1024 * 1024;
 const MAX_PDF_PAGES = 500;
+const MAX_SHEET_ROWS = 5000;
 
 export class ExtractError extends Error {}
 
-// Plain text from an uploaded PDF, Word (.docx), text or Markdown file
-export async function extractText(file: File): Promise<string> {
+// Plain text from an uploaded PDF, Word, PowerPoint, Excel, CSV, text or Markdown file (whichever `accept` allows)
+export async function extractText(file: File, accept: string = KB_ACCEPT): Promise<string> {
   if (file.size > KB_MAX_BYTES) throw new ExtractError("That file is larger than 4 MB. Split it, or paste its text instead.");
   const name = file.name.toLowerCase();
+  const ext = name.includes(".") ? name.slice(name.lastIndexOf(".")) : "";
+  if (!accept.split(",").includes(ext)) throw new ExtractError(WRONG_TYPE[accept] ?? "That file type isn't supported.");
   const bytes = new Uint8Array(await file.arrayBuffer());
+  if ([".docx", ".pptx", ".xlsx"].includes(ext) && unzippedSize(bytes) > MAX_UNZIPPED_BYTES) {
+    throw new ExtractError("That file is too large once unpacked. Split it, or paste its text instead.");
+  }
   let text: string;
-  if (name.endsWith(".pdf")) {
+  if (ext === ".pdf") {
     const pdf = await getDocumentProxy(bytes);
     if (pdf.numPages > MAX_PDF_PAGES) throw new ExtractError(`That PDF has more than ${MAX_PDF_PAGES} pages. Split it into smaller documents.`);
     text = (await pdfToText(pdf, { mergePages: true })).text;
-  } else if (name.endsWith(".docx")) {
-    if (unzippedSize(bytes) > MAX_UNZIPPED_BYTES) throw new ExtractError("That Word file is too large once unpacked. Split it, or paste its text instead.");
-    text = (await mammoth.extractRawText({ buffer: Buffer.from(bytes) })).value;
-  } else if (name.endsWith(".txt") || name.endsWith(".md")) text = new TextDecoder().decode(bytes);
-  else throw new ExtractError("Upload a PDF, Word (.docx), .txt or .md file.");
+  } else if (ext === ".docx") text = (await mammoth.extractRawText({ buffer: Buffer.from(bytes) })).value;
+  else if (ext === ".pptx") text = await pptxText(bytes);
+  else if (ext === ".xlsx") text = await xlsxText(bytes);
+  else text = new TextDecoder().decode(bytes);   // .txt, .md, .csv
   return tidyText(text);
+}
+
+const decodeXml = (s: string) => s.replace(/&(?:#(\d+)|#x([0-9a-f]+)|(lt|gt|amp|quot|apos));/gi, (_, dec, hex, named) =>
+  dec ? String.fromCodePoint(Number(dec)) : hex ? String.fromCodePoint(parseInt(hex, 16))
+    : ({ lt: "<", gt: ">", amp: "&", quot: "\"", apos: "'" } as Record<string, string>)[named.toLowerCase()]);
+const fileNumber = (path: string) => Number(path.match(/(\d+)\.xml$/)?.[1] ?? 0);
+
+// PowerPoint: the text of each slide, in slide order
+async function pptxText(bytes: Uint8Array): Promise<string> {
+  const zip = await JSZip.loadAsync(bytes);
+  const slides = Object.keys(zip.files).filter(p => /^ppt\/slides\/slide\d+\.xml$/.test(p)).sort((a, b) => fileNumber(a) - fileNumber(b));
+  const out: string[] = [];
+  for (const [i, path] of slides.entries()) {
+    const xml = await zip.file(path)!.async("string");
+    const paras = xml.split("</a:p>").map(p => [...p.matchAll(/<a:t(?:\s[^>]*)?>([^<]*)<\/a:t>/g)].map(m => decodeXml(m[1])).join("")).filter(s => s.trim());
+    if (paras.length) out.push(`Slide ${i + 1}\n${paras.join("\n")}`);
+  }
+  return out.join("\n\n");
+}
+
+// Excel: each sheet as rows of cells separated by " | " (values as stored; formulas show their last result)
+async function xlsxText(bytes: Uint8Array): Promise<string> {
+  const zip = await JSZip.loadAsync(bytes);
+  const read = async (path: string) => (await zip.file(path)?.async("string")) ?? "";
+  const tText = (xml: string) => [...xml.matchAll(/<t(?:\s[^>]*)?>([^<]*)<\/t>/g)].map(m => decodeXml(m[1])).join("");
+  const shared = [...(await read("xl/sharedStrings.xml")).matchAll(/<si>([\s\S]*?)<\/si>/g)].map(m => tText(m[1]));
+  const rels = new Map([...(await read("xl/_rels/workbook.xml.rels")).matchAll(/<Relationship\b[^>]*>/g)].map(m => [
+    m[0].match(/\bId="([^"]*)"/)?.[1] ?? "", (m[0].match(/\bTarget="([^"]*)"/)?.[1] ?? "").replace(/^\/?(xl\/)?/, "xl/")
+  ]));
+  const sheets = [...(await read("xl/workbook.xml")).matchAll(/<sheet\b[^>]*>/g)].map(m => ({
+    name: decodeXml(m[0].match(/\bname="([^"]*)"/)?.[1] ?? "Sheet"), path: rels.get(m[0].match(/\br:id="([^"]*)"/)?.[1] ?? "") ?? ""
+  }));
+  const out: string[] = [];
+  for (const sheet of sheets) {
+    const rows: string[] = [];
+    for (const row of (await read(sheet.path)).matchAll(/<row\b[^>]*>([\s\S]*?)<\/row>/g)) {
+      if (rows.length >= MAX_SHEET_ROWS) { rows.push("(more rows not included)"); break; }
+      const cells = [...row[1].matchAll(/<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)].map(c => {
+        const type = c[1].match(/\bt="([^"]*)"/)?.[1], inner = c[2] ?? "";
+        const v = decodeXml(inner.match(/<v>([^<]*)<\/v>/)?.[1] ?? "");
+        return type === "s" ? shared[Number(v)] ?? "" : type === "inlineStr" ? tText(inner) : v;
+      });
+      if (cells.some(c => c.trim())) rows.push(cells.join(" | "));
+    }
+    if (rows.length) out.push(`Sheet: ${sheet.name}\n${rows.join("\n")}`);
+  }
+  return out.join("\n\n");
 }
 
 // The total size a zip says its files unpack to, read from its central directory without unpacking anything.

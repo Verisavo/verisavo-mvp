@@ -59,5 +59,8 @@ export const LIMITS = {
   // M3: questions to the assistant. The plan limits how many count; this stops bursts that would run the model in parallel
   ask: (userId: string): Rule[] => [{ key: `ask:user:${userId}`, limit: 20, windowSeconds: 300 }],
   // M3: opening Stripe Checkout or the billing portal (each call creates a Stripe session)
-  billing: (userId: string): Rule[] => [{ key: `billing:user:${userId}`, limit: 10, windowSeconds: 600 }]
+  billing: (userId: string): Rule[] => [{ key: `billing:user:${userId}`, limit: 10, windowSeconds: 600 }],
+  // M3.6 / M3.7: attaching files (each is read and stored) and making PDF reports
+  upload: (userId: string): Rule[] => [{ key: `upload:user:${userId}`, limit: 30, windowSeconds: 3600 }],
+  pdf: (userId: string): Rule[] => [{ key: `pdf:user:${userId}`, limit: 20, windowSeconds: 600 }]
 };

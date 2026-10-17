@@ -5,6 +5,10 @@ const nextConfig = {
     // Files are limited to 4 MB (lib/server/rag/extract.ts), so the form's other fields still fit.
     serverActions: { bodySizeLimit: "4.5mb" }
   },
+  // the PDF report route reads its fonts from disk (lib/server/pdf/report.ts), so ship them with it
+  outputFileTracingIncludes: {
+    "/api/assistant/conversations/*/pdf": ["./lib/server/pdf/fonts/**/*"]
+  },
   async redirects() {
     // old static file names, and tidy paths for the pages that open over the homepage scene
     const pages = ["about-us", "research", "contact", "pricing", "careers"];
