@@ -1,6 +1,7 @@
 import "server-only";
 import { sql } from "drizzle-orm";
 import { db } from "@/lib/server/db";
+import { PLAN } from "@/lib/plan";
 
 // Read-only queries for the admin pages. Emails live in Supabase's auth.users, which our server can read as the owner.
 export const PAGE_SIZE = 50;
@@ -9,14 +10,26 @@ const like = (s: string) => `%${s.replace(/[\\%_]/g, c => "\\" + c)}%`;
 export type UserRow = {
   id: string; name: string; organisation: string | null; role: string; disabled_at: string | null; created_at: string;
   email: string; last_sign_in_at: string | null; email_confirmed_at: string | null; questions: number;
+  sub_status: string | null; renews_at: string | null; cancel_at_period_end: boolean | null; used: number; allowance: number;
 };
 
+// Plan and allowance follow the same rules as lib/server/entitlements.ts: paid while a subscription is active,
+// trialing or past_due (decision D9), counted per billing period; otherwise the free questions
 export async function listUsers(q: string, page: number) {
   const rows = await db.execute<UserRow>(sql`
     select p.id, p.name, p.organisation, p.role, p.disabled_at, p.created_at,
            u.email, u.last_sign_in_at, u.email_confirmed_at,
-           (select count(*) from messages m where m.user_id = p.id and m.role = 'user')::int as questions
+           (select count(*) from messages m where m.user_id = p.id and m.role = 'user')::int as questions,
+           s.status as sub_status, s.current_period_end as renews_at, s.cancel_at_period_end,
+           (case when s.status is null then coalesce(f.used, 0) else coalesce(up.used, 0) end)::int as used,
+           (case when s.status is null then ${PLAN.FREE_QUESTIONS} else coalesce(up.allowance, ${PLAN.PAID_MESSAGES_PER_PERIOD}) end)::int as allowance
     from profiles p join auth.users u on u.id = p.id
+    left join lateral (
+      select status, current_period_start, current_period_end, cancel_at_period_end from subscriptions
+      where user_id = p.id and status in ('active', 'trialing', 'past_due') order by current_period_end desc limit 1
+    ) s on true
+    left join usage_periods up on up.user_id = p.id and up.period_start = s.current_period_start
+    left join free_usage f on f.user_id = p.id
     where ${q} = '' or u.email ilike ${like(q)} or p.name ilike ${like(q)} or coalesce(p.organisation, '') ilike ${like(q)}
     order by p.created_at desc
     limit ${PAGE_SIZE + 1} offset ${(page - 1) * PAGE_SIZE}`);
@@ -51,6 +64,12 @@ export async function overviewStats() {
            count(*) filter (where status = 'archived')::int as archived,
            coalesce(sum(chunk_count), 0)::int as chunks
     from kb_documents`);
+  // paid users and subscriptions (M2.3 with M3's billing): paid = an active, trialing or past_due subscription
+  const [plans] = await db.execute<{ paid: number; past_due: number; cancelling: number }>(sql`
+    select count(distinct user_id) filter (where status in ('active', 'trialing', 'past_due'))::int as paid,
+           count(*) filter (where status = 'past_due')::int as past_due,
+           count(*) filter (where status in ('active', 'trialing') and cancel_at_period_end)::int as cancelling
+    from subscriptions`);
   // questions asked per day, last 14 days, by channel (M2.3)
   const days = await db.execute<{ day: string; web: number; whatsapp: number }>(sql`
     select to_char(d, 'YYYY-MM-DD') as day,
@@ -59,5 +78,5 @@ export async function overviewStats() {
     from generate_series(current_date - 13, current_date, interval '1 day') d
     left join messages m on m.role = 'user' and m.created_at >= d and m.created_at < d + interval '1 day'
     group by d order by d desc`);
-  return { users, kb, days };
+  return { users, kb, days, plans };
 }

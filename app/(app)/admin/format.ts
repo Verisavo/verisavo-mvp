@@ -24,6 +24,8 @@ const ACTIONS: Record<string, string> = {
   "auth.email_changed": "Changed email",
   "profile.update": "Updated profile",
   "conversation.delete": "Deleted a conversation",
+  "conversation.delete_all": "Deleted all their conversations",
+  "admin.allowance_reset": "Reset a user's allowance",
   "admin.user_disable": "Disabled a user",
   "admin.user_enable": "Re-enabled a user",
   "admin.role_granted": "Was made an admin",

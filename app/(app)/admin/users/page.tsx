@@ -3,6 +3,9 @@ import { requireAdmin } from "@/lib/server/admin";
 import { fmtDay, fmtWhen, pageParam } from "../format";
 import { listUsers } from "../queries";
 import UserToggle from "./UserToggle";
+import ResetAllowance from "./ResetAllowance";
+
+const PLAN_STATUS: Record<string, string> = { active: "Monthly", trialing: "Monthly (trial)", past_due: "Monthly · payment retrying" };
 
 type Params = Promise<Record<string, string | string[] | undefined>>;
 
@@ -31,12 +34,13 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
       </div>
 
       <section className="card overflow-x-auto p-0 sm:p-0" aria-label="Users">
-        <table className="w-full min-w-[760px] text-left text-sm">
+        <table className="w-full min-w-[900px] text-left text-sm">
           <thead className="border-b border-brand-200 text-brand-800">
             <tr>
               <th className="px-5 py-3 font-semibold">{"Name"}</th>
               <th className="px-3 py-3 font-semibold">{"Email"}</th>
               <th className="px-3 py-3 font-semibold">{"Plan"}</th>
+              <th className="px-3 py-3 text-right font-semibold" title="This billing period for subscribers; free questions for everyone else">{"Allowance used"}</th>
               <th className="px-3 py-3 text-right font-semibold">{"Questions"}</th>
               <th className="px-3 py-3 font-semibold">{"Joined"}</th>
               <th className="px-3 py-3 font-semibold">{"Last sign-in"}</th>
@@ -53,15 +57,24 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
                   {u.organisation && <span className="block text-[13px] text-brand-800">{u.organisation}</span>}
                 </td>
                 <td className="px-3 py-3">{u.email}{!u.email_confirmed_at && <span className="block text-[12px] text-brand-600">{"Email not confirmed"}</span>}</td>
-                <td className="px-3 py-3">{"Free"}</td>
+                <td className="px-3 py-3">
+                  {u.sub_status ? PLAN_STATUS[u.sub_status] ?? "Monthly" : "Free"}
+                  {u.sub_status && u.renews_at && <span className="block text-[12px] text-brand-800">{`${u.cancel_at_period_end ? "Ends" : "Renews"} ${fmtDay(u.renews_at)}`}</span>}
+                </td>
+                <td className={`px-3 py-3 text-right tabular-nums ${u.used >= u.allowance ? "font-semibold text-danger" : ""}`}>{`${u.used} / ${u.allowance}`}</td>
                 <td className="px-3 py-3 text-right tabular-nums">{u.questions}</td>
                 <td className="px-3 py-3 whitespace-nowrap">{fmtDay(u.created_at)}</td>
                 <td className="px-3 py-3 whitespace-nowrap">{fmtWhen(u.last_sign_in_at)}</td>
                 <td className="px-3 py-3">{u.disabled_at ? <span className="font-semibold text-danger">{"Disabled"}</span> : "Active"}</td>
-                <td className="px-5 py-3 text-right">{u.id !== admin.id && <UserToggle id={u.id} name={u.name || u.email} disabled={Boolean(u.disabled_at)} />}</td>
+                <td className="px-5 py-3">
+                  <div className="flex justify-end gap-1">
+                    {u.used > 0 && <ResetAllowance id={u.id} name={u.name || u.email} paid={Boolean(u.sub_status)} />}
+                    {u.id !== admin.id && <UserToggle id={u.id} name={u.name || u.email} disabled={Boolean(u.disabled_at)} />}
+                  </div>
+                </td>
               </tr>
             ))}
-            {!rows.length && <tr><td colSpan={8} className="px-5 py-8 text-center text-brand-800">{q ? "No users match that search." : "No users yet."}</td></tr>}
+            {!rows.length && <tr><td colSpan={9}className="px-5 py-8 text-center text-brand-800">{q ? "No users match that search." : "No users yet."}</td></tr>}
           </tbody>
         </table>
       </section>

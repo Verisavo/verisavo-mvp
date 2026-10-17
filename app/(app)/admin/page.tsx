@@ -7,7 +7,8 @@ import { listActivity, overviewStats } from "./queries";
 export default async function AdminOverview() {
   await connection();
   await requireAdmin();
-  const [{ users, kb, days }, recent] = await Promise.all([overviewStats(), listActivity("", 1, 8)]);
+  const [{ users, kb, days, plans }, recent] = await Promise.all([overviewStats(), listActivity("", 1, 8)]);
+  const planNote = [plans.past_due ? `${plans.past_due} payment retrying` : "", plans.cancelling ? `${plans.cancelling} cancelling` : "", users.disabled ? `${users.disabled} disabled` : ""].filter(Boolean).join(" · ");
   const totals = days.reduce((t, d) => ({ web: t.web + d.web, whatsapp: t.whatsapp + d.whatsapp }), { web: 0, whatsapp: 0 });
 
   const stat = (label: string, value: number | string, note?: string) => (
@@ -27,7 +28,7 @@ export default async function AdminOverview() {
 
       <section aria-label="Numbers" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stat("Users", users.total, `${users.new7} new this week · ${users.confirmed} confirmed`)}
-        {stat("Plans", `${users.total} free`, `Paid plans appear here once payments are on${users.disabled ? ` · ${users.disabled} disabled` : ""}`)}
+        {stat("Paid subscribers", plans.paid, `${Math.max(0, users.total - plans.paid)} on the free plan${planNote ? ` · ${planNote}` : ""}`)}
         {stat("Knowledge base", kb.published, `published · ${kb.drafts} drafts · ${kb.archived} archived`)}
         {stat("Questions, 14 days", totals.web + totals.whatsapp, `${totals.web} web · ${totals.whatsapp} WhatsApp`)}
       </section>

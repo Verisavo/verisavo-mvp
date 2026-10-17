@@ -9,7 +9,8 @@ import { db } from "@/lib/server/db";
 import { conversations } from "@/db/schema";
 import AccountHeader from "../AccountHeader";
 import { signOutAction } from "./actions";
-import { DeleteConversation, EmailForm, PasswordForm, ProfileForm } from "./forms";
+import { BillingButton, DeleteConversation, EmailForm, PasswordForm, ProfileForm } from "./forms";
+import { getEntitlements, type Entitlements } from "@/lib/server/entitlements";
 
 export const metadata: Metadata = {
   title: "Your dashboard · Verisavo",
@@ -30,6 +31,7 @@ export default async function DashboardPage() {
     .orderBy(desc(conversations.updatedAt))
     .limit(50);
   const firstName = user.profile.name.split(" ")[0];
+  const ent = released(3) ? await getEntitlements(user.id) : null;   // plans and limits arrive with M3
 
   return (
     <>
@@ -50,20 +52,22 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid items-start gap-6 md:grid-cols-2">
-          <section className="card" aria-labelledby="plan-h">
-            <p className="eyebrow">{"Plan & billing"}</p>
-            <h2 id="plan-h" className="flex flex-wrap items-center gap-2.5">
-              <span className="font-serif text-3xl leading-none font-medium tracking-tight">{"Free"}</span>
-              <span className="rounded-full bg-brand-100 px-2.5 py-1 text-xs font-semibold text-brand-800">{"Current plan"}</span>
-            </h2>
-            <dl className="grid gap-2 text-[15px]">
-              <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Included"}</dt><dd>{`${PLAN.FREE_QUESTIONS} free questions`}</dd></div>
-              <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Channels"}</dt><dd>{"Web"}</dd></div>
-            </dl>
-            <hr className="border-brand-100" />
-            <p className="text-sm leading-snug">{`Verisavo Monthly adds ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month across web and WhatsApp, file and image uploads, and PDF reports.`}</p>
-            {!released(3) && <p className="hint">{"Upgrading opens soon. Your invoices and billing settings will appear here."}</p>}
-          </section>
+          {ent ? <PlanCard ent={ent} /> : (
+            <section className="card" aria-labelledby="plan-h" id="plan">
+              <p className="eyebrow">{"Plan & billing"}</p>
+              <h2 id="plan-h" className="flex flex-wrap items-center gap-2.5">
+                <span className="font-serif text-3xl leading-none font-medium tracking-tight">{"Free"}</span>
+                <span className="rounded-full bg-brand-100 px-2.5 py-1 text-xs font-semibold text-brand-800">{"Current plan"}</span>
+              </h2>
+              <dl className="grid gap-2 text-[15px]">
+                <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Included"}</dt><dd>{`${PLAN.FREE_QUESTIONS} free questions`}</dd></div>
+                <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Channels"}</dt><dd>{"Web"}</dd></div>
+              </dl>
+              <hr className="border-brand-100" />
+              <p className="text-sm leading-snug">{`Verisavo Monthly adds ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month across web and WhatsApp, file and image uploads, and PDF reports.`}</p>
+              <p className="hint">{"Upgrading opens soon. Your invoices and billing settings will appear here."}</p>
+            </section>
+          )}
 
           <section className="card" aria-labelledby="profile-h">
             <p className="eyebrow">{"Profile"}</p>
@@ -106,5 +110,47 @@ export default async function DashboardPage() {
         </div>
       </main>
     </>
+  );
+}
+
+// Plan & billing (M1.4 with M3): plan, usage x / limit, renewal date, and Stripe checkout or billing portal
+function PlanCard({ ent }: { ent: Entitlements }) {
+  const paid = ent.plan === "paid";
+  const resets = ent.resetsAt ? day.format(ent.resetsAt) : null;
+  const badge = !paid ? "Current plan" : ent.pastDue ? "Payment retrying" : ent.cancelAtPeriodEnd ? `Ends ${resets}` : "Active";
+  return (
+    <section className="card" aria-labelledby="plan-h" id="plan">
+      <p className="eyebrow">{"Plan & billing"}</p>
+      <h2 id="plan-h" className="flex flex-wrap items-center gap-2.5">
+        <span className="font-serif text-3xl leading-none font-medium tracking-tight">{paid ? "Monthly" : "Free"}</span>
+        <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${ent.pastDue ? "bg-[#FEF3F2] text-danger" : "bg-brand-100 text-brand-800"}`}>{badge}</span>
+      </h2>
+      <div className="grid gap-1.5">
+        <div className="flex justify-between gap-3 text-[15px]">
+          <span className="text-brand-800">{paid ? "Messages this period" : "Free questions used"}</span>
+          <b className="font-semibold tabular-nums">{`${ent.used} of ${ent.limit}`}</b>
+        </div>
+        <div className="h-2 overflow-hidden rounded-full bg-brand-100" role="progressbar" aria-label="Allowance used" aria-valuemin={0} aria-valuemax={ent.limit} aria-valuenow={ent.used}>
+          <div className={`h-full rounded-full ${ent.remaining ? "bg-ink" : "bg-danger"}`} style={{ width: `${Math.min(100, (ent.used / Math.max(1, ent.limit)) * 100)}%` }} />
+        </div>
+      </div>
+      <dl className="grid gap-2 text-[15px]">
+        {paid && resets && <div className="flex justify-between gap-3"><dt className="text-brand-800">{ent.cancelAtPeriodEnd ? "Plan ends" : "Renews and resets"}</dt><dd>{resets}</dd></div>}
+        <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Channels"}</dt><dd>{paid ? "Web and WhatsApp" : "Web"}</dd></div>
+      </dl>
+      {ent.pastDue && <p className="rounded-xl bg-[#FEF3F2] p-3 text-sm text-danger">{"Your last payment didn’t go through. Stripe will try again; update your card to keep your plan."}</p>}
+      <hr className="border-brand-100" />
+      {paid ? (
+        <>
+          <p className="text-sm leading-snug">{"Invoices, your card and cancelling are in the billing portal."}</p>
+          <BillingButton kind="manage" label="Manage billing" />
+        </>
+      ) : (
+        <>
+          <p className="text-sm leading-snug">{`Verisavo Monthly (${PLAN.PRICE_TEXT}) gives you ${PLAN.PAID_MESSAGES_PER_PERIOD} messages a month across web and WhatsApp, file and image uploads, and PDF reports.`}</p>
+          <BillingButton kind="subscribe" label={`Subscribe · ${PLAN.PRICE_TEXT}`} />
+        </>
+      )}
+    </section>
   );
 }

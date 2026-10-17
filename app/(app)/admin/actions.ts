@@ -16,6 +16,7 @@ import { embedQuery } from "@/lib/server/rag/embed";
 import { answerSetup, getAiSettings, saveAiSettings, searchSetup } from "@/lib/server/ai/settings";
 import { describeAiError, EMBEDDINGS, isEmbedding, isProvider, keySet, MODEL_ID, PROVIDERS } from "@/lib/server/ai/providers";
 import { generateText } from "ai";
+import { resetAllowance } from "@/lib/server/entitlements";
 
 export type ActionState = { ok?: string; error?: string } | null;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -32,6 +33,15 @@ export async function setUserDisabled(formData: FormData): Promise<void> {
   if (!UUID.test(id) || id === admin.id) return;   // an admin can't lock themselves out
   await db.update(profiles).set({ disabledAt: disable ? new Date() : null, updatedAt: new Date() }).where(eq(profiles.id, id));
   await audit(disable ? "admin.user_disable" : "admin.user_enable", { actorId: admin.id, targetType: "user", targetId: id });
+  revalidatePath("/admin/users");
+}
+
+// Decision D10: set a user's count for the current period (or their free questions) back to 0
+export async function resetUserAllowance(formData: FormData): Promise<void> {
+  const admin = await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!UUID.test(id)) return;
+  await resetAllowance(id, admin.id);
   revalidatePath("/admin/users");
 }
 

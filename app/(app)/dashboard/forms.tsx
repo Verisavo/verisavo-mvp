@@ -1,6 +1,30 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { changeEmail, changePassword, deleteConversation, updateProfile, type FormState } from "./actions";
+
+// Subscribe opens Stripe Checkout; Manage billing opens Stripe's billing portal (invoices, card, cancel)
+export function BillingButton({ kind, label }: { kind: "subscribe" | "manage"; label: string }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  async function go() {
+    setBusy(true); setError("");
+    try {
+      const r = await fetch(kind === "subscribe" ? "/api/billing/checkout" : "/api/billing/portal", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      const data = await r.json().catch(() => null) as { url?: string; message?: string } | null;
+      if (r.ok && data?.url) { location.href = data.url; return; }
+      setError(data?.message ?? "Payments aren’t available just now. Please try again later.");
+    } catch {
+      setError("We couldn’t reach Verisavo. Check your connection and try again.");
+    }
+    setBusy(false);
+  }
+  return (
+    <div className="grid gap-2">
+      <div><button type="button" className={kind === "subscribe" ? "btn" : "btn btn-ghost"} onClick={go} disabled={busy}>{busy ? "Opening…" : label}</button></div>
+      {error && <p role="status" className="text-sm leading-snug text-danger">{error}</p>}
+    </div>
+  );
+}
 
 function Note({ state }: { state: FormState }) {
   if (!state) return null;
