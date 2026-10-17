@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { PDFDocument, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 
-// M3.7: a branded PDF of one answer or a whole conversation, drawn with pdf-lib in Verisavo's colours and Geist, the
+// M3.7: a branded PDF of one answer or a whole conversation, drawn with pdf-lib in Verisavo's colours and Poppins, the
 // site's own font (OFL, lib/server/pdf/fonts). next.config.mjs includes the font files in the deployed route.
 
 export type ReportItem = { question: string; answer: string; market: string | null; files: string[] };
@@ -17,18 +17,23 @@ const W = 595.28, H = 841.89, MX = 56, TOP = H - 76, BOTTOM = 64;   // A4, in po
 const FONT_DIR = join(process.cwd(), "lib/server/pdf/fonts");
 
 let fontBytes: Promise<[Buffer, Buffer]> | null = null;
-const loadFonts = () => (fontBytes ??= Promise.all([readFile(join(FONT_DIR, "Geist-Regular.ttf")), readFile(join(FONT_DIR, "Geist-SemiBold.ttf"))]));
+const loadFonts = () => (fontBytes ??= Promise.all([readFile(join(FONT_DIR, "Poppins-Regular.ttf")), readFile(join(FONT_DIR, "Poppins-SemiBold.ttf"))]));
 
-// Geist covers Latin scripts and common symbols, but not every currency sign; those become their ISO codes, and
-// anything else the font can't draw becomes "?", so a PDF never fails because of one character
-const SUBSTITUTE: Record<string, string> = { "₦": "NGN ", "₵": "GHS ", "₹": "INR ", "\t": "  " };
+// Poppins covers Latin letters and common symbols, but not every currency sign, arrow or African letter. Currency signs
+// become their ISO codes, a letter with a mark it lacks keeps its base letter (ẹ → e, ṣ → s), and anything else the
+// font can't draw becomes "?", so a PDF never fails because of one character
+const SUBSTITUTE: Record<string, string> = { "₦": "NGN ", "₵": "GHS ", "₹": "INR ", "→": "->", "←": "<-", "ŋ": "ng", "Ŋ": "Ng", "\t": "  " };
 function printable(text: string, charset: Set<number>): string {
   let out = "";
   for (const ch of text) {
     const cp = ch.codePointAt(0)!;
     if (SUBSTITUTE[ch]) out += SUBSTITUTE[ch];
     else if (cp < 32) continue;
-    else out += charset.has(cp) ? ch : "?";
+    else if (charset.has(cp)) out += ch;
+    else {
+      const base = ch.normalize("NFD")[0];
+      out += base !== ch && charset.has(base.codePointAt(0)!) ? base : "?";
+    }
   }
   return out;
 }
@@ -144,9 +149,11 @@ export async function buildReport(report: Report): Promise<Uint8Array> {
   // footer on every page, once the page count is known
   const pages = pdf.getPages();
   const note = "Verisavo Intelligence Assistant · Based on Verisavo's approved research and your files. Check key figures before acting.";
+  // one line, left of the page number: shrink the note to fit rather than let it wrap below the page edge
+  const noteSize = Math.min(7.5, (7.5 * (W - 2 * MX - 60)) / regular.widthOfTextAtSize(note, 7.5));
   pages.forEach((p, i) => {
     p.drawLine({ start: { x: MX, y: 46 }, end: { x: W - MX, y: 46 }, thickness: 0.6, color: BRAND_200 });
-    p.drawText(note, { x: MX, y: 32, size: 7.5, font: regular, color: BRAND_800, maxWidth: W - 2 * MX - 60 });
+    p.drawText(note, { x: MX, y: 32, size: noteSize, font: regular, color: BRAND_800 });
     const num = `Page ${i + 1} of ${pages.length}`;
     p.drawText(num, { x: W - MX - regular.widthOfTextAtSize(num, 7.5), y: 32, size: 7.5, font: regular, color: BRAND_800 });
   });
