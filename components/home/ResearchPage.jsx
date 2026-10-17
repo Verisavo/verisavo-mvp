@@ -14,7 +14,7 @@ export default function ResearchPage() {
           <h1 id="research-h">{"A library of "}<span className="acc">{"market understanding"}</span></h1>
           {" "}
           <p className="lead">
-            {"Studies on the forces shaping African markets, from macro-economic outlooks to the informal economy, written to help teams see what is changing and what it could mean."}
+            {"Research, articles and case studies on the forces shaping African markets, and on how connected evidence helps teams see what is changing and what it could mean."}
           </p>
           {" "}
         </header>
