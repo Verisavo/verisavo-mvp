@@ -124,8 +124,8 @@ body.menu-open #menu-btn .b-ic { display: none; }
 .sources .sep { width: 1px; align-self: stretch; background: var(--b300); }
 @media (max-width: 1000px) { .sources { display: none; } }
 /* >>> hero-trim */
-/* Hero: the text links and the sources strip are removed; the question box and menu cover both */
-.hero-links, .sources { display: none !important; }
+/* Hero: the sources strip is removed */
+.sources { display: none !important; }
 /* <<< hero-trim */
 
 
