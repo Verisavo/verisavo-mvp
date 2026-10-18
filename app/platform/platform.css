@@ -486,6 +486,19 @@ body.menu-open .logo { color: var(--white); transition-delay: .45s; }
   .mnav-foot { grid-template-columns: 1fr; justify-items: end; text-align: right; }
 }
 @media (prefers-reduced-motion: reduce) { .mnav, .mnav.open, .mnav li { transition: none !important; } }
+/* >>> menu-match */
+/* The menu matches the homepage: the city behind it in grey, type that fits short screens, and scrolling if needed */
+.mnav { background: #1E2333; -webkit-backdrop-filter: none; backdrop-filter: none; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; grid-template-rows: minmax(min-content, 1fr) auto; row-gap: 24px; }
+.mnav::-webkit-scrollbar { display: none; }
+.mnav::before, .mnav::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.mnav::before { background: url("/menu-city.jpg") center / cover no-repeat; filter: grayscale(1) brightness(.6); }
+.mnav::after { background: rgba(20,25,41,.6); }
+.mnav-main { gap: clamp(18px, 4.5vh, 64px); margin-top: clamp(0px, 4vh, 70px); }
+.mnav-big button, .mnav-big a { font-size: clamp(1.5rem, min(1rem + 3.2vw, 7vh), 3.9rem); }
+.mnav-small { gap: clamp(8px, 1.6vh, 14px); }
+@media (max-height: 760px) and (min-width: 701px) { .mnav { padding-top: calc(env(safe-area-inset-top, 0px) + 92px); } }
+@media (max-width: 700px) { .mnav-big button, .mnav-big a { font-size: clamp(1.4rem, min(1rem + 3vw, 6vh), 2.2rem); } }
+/* <<< menu-match */
 /* Menu button (same as the homepage) */
 .vmenu { display: inline-flex; align-items: center; gap: 10px; min-height: 42px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--indigo); color: var(--white); font: 500 0.68rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: background-color .2s .15s, box-shadow .2s .15s; }
 .vmenu:hover { background: var(--b800); }
