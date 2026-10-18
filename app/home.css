@@ -25,10 +25,6 @@ button, input { font-family: inherit; }
 body.hdr-solid .top::before { opacity: 1; }
 body.page-open .top::before { background: rgba(30,36,55,.96); box-shadow: 0 1px 0 rgba(255,255,255,.06); }
 body.menu-open .top::before { opacity: 0; }
-/* >>> no-header-bar */
-/* The header has no background bar: logo and buttons sit directly on the page */
-.top::before { display: none !important; }
-/* <<< no-header-bar */
 
 .logo { background: none; border: 0; padding: 4px 0; cursor: pointer; color: var(--indigo); font: 700 1.3rem/1 var(--sans); letter-spacing: -0.05em; }
 .pill { position: relative; display: flex; align-items: stretch; background: var(--dark); border-radius: 6px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
@@ -128,10 +124,6 @@ body.menu-open #menu-btn .b-ic { display: none; }
 .sources li svg { width: 18px; height: 18px; color: var(--b600); }
 .sources .sep { width: 1px; align-self: stretch; background: var(--b300); }
 @media (max-width: 1000px) { .sources { display: none; } }
-/* >>> hero-trim */
-/* Hero: the sources strip is removed */
-.sources { display: none !important; }
-/* <<< hero-trim */
 
 
 /* Chapter text */
