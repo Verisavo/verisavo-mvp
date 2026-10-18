@@ -11,7 +11,7 @@ export default function Header() {
           {" "}
           <li><button type="button" data-href="/#about-us">{"About us"}</button></li>
           {" "}
-          <li><button type="button" data-scroll="product">{"Platform"}</button></li>
+          <li><button type="button" data-scroll="main" data-spy="product">{"Platform"}</button></li>
           {" "}
           <li><button type="button" data-scroll="how">{"How it works"}</button></li>
           {" "}

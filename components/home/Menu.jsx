@@ -7,7 +7,7 @@ export default function Menu() {
         {" "}
         <ul className="mnav-big">
           {" "}
-          <li style={{ "--i": "0" }}><button type="button" data-ask="">{"Platform"}</button></li>
+          <li style={{ "--i": "0" }}><a href="/platform">{"Platform"}</a></li>
           {" "}
           <li style={{ "--i": "1" }}><button type="button" data-page="about-us">{"About us"}</button></li>
           {" "}
