@@ -689,6 +689,8 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 /* ---------- Assistant: dark galaxy theme (default) with a light option ---------- */
 .va-main { position: relative; isolation: isolate; transition: background-color .4s var(--ease); }
 .va-main > .va-top, .va-main > .va-body, .va-main > .va-dock { position: relative; z-index: 1; }
+/* Pop-ups from the top bar (privacy note, menus) sit above the conversation */
+.va-main > .va-top { z-index: 3; }
 .va-main::before, .va-main::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }
 .va-main.va-dark { background: #1F273F; }
 .va-main.va-dark::before { opacity: 1;
