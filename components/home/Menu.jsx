@@ -39,11 +39,6 @@ export default function Menu() {
           <button type="button" data-legal="privacy">{"Privacy"}</button>
         </nav>
         {" "}
-        <nav aria-label="Company">
-          <button type="button" data-page="about-us">{"About"}</button>
-          <button type="button" data-page="contact">{"Contact"}</button>
-        </nav>
-        {" "}
       </div>
       {" "}
     </div>
