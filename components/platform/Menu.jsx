@@ -19,7 +19,6 @@ export default function Menu() {
         {" "}
         <ul className="mnav-small">
           {" "}
-          <li style={{ "--i": "5" }}><button type="button" data-access="">{"Deploy Scout"}</button></li>
           {" "}
           <li style={{ "--i": "6" }}><a href="/#pricing">{"Pricing"}</a></li>
           {" "}
