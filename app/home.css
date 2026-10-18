@@ -773,6 +773,10 @@ body.page-open .pill { background: rgba(255,255,255,.08); box-shadow: inset 0 0 
 .rs-detail.rd-long .rd-art { transform: none !important; opacity: 1 !important; transition: none !important; }
 .ar-art path { stroke-dashoffset: 0 !important; animation: none !important; }
 .ar-art, .ar-row:hover .ar-art { transform: none !important; transition: none !important; }
+/* All Research page images and detail images are static: no draw-in or entrance motion */
+#pg-research .rs-art path, .rs-detail .rd-art path { stroke-dashoffset: 0 !important; animation: none !important; }
+#pg-research .rs-art { transition: none !important; }
+.rs-detail .rd-art { transform: none !important; opacity: 1 !important; transition: none !important; }
 
 /* ===== Research page: light, newsroom-style reading (Apple-like clarity: big type, white tiles, quiet colour) ===== */
 #pg-research, .rs-detail.rd-light {
