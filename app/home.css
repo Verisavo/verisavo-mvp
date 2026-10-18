@@ -1,6 +1,6 @@
 /* Layout: a fixed 3D aerial drawing of a market district; scroll flies the camera between chapters. Text sits top-left, a typing question bar and scroll pill sit bottom-centre, labels are pinned to places in the scene. Single light theme by design. */
 :root {
-  --indigo: #1F273F; --white: #FFFFFF; --paper: #F8F8F9;
+  --indigo: #1F273F; --white: #FFFFFF; --paper: #F5F8FC;
   --b100: #E3EBF8; --b200: #CCDDF1; --b300: #A8C6E8; --b400: #80AADC; --b500: #618CD0; --b600: #4D74C3; --b700: #4362B2; --b800: #3A5292;
   --dark: rgba(31,39,63,.9);
   --sans: "Geist", "Helvetica Neue", Arial, sans-serif;
@@ -21,7 +21,7 @@ button, input { font-family: inherit; }
 .top { position: fixed; z-index: 40; top: calc(env(safe-area-inset-top, 0px) + 18px); left: 24px; right: 24px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
 .top > * { pointer-events: auto; }
 /* a soft frosted bar behind the logo and buttons once content scrolls underneath, so nothing shows through them */
-.top::before { content: ""; position: fixed; z-index: -1; left: 0; right: 0; top: 0; height: calc(env(safe-area-inset-top, 0px) + 78px); background: rgba(248,248,249,.93); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); box-shadow: 0 1px 0 rgba(31,39,63,.06); opacity: 0; transition: opacity .3s, background-color .3s; pointer-events: none; }
+.top::before { content: ""; position: fixed; z-index: -1; left: 0; right: 0; top: 0; height: calc(env(safe-area-inset-top, 0px) + 78px); background: rgba(245,248,252,.93); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); box-shadow: 0 1px 0 rgba(31,39,63,.06); opacity: 0; transition: opacity .3s, background-color .3s; pointer-events: none; }
 body.hdr-solid .top::before { opacity: 1; }
 body.page-open .top::before { background: rgba(30,36,55,.96); box-shadow: 0 1px 0 rgba(255,255,255,.06); }
 body.menu-open .top::before { opacity: 0; }
@@ -103,12 +103,8 @@ body.menu-open #menu-btn .b-ic { display: none; }
 .stage { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--paper); }
 @supports (height: 100svh) { .stage { height: 100svh; } }
 #gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.veil { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(248,248,249,.97) 0%, rgba(248,248,249,.94) 38%, rgba(248,248,249,.62) 54%, rgba(248,248,249,0) 72%); }
-.veil-b { position: absolute; left: 0; right: 0; bottom: 0; height: 26%; pointer-events: none; background: linear-gradient(0deg, rgba(248,248,249,.7), rgba(248,248,249,0)); }
-/* >>> grey-scene */
-/* The 3D city is drawn in the lightest greys, on a matching light grey page */
-#gl { filter: grayscale(1); opacity: .55; }
-/* <<< grey-scene */
+.veil { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 58% 52% at 20% 20%, rgba(245,248,252,.96) 0%, rgba(245,248,252,.82) 45%, rgba(245,248,252,0) 100%); }
+.veil-b { position: absolute; left: 0; right: 0; bottom: 0; height: 26%; pointer-events: none; background: linear-gradient(0deg, rgba(245,248,252,.7), rgba(245,248,252,0)); }
 .nogl #gl { display: none; }
 .nogl .stage { background: linear-gradient(180deg, #fff, var(--b100)); }
 #ovl { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
@@ -255,7 +251,7 @@ body.menu-open #menu-btn .b-ic { display: none; }
   .hero { gap: 14px; }
   .ch { gap: 10px; }
   .ch p, .hero .sub { font-size: .95rem; }
-  .veil { background: linear-gradient(180deg, rgba(248,248,249,.97) 0%, rgba(248,248,249,.9) 36%, rgba(248,248,249,0) 56%); }
+  .veil { background: linear-gradient(180deg, rgba(245,248,252,.97) 0%, rgba(245,248,252,.9) 36%, rgba(245,248,252,0) 56%); }
   .top { left: 16px; right: 16px; top: calc(env(safe-area-inset-top, 0px) + 14px); }
   .pill .pa { display: none; }
   .lb .row { font-size: .68rem; }
