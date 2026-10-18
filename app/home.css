@@ -105,6 +105,15 @@ body.menu-open #menu-btn .b-ic { display: none; }
 #gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .veil { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 58% 52% at 20% 20%, rgba(245,248,252,.96) 0%, rgba(245,248,252,.82) 45%, rgba(245,248,252,0) 100%); }
 .veil-b { position: absolute; left: 0; right: 0; bottom: 0; height: 26%; pointer-events: none; background: linear-gradient(0deg, rgba(245,248,252,.7), rgba(245,248,252,0)); }
+/* >>> grey-home */
+/* Homepage in soft grey: the city in light greys so people, stalls and vehicles read clearly; fades match the grey */
+:root { --veil-rgb: 214,214,214; }
+.stage #gl { filter: grayscale(1) brightness(0.84) contrast(1.08); }
+.stage { background: rgb(var(--veil-rgb)); }
+.stage .veil { background: radial-gradient(ellipse 58% 52% at 20% 20%, rgba(var(--veil-rgb),.95) 0%, rgba(var(--veil-rgb),.8) 45%, rgba(var(--veil-rgb),0) 100%); }
+.stage .veil-b { background: linear-gradient(0deg, rgba(var(--veil-rgb),.7), rgba(var(--veil-rgb),0)); }
+@media (max-width: 700px) { .stage .veil { background: linear-gradient(180deg, rgba(var(--veil-rgb),.97) 0%, rgba(var(--veil-rgb),.9) 36%, rgba(var(--veil-rgb),0) 56%); } }
+/* <<< grey-home */
 .nogl #gl { display: none; }
 .nogl .stage { background: linear-gradient(180deg, #fff, var(--b100)); }
 #ovl { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
