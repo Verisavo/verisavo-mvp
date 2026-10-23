@@ -225,46 +225,15 @@ export default function Main() {
 </section>
       {" "}
       <section className="sec how" id="how" aria-labelledby="how-title">
-        {" "}
-        <div className="wrap">
-          {" "}
-          <p className="eyebrow">{"How it works"}</p>
-          {" "}
-          <h2 id="how-title">{"Start with the decision."}</h2>
-          {" "}
-          <p className="how-sub">{"One question. The evidence that matters. A clearer next step."}</p>
-          {" "}
-          <ol className="how-steps">
-            {" "}
-            <li>
-              <span className="hn">{"01"}</span>
-              <h3>{"Ask"}</h3>
-              <p>{"Start with a market question. Add your goals and relevant business context."}</p>
-            </li>
-            {" "}
-            <li>
-              <span className="hn">{"02"}</span>
-              <h3>{"Connect"}</h3>
-              <p>{"Bring together existing intelligence, signals, and supporting evidence."}</p>
-            </li>
-            {" "}
-            <li>
-              <span className="hn">{"03"}</span>
-              <h3>{"Investigate"}</h3>
-              <p>{"Identify gaps, validate assumptions, and gather evidence where it matters."}</p>
-            </li>
-            {" "}
-            <li>
-              <span className="hn">{"04"}</span>
-              <h3>{"Decide"}</h3>
-              <p>{"Compare findings, assess uncertainty, and choose your next move."}</p>
-            </li>
-            {" "}
-          </ol>
-          <a className="doclink" href="/docs.html#how-it-works">Read how it works in the Docs <span aria-hidden="true">→</span></a>
-          {" "}
+        <div className="wrap how-grid">
+          <div className="how-intro">
+            <p className="eyebrow">How it works</p>
+            <h2 id="how-title">From scattered signals to a clear answer.</h2>
+            <p className="how-sub">Five steps turn fragmented market information into intelligence you can check, question and act on.</p>
+            <a className="doclink" href="/docs.html#how-it-works">Read how it works in the Docs <span aria-hidden="true">→</span></a>
+          </div>
+          <ol className="how-list"><li><h3>Capture</h3><p>We gather signals from your company data, public records, digital platforms and market research, and from SavoScouts on the ground when the evidence runs out.</p></li><li><h3>Verify</h3><p>We check each piece of evidence for source, place, time and reliability, compare it across sources and flag contradictions instead of hiding them.</p></li><li><h3>Connect</h3><p>We link evidence across businesses, products, prices, places, channels and time, so the relationships behind a change become visible.</p></li><li><h3>Remember</h3><p>We keep a Market Memory of what changed, when it changed and which evidence changed it, so understanding builds over time.</p></li><li><h3>Answer</h3><p>We answer your question with the evidence attached, label what is known and what is not, and name the Intelligence Gaps that could change your decision.</p></li></ol>
         </div>
-        {" "}
       </section>
       {" "}
       <section className="band" id="platform" aria-labelledby="platform-title">
@@ -499,7 +468,7 @@ export default function Main() {
               {" "}
               <button type="button" className="btn btn-blue" data-access="">{"Get early access"}</button>
               {" "}
-              <button type="button" className="btn btn-outline-w" data-href="/">{"Explore Verisavo"}</button>
+              <a className="btn btn-outline-w" href="/docs.html">{"Read the Docs"}</a>
               {" "}
             </div>
             {" "}

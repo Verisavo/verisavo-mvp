@@ -22,7 +22,7 @@ export default function ComingSoonDialog() {
           {" "}
           <p className="soon-lab">{"Coming soon"}</p>
           {" "}
-          <h2 id="soon-h">{"Deploy a Scout"}</h2>
+          <h2 id="soon-h">{"SavoScouts investigations"}</h2>
           {" "}
           <p>
             {"Soon you will be able to send SavoScouts to gather and verify Ground-Level Intelligence where existing information falls short. We are preparing this now."}

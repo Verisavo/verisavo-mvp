@@ -9,12 +9,12 @@ export default function ResearchPage() {
         {" "}
         <header className="pg-head rs-head">
           {" "}
-          <p className="lab">{"Research"}</p>
+          <p className="lab">{"Insights"}</p>
           {" "}
-          <h1 id="research-h">{"A library of "}<span className="acc">{"market understanding"}</span></h1>
+          <h1 id="research-h">{"See connected evidence "}<span className="acc">{"at work"}</span></h1>
           {" "}
           <p className="lead">
-            {"Research, articles and case studies on the forces shaping African markets, and on how connected evidence helps teams see what is changing and what it could mean."}
+            {"Case studies, articles and research on how teams use connected evidence to understand African markets and decide what to do next."}
           </p>
           {" "}
         </header>
@@ -1102,11 +1102,11 @@ export default function ResearchPage() {
         {" "}
         <section className="cta-band glass rs-band" aria-labelledby="rs-cta-h">
           {" "}
-          <h2 id="rs-cta-h">{"Have a question our research "}<span className="acc">{"has not answered?"}</span></h2>
+          <h2 id="rs-cta-h">{"Have a market question "}<span className="acc">{"of your own?"}</span></h2>
           {" "}
           <div className="acts">
             <button type="button" className="obtn solid" data-ask="">{"Ask Verisavo "}<span aria-hidden="true">{"→"}</span></button>
-            <button type="button" className="obtn" data-page="contact">{"Contact us"}</button>
+            <button type="button" className="obtn" data-page="contact">{"Talk to our team"}</button>
           </div>
           {" "}
         </section>

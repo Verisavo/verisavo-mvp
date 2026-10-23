@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
 <style>
-html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}
 /* Layout: three-column documentation shell. Sidebar of guides, a reading column near 68ch, and an on-this-page rail. */
 :root {
   --bg: #FFFFFF; --bg2: #F6F8FC; --panel: #FFFFFF; --tint: #E3EBF8;
@@ -188,8 +187,6 @@ dl.gloss dd { color: var(--body); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
-</head>
-<body>
 <header class="top">
   <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Open navigation" aria-expanded="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h12M2 8h12M2 12h12"/></svg></button>
   <a class="brand" href="#introduction"><b>Verisavo</b><span>Docs</span></a>
@@ -200,7 +197,8 @@ dl.gloss dd { color: var(--body); }
     <div class="results" id="results" hidden></div>
   </div>
   <div class="top-r">
-    <a class="tlink" href="/">Verisavo website</a>
+    <a class="tlink" href="/">Home</a>
+    <a class="tlink" href="/platform">Product</a>
     <a class="tlink" href="#faq">FAQ</a>
     <a class="tlink" href="#plans">Plans</a>
     <button class="icon-btn" id="theme" type="button" aria-label="Switch light or dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg></button>
@@ -253,7 +251,7 @@ const FLOW = `<figure class="figure"><svg viewBox="0 0 860 210" role="img" aria-
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
   <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects fragmented market evidence so your team can see what is happening, why, what is still unknown and what it could mean for the decision ahead.</p>
-  <div class="cards">${card("quickstart","bolt","Quickstart","From early access to your first answered question.")}${card("how-it-works","layers","How it works","Signals, evidence, verification and Market Memory.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
+  <div class="cards">${card("quickstart","bolt","Quickstart","From early access to your first answered question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, remember and answer.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
   <h2 id="problem">The problem it solves</h2>
   <p>The information you need to understand a market usually exists. It sits in your company data, public records, digital platforms, research reports, field notes and the knowledge of distributors and traders. It rarely adds up to one picture, and it is hard to tell which pieces are reliable, current or relevant to the question in front of you.</p>
   <p>More data does not fix this on its own. Verisavo connects evidence, keeps its context and is honest about what it cannot yet answer.</p>
@@ -299,7 +297,15 @@ const PAGES = [
   ${note("Prices are shown in US dollars and may change. The website's Pricing page is the current reference.")}` },
 
  { g: "Core concepts", id: "how-it-works", t: "How it works", ic: "layers", crumb: "Core concepts", body: `
-  <p class="intro">Verisavo turns scattered observations about a market into connected, evidence-grounded understanding, and keeps that understanding up to date.</p>
+  <p class="intro">Verisavo turns scattered observations about a market into connected, evidence-grounded understanding, and keeps that understanding up to date. It does this in five steps.</p>
+  <h2 id="five-steps">The five steps</h2>
+  <ol class="steps">
+   <li><b>Capture</b><p>We gather signals from your company data, public records, digital platforms and market research, and from SavoScouts on the ground when the evidence runs out. ${DEV.replace("In development","SavoScouts in development")}</p></li>
+   <li><b>Verify</b><p>We check each piece of evidence for source, place, time and reliability, compare it across sources and flag contradictions instead of hiding them. Verification judges whether evidence is reliable enough for its purpose. It does not claim absolute truth.</p></li>
+   <li><b>Connect</b><p>We link evidence across businesses, products, prices, places, channels and time, so the relationships behind a change become visible. A stockout, a late delivery and a competitor gaining shelf space may be one story, not three.</p></li>
+   <li><b>Remember</b><p>We keep a <a href="#market-memory">Market Memory</a> of what changed, when it changed and which evidence changed it, so understanding builds over time instead of starting over. ${DEV}</p></li>
+   <li><b>Answer</b><p>We answer your question with the evidence attached, label each point as Fact, Inference, Hypothesis, Assumption or Unknown, and name the <a href="#intelligence-gaps">Intelligence Gaps</a> that could change your decision. ${NOW}</p></li>
+  </ol>
   ${FLOW}
   <h2 id="layers">The layers</h2>
   <div class="tbl"><table><thead><tr><th>Layer</th><th>What it does</th></tr></thead><tbody>
@@ -527,6 +533,3 @@ $("#theme").addEventListener("click", () => {
 $("#menu-btn").addEventListener("click", () => { const o = document.body.classList.toggle("nav-open"); $("#menu-btn").setAttribute("aria-expanded", String(o)); });
 })();
 </script>
-
-</body>
-</html>

@@ -642,7 +642,7 @@ export default function AboutUsPage() {
           <p>{"Questions about a market, partnerships or early access? We would like to hear from you."}</p>
           {" "}
           <div className="acts">
-            <button type="button" className="obtn solid" data-page="contact">{"Contact us "}<span aria-hidden="true">{"→"}</span></button>
+            <button type="button" className="obtn solid" data-page="contact">{"Talk to our team "}<span aria-hidden="true">{"→"}</span></button>
             <button type="button" className="obtn" data-dialog="access">{"Get early access"}</button>
           </div>
           {" "}

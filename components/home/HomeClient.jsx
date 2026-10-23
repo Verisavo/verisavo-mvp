@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
 
-// Starts the homepage behaviour once the markup is on the page, in the same order as the original page:
-// dialogs first, then the 3D market scene (three.js), then the header backdrop, then sound.
+// Starts the homepage behaviour once the markup is on the page:
+// dialogs, the site shell (menu, inner pages), case studies, the homepage itself, the header, then sound.
 let started = false;
 
 export default function HomeClient() {
@@ -12,9 +12,9 @@ export default function HomeClient() {
     (async () => {
       (await import("@/lib/home/auth")).default();
       (await import("@/lib/home/soon")).default();
-      window.THREE = await import("three");
-      (await import("@/lib/home/scene")).default();
+      (await import("@/lib/home/site")).default();
       (await import("@/lib/home/cases")).default();
+      (await import("@/lib/home/landing")).default();
       (await import("@/lib/home/header")).default();
       (await import("@/lib/sound")).default();
     })();

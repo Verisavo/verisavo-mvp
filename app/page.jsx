@@ -1,4 +1,5 @@
 import "./home.css";
+import "./landing.css";
 import Header from "@/components/home/Header";
 import Menu from "@/components/home/Menu";
 import AboutUsPage from "@/components/home/AboutUsPage";
