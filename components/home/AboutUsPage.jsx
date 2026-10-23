@@ -278,8 +278,8 @@ export default function AboutUsPage() {
         <section className="pg-sec" aria-labelledby="hl-h">
           {" "}
           <div className="intro">
-            <h2 id="hl-h"><span className="acc">{"Recent"}</span>{" highlights"}</h2>
-            <p>{"Notes and perspectives from the team on what we are learning as we build Verisavo."}</p>
+            <h2 id="hl-h">{"Press"}</h2>
+            <p>{"News, announcements and moments from the Verisavo team."}</p>
           </div>
           {" "}
           <div className="hl-grid" id="hl-grid">
