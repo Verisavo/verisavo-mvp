@@ -45,7 +45,7 @@ export default function PricingPage() {
           {" "}
           <article className="pr-card glass pr-next" aria-labelledby="pr-pro">
             <p className="pr-tier"><span className="lab" id="pr-pro">{"Verisavo Pro"}</span><span className="pr-tag pr-tag-soon">{"Coming soon"}</span></p>
-            <p className="pr-soon">{"Go deeper."}</p>
+            <p className="pr-soon">{"Always on."}</p>
             <p className="pr-line">{"For businesses that need continuous market intelligence, not just individual answers."}</p>
             <p className="pr-with">{"Coming with:"}</p>
             <ul className="pr-list pr-list-soon">
