@@ -11,7 +11,7 @@ export default function Menu() {
           {" "}
           <li style={{ "--i": "1" }}><button type="button" data-page="about-us">{"About us"}</button></li>
           {" "}
-          <li style={{ "--i": "2" }}><button type="button" data-page="research">{"Research"}</button></li>
+          <li style={{ "--i": "2" }}><button type="button" data-page="research">{"Resources"}</button></li>
           {" "}
           <li style={{ "--i": "3" }}><button type="button" data-page="contact">{"Contact us"}</button></li>
           {" "}

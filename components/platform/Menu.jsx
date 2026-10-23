@@ -11,7 +11,7 @@ export default function Menu() {
           {" "}
           <li style={{ "--i": "1" }}><a href="/#about-us">{"About us"}</a></li>
           {" "}
-          <li style={{ "--i": "2" }}><a href="/#research">{"Research"}</a></li>
+          <li style={{ "--i": "2" }}><a href="/#research">{"Resources"}</a></li>
           {" "}
           <li style={{ "--i": "3" }}><a href="/#contact">{"Contact us"}</a></li>
           {" "}
