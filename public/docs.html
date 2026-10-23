@@ -200,7 +200,6 @@ dl.gloss dd { color: var(--body); }
     <a class="tlink" href="/">Home</a>
     <a class="tlink" href="/platform">Product</a>
     <a class="tlink" href="#faq">FAQ</a>
-    <a class="tlink" href="#plans">Plans</a>
     <button class="icon-btn" id="theme" type="button" aria-label="Switch light or dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg></button>
     <a class="cta" href="#quickstart">Get started</a>
   </div>
@@ -280,21 +279,11 @@ const PAGES = [
   <h2 id="first-question">Ask your first question</h2>
   <p>Start with a decision you are facing, and name the place and time where you can.</p>
   ${prompt("Why are enquiries for our solar kits rising in Lugbe, Abuja, while conversion has fallen over the last quarter?")}
-  ${note("The Free plan includes your first 5 questions. See <a href=\"#plans\">Plans</a> for more.")}
   <h2 id="read-answer">Read the answer</h2>
   <p>Every answer is built to show you four things:</p>
   <ul><li><strong>What the evidence supports</strong>, labelled with its <a href="#intelligence-states">intelligence state</a>.</li><li><strong>Where it comes from</strong>: the source, place, time and method behind each point.</li><li><strong>What conflicts</strong>: evidence that disagrees stays visible rather than being dropped.</li><li><strong>What is still unknown</strong>: the questions the evidence cannot answer yet.</li></ul>
   <h2 id="next">Next steps</h2>
   <div class="cards">${card("asking-questions","chat","Ask better questions","How to frame questions that lead to useful answers.")}${card("intelligence-gaps","info","Intelligence Gaps","What to do when an answer says Unknown.")}</div>` },
-
- { g: "Get started", id: "plans", t: "Plans", ic: "tag", crumb: "Get started", body: `
-  <p class="intro">Start free, and move to a paid plan when you need answers more often.</p>
-  <div class="tbl"><table><thead><tr><th>Plan</th><th>Price</th><th>Includes</th></tr></thead><tbody>
-   <tr><th>Free</th><td>$0</td><td>Your first 5 market questions, web access, no card required.</td></tr>
-   <tr><th>Verisavo Monthly</th><td>$6.99 a month</td><td>Up to 100 messages a month, web and WhatsApp, file and image uploads, PDF reports, saved conversations and the Verisavo Dashboard. Cancel anytime.</td></tr>
-   <tr><th>Verisavo Pro</th><td>Coming soon</td><td>Market investigations, a Company Knowledge Base, team workflows, advanced market analysis and targeted Ground-Level Intelligence. Join the waitlist.</td></tr>
-  </tbody></table></div>
-  ${note("Prices are shown in US dollars and may change. The website's Pricing page is the current reference.")}` },
 
  { g: "Core concepts", id: "how-it-works", t: "How it works", ic: "layers", crumb: "Core concepts", body: `
   <p class="intro">Verisavo turns scattered observations about a market into connected, evidence-grounded understanding, and keeps that understanding up to date. It does this in five steps.</p>
@@ -401,7 +390,7 @@ const PAGES = [
   </ol>
   <h2 id="channels">Capture channels</h2>
   <p>Depending on the deployment, SavoScouts can report through the mobile app, WhatsApp, SMS, USSD or voice, so the network is not limited to smartphone users.</p>
-  ${note("Targeted Ground-Level Intelligence is part of Verisavo Pro, which is coming soon. Join the waitlist from the Pricing page.")}` },
+  ${note("Targeted Ground-Level Intelligence investigations are in development. Get early access to hear when they open.")}` },
 
  { g: "Use Verisavo", id: "market-simulation", t: "Market Simulation", ic: "layers", crumb: "Use Verisavo", body: `
   <p class="intro">Market Simulation is designed to help you explore possible outcomes under different assumptions before you commit. ${PLAN}</p>
@@ -444,7 +433,7 @@ const PAGES = [
   <p class="intro">Short answers to common questions.</p>
   <details class="faq"><summary>How is Verisavo different from a general AI assistant?</summary><p>Answers are built from connected market evidence. Each one shows its sources, how reliable they are and what is still unknown, and gaps can be investigated on the ground.</p></details>
   <details class="faq"><summary>Which markets does Verisavo cover?</summary><p>Verisavo is being built for African markets, starting with selected cities. Coverage grows as evidence and investigations build up.</p></details>
-  <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>Yes. Verisavo Monthly includes web and WhatsApp access.</p></details>
+  <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>Yes. Verisavo works on the web and on WhatsApp.</p></details>
   <details class="faq"><summary>Is my company data shared with other customers?</summary><p>No. Your company data stays private, protected and under your control.</p></details>
   <details class="faq"><summary>What happens when Verisavo does not know?</summary><p>It says so and names the Intelligence Gap, so you can decide whether to accept the uncertainty, add your own data or investigate.</p></details>` },
 ];
