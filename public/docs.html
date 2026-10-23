@@ -136,14 +136,21 @@ a.cardx:hover { border-color: var(--accent); transform: translateY(-1px); }
 .prompt-h button:hover { background: var(--accent-soft); }
 .prompt-b { padding: 14px 16px; font: 400 .94rem/1.55 var(--sans); color: var(--ink); }
 .figure { margin: 24px 0; padding: 22px; border-radius: 14px; background: var(--bg2); border: 1px solid var(--line); overflow-x: auto; }
-.figure svg { display: block; width: 100%; min-width: 600px; height: auto; }
+.figure svg { display: block; width: 100%; min-width: 720px; height: auto; }
 .figure figcaption { margin-top: 12px; font-size: .8rem; color: var(--sub); }
 .flow-box { fill: var(--panel); stroke: var(--line2); }
+.flow-dash { stroke-dasharray: 5 4; stroke: var(--hl); }
 .flow-hi { fill: var(--ink); }
-.flow-t { font: 500 11px var(--sans); fill: var(--ink); }
-.flow-th { font: 500 11px var(--sans); fill: var(--bg); }
-.flow-s { font: 400 9.5px var(--mono); fill: var(--sub); }
+.flow-t { font: 600 13px var(--sans); fill: var(--ink); letter-spacing: -.01em; }
+.flow-th { font: 600 13px var(--sans); fill: var(--bg); letter-spacing: -.01em; }
+.flow-s { font: 400 11px var(--sans); fill: var(--sub); }
+.flow-sh { font: 400 11px var(--sans); fill: var(--hl); }
+.flow-n { font: 500 9.5px var(--mono); fill: var(--hl); letter-spacing: .08em; }
+.flow-nh { font: 500 9.5px var(--mono); fill: var(--hl); letter-spacing: .08em; }
+.flow-k { font: 500 9.5px var(--mono); fill: var(--sub); letter-spacing: .06em; text-transform: uppercase; }
 .flow-l { stroke: var(--hl); stroke-width: 1.4; fill: none; }
+.flow-d { stroke-dasharray: 4 4; }
+.flow-ah { fill: var(--hl); }
 .states { display: grid; gap: 10px; margin: 20px 0; }
 .state { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
 .state p { margin: 0; }
@@ -231,21 +238,45 @@ const note = (t, kind = "") => `<div class="callout ${kind}">${svg(kind === "war
 const prompt = (t, label = "Example question") => `<div class="prompt"><div class="prompt-h"><span>${label}</span><button type="button" data-copy>Copy</button></div><div class="prompt-b">${t}</div></div>`;
 const NOW = '<span class="tag t-now">Available</span>', DEV = '<span class="tag t-dev">In development</span>', PLAN = '<span class="tag t-plan">Planned</span>';
 
-const FLOW = `<figure class="figure"><svg viewBox="0 0 860 210" role="img" aria-label="How Verisavo turns market reality into a human decision">
-  ${[["Market reality","what is happening",20],["Signals","small observable changes",160],["Evidence","source, place, time",300],["Verification","is it reliable enough?",440],["Market Memory","what changed, and why",580],["Your decision","made by your team",720]].map(([t,s,x],i)=>`
-  <rect x="${x}" y="40" width="120" height="64" rx="10" class="${i===5?'flow-hi':'flow-box'}"/>
-  <text x="${x+60}" y="68" text-anchor="middle" class="${i===5?'flow-th':'flow-t'}">${t}</text>
-  <text x="${x+60}" y="86" text-anchor="middle" class="flow-s" ${i===5?'style="fill:var(--hl)"':''}>${s}</text>
-  ${i<5?`<path d="M${x+122} 72 h16" class="flow-l"/><path d="M${x+134} 68 l4 4 -4 4" class="flow-l"/>`:''}`).join("")}
-  <path d="M360 108 v40 h-280 v-44" class="flow-l" stroke-dasharray="3 4"/>
-  <rect x="100" y="132" width="240" height="40" rx="10" class="flow-box"/>
-  <text x="220" y="150" text-anchor="middle" class="flow-t">Intelligence Gap → SavoScouts</text>
-  <text x="220" y="164" text-anchor="middle" class="flow-s">investigate what the evidence cannot answer</text>
-  <rect x="560" y="132" width="280" height="40" rx="10" class="flow-box"/>
-  <text x="700" y="150" text-anchor="middle" class="flow-t">Verisavo Intelligence Assistant</text>
-  <text x="700" y="164" text-anchor="middle" class="flow-s">ask, explore evidence, compare, test assumptions</text>
-  <path d="M640 108 v24" class="flow-l"/>
-</svg><figcaption>How evidence is designed to move through Verisavo. Gaps loop back through targeted investigation before they reach a decision.</figcaption></figure>`;
+const FLOW = `<figure class="figure"><svg viewBox="0 0 960 268" role="img" aria-label="How evidence moves through Verisavo, from market reality to your decision, with Intelligence Gaps looping back through SavoScouts">
+  <defs><marker id="fa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" class="flow-ah"/></marker></defs>
+  <rect x="17" y="40" width="136" height="80" rx="12" class="flow-box"/>
+  <text x="33" y="62" class="flow-n">01</text>
+  <text x="33" y="86" class="flow-t">Market reality</text>
+  <text x="33" y="104" class="flow-s">What is happening</text>
+  <path d="M156 80 H170" class="flow-l" marker-end="url(#fa)"/>
+  <rect x="175" y="40" width="136" height="80" rx="12" class="flow-box"/>
+  <text x="191" y="62" class="flow-n">02</text>
+  <text x="191" y="86" class="flow-t">Signals</text>
+  <text x="191" y="104" class="flow-s">Observable changes</text>
+  <path d="M314 80 H328" class="flow-l" marker-end="url(#fa)"/>
+  <rect x="333" y="40" width="136" height="80" rx="12" class="flow-box"/>
+  <text x="349" y="62" class="flow-n">03</text>
+  <text x="349" y="86" class="flow-t">Evidence</text>
+  <text x="349" y="104" class="flow-s">Source, place, time</text>
+  <path d="M472 80 H486" class="flow-l" marker-end="url(#fa)"/>
+  <rect x="491" y="40" width="136" height="80" rx="12" class="flow-box"/>
+  <text x="507" y="62" class="flow-n">04</text>
+  <text x="507" y="86" class="flow-t">Verification</text>
+  <text x="507" y="104" class="flow-s">Reliable enough?</text>
+  <path d="M630 80 H644" class="flow-l" marker-end="url(#fa)"/>
+  <rect x="649" y="40" width="136" height="80" rx="12" class="flow-box"/>
+  <text x="665" y="62" class="flow-n">05</text>
+  <text x="665" y="86" class="flow-t">Market Memory</text>
+  <text x="665" y="104" class="flow-s" textLength="104" lengthAdjust="spacingAndGlyphs">What changed and why</text>
+  <path d="M788 80 H802" class="flow-l" marker-end="url(#fa)"/>
+  <rect x="807" y="40" width="136" height="80" rx="12" class="flow-hi"/>
+  <text x="823" y="62" class="flow-nh">06</text>
+  <text x="823" y="86" class="flow-th">Your decision</text>
+  <text x="823" y="104" class="flow-sh">Made by your team</text>
+  <rect x="175" y="180" width="294" height="64" rx="12" class="flow-box flow-dash"/>
+  <text x="193" y="206" class="flow-t">Intelligence Gap → SavoScouts</text><text x="193" y="225" class="flow-s">Investigate what the evidence cannot answer</text>
+  <path d="M559 124 V212 H474" class="flow-l flow-d" marker-end="url(#fa)"/><text x="566" y="170" class="flow-k">gap found</text>
+  <path d="M243 180 V125" class="flow-l flow-d" marker-end="url(#fa)"/><text x="250" y="160" class="flow-k">new evidence</text>
+  <rect x="649" y="180" width="294" height="64" rx="12" class="flow-box"/>
+  <text x="667" y="206" class="flow-t">Verisavo Intelligence Assistant</text><text x="667" y="225" class="flow-s">Ask, explore evidence, compare, test</text>
+  <path d="M717 124 V175" class="flow-l" marker-end="url(#fa)"/><path d="M875 180 V125" class="flow-l" marker-end="url(#fa)"/>
+</svg><figcaption>How evidence is designed to move through Verisavo. When the evidence cannot answer a question, the gap loops back through targeted investigation before it reaches a decision.</figcaption></figure>`;
 
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
