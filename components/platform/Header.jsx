@@ -17,6 +17,8 @@ export default function Header() {
           {" "}
           <li><button type="button" data-scroll="faq">{"FAQs"}</button></li>
           {" "}
+          <li><button type="button" data-href="/docs.html">{"Docs"}</button></li>
+          {" "}
         </ul>
         {" "}
         <div className="nav-cta">

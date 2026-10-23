@@ -25,8 +25,6 @@ export default function Main() {
             {" "}
             <button type="button" className="btn btn-rect solid" id="ask-cta">{"Ask Verisavo"}</button>
             {" "}
-            <button type="button" className="btn btn-rect plain" data-scroll="how">{"See how it works"}</button>
-            {" "}
           </div>
           {" "}
         </div>
@@ -202,6 +200,30 @@ export default function Main() {
         {" "}
       </section>
       {" "}
+<section className="sec sample" id="sample" aria-labelledby="sample-title">
+  <div className="wrap">
+    <p className="src-strip"><span className="src-k">Built from</span><span className="src-v">Company data</span><span className="src-v">Public records</span><span className="src-v">Digital platforms</span><span className="src-v">Market research</span><span className="src-v">SavoScouts</span></p>
+    <div className="sample-grid">
+      <div className="sample-intro">
+        <p className="eyebrow">What an answer looks like</p>
+        <h2 id="sample-title">Every claim shows how much we know.</h2>
+        <p className="lead">Verisavo separates what the evidence establishes from what it only suggests, and from what it cannot yet answer. You see the sources behind each claim and the gap that matters most.</p>
+        <a className="doclink" href="/docs.html#intelligence-states">How Verisavo labels certainty <span aria-hidden="true">→</span></a>
+      </div>
+      <article className="ans" aria-label="Example answer">
+        <div className="ans-q"><span className="ans-k">Question</span><p>Why are enquiries rising in Lugbe while sales fall?</p></div>
+        <ul className="ans-list">
+          <li><span className="st st-fact">Fact</span><div><p>Enquiries from Lugbe rose over the last eight weeks while completed sales fell.</p><small>Company data · sales records, Abuja team</small></div></li>
+          <li><span className="st st-inf">Inference</span><div><p>Two competitors cut prices on similar products in the same period, so buyers may be comparing before they commit.</p><small>Digital platforms · online price listings</small></div></li>
+          <li><span className="st st-unk">Unknown</span><div><p>Whether the product was in stock at the Lugbe retailers buyers were sent to.</p><small>No evidence yet</small></div></li>
+        </ul>
+        <div className="ans-gap"><span className="ans-k">Intelligence Gap</span><p>Check shelf availability at the main Lugbe retailers. This is the question most likely to change the answer.</p></div>
+      </article>
+    </div>
+    <p className="sample-note">Example for illustration. The place, figures and sources are not real customer data.</p>
+  </div>
+</section>
+      {" "}
       <section className="sec how" id="how" aria-labelledby="how-title">
         {" "}
         <div className="wrap">
@@ -239,6 +261,7 @@ export default function Main() {
             </li>
             {" "}
           </ol>
+          <a className="doclink" href="/docs.html#how-it-works">Read how it works in the Docs <span aria-hidden="true">→</span></a>
           {" "}
         </div>
         {" "}
@@ -258,80 +281,37 @@ export default function Main() {
             {" "}
           </div>
           {" "}
-          <div className="apbox">
-            {" "}
-            <div className="ap-head"><p className="eyebrow">{"What makes Verisavo different"}</p></div>
-            {" "}
-            <div className="ap-grid2">
-              {" "}
-              <div className="ap-side">
-                {" "}
-                <p className="ap-group">{"Approaches"}</p>
-                {" "}
-                <div className="ap-list" role="tablist" aria-label="Approaches" aria-orientation="vertical">
-                  <button role="tab" id="ap0" aria-controls="apchart" aria-selected="true" data-ap="0">{"Market reports"}</button>
-                  <button role="tab" id="ap1" aria-controls="apchart" aria-selected="false" tabIndex="-1" data-ap="1">{"Research agencies"}</button>
-                  <button role="tab" id="ap2" aria-controls="apchart" aria-selected="false" tabIndex="-1" data-ap="2">{"Data providers"}</button>
-                  <button role="tab" id="ap3" aria-controls="apchart" aria-selected="false" tabIndex="-1" data-ap="3">{"General AI tools"}</button>
-                </div>
-                {" "}
-              </div>
-              {" "}
-              <div className="ap-panel">
-                {" "}
-                <div className="ap-legend">
-                  <span className="lg lg-v"><i></i>{"Verisavo"}</span>
-                  <span className="lg lg-s"><i></i>{"Competitors"}</span>
-                  <span className="ap-illus ap-try">{"Hover an approach or dot to compare"}</span>
-                </div>
-                {" "}
-                <p className="ap-cap ap-cap-y" aria-hidden="true">{"↑ Updated as evidence arrives"}</p>
-                {" "}
-                <svg className="apchart" id="apchart" data-layouts="[[[164, 235], [278, 273], [372, 176], [455, 219], [538, 62]], [[205, 203], [242, 257], [392, 143], [434, 251], [517, 52]], [[143, 219], [299, 246], [340, 165], [486, 208], [548, 73]], [[184, 181], [257, 278], [320, 133], [403, 224], [528, 68]]]" viewBox="0 0 620 350" role="img" aria-label="Illustrative positioning: Verisavo is the most connected across sources and the most updated as evidence arrives">
-                  {" "}
-                  <g className="ap-grid">
-                    <line x1="70" x2="590" y1="300" y2="300"></line>
-                    <line x1="70" x2="590" y1="232" y2="232"></line>
-                    <line x1="70" x2="590" y1="165" y2="165"></line>
-                    <line x1="70" x2="590" y1="98" y2="98"></line>
-                    <line x1="70" x2="590" y1="30" y2="30"></line>
-                  </g>
-                  {" "}
-                  <line className="ap-axis" x1="70" y1="300" x2="590" y2="300"></line>
-                  <line className="ap-axis" x1="70" y1="30" x2="70" y2="300"></line>
-                  {" "}
-                  <text className="ap-tick" x="60" y="34" textAnchor="end">{"High"}</text>
-                  {" "}
-                  <text className="ap-tick" x="62" y="316" textAnchor="end">{"Low"}</text>
-                  <text className="ap-tick" x="590" y="322" textAnchor="end">{"High"}</text>
-                  {" "}
-                  <text className="ap-lab" x="330" y="342" textAnchor="middle">{"CONNECTED ACROSS SOURCES"}</text>
-                  {" "}
-                  <text className="ap-lab" transform="translate(18 165) rotate(-90)" textAnchor="middle">{"UPDATED AS EVIDENCE ARRIVES"}</text>
-                  {" "}
-                  <g className="apt" data-i="0" tabIndex="0" role="button" aria-label="Market reports: where it falls short" style={{ transform: "translate(164px, 241px)" }}><circle r="7"></circle></g>
-                  <g className="apt" data-i="1" tabIndex="0" role="button" aria-label="Research agencies: where it falls short" style={{ transform: "translate(247px, 262px)" }}><circle r="7"></circle></g>
-                  <g className="apt" data-i="2" tabIndex="0" role="button" aria-label="Data providers: where it falls short" style={{ transform: "translate(340px, 170px)" }}><circle r="7"></circle></g>
-                  <g className="apt" data-i="3" tabIndex="0" role="button" aria-label="General AI tools: where it falls short" style={{ transform: "translate(413px, 230px)" }}><circle r="7"></circle></g>
-                  {" "}
-                  <g className="apv" tabIndex="0" role="button" aria-label="Verisavo: what makes it different" style={{ transform: "translate(538px, 62px)" }}><circle r="9"></circle></g>
-                  {" "}
-                </svg>
-                {" "}
-                <p className="ap-cap ap-cap-x" aria-hidden="true">{"Connected across sources →"}</p>
-                {" "}
-                <p className="ap-hint" aria-hidden="true">{"Tap an approach or a dot to compare"}</p>
-                <div className="ap-tip" id="ap-tip" role="status" aria-live="polite" hidden></div>
-                {" "}
-              </div>
-              {" "}
-            </div>
-            {" "}
-          </div>
-          {" "}
+          <div className="cmp">
+        <table>
+          <caption className="vh">How Verisavo differs from general AI tools</caption>
+          <thead><tr><th scope="col"><span className="vh">Question</span></th><th scope="col">General AI tools</th><th scope="col" className="cmp-v">Verisavo</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Where answers come from</th><td>Training data and the open web</td><td className="cmp-v">Your company data, public records, digital platforms and Ground-Level Intelligence, connected</td></tr>
+            <tr><th scope="row">Can you check the source?</th><td>Often not</td><td className="cmp-v">Each claim links to its source, place and date</td></tr>
+            <tr><th scope="row">When evidence is thin</th><td>Usually answers anyway</td><td className="cmp-v">Says Unknown and names the Intelligence Gap</td></tr>
+            <tr><th scope="row">Places with little online</th><td>Little to go on</td><td className="cmp-v">Can be checked on the ground by SavoScouts</td></tr>
+          </tbody>
+        </table>
+      </div>
         </div>
-        {" "}
       </section>
+      {" "}
+<section className="sec uses" id="uses" aria-labelledby="uses-title">
+  <div className="wrap">
+    <div className="sec-head">
+      <p className="eyebrow">Use cases</p>
+      <h2 id="uses-title">Questions teams bring to Verisavo.</h2>
+    </div>
+    <div className="uc-grid">
+      <a className="uc" href="/docs.html#asking-questions"><h3>Where to launch first</h3><p>Compare cities and neighbourhoods on demand, competition and reach.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/docs.html#asking-questions"><h3>Why sales changed</h3><p>Trace a shift in sales to prices, supply, competitors or customers.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/docs.html#signals"><h3>Who you compete with</h3><p>See who sells nearby, at what price and through which channels.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/docs.html#savoscouts"><h3>How far distribution reaches</h3><p>Find where your product is on shelves and where it runs out.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/docs.html#evidence"><h3>How to price</h3><p>Compare your prices with what people pay, place by place.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/docs.html#market-memory"><h3>How customers are changing</h3><p>Notice shifts in what people buy, where and why.</p><span className="uc-go" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
       {" "}
       <section className="sec" id="trust" aria-labelledby="trust-title">
         {" "}
@@ -342,6 +322,7 @@ export default function Main() {
             <h2 id="trust-title">{"Built on Trust"}</h2>
             {" "}
             <p className="lead">{"Know what the evidence supports, where it falls short, and what remains in your control."}</p>
+            <a className="doclink" href="/docs.html#privacy">Read about privacy and responsible use <span aria-hidden="true">→</span></a>
             {" "}
           </div>
           {" "}
@@ -407,6 +388,7 @@ export default function Main() {
               {"Need help with a specific market decision? "}
               <button type="button" className="linkbtn" data-access="">{"Talk to our team."}</button>
             </p>
+            <p className="faq-talk">More answers in the <a className="doclink" href="/docs.html#faq">Docs <span aria-hidden="true">→</span></a></p>
             {" "}
           </div>
           {" "}
@@ -482,6 +464,22 @@ export default function Main() {
         </div>
         {" "}
       </section>
+      {" "}
+<section className="sec status" id="status" aria-labelledby="status-title">
+  <div className="wrap">
+    <div className="sec-head">
+      <p className="eyebrow">Where we are</p>
+      <h2 id="status-title">What is available now.</h2>
+      <p className="lead">We would rather be clear about what works today than overpromise.</p>
+    </div>
+    <div className="stat-grid">
+      <div className="stat"><span className="chip-s s-on">Available</span><ul><li>Ask market questions</li><li>Answers with sources</li><li>Fact, Inference and Unknown labels</li><li>Intelligence Gaps</li></ul></div>
+      <div className="stat"><span className="chip-s s-dev">In development</span><ul><li>SavoScouts investigations</li><li>Market Memory</li></ul></div>
+      <div className="stat"><span className="chip-s s-plan">Planned</span><ul><li>Market Simulation</li></ul></div>
+    </div>
+    <p className="price-line">Start free with 5 questions. Verisavo Monthly is $6.99 a month. <button type="button" className="linkbtn" data-href="/#pricing">See pricing</button></p>
+  </div>
+</section>
       {" "}
       <div className="cta-wrap">
         {" "}
