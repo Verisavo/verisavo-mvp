@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Verisavo Docs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}
+/* Layout: three-column documentation shell. Sidebar of guides, a reading column near 68ch, and an on-this-page rail. */
+:root {
+  --bg: #FFFFFF; --bg2: #F6F8FC; --panel: #FFFFFF; --tint: #E3EBF8;
+  --ink: #1F273F; --body: #3A4460; --sub: #5E6780; --line: rgba(31,39,63,.1); --line2: rgba(31,39,63,.18);
+  --accent: #4362B2; --accent-soft: #E3EBF8; --accent-ink: #3A5292; --hl: #80AADC;
+  --code: #F3F6FB; --warn: #8A5A12; --warn-bg: #FBF3E4;
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --top: 60px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141a2b; --bg2: #1A2133; --panel: #1F273F; --tint: #263152;
+  --ink: #EEF2FA; --body: #C7D2E6; --sub: #93A0BC; --line: rgba(206,221,241,.1); --line2: rgba(206,221,241,.2);
+  --accent: #80AADC; --accent-soft: #263152; --accent-ink: #A8C6E8; --hl: #80AADC;
+  --code: #1A2133; --warn: #F2C27A; --warn-bg: #2E2717; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141a2b; --bg2: #1A2133; --panel: #1F273F; --tint: #263152;
+  --ink: #EEF2FA; --body: #C7D2E6; --sub: #93A0BC; --line: rgba(206,221,241,.1); --line2: rgba(206,221,241,.2);
+  --accent: #80AADC; --accent-soft: #263152; --accent-ink: #A8C6E8; --hl: #80AADC;
+  --code: #1A2133; --warn: #F2C27A; --warn-bg: #2E2717; color-scheme: dark }
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--top) + 24px); }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 40; background: var(--bg); }
+a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* top bar */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; height: var(--top); background: color-mix(in srgb, var(--bg) 92%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 16px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+.brand { display: flex; align-items: baseline; gap: 8px; text-decoration: none; color: var(--ink); flex: none; }
+.brand b { font: 600 1.12rem/1 var(--sans); letter-spacing: -.04em; }
+.brand span { font: 500 .7rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--sub); }
+.search { position: relative; flex: 0 1 360px; margin-left: 28px; }
+.search input { width: 100%; height: 36px; border-radius: 9px; border: 1px solid var(--line2); background: var(--bg2); padding: 0 40px 0 34px; font-size: .88rem; }
+.search input::placeholder { color: var(--sub); }
+.search svg { position: absolute; left: 11px; top: 11px; width: 14px; height: 14px; color: var(--sub); }
+.search kbd { position: absolute; right: 9px; top: 8px; font: 500 .68rem/1 var(--mono); color: var(--sub); border: 1px solid var(--line2); border-radius: 5px; padding: 3px 6px; }
+.results { position: absolute; left: 0; right: 0; top: 42px; background: var(--panel); border: 1px solid var(--line2); border-radius: 12px; box-shadow: 0 20px 50px -20px rgba(15,20,35,.4); padding: 6px; max-height: 60vh; overflow-y: auto; }
+.results a { display: grid; gap: 2px; padding: 9px 10px; border-radius: 8px; text-decoration: none; color: var(--ink); }
+.results a small { color: var(--sub); font-size: .76rem; }
+.results a.on, .results a:hover { background: var(--accent-soft); }
+.results p { margin: 0; padding: 12px; color: var(--sub); font-size: .86rem; }
+.top-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.tlink { font-size: .86rem; color: var(--body); text-decoration: none; padding: 8px 10px; border-radius: 8px; }
+.tlink:hover { background: var(--bg2); }
+.cta { font: 500 .84rem/1 var(--sans); background: var(--ink); color: var(--bg); text-decoration: none; padding: 10px 14px; border-radius: 8px; }
+.icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--line2); background: none; border-radius: 9px; cursor: pointer; color: var(--body); }
+.icon-btn svg { width: 16px; height: 16px; }
+.menu-btn { display: none; }
+@media (max-width: 1000px) { .tlink { display: none; } }
+@media (max-width: 760px) { .menu-btn { display: grid; } .search { margin-left: 0; } .brand span { display: none; } .cta { display: none; } }
+
+/* shell */
+.shell { display: grid; grid-template-columns: 260px minmax(0, 1fr) 220px; max-width: 1440px; margin: 0 auto; }
+@media (max-width: 1200px) { .shell { grid-template-columns: 240px minmax(0, 1fr); } .toc { display: none; } }
+@media (max-width: 760px) { .shell { grid-template-columns: minmax(0, 1fr); } }
+
+/* sidebar */
+.side { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--top)); height: calc(100vh - var(--top)); overflow-y: auto; padding: 26px 16px 40px max(18px, env(safe-area-inset-left, 0px)); border-right: 1px solid var(--line); scrollbar-width: thin; }
+.side h4 { margin: 22px 0 8px 10px; font: 500 .68rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--sub); }
+.side h4:first-child { margin-top: 0; }
+.side a { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 7px; color: var(--body); text-decoration: none; font-size: .9rem; }
+.side a:hover { background: var(--bg2); color: var(--ink); }
+.side a[aria-current="page"] { background: var(--accent-soft); color: var(--accent-ink); font-weight: 500; }
+.side a .tag { margin-left: auto; }
+@media (max-width: 760px) {
+  .side { position: fixed; z-index: 25; top: calc(env(safe-area-inset-top, 0px) + var(--top)); left: 0; width: min(300px, 86vw); background: var(--bg); transform: translateX(-102%); transition: transform .25s; box-shadow: 20px 0 50px -30px rgba(0,0,0,.5); }
+  body.nav-open .side { transform: none; }
+}
+
+/* article */
+main { min-width: 0; padding: 40px max(18px, env(safe-area-inset-right, 0px)) 80px max(18px, env(safe-area-inset-left, 0px)); }
+.doc { max-width: 740px; margin: 0 auto; }
+.crumb { font: 500 .72rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+.doc h1 { margin: 0; font: 400 clamp(2.1rem, 1.6rem + 1.6vw, 2.8rem)/1.1 var(--serif); letter-spacing: -.02em; text-wrap: balance; }
+.doc .intro { font-size: 1.08rem; color: var(--body); margin: 14px 0 0; max-width: 64ch; }
+.doc h2 { margin: 44px 0 12px; font: 400 1.6rem/1.2 var(--serif); letter-spacing: -.01em; text-wrap: balance; }
+.doc h3 { margin: 28px 0 8px; font: 600 1rem/1.35 var(--sans); }
+.doc p, .doc li { color: var(--body); max-width: 68ch; }
+.doc p { margin: 12px 0; }
+.doc ul, .doc ol { padding-left: 20px; margin: 12px 0; }
+.doc li { margin: 6px 0; }
+.doc strong { color: var(--ink); font-weight: 600; }
+.doc hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+.doc code { font: 400 .86em/1.4 var(--mono); background: var(--code); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+.h-anchor { color: inherit; text-decoration: none; }
+.h-anchor:hover::after { content: " #"; color: var(--sub); }
+
+/* components */
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 22px 0; }
+.cards.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cardx { display: grid; gap: 6px; align-content: start; padding: 18px; border: 1px solid var(--line2); border-radius: 12px; background: var(--panel); text-decoration: none; color: var(--ink); transition: border-color .2s, transform .2s; }
+a.cardx:hover { border-color: var(--accent); transform: translateY(-1px); }
+.cardx .ic { width: 30px; height: 30px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-ink); display: grid; place-items: center; margin-bottom: 6px; }
+.cardx .ic svg { width: 16px; height: 16px; }
+.cardx b { font-weight: 600; font-size: .96rem; }
+.cardx span { font-size: .88rem; color: var(--sub); line-height: 1.5; }
+@media (max-width: 640px) { .cards, .cards.three { grid-template-columns: 1fr; } }
+.callout { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px; padding: 14px 16px; border-radius: 12px; margin: 20px 0; background: var(--accent-soft); color: var(--body); }
+.callout svg { width: 18px; height: 18px; color: var(--accent-ink); margin-top: 3px; }
+.callout p { margin: 0; color: var(--body); }
+.callout b { color: var(--ink); }
+.callout.warn { background: var(--warn-bg); } .callout.warn svg { color: var(--warn); }
+.tag { display: inline-flex; align-items: center; font: 500 .6rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 6px; border-radius: 999px; white-space: nowrap; vertical-align: 2px; }
+.t-now { background: var(--accent-soft); color: var(--accent-ink); }
+.t-dev { box-shadow: inset 0 0 0 1px var(--line2); color: var(--sub); }
+.t-plan { box-shadow: inset 0 0 0 1px var(--line2); color: var(--sub); border: 0; outline: 1px dashed var(--line2); outline-offset: -1px; }
+.steps { list-style: none; padding: 0 !important; margin: 22px 0 !important; counter-reset: s; display: grid; }
+.steps > li { counter-increment: s; position: relative; padding: 0 0 22px 44px; margin: 0; max-width: none; }
+.steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 500 .8rem/1 var(--mono); background: var(--ink); color: var(--bg); }
+.steps > li::after { content: ""; position: absolute; left: 13.5px; top: 32px; bottom: 4px; width: 1px; background: var(--line2); }
+.steps > li:last-child::after { display: none; }
+.steps > li > b { display: block; color: var(--ink); font-weight: 600; margin-bottom: 2px; }
+.steps > li > p { margin: 4px 0; }
+.tbl { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 12px; }
+.tbl table { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 520px; }
+.tbl th, .tbl td { text-align: left; vertical-align: top; padding: 11px 14px; border-top: 1px solid var(--line); color: var(--body); }
+.tbl thead th { border-top: 0; background: var(--bg2); font: 500 .66rem/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+.tbl tbody th { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.prompt { margin: 16px 0; border: 1px solid var(--line2); border-radius: 12px; overflow: hidden; background: var(--panel); }
+.prompt-h { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); background: var(--bg2); font: 500 .68rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+.prompt-h button { border: 0; background: none; cursor: pointer; font: inherit; color: var(--accent-ink); letter-spacing: .08em; padding: 4px 6px; border-radius: 5px; }
+.prompt-h button:hover { background: var(--accent-soft); }
+.prompt-b { padding: 14px 16px; font: 400 .94rem/1.55 var(--sans); color: var(--ink); }
+.figure { margin: 24px 0; padding: 22px; border-radius: 14px; background: var(--bg2); border: 1px solid var(--line); overflow-x: auto; }
+.figure svg { display: block; width: 100%; min-width: 600px; height: auto; }
+.figure figcaption { margin-top: 12px; font-size: .8rem; color: var(--sub); }
+.flow-box { fill: var(--panel); stroke: var(--line2); }
+.flow-hi { fill: var(--ink); }
+.flow-t { font: 500 11px var(--sans); fill: var(--ink); }
+.flow-th { font: 500 11px var(--sans); fill: var(--bg); }
+.flow-s { font: 400 9.5px var(--mono); fill: var(--sub); }
+.flow-l { stroke: var(--hl); stroke-width: 1.4; fill: none; }
+.states { display: grid; gap: 10px; margin: 20px 0; }
+.state { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.state p { margin: 0; }
+.state .chip { justify-self: start; align-self: start; font: 500 .66rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 999px; }
+.c-fact { background: var(--ink); color: var(--bg); }
+.c-inf { background: var(--accent-soft); color: var(--accent-ink); }
+.c-hyp { box-shadow: inset 0 0 0 1px var(--hl); color: var(--accent-ink); }
+.c-ass { box-shadow: inset 0 0 0 1px var(--line2); color: var(--sub); }
+.c-unk { outline: 1px dashed var(--accent); outline-offset: -1px; color: var(--accent-ink); }
+@media (max-width: 560px) { .state { grid-template-columns: 1fr; gap: 8px; } }
+details.faq { border-top: 1px solid var(--line); }
+details.faq:last-of-type { border-bottom: 1px solid var(--line); }
+details.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 12px; padding: 16px 0; font-weight: 500; color: var(--ink); }
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after { content: "+"; color: var(--sub); font-size: 1.2rem; line-height: 1; transition: transform .2s; }
+details.faq[open] summary::after { transform: rotate(45deg); }
+details.faq p { margin: 0 0 16px; }
+dl.gloss { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 0; margin: 20px 0; border-top: 1px solid var(--line); }
+dl.gloss dt, dl.gloss dd { margin: 0; padding: 14px 0; border-bottom: 1px solid var(--line); }
+dl.gloss dt { font-weight: 600; color: var(--ink); padding-right: 16px; }
+dl.gloss dd { color: var(--body); }
+@media (max-width: 560px) { dl.gloss { grid-template-columns: 1fr; } dl.gloss dt { border-bottom: 0; padding-bottom: 2px; } dl.gloss dd { padding-top: 0; } }
+
+/* page footer */
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 56px; }
+.pager a { display: grid; gap: 4px; padding: 14px 16px; border: 1px solid var(--line2); border-radius: 12px; text-decoration: none; color: var(--ink); }
+.pager a:hover { border-color: var(--accent); }
+.pager a small { font: 500 .66rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--sub); }
+.pager a.next { text-align: right; grid-column: 2; }
+.doc-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .8rem; color: var(--sub); }
+.helpful { display: flex; align-items: center; gap: 8px; }
+.helpful button { border: 1px solid var(--line2); background: none; border-radius: 7px; padding: 4px 10px; cursor: pointer; font-size: .8rem; color: var(--body); }
+.helpful button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-ink); border-color: transparent; }
+
+/* toc */
+.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--top)); height: calc(100vh - var(--top)); overflow-y: auto; padding: 40px max(18px, env(safe-area-inset-right, 0px)) 40px 8px; }
+.toc h5 { margin: 0 0 10px; font: 500 .68rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--sub); }
+.toc a { display: block; padding: 5px 0 5px 12px; border-left: 1px solid var(--line2); color: var(--sub); text-decoration: none; font-size: .84rem; line-height: 1.35; }
+.toc a:hover { color: var(--ink); }
+.toc a.on { color: var(--accent-ink); border-left-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head>
+<body>
+<header class="top">
+  <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Open navigation" aria-expanded="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h12M2 8h12M2 12h12"/></svg></button>
+  <a class="brand" href="#introduction"><b>Verisavo</b><span>Docs</span></a>
+  <div class="search">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>
+    <input id="q" type="search" placeholder="Search the docs" autocomplete="off" aria-label="Search the docs" aria-controls="results">
+    <kbd>/</kbd>
+    <div class="results" id="results" hidden></div>
+  </div>
+  <div class="top-r">
+    <a class="tlink" href="/">Verisavo website</a>
+    <a class="tlink" href="#faq">FAQ</a>
+    <a class="tlink" href="#plans">Plans</a>
+    <button class="icon-btn" id="theme" type="button" aria-label="Switch light or dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg></button>
+    <a class="cta" href="#quickstart">Get started</a>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="side" id="side" aria-label="Documentation"></nav>
+  <main><article class="doc" id="doc" aria-live="polite"></article></main>
+  <aside class="toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<script>
+(() => {
+const I = {
+  book: '<path d="M3 3h5a2 2 0 0 1 2 2v9a1.5 1.5 0 0 0-1.5-1.5H3zM13 3H8a2 2 0 0 0-2 2"/><path d="M13 3v9.5H10"/>',
+  bolt: '<path d="M9 1.5 3.5 9H8l-1 5.5L12.5 7H8z"/>',
+  layers: '<path d="m8 2 6 3-6 3-6-3z"/><path d="m2 8 6 3 6-3M2 11l6 3 6-3"/>',
+  tag: '<path d="M2 2h6l6 6-6 6-6-6z"/><circle cx="5.5" cy="5.5" r="1"/>',
+  pin: '<path d="M8 14.5s4.5-4.2 4.5-7.6a4.5 4.5 0 0 0-9 0c0 3.4 4.5 7.6 4.5 7.6z"/><circle cx="8" cy="6.8" r="1.6"/>',
+  shield: '<path d="M8 1.8 13 3.6v3.8c0 3-2 5.2-5 6.7-3-1.5-5-3.7-5-6.7V3.6z"/>',
+  chat: '<path d="M2.5 3h11v7.5h-6L4 13.5v-3H2.5z"/>',
+  clock: '<circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/>',
+  info: '<circle cx="8" cy="8" r="6.2"/><path d="M8 7.2v4M8 4.8v.1"/>',
+  warn: '<path d="M8 2 14.5 13.5h-13z"/><path d="M8 6.5v3.2M8 11.6v.1"/>',
+};
+const svg = (k) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${I[k]}</svg>`;
+const card = (href, ic, t, s) => `<a class="cardx" href="#${href}"><span class="ic">${svg(ic)}</span><b>${t}</b><span>${s}</span></a>`;
+const note = (t, kind = "") => `<div class="callout ${kind}">${svg(kind === "warn" ? "warn" : "info")}<p>${t}</p></div>`;
+const prompt = (t, label = "Example question") => `<div class="prompt"><div class="prompt-h"><span>${label}</span><button type="button" data-copy>Copy</button></div><div class="prompt-b">${t}</div></div>`;
+const NOW = '<span class="tag t-now">Available</span>', DEV = '<span class="tag t-dev">In development</span>', PLAN = '<span class="tag t-plan">Planned</span>';
+
+const FLOW = `<figure class="figure"><svg viewBox="0 0 860 210" role="img" aria-label="How Verisavo turns market reality into a human decision">
+  ${[["Market reality","what is happening",20],["Signals","small observable changes",160],["Evidence","source, place, time",300],["Verification","is it reliable enough?",440],["Market Memory","what changed, and why",580],["Your decision","made by your team",720]].map(([t,s,x],i)=>`
+  <rect x="${x}" y="40" width="120" height="64" rx="10" class="${i===5?'flow-hi':'flow-box'}"/>
+  <text x="${x+60}" y="68" text-anchor="middle" class="${i===5?'flow-th':'flow-t'}">${t}</text>
+  <text x="${x+60}" y="86" text-anchor="middle" class="flow-s" ${i===5?'style="fill:var(--hl)"':''}>${s}</text>
+  ${i<5?`<path d="M${x+122} 72 h16" class="flow-l"/><path d="M${x+134} 68 l4 4 -4 4" class="flow-l"/>`:''}`).join("")}
+  <path d="M360 108 v40 h-280 v-44" class="flow-l" stroke-dasharray="3 4"/>
+  <rect x="100" y="132" width="240" height="40" rx="10" class="flow-box"/>
+  <text x="220" y="150" text-anchor="middle" class="flow-t">Intelligence Gap → SavoScouts</text>
+  <text x="220" y="164" text-anchor="middle" class="flow-s">investigate what the evidence cannot answer</text>
+  <rect x="560" y="132" width="280" height="40" rx="10" class="flow-box"/>
+  <text x="700" y="150" text-anchor="middle" class="flow-t">Verisavo Intelligence Assistant</text>
+  <text x="700" y="164" text-anchor="middle" class="flow-s">ask, explore evidence, compare, test assumptions</text>
+  <path d="M640 108 v24" class="flow-l"/>
+</svg><figcaption>How evidence is designed to move through Verisavo. Gaps loop back through targeted investigation before they reach a decision.</figcaption></figure>`;
+
+const PAGES = [
+ { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
+  <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects fragmented market evidence so your team can see what is happening, why, what is still unknown and what it could mean for the decision ahead.</p>
+  <div class="cards">${card("quickstart","bolt","Quickstart","From early access to your first answered question.")}${card("how-it-works","layers","How it works","Signals, evidence, verification and Market Memory.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
+  <h2 id="problem">The problem it solves</h2>
+  <p>The information you need to understand a market usually exists. It sits in your company data, public records, digital platforms, research reports, field notes and the knowledge of distributors and traders. It rarely adds up to one picture, and it is hard to tell which pieces are reliable, current or relevant to the question in front of you.</p>
+  <p>More data does not fix this on its own. Verisavo connects evidence, keeps its context and is honest about what it cannot yet answer.</p>
+  <h2 id="what-it-does">What Verisavo does</h2>
+  <div class="tbl"><table><thead><tr><th>Capability</th><th>What it means for you</th><th>Status</th></tr></thead><tbody>
+   <tr><th>Ask</th><td>Ask market questions in plain language, on the web or WhatsApp.</td><td>${NOW}</td></tr>
+   <tr><th>Evidence</th><td>Each answer shows its sources, place, time and how reliable it is.</td><td>${NOW}</td></tr>
+   <tr><th>Gaps</th><td>Questions the evidence cannot answer are named as Intelligence Gaps.</td><td>${NOW}</td></tr>
+   <tr><th>Investigate</th><td>SavoScouts gather verified Ground-Level Intelligence for a gap.</td><td>${DEV}</td></tr>
+   <tr><th>Remember</th><td>Market Memory records how understanding changes over time.</td><td>${DEV}</td></tr>
+   <tr><th>Explore scenarios</th><td>Market Simulation compares outcomes under stated assumptions.</td><td>${PLAN}</td></tr>
+  </tbody></table></div>
+  ${FLOW}
+  <h2 id="who">Who it is for</h2>
+  <p>Commercial, strategy and operations teams making decisions about African markets: where to launch, how to price, whether distribution is reaching shops, what competitors are doing and why sales are changing.</p>
+  ${note("<b>Decisions stay human.</b> Verisavo brings evidence, context and uncertainty closer to you. It does not make the decision for you.")}` },
+
+ { g: "Get started", id: "quickstart", t: "Quickstart", ic: "bolt", crumb: "Get started", body: `
+  <p class="intro">Get early access, ask your first market question and learn to read the answer. This takes about five minutes.</p>
+  <h2 id="access">Get early access</h2>
+  <ol class="steps">
+   <li><b>Enter your WhatsApp number</b><p>Choose <strong>Get early access</strong> on the website and add the number you want to use with Verisavo.</p></li>
+   <li><b>Confirm the code</b><p>We send a six-digit verification code to WhatsApp. Enter it to confirm the number is yours.</p></li>
+   <li><b>Open Verisavo</b><p>Follow the link to start a conversation with Verisavo on WhatsApp, or sign in on the web.</p></li>
+  </ol>
+  <h2 id="first-question">Ask your first question</h2>
+  <p>Start with a decision you are facing, and name the place and time where you can.</p>
+  ${prompt("Why are enquiries for our solar kits rising in Lugbe, Abuja, while conversion has fallen over the last quarter?")}
+  ${note("The Free plan includes your first 5 questions. See <a href=\"#plans\">Plans</a> for more.")}
+  <h2 id="read-answer">Read the answer</h2>
+  <p>Every answer is built to show you four things:</p>
+  <ul><li><strong>What the evidence supports</strong>, labelled with its <a href="#intelligence-states">intelligence state</a>.</li><li><strong>Where it comes from</strong>: the source, place, time and method behind each point.</li><li><strong>What conflicts</strong>: evidence that disagrees stays visible rather than being dropped.</li><li><strong>What is still unknown</strong>: the questions the evidence cannot answer yet.</li></ul>
+  <h2 id="next">Next steps</h2>
+  <div class="cards">${card("asking-questions","chat","Ask better questions","How to frame questions that lead to useful answers.")}${card("intelligence-gaps","info","Intelligence Gaps","What to do when an answer says Unknown.")}</div>` },
+
+ { g: "Get started", id: "plans", t: "Plans", ic: "tag", crumb: "Get started", body: `
+  <p class="intro">Start free, and move to a paid plan when you need answers more often.</p>
+  <div class="tbl"><table><thead><tr><th>Plan</th><th>Price</th><th>Includes</th></tr></thead><tbody>
+   <tr><th>Free</th><td>$0</td><td>Your first 5 market questions, web access, no card required.</td></tr>
+   <tr><th>Verisavo Monthly</th><td>$6.99 a month</td><td>Up to 100 messages a month, web and WhatsApp, file and image uploads, PDF reports, saved conversations and the Verisavo Dashboard. Cancel anytime.</td></tr>
+   <tr><th>Verisavo Pro</th><td>Coming soon</td><td>Market investigations, a Company Knowledge Base, team workflows, advanced market analysis and targeted Ground-Level Intelligence. Join the waitlist.</td></tr>
+  </tbody></table></div>
+  ${note("Prices are shown in US dollars and may change. The website's Pricing page is the current reference.")}` },
+
+ { g: "Core concepts", id: "how-it-works", t: "How it works", ic: "layers", crumb: "Core concepts", body: `
+  <p class="intro">Verisavo turns scattered observations about a market into connected, evidence-grounded understanding, and keeps that understanding up to date.</p>
+  ${FLOW}
+  <h2 id="layers">The layers</h2>
+  <div class="tbl"><table><thead><tr><th>Layer</th><th>What it does</th></tr></thead><tbody>
+   <tr><th>Market reality</th><td>The real market: businesses, products, customers, prices, routes, policies and how they change.</td></tr>
+   <tr><th><a href="#signals">Signals</a></th><td>The smallest meaningful sign that something is happening, such as a price change or a stockout.</td></tr>
+   <tr><th><a href="#evidence">Evidence</a></th><td>A signal with its context attached: source, place, time, scope and method.</td></tr>
+   <tr><th><a href="#evidence">Verification</a></th><td>Checks whether evidence is reliable enough for the purpose it will serve.</td></tr>
+   <tr><th>Connection</th><td>Links evidence across businesses, products, places and earlier findings.</td></tr>
+   <tr><th><a href="#market-memory">Market Memory</a></th><td>Records what was known, what changed and which evidence changed it.</td></tr>
+   <tr><th><a href="#asking-questions">Intelligence Assistant</a></th><td>The conversational way to question all of the above.</td></tr>
+   <tr><th>Your decision</th><td>Made by your team, with the evidence and uncertainty in view.</td></tr>
+  </tbody></table></div>
+  <h2 id="principles">Principles</h2>
+  <ul><li><strong>Evidence before assertion.</strong> A fluent answer is not the same as a supported one.</li><li><strong>Context before conclusion.</strong> A price in one market in March says little about another market in May.</li><li><strong>Unknown is a valid answer.</strong> A named gap is more useful than a confident guess.</li><li><strong>Markets change.</strong> Understanding is updated, not filed away.</li></ul>` },
+
+ { g: "Core concepts", id: "signals", t: "Signals", ic: "bolt", crumb: "Core concepts", body: `
+  <p class="intro">A signal is the smallest meaningful sign that something is happening in a market. One signal is a starting point, never a conclusion.</p>
+  <h2 id="examples">Examples</h2>
+  <ul><li>A price rises 8% across three retailers</li><li>A product is missing from shelves on one street</li><li>A competitor appears at two market stalls</li><li>A retailer switches supplier</li><li>Deliveries on a route arrive a day late</li><li>Footfall changes on market days</li></ul>
+  <h2 id="one-signal">Why one signal is not enough</h2>
+  <p>An empty shelf could mean rising demand, a supply problem, a retailer short of cash, a changed delivery route or a shop that switched to a competitor. Each explanation calls for a different response. Verisavo treats the signal as a question to check, then looks for what else would be true under each explanation.</p>
+  ${note("Record the context with every observation: exactly where, when, how many places were checked and by whom. Three empty shelves out of three is a different finding from three out of thirty.")}` },
+
+ { g: "Core concepts", id: "evidence", t: "Evidence and verification", ic: "shield", crumb: "Core concepts", body: `
+  <p class="intro">A signal becomes evidence when its context travels with it. Verification decides whether it is reliable enough for the decision it will inform.</p>
+  <h2 id="context">What every piece of evidence carries</h2>
+  <div class="tbl"><table><thead><tr><th>Field</th><th>Example</th></tr></thead><tbody>
+   <tr><th>Source</th><td>Shelf check by a SavoScout</td></tr><tr><th>Place</th><td>Surulere market, Lagos</td></tr><tr><th>Time</th><td>Tuesday, 08:40</td></tr><tr><th>Scope</th><td>9 kiosks near the main bus park</td></tr><tr><th>Method</th><td>In-person observation, geo-tagged photo</td></tr><tr><th>Reliability</th><td>Contributor track record and cross-checks</td></tr>
+  </tbody></table></div>
+  <h2 id="verification">How verification works</h2>
+  <p>Checks are designed to include consistency of location and time, comparison with other sources and contributors, a contributor's track record, and repeat observation where the stakes justify it.</p>
+  ${note("<b>Verification is not absolute truth.</b> It assesses whether evidence is reliable enough for its purpose. When reliable sources disagree, the contradiction is kept and flagged.", "warn")}` },
+
+ { g: "Core concepts", id: "intelligence-states", t: "Intelligence states", ic: "tag", crumb: "Core concepts", body: `
+  <p class="intro">Verisavo labels every finding with one of five states, so you can see where the evidence is strong and where the risk sits.</p>
+  <div class="states">
+   <div class="state"><span class="chip c-fact">Fact</span><p><strong>Sufficiently supported within a defined scope.</strong> Rely on it, within its scope.</p></div>
+   <div class="state"><span class="chip c-inf">Inference</span><p><strong>Reasonably derived from evidence, but not directly observed.</strong> Weigh it, and know what it rests on.</p></div>
+   <div class="state"><span class="chip c-hyp">Hypothesis</span><p><strong>A proposed explanation that needs testing.</strong> Design a test before acting at scale.</p></div>
+   <div class="state"><span class="chip c-ass">Assumption</span><p><strong>Treated as true for this analysis, but not established.</strong> Keep it visible and revisit it.</p></div>
+   <div class="state"><span class="chip c-unk">Unknown</span><p><strong>The evidence cannot responsibly answer the question.</strong> Decide whether it matters enough to investigate.</p></div>
+  </div>
+  <h2 id="scope">Scope is part of the label</h2>
+  <p>A fact is a fact within a boundary. Evidence about one market in one month becomes an inference when it is applied to the next market or the next month.</p>
+  <h2 id="labels-move">Labels move</h2>
+  <p>New evidence can strengthen a hypothesis into an inference, or weaken an inference that no longer holds. <a href="#market-memory">Market Memory</a> records each change and the evidence behind it.</p>` },
+
+ { g: "Core concepts", id: "intelligence-gaps", t: "Intelligence Gaps", ic: "info", crumb: "Core concepts", body: `
+  <p class="intro">An Intelligence Gap is a question the available evidence cannot answer, and that could change your decision.</p>
+  ${prompt("Who supplies the kiosks near the main bus park, and how often do they reorder?", "Example gap")}
+  <h2 id="when">When a gap is raised</h2>
+  <p>Verisavo raises a gap when an answer depends on something that is missing, out of date or contradicted, and when that missing piece would lead to a different action.</p>
+  <h2 id="what-next">What you can do with a gap</h2>
+  <ul><li><strong>Accept it</strong> and decide with the uncertainty visible.</li><li><strong>Narrow it</strong> by adding company data you already hold, such as orders or distributor records.</li><li><strong>Investigate it</strong> with <a href="#savoscouts">SavoScouts</a>, who gather Ground-Level Intelligence on site.</li></ul>` },
+
+ { g: "Core concepts", id: "market-memory", t: "Market Memory", ic: "clock", crumb: "Core concepts", body: `
+  <p class="intro">Market Memory preserves how your understanding of a market develops: what was known, what changed and which evidence changed it. ${DEV}</p>
+  <h2 id="keeps">What it keeps</h2>
+  <ul><li>Findings, with the evidence behind them</li><li>Assumptions made along the way</li><li>Questions left open</li><li>Every change: when an explanation was strengthened, weakened or contradicted</li></ul>
+  <h2 id="changes">Six ways new evidence changes what is known</h2>
+  <div class="tbl"><table><thead><tr><th>Change</th><th>Meaning</th></tr></thead><tbody>
+   <tr><th>Strengthen</th><td>Supports a conclusion from a new source, place or time.</td></tr><tr><th>Weaken</th><td>Makes a conclusion less likely without overturning it.</td></tr><tr><th>Contradict</th><td>Conflicts with what was believed and needs investigating.</td></tr><tr><th>Add context</th><td>Explains where, when or for whom a finding holds.</td></tr><tr><th>Reveal a pattern</th><td>Connects with earlier evidence to show something new.</td></tr><tr><th>Expose an Unknown</th><td>Shows that an unasked question could matter.</td></tr>
+  </tbody></table></div>
+  ${note("Evidence carries its date and scope, so an observation from two years ago is read as history, not as a description of today.")}` },
+
+ { g: "Use Verisavo", id: "asking-questions", t: "Asking good questions", ic: "chat", crumb: "Use Verisavo", body: `
+  <p class="intro">The Verisavo Intelligence Assistant answers best when a question names a decision, a place and a time.</p>
+  <h2 id="anatomy">A strong question</h2>
+  <div class="tbl"><table><thead><tr><th>Part</th><th>Weak</th><th>Strong</th></tr></thead><tbody>
+   <tr><th>Decision</th><td>Tell me about the market</td><td>Should we open a showroom or pilot smaller kits?</td></tr>
+   <tr><th>Place</th><td>In Nigeria</td><td>In Lugbe, Abuja</td></tr>
+   <tr><th>Time</th><td>Recently</td><td>Over the last quarter</td></tr>
+   <tr><th>What you know</th><td>Nothing added</td><td>Enquiries up 48%, conversion down 21%</td></tr>
+  </tbody></table></div>
+  <h2 id="examples">Examples</h2>
+  ${prompt("Which kiosks near the main bus park in Surulere stock our 200ml pack, and how often do they reorder?")}
+  ${prompt("What has changed in shelf prices for cooking oil in Kano since July, and which changes are confirmed?")}
+  ${prompt("Compare demand signals for small solar kits in Lugbe and Gwarinpa. What would change the comparison?")}
+  <h2 id="scope">Set the scope</h2>
+  <p>Use the place selector to focus a question on a city or district, and attach files such as sales exports or reports so the answer can use your own company data.</p>
+  ${note("Your company data stays private, protected and under your control. See <a href=\"#privacy\">Privacy and your data</a>.")}` },
+
+ { g: "Use Verisavo", id: "savoscouts", t: "SavoScouts", ic: "pin", crumb: "Use Verisavo", body: `
+  <p class="intro">SavoScouts are Verisavo's network of contributors in local markets. They gather Ground-Level Intelligence when existing evidence cannot answer a question that matters. ${DEV}</p>
+  <h2 id="lifecycle">How an investigation works</h2>
+  <ol class="steps">
+   <li><b>Intelligence Gap</b><p>A specific question existing evidence cannot answer.</p></li>
+   <li><b>Brief</b><p>A short task: what to observe, where, when and how.</p></li>
+   <li><b>Consent</b><p>Anyone asked a question knows who is asking and can decline.</p></li>
+   <li><b>Capture</b><p>Each observation is geo-tagged, time-stamped and recorded with its method.</p></li>
+   <li><b>Verification</b><p>Checks compare it with other sources, contributors and earlier findings.</p></li>
+   <li><b>Evidence</b><p>The finding joins your picture of the market, with its provenance intact.</p></li>
+  </ol>
+  <h2 id="channels">Capture channels</h2>
+  <p>Depending on the deployment, SavoScouts can report through the mobile app, WhatsApp, SMS, USSD or voice, so the network is not limited to smartphone users.</p>
+  ${note("Targeted Ground-Level Intelligence is part of Verisavo Pro, which is coming soon. Join the waitlist from the Pricing page.")}` },
+
+ { g: "Use Verisavo", id: "market-simulation", t: "Market Simulation", ic: "layers", crumb: "Use Verisavo", body: `
+  <p class="intro">Market Simulation is designed to help you explore possible outcomes under different assumptions before you commit. ${PLAN}</p>
+  <h2 id="what">What it will do</h2>
+  <ul><li>Compare options, such as launching in one district or two</li><li>Show the assumptions behind each scenario</li><li>Test how sensitive an outcome is to a change in price, distribution or demand</li></ul>
+  ${note("<b>Simulation is not prediction.</b> It helps you explore and compare, with every assumption visible. It does not tell you what will happen.", "warn")}` },
+
+ { g: "Trust", id: "privacy", t: "Privacy and your data", ic: "shield", crumb: "Trust", body: `
+  <p class="intro">Your company data stays private, protected and under your control.</p>
+  <h2 id="two-kinds">Two kinds of intelligence</h2>
+  <div class="tbl"><table><thead><tr><th></th><th>Client Intelligence</th><th>Platform Intelligence</th></tr></thead><tbody>
+   <tr><th>What it is</th><td>Information belonging to your organisation, or collected for it</td><td>Evidence in Verisavo's wider environment</td></tr>
+   <tr><th>Who can see it</th><td>Your organisation only</td><td>Users, within permissions and sourcing rules</td></tr>
+   <tr><th>Used to answer others</th><td>Never</td><td>Yes, under governance rules</td></tr>
+  </tbody></table></div>
+  <p>Company data, questions and files you share are used only to provide the service to you. They are never shown to, or shared with, other customers.</p>` },
+
+ { g: "Trust", id: "responsible-use", t: "Responsible use", ic: "info", crumb: "Trust", body: `
+  <p class="intro">How Verisavo is designed to keep decisions grounded and fair to the people in the market.</p>
+  <ul><li><strong>Decisions stay human.</strong> Verisavo supports the decision; the people responsible make it.</li><li><strong>No false certainty.</strong> Findings carry their intelligence state, and unknowns stay visible.</li><li><strong>Markets, not individuals.</strong> Field work prefers observations about markets over information about people, and asks for consent before asking questions.</li><li><strong>Africa is not one market.</strong> Evidence carries its geography, so a finding from one city is not stretched across a continent.</li></ul>` },
+
+ { g: "Reference", id: "glossary", t: "Glossary", ic: "book", crumb: "Reference", body: `
+  <p class="intro">The terms Verisavo uses, in plain language.</p>
+  <dl class="gloss">
+   <dt>Connected intelligence</dt><dd>Understanding built by linking evidence across sources, places and time.</dd>
+   <dt>Signal</dt><dd>The smallest meaningful sign that something is happening in a market.</dd>
+   <dt>Evidence</dt><dd>A signal with its source, place, time, scope and method attached.</dd>
+   <dt>Verification</dt><dd>Checks that evidence is reliable enough for its purpose.</dd>
+   <dt>Intelligence states</dt><dd>Fact, Inference, Hypothesis, Assumption and Unknown.</dd>
+   <dt>Intelligence Gap</dt><dd>A question the evidence cannot answer that could change a decision.</dd>
+   <dt>Ground-Level Intelligence</dt><dd>Verified evidence gathered directly from markets.</dd>
+   <dt>SavoScouts</dt><dd>Verisavo's contributor network that gathers Ground-Level Intelligence.</dd>
+   <dt>Market Memory</dt><dd>The record of how understanding of a market changes over time.</dd>
+   <dt>Intelligence Assistant</dt><dd>The conversational way to ask questions and explore evidence.</dd>
+   <dt>Client Intelligence</dt><dd>Private information that belongs to your organisation.</dd>
+   <dt>Platform Intelligence</dt><dd>Evidence available across Verisavo under its governance rules.</dd>
+  </dl>` },
+
+ { g: "Reference", id: "faq", t: "FAQ", ic: "chat", crumb: "Reference", body: `
+  <p class="intro">Short answers to common questions.</p>
+  <details class="faq"><summary>How is Verisavo different from a general AI assistant?</summary><p>Answers are built from connected market evidence. Each one shows its sources, how reliable they are and what is still unknown, and gaps can be investigated on the ground.</p></details>
+  <details class="faq"><summary>Which markets does Verisavo cover?</summary><p>Verisavo is being built for African markets, starting with selected cities. Coverage grows as evidence and investigations build up.</p></details>
+  <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>Yes. Verisavo Monthly includes web and WhatsApp access.</p></details>
+  <details class="faq"><summary>Is my company data shared with other customers?</summary><p>No. Your company data stays private, protected and under your control.</p></details>
+  <details class="faq"><summary>What happens when Verisavo does not know?</summary><p>It says so and names the Intelligence Gap, so you can decide whether to accept the uncertainty, add your own data or investigate.</p></details>` },
+];
+
+const $ = (s, r = document) => r.querySelector(s);
+const side = $("#side"), doc = $("#doc"), toc = $("#toc"), q = $("#q"), res = $("#results");
+const byId = Object.fromEntries(PAGES.map(p => [p.id, p]));
+const anchorOf = {}; // heading id -> page id
+PAGES.forEach(p => { (p.body.match(/<h2 id="([^"]+)"/g) || []).forEach(m => { anchorOf[p.id + ":" + m.slice(8, -1)] = p.id; }); });
+
+// sidebar
+let g = "", html = "";
+PAGES.forEach(p => { if (p.g !== g) { g = p.g; html += `<h4>${g}</h4>`; } html += `<a href="#${p.id}" data-id="${p.id}">${p.t}</a>`; });
+html += `<h4>Verisavo</h4><a href="${document.querySelector(".tlink").getAttribute("href")}">← Back to the website</a>`;
+side.innerHTML = html;
+
+function render(id, anchor) {
+  const p = byId[id] || PAGES[0];
+  const i = PAGES.indexOf(p), prev = PAGES[i - 1], next = PAGES[i + 1];
+  // prefix heading ids with the page id so links stay unique
+  const body = p.body.replace(/<h2 id="([^"]+)">([^<]+)/g, (m, a, t) => `<h2 id="${p.id}--${a}"><a class="h-anchor" href="#${p.id}">${t}</a>`);
+  doc.innerHTML = `<p class="crumb">${p.crumb}</p><h1>${p.t}</h1>${body}
+    <nav class="pager" aria-label="Previous and next">${prev ? `<a href="#${prev.id}"><small>Previous</small>${prev.t}</a>` : ""}${next ? `<a class="next" href="#${next.id}"><small>Next</small>${next.t}</a>` : ""}</nav>
+    <div class="doc-foot"><div class="helpful"><span>Was this page helpful?</span><button type="button" aria-pressed="false">Yes</button><button type="button" aria-pressed="false">No</button></div><span>Verisavo Docs · early access</span></div>`;
+  document.title = p.t + " · Verisavo Docs";
+  side.querySelectorAll("a").forEach(a => a.toggleAttribute("aria-current", a.dataset.id === p.id) || a.dataset.id === p.id && a.setAttribute("aria-current", "page"));
+  side.querySelectorAll("a").forEach(a => { if (a.dataset.id === p.id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  const hs = [...doc.querySelectorAll("h2")];
+  toc.innerHTML = hs.length ? `<h5>On this page</h5>` + hs.map(h => `<a href="#${p.id}" data-h="${h.id}">${h.textContent}</a>`).join("") : "";
+  toc.querySelectorAll("a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); document.getElementById(a.dataset.h).scrollIntoView({ behavior: "smooth" }); }));
+  doc.querySelectorAll(".h-anchor").forEach(a => a.addEventListener("click", e => { e.preventDefault(); a.parentElement.scrollIntoView({ behavior: "smooth" }); }));
+  doc.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => {
+    const t = b.closest(".prompt").querySelector(".prompt-b").textContent;
+    const done = () => { b.textContent = "Copied"; setTimeout(() => b.textContent = "Copy", 1400); };
+    try { navigator.clipboard.writeText(t).then(done, () => { const r = document.createRange(); r.selectNodeContents(b.closest(".prompt").querySelector(".prompt-b")); getSelection().removeAllRanges(); getSelection().addRange(r); }); } catch (e) {}
+  }));
+  doc.querySelectorAll(".helpful button").forEach(b => b.addEventListener("click", () => { doc.querySelectorAll(".helpful button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); b.parentElement.firstElementChild.textContent = "Thanks for the feedback"; }));
+  if (anchor && document.getElementById(p.id + "--" + anchor)) document.getElementById(p.id + "--" + anchor).scrollIntoView();
+  else scrollTo({ top: 0 });
+  spy(hs);
+  document.body.classList.remove("nav-open"); $("#menu-btn").setAttribute("aria-expanded", "false");
+}
+let io;
+function spy(hs) {
+  if (io) io.disconnect();
+  io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) toc.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.dataset.h === e.target.id)); }), { rootMargin: "-20% 0px -70% 0px" });
+  hs.forEach(h => io.observe(h));
+}
+const route = () => render(location.hash.slice(1) || "introduction");
+addEventListener("hashchange", route);
+route();
+
+// search
+const idx = PAGES.map(p => { const tmp = document.createElement("div"); tmp.innerHTML = p.body; return { p, text: tmp.textContent.replace(/\s+/g, " "), heads: [...tmp.querySelectorAll("h2")].map(h => [h.id, h.textContent]) }; });
+let sel = 0, hits = [];
+function search() {
+  const s = q.value.trim().toLowerCase();
+  if (!s) { res.hidden = true; return; }
+  hits = [];
+  idx.forEach(({ p, text, heads }) => {
+    if (p.t.toLowerCase().includes(s)) hits.push({ id: p.id, t: p.t, sub: p.g, w: 3 });
+    heads.forEach(([hid, ht]) => { if (ht.toLowerCase().includes(s)) hits.push({ id: p.id, a: hid, t: ht, sub: p.t, w: 2 }); });
+    const k = text.toLowerCase().indexOf(s);
+    if (k > -1 && !hits.some(h => h.id === p.id)) hits.push({ id: p.id, t: p.t, sub: "…" + text.slice(Math.max(0, k - 30), k + 60) + "…", w: 1 });
+  });
+  hits.sort((a, b) => b.w - a.w); hits = hits.slice(0, 8); sel = 0;
+  res.innerHTML = hits.length ? hits.map((h, i) => `<a href="#${h.id}" data-i="${i}" class="${i === 0 ? "on" : ""}"><span>${h.t}</span><small>${h.sub}</small></a>`).join("") : `<p>No results for “${q.value.replace(/</g, "&lt;")}”.</p>`;
+  res.hidden = false;
+  res.querySelectorAll("a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); go(+a.dataset.i); }));
+}
+function go(i) { const h = hits[i]; if (!h) return; res.hidden = true; q.value = ""; q.blur(); if (location.hash.slice(1) === h.id) render(h.id, h.a); else { location.hash = h.id; if (h.a) setTimeout(() => render(h.id, h.a), 0); } }
+q.addEventListener("input", search);
+q.addEventListener("keydown", e => {
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); sel = (sel + (e.key === "ArrowDown" ? 1 : -1) + hits.length) % Math.max(1, hits.length); res.querySelectorAll("a").forEach((a, i) => a.classList.toggle("on", i === sel)); }
+  if (e.key === "Enter") { e.preventDefault(); go(sel); }
+  if (e.key === "Escape") { res.hidden = true; q.blur(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "/" && document.activeElement !== q) { e.preventDefault(); q.focus(); } });
+document.addEventListener("click", e => { if (!e.target.closest(".search")) res.hidden = true; });
+
+// theme and mobile nav
+$("#theme").addEventListener("click", () => {
+  const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.dataset.theme = dark ? "light" : "dark";
+});
+$("#menu-btn").addEventListener("click", () => { const o = document.body.classList.toggle("nav-open"); $("#menu-btn").setAttribute("aria-expanded", String(o)); });
+})();
+</script>
+
+</body>
+</html>

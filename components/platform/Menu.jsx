@@ -20,6 +20,8 @@ export default function Menu() {
         <ul className="mnav-small">
           {" "}
           {" "}
+          <li style={{ "--i": "5" }}><a href="/docs.html">{"Docs"}</a></li>
+          {" "}
           <li style={{ "--i": "6" }}><a href="/#pricing">{"Pricing"}</a></li>
           {" "}
           <li style={{ "--i": "7" }}><a href="/#careers">{"Careers"}</a></li>
