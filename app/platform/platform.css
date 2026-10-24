@@ -1016,6 +1016,34 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .va-main.va-dark .va-bed { opacity: .55; }
 .sec.sample { padding-bottom: clamp(48px, 6vw, 80px) !important; }
 .sample .src-strip { margin-bottom: 0 !important; }
+
+/* Comparison table, redesigned: highlighted Verisavo column, numbered questions, marks instead of bullets */
+.cmp { padding: 0 !important; overflow: hidden; border-radius: 18px !important; }
+.cmp table { border-collapse: separate; border-spacing: 0; }
+.cmp th, .cmp td { padding: 22px 28px !important; border-bottom: 1px solid #E8EEF7 !important; vertical-align: top; }
+.cmp thead th { padding-block: 22px 18px !important; font: 600 .875rem/1.2 var(--sans) !important; color: #6A7285 !important; }
+.cmp thead th.cmp-v, .cmp td.cmp-v { background: #F2F6FC; }
+.cmp thead th.cmp-v { border-bottom-color: #DCE6F4 !important; }
+.cmp .cmp-badge { display: inline-flex; align-items: center; gap: 8px; font: 700 1.05rem/1 var(--sans); letter-spacing: -.03em; color: #1F273F; }
+.cmp .cmp-badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #4D74C3; box-shadow: 0 0 0 4px rgba(77,116,195,.15); }
+.cmp tbody th { width: 30% !important; font: 600 1.35rem/1.15 var(--display, var(--sans)) !important; color: #1F273F !important; }
+.cmp .cmp-n { display: block; margin-bottom: 6px; font: 600 .8125rem/1 var(--sans); color: #80AADC; }
+.cmp td { font-size: .975rem !important; line-height: 1.55 !important; }
+.cmp td:not(.cmp-v) { color: #7A8196 !important; width: 30%; }
+.cmp td.cmp-v { color: #1F273F !important; font-weight: 500; }
+.cmp .cmp-c { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; align-items: start; }
+.cmp .cmp-i { width: 18px; height: 18px; margin-top: 2px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cmp td:not(.cmp-v) .cmp-i { stroke: #B4BDCD; }
+.cmp td.cmp-v .cmp-i { stroke: #fff; background: #3A5292; border-radius: 50%; padding: 2px; }
+.cmp td.cmp-v::before, .cmp td.cmp-v li::before { display: none !important; content: none !important; }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0 !important; }
+@media (max-width: 760px) {
+  .cmp thead { display: none; }
+  .cmp tr { display: grid; border-bottom: 1px solid #E8EEF7; }
+  .cmp tbody th, .cmp td { width: auto !important; border: 0 !important; padding: 14px 20px 0 !important; }
+  .cmp td.cmp-v { margin: 10px 12px 16px; padding: 14px 16px !important; border-radius: 12px; }
+  .cmp td:not(.cmp-v)::before { content: "General-purpose AI"; display: block; margin-bottom: 4px; font: 600 .75rem/1 var(--sans); color: #9AA3B5; }
+}
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
