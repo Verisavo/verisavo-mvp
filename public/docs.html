@@ -214,6 +214,7 @@ dl.gloss dd { color: var(--body); }
 .toc h5 { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 /* <<< type */
 .tbl tr.hl td, .tbl tr.hl th { background: var(--accent-soft); font-weight: 600; }
+.st-term { font: 600 1.05rem/1.3 var(--sans); color: var(--ink); }
 </style>
 
 <header class="top">
@@ -319,7 +320,7 @@ const GRAPHFIG = `<figure class="figure"><svg viewBox="0 0 960 300" role="img" a
   <rect x="640" y="226" width="303" height="60" rx="12" class="flow-box flow-dash"/>
   <text x="658" y="250" class="flow-t">Next: corroborate</text><text x="658" y="268" class="flow-s">Retailer checks, coverage before and after</text>
   <path d="M791 204 V221" class="flow-l flow-d" marker-end="url(#fg)"/>
-</svg><figcaption>Illustrative. Each source shows a fragment. Connected, they point to one explanation, labelled as a hypothesis until more evidence supports it.</figcaption></figure>`;
+</svg><figcaption>Illustrative. Each source shows a fragment. Connected, they point to one explanation, treated as a hypothesis until more evidence supports it.</figcaption></figure>`;
 
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
@@ -464,7 +465,7 @@ const PAGES = [
   <div class="tbl"><table><thead><tr><th>Part</th><th>What it is</th></tr></thead><tbody>
    <tr><th>Entities</th><td>The things in the market: a brand, a product, a retailer, a distributor, a price, a location, an event.</td></tr>
    <tr><th>Relationships</th><td>How they connect: a retailer stocks a product, a distributor supplies a store, a price change comes before a fall in sales.</td></tr>
-   <tr><th><a href="#evidence">Evidence</a></th><td>What supports each entity and relationship, and its <a href="#intelligence-states">intelligence state</a>.</td></tr>
+   <tr><th><a href="#evidence">Evidence</a></th><td>What supports each entity and relationship, and how well that evidence supports it (see <a href="#intelligence-states">intelligence states</a>).</td></tr>
    <tr><th>Time</th><td>When each relationship held. A retailer that stocked a product in March may not stock it in May.</td></tr>
   </tbody></table></div>
   <h2 id="not-proof">A connection is not a cause</h2>
@@ -486,18 +487,19 @@ const PAGES = [
   <p>Graph technology itself is not new. What Verisavo is building is its use for African markets: linking fragmented sources with first-hand observation, keeping every link tied to evidence and time, making uncertainty explicit, and pointing SavoScouts at the gaps that matter to a decision.</p>` },
 
  { g: "Core concepts", id: "intelligence-states", t: "Intelligence states", ic: "tag", crumb: "Core concepts", body: `
-  <p class="intro">Verisavo's intelligence framework distinguishes five states of knowledge, so it can separate what the evidence supports from what is inferred, proposed or still unknown. They show where the evidence is strong and where the risk sits.</p>
+  <p class="intro">Behind every answer, Verisavo works with five states of knowledge. They are how the system weighs evidence: separating what is supported from what is inferred, proposed, assumed or still unknown.</p>
+  <p>They are part of how Verisavo reasons, not tags stamped on every sentence. What you see is the result: an answer that makes clear what the evidence supports, what it rests on and where the uncertainty is, in plain language.</p>
   <div class="states">
-   <div class="state"><span class="chip c-fact">Fact</span><p><strong>Sufficiently supported within a defined scope.</strong> Rely on it, within its scope.</p></div>
-   <div class="state"><span class="chip c-inf">Inference</span><p><strong>Reasonably derived from evidence, but not directly observed.</strong> Weigh it, and know what it rests on.</p></div>
-   <div class="state"><span class="chip c-hyp">Hypothesis</span><p><strong>A proposed explanation that needs testing.</strong> Design a test before acting at scale.</p></div>
-   <div class="state"><span class="chip c-ass">Assumption</span><p><strong>Treated as true for this analysis, but not established.</strong> Keep it visible and revisit it.</p></div>
-   <div class="state"><span class="chip c-unk">Unknown</span><p><strong>The evidence cannot responsibly answer the question.</strong> Decide whether it matters enough to investigate.</p></div>
+   <div class="state"><b class="st-term">Fact</b><p><strong>Sufficiently supported within a defined scope.</strong> Rely on it, within its scope.</p></div>
+   <div class="state"><b class="st-term">Inference</b><p><strong>Reasonably derived from evidence, but not directly observed.</strong> Weigh it, and know what it rests on.</p></div>
+   <div class="state"><b class="st-term">Hypothesis</b><p><strong>A proposed explanation that needs testing.</strong> Design a test before acting at scale.</p></div>
+   <div class="state"><b class="st-term">Assumption</b><p><strong>Treated as true for this analysis, but not established.</strong> Keep it visible and revisit it.</p></div>
+   <div class="state"><b class="st-term">Unknown</b><p><strong>The evidence cannot responsibly answer the question.</strong> Decide whether it matters enough to investigate.</p></div>
   </div>
-  <h2 id="scope">Scope is part of the label</h2>
+  <h2 id="scope">Scope matters</h2>
   <p>A fact is a fact within a boundary. Evidence about one market in one month becomes an inference when it is applied to the next market or the next month.</p>
-  <h2 id="labels-move">Labels move</h2>
-  <p>New evidence can strengthen a hypothesis into an inference, or weaken an inference that no longer holds. <a href="#market-memory">Market Memory</a> records each change and the evidence behind it.</p>` },
+  <h2 id="labels-move">Understanding moves</h2>
+  <p>New evidence can turn a hypothesis into a well-supported inference, or weaken an inference that no longer holds. <a href="#market-memory">Market Memory</a> records each change and the evidence behind it.</p>` },
 
  { g: "Core concepts", id: "intelligence-gaps", t: "Intelligence Gaps", ic: "info", crumb: "Core concepts", body: `
   <p class="intro">An Intelligence Gap is a question the available evidence cannot answer, and that could change your decision.</p>
@@ -586,7 +588,7 @@ const PAGES = [
 
  { g: "Trust", id: "responsible-use", t: "Responsible use", ic: "info", crumb: "Trust", body: `
   <p class="intro">How Verisavo is designed to keep decisions grounded and fair to the people in the market.</p>
-  <ul><li><strong>Decisions stay human.</strong> Verisavo supports the decision; the people responsible make it.</li><li><strong>No false certainty.</strong> Findings carry their intelligence state, and unknowns stay visible.</li><li><strong>Markets, not individuals.</strong> Field work prefers observations about markets over information about people, and asks for consent before asking questions.</li><li><strong>Africa is not one market.</strong> Evidence carries its geography, so a finding from one city is not stretched across a continent.</li></ul>` },
+  <ul><li><strong>Decisions stay human.</strong> Verisavo supports the decision; the people responsible make it.</li><li><strong>No false certainty.</strong> Findings make clear how well the evidence supports them, and unknowns stay visible.</li><li><strong>Markets, not individuals.</strong> Field work prefers observations about markets over information about people, and asks for consent before asking questions.</li><li><strong>Africa is not one market.</strong> Evidence carries its geography, so a finding from one city is not stretched across a continent.</li></ul>` },
 
  { g: "Reference", id: "glossary", t: "Glossary", ic: "book", crumb: "Reference", body: `
   <p class="intro">The terms Verisavo uses, in plain language.</p>
@@ -595,7 +597,7 @@ const PAGES = [
    <dt>Signal</dt><dd>The smallest meaningful sign that something is happening in a market.</dd>
    <dt>Evidence</dt><dd>A signal with its source, place, time, scope and method attached.</dd>
    <dt>Verification</dt><dd>Checks that evidence is reliable enough for its purpose.</dd>
-   <dt>Intelligence states</dt><dd>Fact, Inference, Hypothesis, Assumption and Unknown.</dd>
+   <dt>Intelligence states</dt><dd>The framework Verisavo uses to weigh evidence: Fact, Inference, Hypothesis, Assumption and Unknown.</dd>
    <dt>Intelligence Gap</dt><dd>A question the evidence cannot answer that could change a decision.</dd>
    <dt>Ground-Level Intelligence</dt><dd>Verified evidence gathered directly from markets.</dd>
    <dt>SavoScouts</dt><dd>Verisavo's contributor network that gathers Ground-Level Intelligence.</dd>
