@@ -1299,6 +1299,22 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .ax-nn { fill: #fff; stroke: #A8C6E8; } .ax-nt { font: 500 12.5px var(--sans); fill: #1F273F; }
 .ax-wide { grid-column: 1 / -1; justify-self: center; width: calc(50% - 10px); }
 @media (max-width: 860px) { .ax-wide { width: 100%; } }
+
+/* product hero: indigo */
+.hero { background: #1F273F !important; border-bottom-color: #1F273F !important; }
+.hero h1, .hero h1 .l1 { color: #fff !important; }
+.hero h1 .tone { color: #80AADC !important; }
+.hero .hero-title .sub, .hero p { color: #C9D3E4 !important; }
+.hero #ask-cta.btn { background: #fff !important; color: #1F273F !important; border-color: #fff !important; }
+.hero #ask-cta.btn:hover { background: #E3EBF8 !important; }
+
+/* product hero: evidence text background */
+.hero { overflow: hidden; }
+.hero .hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hero #net { display: none !important; }
+.hero .hero-grid { position: relative; z-index: 2; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(31,39,63,.92) 0%, rgba(31,39,63,.75) 38%, rgba(31,39,63,.15) 70%, rgba(31,39,63,0) 100%); }
+@media (max-width: 760px) { .hero::after { background: rgba(31,39,63,.78); } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }

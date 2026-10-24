@@ -16,6 +16,7 @@ export default function PlatformClient() {
       (await import("@/lib/platform/vawin")).default();
       (await import("@/lib/platform/soon")).default();
       (await import("@/lib/platform/mnavbg")).default();
+      (await import("@/lib/platform/herobg")).default();
       (await import("@/lib/sound")).default();
     })();
   }, []);
