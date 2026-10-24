@@ -14,7 +14,7 @@ export default function ResearchPage() {
           <h1 id="research-h">{"See connected evidence "}<span className="acc">{"at work"}</span></h1>
           {" "}
           <p className="lead">
-            {"Case studies, articles and research on how teams use connected evidence to understand African markets and decide what to do next."}
+            {"Research, articles and case studies on how teams use connected evidence to understand African markets and decide what to do next."}
           </p>
           {" "}
         </header>

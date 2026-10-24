@@ -658,3 +658,9 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
   .ms-story .ms-cap { top: 14px; bottom: auto; right: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .ms-l { transition: opacity .2s; transform: none !important; filter: none; } }
+/* Insights tabs: block style, matching the product page buttons */
+#pg-research .rx-tabs { border-radius: 4px; padding: 4px; gap: 4px; box-shadow: 0 0 0 1px var(--b200); background: rgba(255,255,255,.86); }
+#pg-research .rx-tab { border-radius: 3px; min-height: 42px; padding: 0 20px; font: 500 .875rem/1 var(--sans); color: var(--b800); }
+#pg-research .rx-tab:hover { background: var(--b100); color: var(--indigo); }
+#pg-research .rx-tab[aria-selected="true"] { background: var(--indigo); color: #fff; }
+#pg-research .rx-tab .rx-n { border-radius: 2px; }
