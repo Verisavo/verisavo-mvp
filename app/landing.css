@@ -663,3 +663,8 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 #pg-research .rx-tab:hover { background: var(--b100); color: var(--indigo); }
 #pg-research .rx-tab[aria-selected="true"] { background: var(--indigo); color: #fff; }
 #pg-research .rx-tab .rx-n { border-radius: 2px; }
+/* Insights tabs: same size and style as the site buttons, and they scroll with the page */
+#pg-research .rx-tabs { position: static; top: auto; z-index: auto; gap: 8px; padding: 0; align-items: center; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+#pg-research .rx-tab { height: 46px; min-height: 0; align-self: center; padding: 0 20px; border-radius: 6px; font: 500 .95rem/1 var(--sans); letter-spacing: -.01em; background: #fff; color: var(--indigo); box-shadow: inset 0 0 0 1px var(--b300); }
+#pg-research .rx-tab:hover { background: var(--b100); color: var(--indigo); }
+#pg-research .rx-tab[aria-selected="true"] { background: var(--indigo); color: #fff; box-shadow: none; }
