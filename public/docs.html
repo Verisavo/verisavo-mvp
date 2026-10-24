@@ -363,6 +363,7 @@ const GRAPHFIG = `<figure class="figure gfig"><svg class="gf-d" viewBox="0 0 720
 const IGFIG = `<figure class="figure"><svg viewBox="0 0 760 370" role="img" aria-label="Example Intelligence Graph: a sales decline connected to competitor pricing, retailer stockouts, customer brand switching, distribution coverage gaps, locations in Lagos and Ogun, and SavoScout field checks"><path d="M130.0 72.0 L360.0 186.0" class="ig-l"/><path d="M380.0 56.0 L360.0 186.0" class="ig-l"/><path d="M630.0 72.0 L360.0 186.0" class="ig-l"/><path d="M130.0 282.0 L360.0 186.0" class="ig-l"/><path d="M380.0 314.0 L360.0 186.0" class="ig-l"/><path d="M630.0 282.0 L360.0 186.0" class="ig-l"/><path d="M630.0 104 L630.0 250" class="ig-l ig-d"/><rect x="40" y="40" width="180" height="64" rx="12" class="flow-box"/><text x="130.0" y="68" text-anchor="middle" class="flow-t">Competitor</text><text x="130.0" y="87" text-anchor="middle" class="flow-s">Price reduction</text><rect x="290" y="24" width="180" height="64" rx="12" class="flow-box"/><text x="380.0" y="52" text-anchor="middle" class="flow-t">Retailers</text><text x="380.0" y="71" text-anchor="middle" class="flow-s">Stockouts</text><rect x="540" y="40" width="180" height="64" rx="12" class="flow-box"/><text x="630.0" y="68" text-anchor="middle" class="flow-t">Customers</text><text x="630.0" y="87" text-anchor="middle" class="flow-s">Brand switching</text><rect x="40" y="250" width="180" height="64" rx="12" class="flow-box"/><text x="130.0" y="278" text-anchor="middle" class="flow-t">Distribution</text><text x="130.0" y="297" text-anchor="middle" class="flow-s">Coverage gaps</text><rect x="290" y="282" width="180" height="64" rx="12" class="flow-box"/><text x="380.0" y="310" text-anchor="middle" class="flow-t">Locations</text><text x="380.0" y="329" text-anchor="middle" class="flow-s">Lagos / Ogun</text><rect x="540" y="250" width="180" height="64" rx="12" class="flow-box"/><text x="630.0" y="278" text-anchor="middle" class="flow-t">Field checks</text><text x="630.0" y="297" text-anchor="middle" class="flow-s">SavoScout evidence</text><rect x="270" y="150" width="180" height="72" rx="12" class="flow-hi"/><text x="360.0" y="182" text-anchor="middle" class="flow-th">Sales decline</text><text x="360.0" y="202" text-anchor="middle" class="flow-sh">Observed signal</text></svg><figcaption>Illustrative graph: relationships are possible investigation paths, not automatically verified causal links.</figcaption></figure>`;
 
 const EXT = 1;
+const SIGFIG = `<figure class="figure"><svg viewBox="0 0 720 422" role="img" aria-label="One signal, an empty shelf, has five possible explanations, each with something else that would be true if it were the cause"><text x="12" y="20" class="gf-k">SIGNAL</text><text x="290" y="20" class="gf-k">POSSIBLE EXPLANATION · WHAT ELSE WOULD BE TRUE</text><rect x="12" y="175" width="210" height="100" rx="12" class="flow-hi"/><text x="32" y="207" class="gf-kh">ONE OBSERVATION</text><text x="32" y="235" class="gf-th">Empty shelf</text><text x="32" y="259" class="gf-sh">One kiosk, Kurmi Market</text><path d="M222 225 C256 225 252 73 286 73" class="flow-l" fill="none" marker-end="url(#sgm)"/><rect x="290" y="40" width="418" height="66" rx="12" class="flow-box"/><text x="310" y="67" class="gf-t" style="font-size:17px">Rising demand</text><text x="310" y="90" class="gf-s" style="font-size:14px">Nearby kiosks also sell out, and reorders go up.</text><path d="M222 225 C256 225 252 149 286 149" class="flow-l" fill="none" marker-end="url(#sgm)"/><rect x="290" y="116" width="418" height="66" rx="12" class="flow-box"/><text x="310" y="143" class="gf-t" style="font-size:17px">A supply problem</text><text x="310" y="166" class="gf-s" style="font-size:14px">Deliveries fall and several outlets run short at once.</text><path d="M222 225 C256 225 252 225 286 225" class="flow-l" fill="none" marker-end="url(#sgm)"/><rect x="290" y="192" width="418" height="66" rx="12" class="flow-box"/><text x="310" y="219" class="gf-t" style="font-size:17px">A retailer short of cash</text><text x="310" y="242" class="gf-s" style="font-size:14px">Only this kiosk is empty. Others nearby are stocked.</text><path d="M222 225 C256 225 252 301 286 301" class="flow-l" fill="none" marker-end="url(#sgm)"/><rect x="290" y="268" width="418" height="66" rx="12" class="flow-box"/><text x="310" y="295" class="gf-t" style="font-size:17px">A changed delivery route</text><text x="310" y="318" class="gf-s" style="font-size:14px">Gaps follow one route, and deliveries arrive late.</text><path d="M222 225 C256 225 252 377 286 377" class="flow-l" fill="none" marker-end="url(#sgm)"/><rect x="290" y="344" width="418" height="66" rx="12" class="flow-box"/><text x="310" y="371" class="gf-t" style="font-size:17px">A switch to a competitor</text><text x="310" y="394" class="gf-s" style="font-size:14px">A rival product takes the shelf space.</text><defs><marker id="sgm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" class="flow-ah"/></marker></defs></svg><figcaption>Illustrative. The same observation fits several explanations. Checking what else would be true under each one is how Verisavo narrows them down.</figcaption></figure>`;
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
   <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects fragmented market evidence so your team can see what is happening, why, what is still unknown and what it could mean for the decision ahead.</p>
@@ -450,6 +451,7 @@ const PAGES = [
   <ul><li>A price rises 8% across three retailers</li><li>A product is missing from shelves on one street</li><li>A competitor appears at two market stalls</li><li>A retailer switches supplier</li><li>Deliveries on a route arrive a day late</li><li>Footfall changes on market days</li></ul>
   <h2 id="one-signal">Why one signal is not enough</h2>
   <p>An empty shelf could mean rising demand, a supply problem, a retailer short of cash, a changed delivery route or a shop that switched to a competitor. Each explanation calls for a different response. Verisavo treats the signal as a question to check, then looks for what else would be true under each explanation.</p>
+  ${SIGFIG}
   ${note("Record the context with every observation: exactly where, when, how many places were checked and by whom. Three empty shelves out of three is a different finding from three out of thirty.")}` },
 
  { g: "Core concepts", id: "evidence", t: "Evidence", ic: "file", crumb: "Core concepts", body: `
@@ -601,23 +603,28 @@ const PAGES = [
   </tbody></table></div>
   ${note("Evidence carries its date and scope, so an observation from two years ago is read as history, not as a description of today.")}` },
 
- { g: "Use Verisavo", id: "asking-questions", t: "Asking good questions", ic: "chat", crumb: "Use Verisavo", body: `
-  <p class="intro">The Verisavo Intelligence Assistant answers best when a question names a decision, a place and a time.</p>
-  <h2 id="anatomy">A strong question</h2>
-  <div class="tbl"><table><thead><tr><th>Part</th><th>Weak</th><th>Strong</th></tr></thead><tbody>
-   <tr><th>Decision</th><td>Tell me about the market</td><td>Should we open a showroom or pilot smaller kits?</td></tr>
-   <tr><th>Place</th><td>In Nigeria</td><td>In Lugbe, Abuja</td></tr>
-   <tr><th>Time</th><td>Recently</td><td>Over the last quarter</td></tr>
-   <tr><th>What you know</th><td>Nothing added</td><td>Enquiries up 48%, conversion down 21%</td></tr>
+ { g: "Use Verisavo", id: "asking-questions", t: "Start With a Market Question", ic: "chat", crumb: "Use Verisavo", body: `
+  <p class="intro">Ask Verisavo about a market challenge, an emerging change or a decision you're considering. The more relevant context you provide, the more focused the intelligence can be.</p>
+  <h2 id="anatomy">Make Your Question More Specific</h2>
+  <p>You don't need a perfect question. Start with what you want to understand, then add details such as location, timeframe and what you already know.</p>
+  <div class="tbl"><table><thead><tr><th>Context</th><th>Broad</th><th>More Specific</th></tr></thead><tbody>
+   <tr><th>Decision</th><td>Tell me about the market.</td><td>Should we open a showroom or introduce smaller solar kits?</td></tr>
+   <tr><th>Location</th><td>In Nigeria.</td><td>In Lugbe, Abuja.</td></tr>
+   <tr><th>Timeframe</th><td>Recently.</td><td>Over the last three months.</td></tr>
+   <tr><th>Company Knowledge</th><td>No information provided.</td><td>Enquiries increased 48%, but conversions fell 21%.</td></tr>
   </tbody></table></div>
-  <h2 id="examples">Examples</h2>
-  ${prompt("Which kiosks near the main bus park in Surulere stock our 200ml pack, and how often do they reorder?")}
-  ${prompt("What has changed in shelf prices for cooking oil in Kano since July, and which changes are confirmed?")}
-  ${prompt("Compare demand signals for small solar kits in Lugbe and Gwarinpa. What would change the comparison?")}
-  <h2 id="scope">Set the scope</h2>
-  <p>Use the place selector to focus a question on a city or district, and attach files such as sales exports or reports so the answer can use your own company data.</p>
-  ${note("Your company data stays private, protected and under your control. See <a href=\"#privacy\">Privacy and your data</a>.")}` },
-
+  <p>Verisavo uses this context to connect relevant information, examine available evidence and identify what may still need to be verified.</p>
+  <h2 id="examples">Questions You Can Ask</h2>
+  ${prompt("Which retailers near the main bus park in Surulere stock our 200ml pack, and how frequently do they reorder?", "Product Availability")}
+  ${prompt("How have cooking oil prices changed in Kano since July, and which changes are supported by verified evidence?", "Pricing &amp; Competition")}
+  ${prompt("Compare demand for small solar kits in Lugbe and Gwarinpa. Which location shows stronger potential, and what information is still missing?", "Market Expansion")}
+  ${prompt("Why are customer enquiries increasing while completed sales are declining in Lugbe?", "Customer Intelligence")}
+  <h2 id="scope">Add Market Context</h2>
+  <p>Select a city, district or market to focus your question on a specific location. You can also attach relevant company data, such as sales reports, inventory records or market research, to help Verisavo understand your business and its objectives.</p>
+  <p>When evidence is incomplete, Verisavo identifies what remains unknown and may recommend additional checks rather than presenting assumptions as facts.</p>
+  <h2 id="your-data-private">Your Data Stays Private</h2>
+  <p>Your company data remains private, protected and under your control. Verisavo uses it to support your market questions without making it publicly accessible.</p>
+  ${note("See <a href=\"#privacy\">Privacy and Your Data</a> for more information.")}` },
  { g: "Use Verisavo", id: "savoscouts", t: "SavoScouts", ic: "pin", crumb: "Use Verisavo", body: `
   <p class="intro">SavoScouts are Verisavo's network of contributors in local markets. They gather Ground-Level Intelligence when existing evidence cannot answer a question that matters. ${DEV}</p>
   <h2 id="lifecycle">How an investigation works</h2>
