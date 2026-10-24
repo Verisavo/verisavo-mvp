@@ -27,7 +27,7 @@ export default function ResearchPage() {
             <button type="button" className="rs-chip" aria-pressed="false" data-f="Market Operations">{"Market Operations"}</button>
             <button type="button" className="rs-chip" aria-pressed="false" data-f="Technology">{"Technology"}</button>
             <button type="button" className="rs-chip" aria-pressed="false" data-f="Finance">{"Finance"}</button>
-            <button type="button" className="rs-chip" aria-pressed="false" data-f="Consumer Behavior">{"Consumer Behavior"}</button>
+            <button type="button" className="rs-chip" aria-pressed="false" data-f="Consumer Behaviour">{"Consumer Behaviour"}</button>
             <button type="button" className="rs-chip" aria-pressed="false" data-f="Energy & Infrastructure">{"Energy & Infrastructure"}</button>
             <button type="button" className="rs-chip" aria-pressed="false" data-f="Economy">{"Economy"}</button>
           </div>
@@ -254,7 +254,7 @@ export default function ResearchPage() {
               {" "}
             </article>
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's Urban Shift, open study details" data-title="Africa's Urban Shift" data-cat="Consumer Behavior" style={{ "--i": "4" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's Urban Shift, open study details" data-title="Africa's Urban Shift" data-cat="Consumer Behaviour" style={{ "--i": "4" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -338,7 +338,7 @@ export default function ResearchPage() {
                 </svg>
               </div>
               {" "}
-              <p className="rs-meta">{"Consumer Behavior · 9 min read"}</p>
+              <p className="rs-meta">{"Consumer Behaviour · 9 min read"}</p>
               {" "}
               <h3>{"Africa's Urban Shift"}</h3>
               {" "}

@@ -262,7 +262,7 @@ export default function Main() {
           {" "}
           <div className="trust-head">
             {" "}
-            <h2 id="trust-title">{"Built on Trust"}</h2>
+            <h2 id="trust-title">{"Built on trust"}</h2>
             {" "}
             <p className="lead">{"Know what the evidence supports, where it falls short, and what remains in your control."}</p>
             <a className="doclink" href="/docs.html#privacy">Read about privacy and responsible use <span aria-hidden="true">→</span></a>
@@ -278,7 +278,7 @@ export default function Main() {
                     <path d="M8 10V7.5a3 3 0 0 1 6 0V10" stroke="#4362B2" strokeWidth="1.7" fill="none"></path>
                   </svg>
                 </span>
-                <h3>{"Private by Default"}</h3>
+                <h3>{"Private by default"}</h3>
                 <p>{"Your company data stays private, secure, and fully under your control."}</p>
               </article>
               <article className="tc">
@@ -287,7 +287,7 @@ export default function Main() {
                     <path d="M5 6h12M5 11h12M5 16h7" stroke="#4362B2" strokeWidth="1.7" strokeLinecap="round" fill="none"></path>
                   </svg>
                 </span>
-                <h3>{"Traceable Evidence"}</h3>
+                <h3>{"Traceable evidence"}</h3>
                 <p>{"Every insight is linked to its source, location, timing, and confidence level."}</p>
               </article>
               <article className="tc">
@@ -297,7 +297,7 @@ export default function Main() {
                     <path d="M9 9a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6 1v.6M11 15v.1" stroke="#4362B2" strokeWidth="1.6" strokeLinecap="round" fill="none"></path>
                   </svg>
                 </span>
-                <h3>{"Unknowns Made Clear"}</h3>
+                <h3>{"Unknowns made clear"}</h3>
                 <p>{"When evidence is incomplete, we clearly show what is unknown and what to explore next."}</p>
               </article>
               <article className="tc">
@@ -307,7 +307,7 @@ export default function Main() {
                     <path d="M4.5 18c.9-3.2 3.4-4.8 6.5-4.8s5.6 1.6 6.5 4.8" stroke="#4362B2" strokeWidth="1.7" strokeLinecap="round" fill="none"></path>
                   </svg>
                 </span>
-                <h3>{"Human Decisions"}</h3>
+                <h3>{"Human decisions"}</h3>
                 <p>{"Verisavo provides clarity and context. The final decision always remains with your team."}</p>
               </article>
             </div>

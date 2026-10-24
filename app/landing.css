@@ -671,3 +671,10 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 
 /* network caption: centred under the diagram */
 .ln .v3-net-note { text-align: center; margin-left: auto; margin-right: auto; }
+
+/* tidy pass */
+@media (max-width: 600px) {
+  .ln .v3-hero h1 { text-wrap: balance; }
+  .ln .v3-hero h1 br { display: none; }
+  .ln .v3-net-note { margin-top: 24px; font-size: .9rem; }
+}

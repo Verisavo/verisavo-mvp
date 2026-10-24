@@ -872,3 +872,10 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
   .ans-list li { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .ans-q, .ans-gap { padding-inline: 18px; } .ans-list { padding-inline: 18px; }
 }
+
+/* tidy pass */
+.btn { text-decoration: none; }
+.cta .btn-blue { background: var(--white); color: var(--indigo); }
+.cta .btn-blue:hover { background: var(--b100); }
+.sec.sample { padding-top: clamp(48px, 6vw, 72px); }
+@media (max-width: 600px) { .src-k { flex-basis: 100%; text-align: center; margin: 0 0 4px; } }
