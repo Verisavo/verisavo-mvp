@@ -87,7 +87,7 @@ export default function AssistantWindow() {
         {" "}
         <div className="va-scrim" id="va-scrim" hidden></div>
         {" "}
-        <section className="va-main va-dark">
+        <section className="va-main">
           {" "}
           <header className="va-top">
             {" "}
@@ -142,7 +142,7 @@ export default function AssistantWindow() {
             {" "}
             <div className="va-top-r">
               {" "}
-              <button type="button" className="va-ib va-theme" id="va-theme" aria-pressed="true" aria-label="Switch to light theme" title="Switch to light theme">
+              <button type="button" className="va-ib va-theme" id="va-theme" aria-pressed="false" aria-label="Switch to dark theme" title="Switch to dark theme">
                 <svg className="vi va-sun" viewBox="0 0 20 20" aria-hidden="true">
                   <circle cx="10" cy="10" r="3.2"></circle>
                   <path d="M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7l1.3 1.3M14 14l1.3 1.3M4.7 15.3L6 14M14 6l1.3-1.3"></path>
@@ -200,7 +200,7 @@ export default function AssistantWindow() {
           {" "}
           <div className="va-body" id="va-body">
             {" "}
-            <div className="va-hello" id="va-hello">{" "}<h2 id="va-greet">{"What do you need to understand?"}</h2>{" "}</div>
+            <div className="va-hello" id="va-hello">{" "}<p className="va-hi">{"Verisavo Intelligence Assistant"}</p><h2 id="va-greet">{"What do you need to understand?"}</h2><p className="va-sub">{"Ask about a market, a competitor or a decision. Every answer shows its evidence, and what is still unknown."}</p></div>
             {" "}
             <ol className="va-thread" id="va-thread" aria-live="polite"></ol>
             {" "}
@@ -220,7 +220,7 @@ export default function AssistantWindow() {
                 {" "}
                 <label className="vh" htmlFor="va-in">{"Message Verisavo"}</label>
                 {" "}
-                <textarea id="va-in" rows="1" maxLength="1000" placeholder="Ask about a market, a competitor or a decision" />
+                <textarea id="va-in" rows="1" maxLength="1000" placeholder="Ask about a market or a decision" />
                 {" "}
                 <button type="submit" className="va-send" id="va-send" aria-label="Send question" disabled>
                   <svg className="vi" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15.5V5M5.5 9.5L10 5l4.5 4.5"></path></svg>
@@ -231,10 +231,10 @@ export default function AssistantWindow() {
             </form>
             {" "}
             <div className="va-chips" id="va-chips">
-              <button type="button" className="va-chip" data-q="What does the market for our product look like?">{"Explore a market"}</button>
-              <button type="button" className="va-chip" data-q="Where should we launch first, and why?">{"Compare locations"}</button>
-              <button type="button" className="va-chip" data-q="What don’t we know yet that could change our plan?">{"Investigate a gap"}</button>
-              <button type="button" className="va-chip" data-q="What evidence supports or contradicts our main assumption?">{"Test an assumption"}</button>
+              <button type="button" className="va-chip va-sugg" data-q="What does the market for our product look like?"><span className="va-sugg-ic"><svg className="vi" viewBox="0 0 20 20" aria-hidden="true" dangerouslySetInnerHTML={{ __html: "<circle cx=\"10\" cy=\"10\" r=\"6.5\"></circle><path d=\"M3.5 10h13M10 3.5c2 2 2.8 4.2 2.8 6.5S12 14.5 10 16.5M10 3.5C8 5.5 7.2 7.7 7.2 10s.8 4.5 2.8 6.5\"></path>" }}></svg></span><b>{"Explore a market"}</b><small>{"See who sells what, where and at what price"}</small></button>
+              <button type="button" className="va-chip va-sugg" data-q="Where should we launch first, and why?"><span className="va-sugg-ic"><svg className="vi" viewBox="0 0 20 20" aria-hidden="true" dangerouslySetInnerHTML={{ __html: "<path d=\"M10 17s-5-4.6-5-8.4a5 5 0 0 1 10 0C15 12.4 10 17 10 17z\"></path><circle cx=\"10\" cy=\"8.6\" r=\"1.8\"></circle>" }}></svg></span><b>{"Compare locations"}</b><small>{"Weigh cities or districts for your next move"}</small></button>
+              <button type="button" className="va-chip va-sugg" data-q="What don’t we know yet that could change our plan?"><span className="va-sugg-ic"><svg className="vi" viewBox="0 0 20 20" aria-hidden="true" dangerouslySetInnerHTML={{ __html: "<circle cx=\"10\" cy=\"10\" r=\"6.5\" stroke-dasharray=\"2.4 2.2\"></circle><path d=\"M8.2 8.2a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.8.6-.8 1.2M10 13.6v.1\"></path>" }}></svg></span><b>{"Investigate a gap"}</b><small>{"Find what you don't know that could change the plan"}</small></button>
+              <button type="button" className="va-chip va-sugg" data-q="What evidence supports or contradicts our main assumption?"><span className="va-sugg-ic"><svg className="vi" viewBox="0 0 20 20" aria-hidden="true" dangerouslySetInnerHTML={{ __html: "<path d=\"M4 10.5l3.5 3.5L16 5.5\"></path>" }}></svg></span><b>{"Test an assumption"}</b><small>{"Check the evidence for and against a belief"}</small></button>
               <button type="button" className="va-chip va-more-chip" data-q="How have prices in our category changed recently?" hidden>{"Track prices"}</button>
               <button type="button" className="va-chip va-more-chip" data-q="Where do stockouts happen most often?" hidden>{"Map stockouts"}</button>
               <button type="button" className="va-chip va-more-chip" data-q="What has changed about our main competitor recently?" hidden>{"Check a competitor"}</button>
