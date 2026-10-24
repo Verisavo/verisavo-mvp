@@ -1082,6 +1082,7 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .qd-steps p { margin: 0; font-size: 1rem !important; line-height: 1.6 !important; color: var(--body, #3D4559) !important; }
 @media (max-width: 900px) { .qd-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .qd-steps li:nth-child(3) { padding-left: 0; border-left: 0; } .qd-steps li:nth-child(n+3) { border-top: 1px solid #D5DCE8; } }
 @media (max-width: 560px) { .qd-steps { grid-template-columns: minmax(0, 1fr); } .qd-steps li, .qd-steps li + li { padding: 20px 0 8px; border-left: 0; } .qd-steps li + li { border-top: 1px solid #D5DCE8; } }
+.pg2-t .pg2-sub { color: #fff !important; font-weight: 600 !important; font-size: 1.0625rem !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
