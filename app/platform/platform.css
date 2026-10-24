@@ -910,6 +910,27 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
   .pg2-art { aspect-ratio: 3 / 2; }
   .pg2-grid > * { order: var(--o); }
 }
+
+/* Menu background: data streams instead of the city photo */
+.mnav { isolation: isolate; background: #141A2B !important; }
+.mnav::before { background: none !important; filter: none !important; }
+.mnav::after { background: radial-gradient(ellipse 42% 62% at 88% 46%, rgba(20,26,43,.82), rgba(20,26,43,.35) 70%, rgba(20,26,43,0)) !important; }
+.mnav-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+
+/* Chat box, revised: flat dark panel, quiet border, compact controls */
+.stage .chat.dark, .chat.dark { background: #161C2E !important; border: 1px solid rgba(168,198,232,.22) !important; border-radius: 12px !important; box-shadow: 0 40px 80px -40px rgba(8,11,20,.9) !important; }
+.chat.dark:focus-within { border-color: rgba(168,198,232,.5) !important; box-shadow: 0 40px 80px -40px rgba(8,11,20,.9), 0 0 0 3px rgba(97,140,208,.18) !important; }
+.chat.dark .chat-body { padding: 22px 64px 10px 24px; }
+.chat.dark textarea { font: 400 1.125rem/1.55 var(--sans) !important; min-height: 72px; }
+.chat.dark textarea::placeholder { color: #8796B3 !important; }
+.chat.dark .chat-foot { margin: 0 16px; padding: 12px 0 14px; border-top: 1px solid rgba(255,255,255,.08); }
+.chat.dark .chip { border-radius: 6px !important; padding: 7px 11px !important; font: 500 .8125rem/1 var(--sans) !important; letter-spacing: 0 !important; background: rgba(255,255,255,.04) !important; border: 1px solid rgba(168,198,232,.18) !important; color: #C9D3E4 !important; }
+.chat.dark .chip:hover { border-color: rgba(168,198,232,.45) !important; color: #fff !important; }
+.chat.dark .chip[aria-pressed="true"] { background: rgba(227,235,248,.1) !important; border-color: #80AADC !important; color: #fff !important; }
+.chat.dark .add-btn { border: 1px solid rgba(168,198,232,.18); border-radius: 6px; }
+.chat.dark .send-q { border-radius: 6px !important; background: #fff !important; color: #1F273F !important; font: 600 .875rem/1 var(--sans) !important; padding: 10px 14px !important; min-height: 0 !important; box-shadow: none !important; }
+.chat.dark .send-q:hover { background: #E3EBF8 !important; }
+.chat.dark .chat-theme { top: 16px; right: 16px; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
