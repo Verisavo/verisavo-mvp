@@ -215,6 +215,8 @@ dl.gloss dd { color: var(--body); }
 /* <<< type */
 .tbl tr.hl td, .tbl tr.hl th { background: var(--accent-soft); font-weight: 600; }
 .st-term { font: 600 1.05rem/1.3 var(--sans); color: var(--ink); }
+.ig-l { stroke: var(--line2); stroke-width: 1.6; fill: none; }
+.ig-d { stroke-dasharray: 4 4; }
 </style>
 
 <header class="top">
@@ -321,6 +323,8 @@ const GRAPHFIG = `<figure class="figure"><svg viewBox="0 0 960 300" role="img" a
   <text x="658" y="250" class="flow-t">Next: corroborate</text><text x="658" y="268" class="flow-s">Retailer checks, coverage before and after</text>
   <path d="M791 204 V221" class="flow-l flow-d" marker-end="url(#fg)"/>
 </svg><figcaption>Illustrative. Each source shows a fragment. Connected, they point to one explanation, treated as a hypothesis until more evidence supports it.</figcaption></figure>`;
+
+const IGFIG = `<figure class="figure"><svg viewBox="0 0 760 370" role="img" aria-label="Example Intelligence Graph: a sales decline connected to competitor pricing, retailer stockouts, customer brand switching, distribution coverage gaps, locations in Lagos and Ogun, and SavoScout field checks"><path d="M130.0 72.0 L360.0 186.0" class="ig-l"/><path d="M380.0 56.0 L360.0 186.0" class="ig-l"/><path d="M630.0 72.0 L360.0 186.0" class="ig-l"/><path d="M130.0 282.0 L360.0 186.0" class="ig-l"/><path d="M380.0 314.0 L360.0 186.0" class="ig-l"/><path d="M630.0 282.0 L360.0 186.0" class="ig-l"/><path d="M630.0 104 L630.0 250" class="ig-l ig-d"/><rect x="40" y="40" width="180" height="64" rx="12" class="flow-box"/><text x="130.0" y="68" text-anchor="middle" class="flow-t">Competitor</text><text x="130.0" y="87" text-anchor="middle" class="flow-s">Price reduction</text><rect x="290" y="24" width="180" height="64" rx="12" class="flow-box"/><text x="380.0" y="52" text-anchor="middle" class="flow-t">Retailers</text><text x="380.0" y="71" text-anchor="middle" class="flow-s">Stockouts</text><rect x="540" y="40" width="180" height="64" rx="12" class="flow-box"/><text x="630.0" y="68" text-anchor="middle" class="flow-t">Customers</text><text x="630.0" y="87" text-anchor="middle" class="flow-s">Brand switching</text><rect x="40" y="250" width="180" height="64" rx="12" class="flow-box"/><text x="130.0" y="278" text-anchor="middle" class="flow-t">Distribution</text><text x="130.0" y="297" text-anchor="middle" class="flow-s">Coverage gaps</text><rect x="290" y="282" width="180" height="64" rx="12" class="flow-box"/><text x="380.0" y="310" text-anchor="middle" class="flow-t">Locations</text><text x="380.0" y="329" text-anchor="middle" class="flow-s">Lagos / Ogun</text><rect x="540" y="250" width="180" height="64" rx="12" class="flow-box"/><text x="630.0" y="278" text-anchor="middle" class="flow-t">Field checks</text><text x="630.0" y="297" text-anchor="middle" class="flow-s">SavoScout evidence</text><rect x="270" y="150" width="180" height="72" rx="12" class="flow-hi"/><text x="360.0" y="182" text-anchor="middle" class="flow-th">Sales decline</text><text x="360.0" y="202" text-anchor="middle" class="flow-sh">Observed signal</text></svg><figcaption>Illustrative graph: relationships are possible investigation paths, not automatically verified causal links.</figcaption></figure>`;
 
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
@@ -461,6 +465,9 @@ const PAGES = [
 
  { g: "Core concepts", id: "intelligence-graph", t: "Intelligence Graph", ic: "graph", crumb: "Core concepts", body: `
   <p class="intro">The Intelligence Graph is how Verisavo organises what it knows about a market. It links businesses, products, customers, competitors, prices, places, distribution channels and events, so they can be examined together rather than one report at a time. In the product you explore it as the Market Intelligence Network. ${DEV}</p>
+  <h2 id="looks">What the graph looks like</h2>
+  <p>A simplified example of how Verisavo could connect information around a fall in product sales.</p>
+  ${IGFIG}
   <h2 id="parts">What it is made of</h2>
   <div class="tbl"><table><thead><tr><th>Part</th><th>What it is</th></tr></thead><tbody>
    <tr><th>Entities</th><td>The things in the market: a brand, a product, a retailer, a distributor, a price, a location, an event.</td></tr>
