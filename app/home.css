@@ -1077,6 +1077,13 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
 #pg-research .ar-row .rs-meta { order: -1; }
 @media (max-width: 860px) { #pg-research .ar-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { #pg-research .ar-list { grid-template-columns: 1fr; } }
+
+/* Inner pages (About, Careers, Contact, Pricing): solid Royal Indigo, no see-through */
+.pg:not(#pg-research) { background: #1F273F !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+body.page-open:not(.page-light) .top::before { background: #1F273F !important; box-shadow: 0 1px 0 rgba(168,198,232,.12) !important; }
+body.page-open:not(.page-light) .pill { background: rgba(255,255,255,.06) !important; box-shadow: inset 0 0 0 1px rgba(168,198,232,.28) !important; }
+.pg:not(#pg-research) .glass, .pg:not(#pg-research) .card, .pg:not(#pg-research) .pr-card.glass, .pg:not(#pg-research) .ca-apply, .pg:not(#pg-research) .cta-band { background: #263050 !important; box-shadow: inset 0 0 0 1px rgba(168,198,232,.16) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.pg:not(#pg-research) input, .pg:not(#pg-research) textarea { background: #182033 !important; border-color: rgba(168,198,232,.28) !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
