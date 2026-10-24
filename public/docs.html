@@ -229,6 +229,8 @@ const I = {
   shield: '<path d="M8 1.8 13 3.6v3.8c0 3-2 5.2-5 6.7-3-1.5-5-3.7-5-6.7V3.6z"/>',
   chat: '<path d="M2.5 3h11v7.5h-6L4 13.5v-3H2.5z"/>',
   graph: '<circle cx="3.5" cy="4" r="1.6"/><circle cx="12.5" cy="3.5" r="1.6"/><circle cx="8" cy="12" r="1.6"/><path d="M5 4.6 11 3.8M4.3 5.4l2.9 5M11.8 5l-2.9 5.4"/>',
+  file: '<path d="M4 1.8h5l3 3v9.4H4z"/><path d="M9 1.8v3h3M6 8.5h4M6 11h4"/>',
+  star: '<path d="m8 1.8 1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.6l-3.8 2 .7-4.3-3.1-3 4.3-.6z"/>',
   clock: '<circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/>',
   info: '<circle cx="8" cy="8" r="6.2"/><path d="M8 7.2v4M8 4.8v.1"/>',
   warn: '<path d="M8 2 14.5 13.5h-13z"/><path d="M8 6.5v3.2M8 11.6v.1"/>',
@@ -351,7 +353,7 @@ const PAGES = [
    <tr><th>Market reality</th><td>The real market: businesses, products, customers, prices, routes, policies and how they change.</td></tr>
    <tr><th><a href="#signals">Signals</a></th><td>The smallest meaningful sign that something is happening, such as a price change or a stockout.</td></tr>
    <tr><th><a href="#evidence">Evidence</a></th><td>A signal with its context attached: source, place, time, scope and method.</td></tr>
-   <tr><th><a href="#evidence">Verification</a></th><td>Checks whether evidence is reliable enough for the purpose it will serve.</td></tr>
+   <tr><th><a href="#verification">Verification</a></th><td>Checks whether evidence is reliable enough for the purpose it will serve.</td></tr>
    <tr><th><a href="#intelligence-graph">Intelligence Graph</a></th><td>Links evidence across businesses, products, places, time and earlier findings.</td></tr>
    <tr><th><a href="#market-memory">Market Memory</a></th><td>Records what was known, what changed and which evidence changed it.</td></tr>
    <tr><th><a href="#asking-questions">Intelligence Assistant</a></th><td>The conversational way to question all of the above.</td></tr>
@@ -368,15 +370,54 @@ const PAGES = [
   <p>An empty shelf could mean rising demand, a supply problem, a retailer short of cash, a changed delivery route or a shop that switched to a competitor. Each explanation calls for a different response. Verisavo treats the signal as a question to check, then looks for what else would be true under each explanation.</p>
   ${note("Record the context with every observation: exactly where, when, how many places were checked and by whom. Three empty shelves out of three is a different finding from three out of thirty.")}` },
 
- { g: "Core concepts", id: "evidence", t: "Evidence and verification", ic: "shield", crumb: "Core concepts", body: `
-  <p class="intro">A signal becomes evidence when its context travels with it. Verification decides whether it is reliable enough for the decision it will inform.</p>
+ { g: "Core concepts", id: "evidence", t: "Evidence", ic: "file", crumb: "Core concepts", body: `
+  <p class="intro">A <a href="#signals">signal</a> becomes evidence when its context travels with it: where it came from, where and when it applies, how much of the market it covers and how it was gathered. Without that context, a data point can mislead as easily as it informs.</p>
+  <h2 id="sources">Where evidence comes from</h2>
+  <div class="tbl"><table><thead><tr><th>Source</th><th>Example</th></tr></thead><tbody>
+   <tr><th>Company data</th><td>Your sales, orders and distributor reports</td></tr>
+   <tr><th>Public records</th><td>Business registrations, trade statistics, policy announcements</td></tr>
+   <tr><th>Digital platforms</th><td>Online listings, prices and reviews</td></tr>
+   <tr><th>Market research</th><td>Surveys, studies and industry reports</td></tr>
+   <tr><th>Ground-Level Intelligence</th><td>Shelf checks, prices and observations gathered by <a href="#savoscouts">SavoScouts</a></td></tr>
+  </tbody></table></div>
+  <p>No source is trusted or dismissed because of what kind it is. A company report can be out of date, and a single shelf check can be the most current evidence available. Each piece is judged on its own context.</p>
   <h2 id="context">What every piece of evidence carries</h2>
   <div class="tbl"><table><thead><tr><th>Field</th><th>Example</th></tr></thead><tbody>
-   <tr><th>Source</th><td>Shelf check by a SavoScout</td></tr><tr><th>Place</th><td>Surulere market, Lagos</td></tr><tr><th>Time</th><td>Tuesday, 08:40</td></tr><tr><th>Scope</th><td>9 kiosks near the main bus park</td></tr><tr><th>Method</th><td>In-person observation, geo-tagged photo</td></tr><tr><th>Reliability</th><td>Contributor track record and cross-checks</td></tr>
+   <tr><th>Source</th><td>Shelf check by a SavoScout</td></tr><tr><th>Place</th><td>Surulere market, Lagos</td></tr><tr><th>Time</th><td>Tuesday, 08:40</td></tr><tr><th>Scope</th><td>9 kiosks near the main bus park</td></tr><tr><th>Method</th><td>In-person observation, geo-tagged photo</td></tr><tr><th>Reliability</th><td>Assessed through <a href="#verification">verification</a></td></tr>
   </tbody></table></div>
-  <h2 id="verification">How verification works</h2>
-  <p>Checks are designed to include consistency of location and time, comparison with other sources and contributors, a contributor's track record, and repeat observation where the stakes justify it.</p>
-  ${note("<b>Verification is not absolute truth.</b> It assesses whether evidence is reliable enough for its purpose. When reliable sources disagree, the contradiction is kept and flagged.", "warn")}` },
+  <h2 id="scope">Why scope matters</h2>
+  <p>Three empty shelves out of three is a different finding from three out of thirty. A price observed in Lagos says nothing on its own about Kano or Accra, and a reading from March may not describe May. Evidence keeps its scope so that conclusions are never stretched beyond the places, times and groups it actually covers.</p>
+  <h2 id="contradicting">Evidence that disagrees</h2>
+  <p>Evidence against a conclusion is kept alongside evidence for it. A finding is only as strong as its answer to the evidence that points the other way.</p>
+  <h2 id="your-data">Your company data</h2>
+  <p>Evidence you bring is <a href="#privacy">Client Intelligence</a>. It is used to answer your questions and stays private, protected and under your control. It never becomes visible to other customers.</p>` },
+
+ { g: "Core concepts", id: "verification", t: "Verification", ic: "shield", crumb: "Core concepts", body: `
+  <p class="intro">Verification asks whether evidence is reliable enough for the purpose it will serve. It decides how much weight a piece of evidence can carry, and how confidently a conclusion built on it can be stated. ${DEV}</p>
+  ${note("<b>Verification is not absolute truth.</b> It is a judgement about fitness for a purpose. Verified evidence can still be overturned by better evidence, and <a href=\"#market-memory\">Market Memory</a> records when that happens.", "warn")}
+  <h2 id="checks">The checks</h2>
+  <div class="tbl"><table><thead><tr><th>Check</th><th>What it asks</th></tr></thead><tbody>
+   <tr><th>Consistency</th><td>Do the place, time and details hold together? Is a geo-tagged photo where the report says it is?</td></tr>
+   <tr><th>Cross-source comparison</th><td>Do independent sources point the same way?</td></tr>
+   <tr><th>Contributor track record</th><td>How reliable have this SavoScout's or this source's past observations proved?</td></tr>
+   <tr><th>Peer confirmation</th><td>Has another contributor observed the same thing?</td></tr>
+   <tr><th>Contradiction detection</th><td>Does anything already known conflict with it?</td></tr>
+   <tr><th>Further investigation</th><td>Where the stakes justify it, a repeat visit, a targeted check or expert review.</td></tr>
+  </tbody></table></div>
+  <h2 id="proportion">In proportion to the decision</h2>
+  <p>Not every question needs the same standard of proof. A quick look at prices can rest on lighter evidence than a decision to enter a new city. The checks applied, and how much corroboration is sought, are meant to scale with what the decision puts at risk.</p>
+  <h2 id="disagree">When sources disagree</h2>
+  <p>Disagreement is not quietly resolved in favour of one side. The contradiction is kept and shown with the evidence on each side. If it could change the decision, it becomes an <a href="#intelligence-gaps">Intelligence Gap</a> to investigate.</p>
+  <h2 id="states">From verification to intelligence states</h2>
+  <p>Verification is what moves a conclusion between <a href="#intelligence-states">intelligence states</a>. A claim supported by well-checked evidence within a defined scope can be stated as a Fact. One that is reasonably derived but not directly observed stays an Inference. An explanation still being tested stays a Hypothesis, and where the evidence cannot answer, the answer is Unknown.</p>
+  <h2 id="example">Example: a stockout report</h2>
+  <ol class="steps">
+   <li><b>One observation</b><p>A SavoScout reports a product missing from a kiosk near a Lagos bus park, with a geo-tagged photo. It is one signal from one shop.</p></li>
+   <li><b>Checked</b><p>The location and time match the photo, and the contributor's past reports have held up. The observation is reliable, but its scope is still one kiosk.</p></li>
+   <li><b>Corroborated</b><p>Checks at nearby kiosks find the same gap in six of nine, and distributor records show a missed delivery that week. The stockout across that area can now be stated as a Fact within that scope.</p></li>
+   <li><b>Still open</b><p>Why the delivery was missed is not yet known. That becomes the next question, and possibly an Intelligence Gap.</p></li>
+  </ol>
+  <p><em>Illustrative example.</em></p>` },
 
  { g: "Core concepts", id: "intelligence-graph", t: "Intelligence Graph", ic: "graph", crumb: "Core concepts", body: `
   <p class="intro">The Intelligence Graph is how Verisavo organises what it knows about a market. It links businesses, products, customers, competitors, prices, places, distribution channels and events, so they can be examined together rather than one report at a time. In the product you explore it as the Market Intelligence Network. ${DEV}</p>
@@ -396,7 +437,8 @@ const PAGES = [
   <p>Connected, the evidence might show that the fall is concentrated in neighbourhoods where deliveries were cut, and that the rival's smaller, cheaper pack is gaining shelf space there. That is a <b>hypothesis</b>, not a finding. The next steps are to corroborate it: check pack-size affordability with retailers, compare coverage before and after the change, and test whether restoring deliveries in specific areas recovers sales. <em>Illustrative example.</em></p>
   <h2 id="fits">How it fits with the rest</h2>
   <div class="tbl"><table><thead><tr><th>Part</th><th>Its job</th></tr></thead><tbody>
-   <tr><th><a href="#evidence">Evidence and verification</a></th><td>Holds each observation with its context, and assesses how reliable it is.</td></tr>
+   <tr><th><a href="#evidence">Evidence</a></th><td>Holds each observation with its context.</td></tr>
+   <tr><th><a href="#verification">Verification</a></th><td>Assesses whether that evidence is reliable enough for its purpose.</td></tr>
    <tr><th>Intelligence Graph</th><td>Connects entities, events and relationships across sources.</td></tr>
    <tr><th><a href="#market-memory">Market Memory</a></th><td>Records how those connections and their evidence change over time.</td></tr>
    <tr><th><a href="#asking-questions">Intelligence Assistant</a></th><td>Uses the connected evidence to answer a specific business question.</td></tr>
@@ -466,12 +508,26 @@ const PAGES = [
   </ol>
   <h2 id="channels">Capture channels</h2>
   <p>Depending on the deployment, SavoScouts can report through the mobile app, WhatsApp, SMS, USSD or voice, so the network is not limited to smartphone users.</p>
-  <h2 id="rewards">How SavoScouts are rewarded</h2>
-  <p>SavoScouts are designed to earn rewards for the observations and short, structured tasks they complete, such as checking shelf prices or answering targeted questions about a local market.</p>
-  <p>How contributors are rewarded affects the evidence you receive, so the scheme is designed around quality, not volume:</p>
-  <ul><li><strong>Rewarded once verified.</strong> An observation counts when it passes verification, not when it is submitted.</li><li><strong>Useful over plentiful.</strong> Every task answers a specific Intelligence Gap, so there is nothing to gain from submitting more than the brief asks for.</li><li><strong>Reliability builds over time.</strong> Each contributor builds a reliability record. Consistent, accurate work carries more weight in verification, and repeated low-quality submissions reduce access to future tasks.</li><li><strong>Checked whatever the reward.</strong> Spot checks, cross-source comparison and confirmation from other contributors apply to every observation.</li></ul>
-  ${note("Reward amounts, payment methods and eligibility will vary by country and are still being finalised. Full details will be published in a separate guide for SavoScouts.")}
+  <h2 id="rewards">Rewards</h2>
+  <p>SavoScouts are designed to earn rewards for verified observations and short tasks. <a href="#scout-rewards">How SavoScout rewards work</a> explains how the scheme protects the quality of the evidence you receive.</p>
   ${note("Targeted Ground-Level Intelligence investigations are in development. Get early access to hear when they open.")}` },
+
+ { g: "Use Verisavo", id: "scout-rewards", t: "SavoScout rewards", ic: "star", crumb: "Use Verisavo", body: `
+  <p class="intro">SavoScouts are designed to earn rewards for the observations and short, structured tasks they complete. How contributors are rewarded shapes the evidence that comes back, so the scheme is built around quality rather than volume. ${DEV}</p>
+  <h2 id="what-earns">What earns a reward</h2>
+  <ul><li><strong>Observations</strong> requested in a brief, such as a shelf price, a stock check or a photo of a display.</li><li><strong>Short questions and surveys</strong> that Verisavo deploys to answer a specific Intelligence Gap.</li></ul>
+  <p>Every task comes from a brief tied to a real question, so a contributor always knows what is being asked, where and why.</p>
+  <h2 id="quality">How the scheme protects quality</h2>
+  <div class="tbl"><table><thead><tr><th>Rule</th><th>Why it matters</th></tr></thead><tbody>
+   <tr><th>Rewarded once verified</th><td>An observation counts when it passes <a href="#verification">verification</a>, not when it is submitted. There is no reward for guessing.</td></tr>
+   <tr><th>Useful over plentiful</th><td>Each task answers a specific Intelligence Gap, so submitting more than the brief asks for earns nothing.</td></tr>
+   <tr><th>Reliability builds over time</th><td>Each contributor builds a reliability record. Consistent, accurate work carries more weight in verification and opens more tasks.</td></tr>
+   <tr><th>Low quality has a cost</th><td>Repeated inaccurate or unverifiable submissions reduce access to future tasks.</td></tr>
+   <tr><th>Checked whatever the reward</th><td>Spot checks, cross-source comparison and confirmation from other contributors apply to every observation.</td></tr>
+  </tbody></table></div>
+  <h2 id="consent">Rewards and the people asked</h2>
+  <p>Rewards are paid to SavoScouts for their work. The shopkeepers, traders and customers they speak to are never pressured to take part: they know who is asking and can decline.</p>
+  ${note("Reward amounts, payment methods and eligibility will vary by country and are still being finalised. Full details will be published in a separate guide for SavoScouts.")}` },
 
  { g: "Use Verisavo", id: "market-simulation", t: "Market Simulation", ic: "layers", crumb: "Use Verisavo", body: `
   <p class="intro">Market Simulation is designed to help you explore possible outcomes under different assumptions before you commit. ${PLAN}</p>
