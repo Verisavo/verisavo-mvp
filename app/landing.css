@@ -633,7 +633,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ln .ln-close h2 + p { margin-top: 20px; }
 .ln .ln-close .ln-q { margin-top: 36px; }
 /* why Verisavo exists: an immersive scene with the statement playing line by line */
-.ms-story { position: relative; height: 540vh; background: #fff; }
+.ms-story { position: relative; height: 600vh; background: #fff; }
 .ms-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; padding: 84px clamp(12px, 2.4vw, 32px) clamp(12px, 2.4vw, 32px); }
 .ms-story .ms-frame { margin: 0; aspect-ratio: auto; height: 100%; width: 100%; max-width: 1480px; justify-self: center; border-radius: 22px; }
 .ms-veil { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 62% at 18% 88%, rgba(245,248,252,.96) 0%, rgba(245,248,252,.82) 40%, rgba(245,248,252,0) 75%); }
@@ -650,7 +650,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ms-bar i { position: absolute; inset: 0; background: var(--i9); transform-origin: left; transform: scaleX(0); }
 .ms-story .ms-cap { left: auto; right: 18px; bottom: 16px; }
 @media (max-width: 760px) {
-  .ms-story { height: 500vh; }
+  .ms-story { height: 560vh; }
   .ms-sticky { padding: 76px 10px 10px; }
   .ms-story .ms-frame { border-radius: 16px; }
   .ms-veil { background: linear-gradient(0deg, rgba(245,248,252,.97) 0%, rgba(245,248,252,.9) 38%, rgba(245,248,252,0) 64%); }
