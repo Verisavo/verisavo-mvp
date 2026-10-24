@@ -539,7 +539,7 @@ body.menu-open { overflow: hidden; }
 
 /* ---------- Intelligence Assistant window ---------- */
 dialog.va { width: min(1120px, calc(100% - 32px)); height: min(760px, calc(100% - 32px)); max-height: none; padding: 0; border: 1px solid var(--b200); border-radius: 16px; overflow: hidden; background: var(--white); box-shadow: 0 40px 90px -40px #1F273F; }
-dialog.va::backdrop { background: rgba(31,39,63,.38); }
+dialog.va::backdrop { background: rgba(31,39,63,.32); -webkit-backdrop-filter: blur(18px) saturate(1.1); backdrop-filter: blur(18px) saturate(1.1); }
 /* full screen */
 dialog.va { transition: width .35s cubic-bezier(.16,1,.3,1), height .35s cubic-bezier(.16,1,.3,1), border-radius .35s; }
 dialog.va.va-full { width: 100vw; height: 100vh; height: 100dvh; max-width: 100vw; max-height: 100dvh; margin: 0; inset: 0; border-radius: 0; border: 0; }
