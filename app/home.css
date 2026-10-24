@@ -1086,6 +1086,16 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
 #pg-careers .ca-addr { font: 600 clamp(1.4rem, 1.1rem + .9vw, 1.9rem)/1.1 var(--display) !important; letter-spacing: 0 !important; }
 header .logo, .top .logo, body > .logo, .hdr .logo { font-size: clamp(1.55rem, 1.3rem + .6vw, 1.85rem) !important; }
 .pg-foot .logo { font-size: 1.5rem !important; }
+:root { --container: 1500px; --gutter: clamp(20px, 3vw, 32px); --edge: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))); --measure: 68ch; }
+/* Global container */
+.top { left: var(--edge) !important; right: var(--edge) !important; }
+.pg-in, .rd-in, .ca-in, #pg-research .pg-in, .rs-detail.rd-light .rd-in, .pg-in.pg-narrow:has(.pr-plans) { width: 100% !important; max-width: var(--container) !important; margin-inline: auto !important; padding-inline: var(--gutter) !important; box-sizing: border-box; }
+.pg-narrow { width: 100% !important; }
+.pg-narrow > *:not(.pg-foot):not(.pr-plans):not(.pr-head) { max-width: 760px; }
+.pg p, .rs-detail p { max-width: var(--measure); }
+.pr-head p, .pg-head .lead { max-width: 60ch; }
+.foot-in { max-width: var(--container) !important; padding-inline: var(--gutter) !important; }
+.rs-detail .cx { max-width: 860px; }
 .pill > button { font: 500 .875rem/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
 .sources .lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .ch .eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
