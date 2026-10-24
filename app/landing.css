@@ -425,8 +425,6 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .net-memt { font: 500 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; fill: var(--b600); }
 .net-n circle { fill: #fff; stroke: var(--i9); stroke-width: 1.6; }
 .net-n.net-f circle { fill: var(--i9); }
-.net-n.net-c circle { r: 12px; fill: var(--b600); stroke: var(--i9); stroke-width: 2; }
-.net-n.net-c text { font-weight: 600; }
 .net-n text { font: 500 12px var(--mono); fill: var(--i9); }
 .net-dot { fill: var(--b600); }
 .net-dot-g { fill: var(--i9); }
