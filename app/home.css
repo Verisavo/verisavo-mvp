@@ -1117,6 +1117,9 @@ body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96)
 
 /* about: lead same size as body */
 #pg-about-us .pg-head .lead { font-size: 1.0625rem !important; line-height: 1.7 !important; max-width: 720px !important; }
+
+#pg-about-us .team-copy { gap: 16px !important; max-width: 760px !important; }
+#pg-about-us .team-copy h2 { margin-bottom: 8px; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
