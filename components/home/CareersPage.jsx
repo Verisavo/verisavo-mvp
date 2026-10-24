@@ -19,7 +19,7 @@ export default function CareersPage() {
           {" "}
         </header>
         {" "}
-        <div className="ca-grid">
+        <div className="ca-grid ca-grid1">
           {" "}
           <section aria-labelledby="cw-h">
             {" "}
@@ -37,27 +37,24 @@ export default function CareersPage() {
             {" "}
           </section>
           {" "}
-          <section aria-labelledby="ca-h">
-            {" "}
-            <p className="lab" id="ca-h">{"Areas we hire in"}</p>
-            {" "}
-            <ul className="ca-tags">
-              <li>{"Engineering"}</li>
-              <li>{"Research"}</li>
-              <li>{"Field operations"}</li>
-              <li>{"Design"}</li>
-              <li>{"Partnerships"}</li>
-            </ul>
-            {" "}
-            <p className="ca-small">{"No listed openings right now. We still want to hear from you."}</p>
-            {" "}
-          </section>
           {" "}
         </div>
+        <section className="ca-roles" aria-labelledby="roles-h">
+          <div className="ca-roles-head"><h2 id="roles-h">{"Open roles"}</h2><span className="ca-count">{"7 roles"}</span></div>
+          <ul className="ca-list">
+            <li><a href="mailto:career@verisavo.com?subject=Application%3A%20Founding%20full-stack%20engineer"><span className="ca-role"><b>{"Founding full-stack engineer"}</b><span>{"Build the product end to end, from the Intelligence Assistant to the tools teams use every day."}</span></span><span className="ca-team">{"Engineering"}</span><span className="ca-loc">{"Remote"}</span><span className="ca-go" aria-hidden="true">{"→"}</span></a></li>
+            <li><a href="mailto:career@verisavo.com?subject=Application%3A%20Data%20and%20evidence%20engineer"><span className="ca-role"><b>{"Data and evidence engineer"}</b><span>{"Build the pipelines that turn sources into evidence, with provenance, time and place kept intact."}</span></span><span className="ca-team">{"Engineering"}</span><span className="ca-loc">{"Remote"}</span><span className="ca-go" aria-hidden="true">{"→"}</span></a></li>
+            <li><a href="mailto:career@verisavo.com?subject=Application%3A%20Applied%20AI%20engineer"><span className="ca-role"><b>{"Applied AI engineer"}</b><span>{"Make answers traceable: retrieval, evaluation, and labelling what the evidence does and does not support."}</span></span><span className="ca-team">{"Engineering"}</span><span className="ca-loc">{"Remote"}</span><span className="ca-go" aria-hidden="true">{"→"}</span></a></li>
+            <li><a href="mailto:career@verisavo.com?subject=Application%3A%20Market%20intelligence%20analyst"><span className="ca-role"><b>{"Market intelligence analyst"}</b><span>{"Investigate real market questions, scope Intelligence Gaps and turn findings into evidence."}</span></span><span className="ca-team">{"Research"}</span><span className="ca-loc">{"Remote"}</span><span className="ca-go" aria-hidden="true">{"→"}</span></a></li>
+            <li><a href="mailto:career@verisavo.com?subject=Application%3A%20SavoScouts%20operations%20lead"><span className="ca-role"><b>{"SavoScouts operations lead"}</b><span>{"Recruit, train and support SavoScouts, and keep Ground-Level Intelligence accurate and consented."}</span></span><span className="ca-team">{"Field operations"}</span><span className="ca-loc">{"Africa, remote"}</span><span className="ca-go" aria-hidden="true">{"→"}</span></a></li>
+            <li><a href="mailto:career@verisavo.com?subject=Application%3A%20Product%20designer"><span className="ca-role"><b>{"Product designer"}</b><span>{"Make complex evidence easy to read, from labelled answers to the Market Intelligence Network."}</span></span><span className="ca-team">{"Design"}</span><span className="ca-loc">{"Remote"}</span><span className="ca-go" aria-hidden="true">{"→"}</span></a></li>
+            <li><a href="mailto:career@verisavo.com?subject=Application%3A%20Partnerships%20lead"><span className="ca-role"><b>{"Partnerships lead"}</b><span>{"Work with businesses, data partners and research groups to bring more evidence into Verisavo."}</span></span><span className="ca-team">{"Partnerships"}</span><span className="ca-loc">{"Remote"}</span><span className="ca-go" aria-hidden="true">{"→"}</span></a></li>
+          </ul>
+        </section>
         {" "}
         <section className="ca-apply" aria-labelledby="capply-h">
           {" "}
-          <h2 id="capply-h">{"Send your CV "}<span className="acc">{"and a short note."}</span></h2>
+          <h2 id="capply-h">{"Don’t see your role? "}<span className="acc">{"Send a short note."}</span></h2>
           {" "}
           <div className="ca-mail">
             <span className="ca-addr" id="ca-addr">{"career@verisavo.com"}</span>
