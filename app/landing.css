@@ -595,9 +595,40 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .v3-why2 .v3-big .w { color: rgba(31,39,63,.16); }
 .v3-why2 .v3-big .w.on { color: var(--i9); }
 .v3-why2 .v3-big > span .w.on { color: var(--b600); }
-.ms-frame { position: relative; margin-top: clamp(40px, 6vw, 64px); aspect-ratio: 2 / 1; border-radius: 18px; overflow: hidden; background: #E6EDF8; box-shadow: 0 0 0 1px var(--b200); }
+.ms-frame { position: relative; margin-top: clamp(40px, 6vw, 64px); aspect-ratio: 2 / 1; border-radius: 18px; overflow: hidden; background: #F5F8FC; box-shadow: 0 0 0 1px var(--b200); }
 .ms-frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .ms-cap { position: absolute; left: 18px; bottom: 16px; font: 500 .6rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--b700); background: rgba(255,255,255,.7); padding: 7px 9px; border-radius: 4px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .ms-off { background: linear-gradient(180deg, #E6EDF8, #C4D1E8); }
 @media (max-width: 760px) { .ms-frame { aspect-ratio: 4 / 3.4; border-radius: 14px; } }
 @media (prefers-reduced-motion: reduce) { .v3-why2 .v3-big .w { color: var(--i9); } .v3-why2 .v3-big > span .w { color: var(--b600); } }
+/* ===== Apple-style spacing: generous sections, clear steps from label to headline to text ===== */
+.ln { --sp-sec: clamp(104px, 12vw, 168px); }
+.ln .ln-sec, .ln .v3-why2, .ln .v3-why, .ln .v3-net { padding-block: var(--sp-sec); }
+.ln .v3-net { padding-top: 24px; }
+.ln .ln-eb { line-height: 1.2; }
+.ln .ln-head { gap: 0; margin-bottom: clamp(56px, 6vw, 88px); }
+.ln .ln-head > .ln-eb + * { margin-top: 20px; }
+.ln .ln-head > h2 + .ln-sub, .ln .ln-head > h2 + .ln-link { margin-top: 24px; }
+.ln .ln-head-row > div { gap: 0; }
+.ln .ln-head-row > div > .ln-eb + h2 { margin-top: 20px; }
+.ln .v3-why2 .v3-big { margin-top: 24px; }
+.ln .v3-why .ln-wrap { gap: 0; }
+.ln .v3-why h2 { margin-top: 20px; }
+.ln .v3-why p { margin-top: 24px; }
+.ln .v3-faq-in > div:first-child { gap: 0; }
+.ln .v3-faq-in > div:first-child h2 { margin-top: 20px; }
+.ln .v3-faq-in > div:first-child .ln-link { margin-top: 28px; }
+.ln .v3-cap { margin-bottom: 24px; }
+.ln .v3-hero-in { gap: 0; padding-bottom: clamp(72px, 9vw, 112px); }
+.ln .v3-hero h1 + .v3-lede { margin-top: 28px; }
+.ln .v3-hero .v3-ctas { margin-top: 36px; }
+.ln .v3-ct { gap: 0; }
+.ln .v3-ct > .chip-s + h3 { margin-top: 18px; }
+.ln .v3-ct > h3 + p { margin-top: 14px; }
+.ln .v3-ct > p + .ln-link, .ln .v3-ct > p + button { margin-top: 22px; }
+.ln .v3-tr article { gap: 0; }
+.ln .v3-tr article h3 { margin-top: 18px; }
+.ln .v3-tr article p { margin-top: 12px; }
+.ln .ln-close .ln-wrap { gap: 0; }
+.ln .ln-close h2 + p { margin-top: 20px; }
+.ln .ln-close .ln-q { margin-top: 36px; }

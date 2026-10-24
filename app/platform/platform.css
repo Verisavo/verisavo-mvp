@@ -838,3 +838,15 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .how-k { font: 500 .66rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--b600); }
 .how-list h3 { font-weight: 500 !important; }
 /* <<< how-list */
+/* >>> apple-spacing */
+.sec { padding-block: clamp(104px, 12vw, 168px); }
+.eyebrow { line-height: 1.2; }
+.eyebrow + h2, .how-intro .eyebrow + h2 { margin-top: 20px !important; }
+.how-intro { gap: 0 !important; }
+.how-intro h2 + .how-sub { margin-top: 24px; }
+.how-intro .doclink { margin-top: 32px !important; }
+.faq-intro { gap: 0 !important; }
+.faq-intro h2 { margin-top: 20px; }
+.faq-intro .faq-talk { margin-top: 20px; }
+.trust-head { gap: 20px !important; }
+/* <<< apple-spacing */
