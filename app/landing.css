@@ -668,3 +668,6 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 #pg-research .rx-tab { height: 46px; min-height: 0; align-self: center; padding: 0 20px; border-radius: 6px; font: 500 .95rem/1 var(--sans); letter-spacing: -.01em; background: #fff; color: var(--indigo); box-shadow: inset 0 0 0 1px var(--b300); }
 #pg-research .rx-tab:hover { background: var(--b100); color: var(--indigo); }
 #pg-research .rx-tab[aria-selected="true"] { background: var(--indigo); color: #fff; box-shadow: none; }
+
+/* network caption: centred under the diagram */
+.ln .v3-net-note { text-align: center; margin-left: auto; margin-right: auto; }
