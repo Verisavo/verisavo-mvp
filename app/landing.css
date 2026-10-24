@@ -283,7 +283,6 @@ body.ln-on.ln-bar.ln-dark:not(.menu-open):not(.page-open):not(.page-light) .top:
 .tr p { font-size: .93rem; line-height: 1.6; color: var(--b800); }
 
 /* ============ PRICING ============ */
-.pz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .pz-c { display: grid; gap: 12px; align-content: start; padding: 26px; border: 1px solid var(--b200); border-radius: 14px; background: #fff; }
 .pz-c .ln-btn { margin-top: 10px; justify-self: start; }
 .pz-n { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font: 500 .95rem/1.2 var(--sans); }
@@ -353,7 +352,7 @@ body.ln-on.ln-bar.ln-dark:not(.menu-open):not(.page-open):not(.page-light) .top:
   .ln-hero-in { padding-top: 110px; align-self: end; }
   .ln-hero-foot { flex-direction: column; align-items: flex-start; }
   .ln-srcs { gap: 8px 16px; }
-  .ln-facts, .pz, .cz, .dc-grid { grid-template-columns: minmax(0, 1fr); }
+  .ln-facts, .cz, .dc-grid { grid-template-columns: minmax(0, 1fr); }
   .ln-trust .ln-link-w { margin-top: 4px; }
 .tr-grid { grid-template-columns: minmax(0, 1fr); }
   .tr, .tr + .tr { padding: 20px 0 16px; border-left: 0; border-bottom: 1px solid var(--b200); }
