@@ -1,3 +1,4 @@
+import Capabilities from "./Capabilities";
 // Converted from the original static page. Markup only: behaviour lives in lib/platform/.
 export default function Main() {
   return (
@@ -223,6 +224,7 @@ export default function Main() {
     
   </div>
 </section>
+      <Capabilities />
       {" "}
       <section className="band" id="platform" aria-labelledby="platform-title">
         {" "}
