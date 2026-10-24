@@ -1064,6 +1064,19 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
 .mnav { isolation: isolate; background: #141A2B !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 .mnav::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 42% 62% at 88% 46%, rgba(20,26,43,.82), rgba(20,26,43,.35) 70%, rgba(20,26,43,0)); }
 .mnav-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+
+/* Articles: same card grid as Research and Case studies */
+#pg-research .ar-list { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px !important; }
+#pg-research .ar-row, #pg-research .ar-feat { display: flex !important; flex-direction: column; gap: 10px !important; align-items: stretch; padding: 0 0 24px !important; margin: 0 !important; border: 0 !important; background: var(--ap-card); border-radius: 22px !important; overflow: hidden; cursor: pointer; box-shadow: 0 1px 2px rgba(31,39,63,.04), 0 12px 32px -22px rgba(31,39,63,.3) !important; transition: transform .5s var(--ap-ease), box-shadow .5s var(--ap-ease); }
+#pg-research .ar-row:hover, #pg-research .ar-feat:hover { transform: translateY(-4px) scale(1.012); box-shadow: 0 2px 4px rgba(31,39,63,.05), 0 24px 48px -24px rgba(31,39,63,.38) !important; }
+#pg-research .ar-row .ar-art, #pg-research .ar-feat .ar-feat-art { order: -1; border-radius: 0 !important; box-shadow: none !important; margin: 0 0 8px !important; aspect-ratio: 3 / 2; height: auto !important; min-height: 0 !important; }
+#pg-research .ar-row .ar-art svg, #pg-research .ar-feat .ar-feat-art svg { width: 100%; height: 100%; display: block; }
+#pg-research .ar-row .ar-body, #pg-research .ar-feat .ar-feat-body { display: flex; flex-direction: column; gap: 10px; padding: 0 24px !important; }
+#pg-research .ar-row h3, #pg-research .ar-feat h3 { font-size: 1.3rem !important; line-height: 1.2 !important; text-decoration: none !important; margin: 0; }
+#pg-research .ar-row p:not(.rs-meta), #pg-research .ar-feat p:not(.rs-meta) { color: var(--ap-sub); font-size: .98rem !important; line-height: 1.5 !important; margin: 0; }
+#pg-research .ar-row .rs-meta { order: -1; }
+@media (max-width: 860px) { #pg-research .ar-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { #pg-research .ar-list { grid-template-columns: 1fr; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
