@@ -1097,11 +1097,11 @@ body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96)
 #pg-contact .ct-box > * { margin: 0 !important; }
 
 /* about: white bands */
-#pg-about-us .pg-sec[aria-labelledby="believe-h"] .card, #pg-about-us .pg-sec[aria-labelledby="hl-h"] .hl-card { background: #1F273F !important; border-color: #1F273F !important; box-shadow: 0 24px 50px -34px rgba(31,39,63,.7) !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
-#pg-about-us .pg-sec[aria-labelledby="believe-h"], #pg-about-us .pg-sec[aria-labelledby="hl-h"] { position: relative; background: #fff; box-shadow: 0 0 0 100vmax #fff; clip-path: inset(0 -100vmax); padding-block: clamp(56px, 7vw, 96px) !important; }
-#pg-about-us .pg-sec[aria-labelledby="believe-h"] h2, #pg-about-us .pg-sec[aria-labelledby="hl-h"] h2 { color: #1F273F !important; }
-#pg-about-us .pg-sec[aria-labelledby="believe-h"] h2 .acc, #pg-about-us .pg-sec[aria-labelledby="hl-h"] h2 .acc, #pg-about-us .pg-sec[aria-labelledby="believe-h"] h2 span, #pg-about-us .pg-sec[aria-labelledby="hl-h"] h2 span { color: #4362B2 !important; }
-#pg-about-us .pg-sec[aria-labelledby="believe-h"] > p, #pg-about-us .pg-sec[aria-labelledby="hl-h"] > p, #pg-about-us .pg-sec[aria-labelledby="believe-h"] > header p, #pg-about-us .pg-sec[aria-labelledby="hl-h"] > header p, #pg-about-us .pg-sec[aria-labelledby="believe-h"] > div:first-child p, #pg-about-us .pg-sec[aria-labelledby="hl-h"] > div:first-child p { color: #3D4559 !important; }
+#pg-about-us .pg-sec[aria-labelledby="believe-h"] .card { background: #1F273F !important; border-color: #1F273F !important; box-shadow: 0 24px 50px -34px rgba(31,39,63,.7) !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
+#pg-about-us .pg-sec[aria-labelledby="believe-h"] { position: relative; background: #fff; box-shadow: 0 0 0 100vmax #fff; clip-path: inset(0 -100vmax); padding-block: clamp(56px, 7vw, 96px) !important; }
+#pg-about-us .pg-sec[aria-labelledby="believe-h"] h2 { color: #1F273F !important; }
+#pg-about-us .pg-sec[aria-labelledby="believe-h"] h2 .acc, #pg-about-us .pg-sec[aria-labelledby="believe-h"] h2 span { color: #4362B2 !important; }
+#pg-about-us .pg-sec[aria-labelledby="believe-h"] > p, #pg-about-us .pg-sec[aria-labelledby="believe-h"] > header p, #pg-about-us .pg-sec[aria-labelledby="believe-h"] > div:first-child p { color: #3D4559 !important; }
 
 /* about: team without people */
 #pg-about-us .team { grid-template-columns: minmax(0, 1fr) !important; justify-items: center; text-align: center; padding-block: 0; }
