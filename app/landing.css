@@ -526,3 +526,20 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 @media (max-width: 620px) { .v3-rel { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .v3-tick ul, .net-loop { animation: none; } }
 .v3-net { padding-top: 8px; }
+/* why Verisavo exists (replaces the problem block) */
+.v3-big { margin-top: 26px; max-width: 30ch; font: 400 clamp(1.8rem, 1rem + 2.5vw, 3.15rem)/1.2 var(--serif); letter-spacing: -.02em; color: #fff; text-wrap: pretty; }
+.v3-big .w { color: rgba(255,255,255,.18); transition: color .35s; }
+.v3-big .w.on { color: #fff; }
+.v3-big > span .w.on { color: var(--b400); }
+.v3-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: clamp(48px, 6vw, 72px); padding-top: 28px; border-top: 1px solid rgba(168,198,232,.22); }
+.v3-facts div { display: grid; gap: 10px; align-content: start; }
+.v3-facts b { font: 500 clamp(2.4rem, 1.7rem + 2vw, 3.4rem)/1 var(--sans); letter-spacing: -.05em; color: #fff; }
+.v3-facts span { font-size: .95rem; line-height: 1.55; color: var(--b300); max-width: 30ch; }
+.v3-lad-h { display: flex; justify-content: space-between; margin-top: clamp(64px, 8vw, 96px); font: 500 .62rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--b400); }
+.v3-lad-h span:last-child { color: var(--b500); }
+.v3-prob .v3-ladder { margin-top: 18px; }
+.v3-ladder li { border-radius: 10px 10px 0 0; border: 1px solid rgba(168,198,232,.16); border-bottom: 0; transition: background-color .3s, border-color .3s; }
+.v3-ladder li:hover { border-color: rgba(168,198,232,.45); }
+.v3-ladder .v3-top { border: 1px solid rgba(255,255,255,.7); border-bottom: 0; box-shadow: 0 -20px 60px -20px rgba(128,170,220,.45); }
+@media (max-width: 760px) { .v3-facts { grid-template-columns: minmax(0, 1fr); gap: 22px; } .v3-ladder li { border-radius: 0; border-width: 1px 0 0; } }
+@media (prefers-reduced-motion: reduce) { .v3-big .w { color: #fff; } .v3-big > span .w { color: var(--b400); } }
