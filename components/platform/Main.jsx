@@ -319,21 +319,7 @@ export default function Main() {
       {" "}
       
       {" "}
-<section className="sec status" id="status" aria-labelledby="status-title">
-  <div className="wrap">
-    <div className="sec-head">
-      <p className="eyebrow">Where we are</p>
-      <h2 id="status-title">What is available now.</h2>
-      <p className="lead">We would rather be clear about what works today than overpromise.</p>
-    </div>
-    <div className="stat-grid">
-      <div className="stat"><span className="chip-s s-on">Available</span><ul><li>Ask market questions</li><li>Answers with sources</li><li>Fact, Inference and Unknown labels</li><li>Intelligence Gaps</li></ul></div>
-      <div className="stat"><span className="chip-s s-dev">In development</span><ul><li>SavoScouts investigations</li><li>Market Intelligence Network</li><li>Market Memory</li></ul></div>
-      <div className="stat"><span className="chip-s s-plan">Planned</span><ul><li>Market Simulation</li></ul></div>
-    </div>
-    <p className="price-line">Start free with 5 questions. Verisavo Monthly is $6.99 a month. <button type="button" className="linkbtn" data-href="/#pricing">See pricing</button></p>
-  </div>
-</section>
+
       {" "}
       <div className="cta-wrap">
         {" "}
