@@ -589,3 +589,15 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
   .hm li { grid-template-columns: 40px minmax(0, 1fr); gap: 8px 14px; padding: 24px 0; }
   .hm-b { grid-column: 2; }
 }
+/* why Verisavo exists: statement over a market in motion */
+.v3-why2 { background: #fff; padding-block: clamp(80px, 10vw, 130px) clamp(80px, 10vw, 120px); }
+.v3-why2 .v3-big { color: var(--i9); max-width: 32ch; }
+.v3-why2 .v3-big .w { color: rgba(31,39,63,.16); }
+.v3-why2 .v3-big .w.on { color: var(--i9); }
+.v3-why2 .v3-big > span .w.on { color: var(--b600); }
+.ms-frame { position: relative; margin-top: clamp(40px, 6vw, 64px); aspect-ratio: 2 / 1; border-radius: 18px; overflow: hidden; background: #E6EDF8; box-shadow: 0 0 0 1px var(--b200); }
+.ms-frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ms-cap { position: absolute; left: 18px; bottom: 16px; font: 500 .6rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--b700); background: rgba(255,255,255,.7); padding: 7px 9px; border-radius: 4px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ms-off { background: linear-gradient(180deg, #E6EDF8, #C4D1E8); }
+@media (max-width: 760px) { .ms-frame { aspect-ratio: 4 / 3.4; border-radius: 14px; } }
+@media (prefers-reduced-motion: reduce) { .v3-why2 .v3-big .w { color: var(--i9); } .v3-why2 .v3-big > span .w { color: var(--b600); } }

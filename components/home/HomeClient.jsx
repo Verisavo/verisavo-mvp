@@ -14,6 +14,7 @@ export default function HomeClient() {
       (await import("@/lib/home/soon")).default();
       (await import("@/lib/home/site")).default();
       (await import("@/lib/home/cases")).default();
+      window.THREE = await import("three");
       (await import("@/lib/home/landing")).default();
       (await import("@/lib/home/header")).default();
       (await import("@/lib/sound")).default();
