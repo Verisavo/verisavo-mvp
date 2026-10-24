@@ -1088,6 +1088,13 @@ body.page-open:not(.page-light) .pill { background: rgba(255,255,255,.06) !impor
 /* Header bar always solid on inner pages and detail views, so content never scrolls under the logo */
 body.page-open:not(.menu-open) .top::before, body.rd-open:not(.menu-open) .top::before { display: block !important; opacity: 1 !important; }
 body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96) !important; box-shadow: 0 1px 0 rgba(31,39,63,.08) !important; }
+
+/* contact box */
+#pg-contact .ct-box { border: 1.5px solid rgba(168,198,232,.6); border-radius: 22px; padding: clamp(24px, 4vw, 52px); max-width: 920px; margin-top: 8px; background: rgba(255,255,255,.02); }
+#pg-contact .ct-box .pg-head { margin-top: 0; padding-top: 0; }
+#pg-contact .ct-box .cform { margin-bottom: 0; }
+#pg-contact .ct-box { display: grid; gap: clamp(32px, 4vw, 52px); }
+#pg-contact .ct-box > * { margin: 0 !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }

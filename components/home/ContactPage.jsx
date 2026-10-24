@@ -7,6 +7,7 @@ export default function ContactPage() {
         {" "}
         <button type="button" className="pg-link pg-back" data-back=""><span aria-hidden="true">{"←"}</span>{" Back"}</button>
         {" "}
+        <div className="ct-box">
         <header className="pg-head"><h1 id="contact-h"><span className="acc">{"Get"}</span>{" in touch"}</h1></header>
         {" "}
         <div className="info3">
@@ -58,6 +59,7 @@ export default function ContactPage() {
           {" "}
         </form>
         {" "}
+        </div>
         <footer className="pg-foot">
           {" "}
           <div className="foot-brand">
