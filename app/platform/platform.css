@@ -1278,6 +1278,16 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 @media (max-width: 860px) { .ax-tl { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ax-tb:nth-child(3) { border-left: 0; } .ax-tb:nth-child(n+3) { border-top: 1px solid #E3EBF8; } .ax-tp { grid-template-columns: minmax(0, 1fr); min-height: 0; } }
 
 /* inside an answer v2 */
+.ax-gm-h { font: 600 13px var(--sans); fill: #1F273F; }
+.ax-gm-z { fill: #F6F8FC; stroke: #A8C6E8; stroke-width: 1.5; stroke-dasharray: 5 5; }
+.ax-gm-zl { font: 600 11.5px var(--sans); fill: #4362B2; }
+.ax-gm-d { stroke: #D5DCE8; stroke-width: 1; stroke-dasharray: 3 4; }
+.ax-gm-m { fill: #1F273F; stroke: #fff; stroke-width: 3; } .ax-gm-ml { font: 600 11.5px var(--sans); fill: #1F273F; }
+.ax-gm-o { fill: #4362B2; } .ax-gm-x { fill: #A8C6E8; } .ax-gm-u { fill: #fff; stroke: #80AADC; stroke-width: 1.5; stroke-dasharray: 2.5 2; }
+.ax-gm-q { font: 700 22px var(--display, var(--sans)); fill: #80AADC; }
+.ax-gm-lg { font: 400 11px var(--sans); fill: #4A5468; }
+.ax-u { display: inline-block; margin-right: 6px; font: 600 .6875rem/1 var(--sans); color: #1F273F; padding: 5px 8px; border-radius: 999px; box-shadow: inset 0 0 0 1px #A8C6E8; vertical-align: 2px; }
+.ax-ex2 { border-top: 0 !important; padding-top: 0 !important; margin-top: 10px !important; }
 .ax-sub { margin: 0 0 8px !important; font-weight: 600; color: #1F273F !important; }
 .ax-ex { margin: 14px 0 0 !important; padding-top: 12px; border-top: 1px solid #E3EBF8; font-size: .9375rem !important; color: #4A5468 !important; }
 .ax-ex b { color: #1F273F; }
