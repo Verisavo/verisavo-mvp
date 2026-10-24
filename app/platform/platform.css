@@ -1007,6 +1007,13 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
   .va-scope { white-space: nowrap; }
   .va-row textarea { font-size: 1rem !important; padding: 10px 4px !important; min-height: 64px !important; }
 }
+
+/* suggestion cards: solid backgrounds so the dotted floor does not show through */
+.va-main:not(.va-dark) .va-sugg { background: #FFFFFF !important; }
+.va-main.va-dark .va-sugg { background: #232C47 !important; border-color: rgba(168,198,232,.2) !important; }
+.va-main.va-dark .va-sugg:hover { background: #283252 !important; }
+.va-main.va-dark .va-composer { background: #1A2136 !important; }
+.va-main.va-dark .va-bed { opacity: .55; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
