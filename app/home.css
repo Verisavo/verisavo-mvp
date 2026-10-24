@@ -1082,3 +1082,25 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
   .ca-team { grid-column: 1; grid-row: 2; } .ca-loc { grid-column: 2; grid-row: 2; }
   .ca-go { grid-column: 4; grid-row: 1; }
 }
+
+/* Careers: expandable role details */
+.ca-list { list-style: none; }
+.ca-job { border-bottom: 1px solid rgba(255,255,255,.1); }
+.ca-job summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) 150px 130px 24px; gap: 20px; align-items: baseline; padding: 20px 4px; transition: background-color .2s; }
+.ca-job summary::-webkit-details-marker { display: none; }
+.ca-job summary:hover { background: rgba(255,255,255,.04); }
+.ca-job .ca-go { font-size: 1.3rem; line-height: 1; transition: transform .25s; }
+.ca-job[open] .ca-go { transform: rotate(45deg); color: #fff; }
+.ca-jd { display: grid; gap: 10px; padding: 4px 4px 32px; max-width: 72ch; }
+.ca-jd h3 { margin: 16px 0 0; font: 600 1rem/1.3 var(--sans) !important; color: #fff !important; letter-spacing: 0 !important; }
+.ca-jd p, .ca-jd li { font-size: 1rem !important; line-height: 1.65 !important; color: #C9D3E4 !important; }
+.ca-jd ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.ca-jd .ca-meta { margin: 0; font-size: .9375rem !important; color: var(--b300) !important; }
+.ca-jd .obtn { justify-self: start; margin-top: 18px; }
+.ca-jd li { border: 0 !important; padding: 0 !important; }
+.ca-jd .obtn { width: auto !important; display: inline-flex !important; justify-content: center; padding-inline: 18px !important; }
+.ca-eq { margin-top: 16px; font-size: .9375rem !important; color: var(--b300) !important; max-width: 72ch; }
+@media (max-width: 720px) {
+  .ca-job summary { grid-template-columns: auto auto minmax(0, 1fr) 24px; column-gap: 14px; row-gap: 8px; }
+  .ca-job .ca-role { grid-column: 1 / 4; } .ca-job .ca-team { grid-column: 1; grid-row: 2; } .ca-job .ca-loc { grid-column: 2; grid-row: 2; } .ca-job .ca-go { grid-column: 4; grid-row: 1; }
+}
