@@ -1059,6 +1059,11 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
   .ca-job .ca-role { grid-column: 1 / 4; } .ca-job .ca-team { grid-column: 1; grid-row: 2; } .ca-job .ca-loc { grid-column: 2; grid-row: 2; } .ca-job .ca-go { grid-column: 4; grid-row: 1; }
 }
 
+
+/* Menu background: data streams (same as the Product page) */
+.mnav { isolation: isolate; background: #141A2B !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.mnav::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 42% 62% at 88% 46%, rgba(20,26,43,.82), rgba(20,26,43,.35) 70%, rgba(20,26,43,0)); }
+.mnav-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
