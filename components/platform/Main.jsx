@@ -261,12 +261,12 @@ export default function Main() {
       <h2 id="uses-title">Questions teams bring to Verisavo.</h2>
     </div>
     <div className="uc-grid">
-      <a className="uc" href="/docs.html#asking-questions"><h3>Where to launch first</h3><p>Compare cities and neighbourhoods on demand, competition and reach.</p><span className="uc-go" aria-hidden="true">→</span></a>
-      <a className="uc" href="/docs.html#intelligence-graph"><h3>Why sales changed</h3><p>Trace a shift in sales to prices, supply, competitors or customers.</p><span className="uc-go" aria-hidden="true">→</span></a>
-      <a className="uc" href="/docs.html#signals"><h3>Who you compete with</h3><p>See who sells nearby, at what price and through which channels.</p><span className="uc-go" aria-hidden="true">→</span></a>
-      <a className="uc" href="/docs.html#savoscouts"><h3>How far distribution reaches</h3><p>Find where your product is on shelves and where it runs out.</p><span className="uc-go" aria-hidden="true">→</span></a>
-      <a className="uc" href="/docs.html#evidence"><h3>How to price</h3><p>Compare your prices with what people pay, place by place.</p><span className="uc-go" aria-hidden="true">→</span></a>
-      <a className="uc" href="/docs.html#market-memory"><h3>How customers are changing</h3><p>Notice shifts in what people buy, where and why.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/?case=axiom#research"><h3>Where to launch first</h3><p>Compare cities and neighbourhoods on demand, competition and reach.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/?case=nexa#research"><h3>Why sales changed</h3><p>Trace a shift in sales to prices, supply, competitors or customers.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/?case=tamu#research"><h3>Who you compete with</h3><p>See who sells nearby, at what price and through which channels.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/?case=mova#research"><h3>How far distribution reaches</h3><p>Find where your product is on shelves and where it runs out.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/?case=kora#research"><h3>How to price</h3><p>Compare your prices with what people pay, place by place.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/?case=rubiza#research"><h3>How customers are changing</h3><p>Notice shifts in what people buy, where and why.</p><span className="uc-go" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
