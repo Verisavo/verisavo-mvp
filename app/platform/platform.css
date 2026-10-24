@@ -1276,6 +1276,21 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .ax-mem-c { margin: 4px 0 0; font-size: .9rem; line-height: 1.55; color: #4A5468; } .ax-mem-c b { color: #1F273F; }
 .ax-mem .ax-dev { justify-self: start; margin-top: 2px; }
 @media (max-width: 860px) { .ax-tl { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ax-tb:nth-child(3) { border-left: 0; } .ax-tb:nth-child(n+3) { border-top: 1px solid #E3EBF8; } .ax-tp { grid-template-columns: minmax(0, 1fr); min-height: 0; } }
+
+/* inside an answer v2 */
+.ax-sub { margin: 0 0 8px !important; font-weight: 600; color: #1F273F !important; }
+.ax-ex { margin: 14px 0 0 !important; padding-top: 12px; border-top: 1px solid #E3EBF8; font-size: .9375rem !important; color: #4A5468 !important; }
+.ax-ex b { color: #1F273F; }
+.ax-sum3 { list-style: none; margin: 14px auto 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; max-width: 460px; font-size: .875rem; color: #4A5468; }
+.ax-sum3 b { font: 600 1.05rem/1 var(--display, var(--sans)); color: #1F273F; margin-right: 4px; }
+.ax-net { display: block; width: 100%; height: auto; }
+.ax-nl { stroke: #80AADC; stroke-width: 1.6; stroke-dasharray: 5 5; }
+.ax-nh { fill: #1F273F; } .ax-nht { font: 600 14px var(--sans); fill: #fff; }
+.ax-nn { fill: #fff; stroke: #A8C6E8; } .ax-nt { font: 500 12.5px var(--sans); fill: #1F273F; }
+.ax-wide { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: none; }
+.ax-wide .ax-tile-v { border-bottom: 0; border-right: 1px solid #E3EBF8; }
+.ax-wide .ax-tile-t { align-self: center; }
+@media (max-width: 860px) { .ax-wide { grid-template-columns: minmax(0, 1fr); } .ax-wide .ax-tile-v { border-right: 0; border-bottom: 1px solid #E3EBF8; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
