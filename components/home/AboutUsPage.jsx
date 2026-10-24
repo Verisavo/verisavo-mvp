@@ -23,29 +23,7 @@ export default function AboutUsPage() {
           {" "}
         </header>
         {" "}
-        <div className="pg-sec">
-          {" "}
-          <div className="collage" id="collage" aria-label="Views of the illustrated market">
-            {" "}
-            <figure style={{ left: "1%", top: "8%", "--r": "-5deg" }}><div className="pz pz0"><img alt="" data-view="0" /><figcaption>{"Market rows"}</figcaption></div></figure>
-            {" "}
-            <figure style={{ left: "20%", top: "42%", "--r": "3deg" }}>
-              <div className="pz pz1"><img alt="" data-view="1" /><figcaption>{"Wholesale depot"}</figcaption></div>
-            </figure>
-            {" "}
-            <figure style={{ left: "38%", top: "0%", "--r": "-2deg" }}>
-              <div className="pz pz2"><img alt="" data-view="2" /><figcaption>{"Back-lane kiosks"}</figcaption></div>
-            </figure>
-            {" "}
-            <figure style={{ left: "54%", top: "38%", "--r": "5deg" }}><div className="pz pz3"><img alt="" data-view="3" /><figcaption>{"Bus park"}</figcaption></div></figure>
-            {" "}
-            <figure style={{ left: "71%", top: "4%", "--r": "-4deg" }}><div className="pz pz4"><img alt="" data-view="4" /><figcaption>{"High street"}</figcaption></div></figure>
-            {" "}
-          </div>
-          {" "}
-          <p className="collage-note">{"Views of the illustrated market used throughout this site"}</p>
-          {" "}
-        </div>
+        
         {" "}
         <section className="pg-sec" aria-labelledby="believe-h">
           {" "}
