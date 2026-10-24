@@ -233,7 +233,6 @@ export default function Main() {
       {" "}
 
       {" "}
-      <section className="sec qd" id="trust" aria-labelledby="qd-title"><div className="wrap"><div className="qd-head"><h2 id="qd-title">From question to decision</h2><p className="lead">What happens after you ask Verisavo a question.</p></div><ol className="qd-steps"><li><span className="qd-n">01</span><h3>Ask</h3><p>Ask in plain language on the web or on WhatsApp, and add your own files when they help.</p></li><li><span className="qd-n">02</span><h3>Gather</h3><p>Verisavo brings together relevant evidence from your company data, public records, digital platforms and research.</p></li><li><span className="qd-n">03</span><h3>Answer</h3><p>You see what the evidence supports, where it comes from and how reliable it is, with uncertainties kept visible.</p></li><li><span className="qd-n">04</span><h3>Decide</h3><p>Where the evidence falls short, Verisavo names the Intelligence Gap and what would close it. The decision stays with your team.</p></li></ol></div></section>
       {" "}
       
       {" "}
