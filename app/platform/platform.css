@@ -901,7 +901,6 @@ h1, h2, .va-hello h2, .faq-intro h2 { font-family: var(--display) !important; fo
 .foot-bar { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .progress li { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.894rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .preview small { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.894rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
-.mnav button, .mnav a { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.845rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 /* <<< menu-match */
 /* Menu button (same as the homepage) */
 .vmenu { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }

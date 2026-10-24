@@ -1021,7 +1021,6 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
 .rs-detail.rd-light .cx-brief h2 { font-family: var(--sans) !important; font-size: .9375rem !important; font-weight: 600 !important; letter-spacing: 0 !important; text-transform: none !important; }
 .pg p { line-height: 1.65; }
 .pill > button { font: 500 .875rem/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
-.mnav button, .mnav a { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.845rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .sources .lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .ch .eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .scroll button { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
