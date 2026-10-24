@@ -681,3 +681,52 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 
 /* closing headline: one sentence per line on wide screens */
 .ln .ln-close h2 { max-width: 30ch; font-size: clamp(2rem, 1.1rem + 2.6vw, 3.4rem); text-wrap: balance; }
+
+/* ---------- Footer, redesigned ---------- */
+.lf { position: relative; overflow: hidden; isolation: isolate; padding-block: clamp(72px, 9vw, 120px) calc(28px + env(safe-area-inset-bottom, 0px)); background: var(--i10); }
+.lf::before { content: ""; position: absolute; z-index: -1; inset: 0 0 auto; height: 1px; background: linear-gradient(90deg, transparent, rgba(128,170,220,.35), transparent); }
+.lf::after { content: ""; position: absolute; z-index: -1; left: 50%; bottom: -30%; width: 120%; height: 70%; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(77,116,195,.16), transparent 70%); pointer-events: none; }
+.lf .ln-wrap { gap: 0; }
+.lf .lf-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 48px; align-items: start; }
+.lf .lf-logo { font-size: 1.6rem; }
+.lf .lf-brand p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--b300); max-width: 28ch; }
+.lf .lf-cols { gap: 32px; }
+.lf .lf-cols div { gap: 14px; }
+.lf .lf-cols h3 { margin-bottom: 8px; color: var(--b400); }
+.lf .lf-cols a, .lf .lf-cols button { position: relative; font-size: .975rem; color: var(--b200); transition: color .2s; }
+.lf .lf-cols a::after, .lf .lf-cols button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+.lf .lf-cols a:hover, .lf .lf-cols button:hover { color: #fff; }
+.lf .lf-cols a:hover::after, .lf .lf-cols button:hover::after { transform: scaleX(1); }
+.lf-mark { margin: clamp(56px, 8vw, 104px) 0 0; font: 600 clamp(4.5rem, 19vw, 17rem)/.8 var(--sans); letter-spacing: -.07em; text-align: center; white-space: nowrap; user-select: none;
+  background: linear-gradient(180deg, rgba(168,198,232,.22) 0%, rgba(168,198,232,.06) 70%, rgba(168,198,232,0) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lf .lf-bar { position: relative; margin-top: clamp(-28px, -2vw, -12px); padding-top: 22px; border-top: 1px solid rgba(255,255,255,.08); }
+.lf .lf-bar nav { align-items: center; }
+.lf-top-btn { display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px !important; border: 1px solid rgba(168,198,232,.25) !important; border-radius: 999px; }
+.lf-top-btn:hover { border-color: rgba(255,255,255,.6) !important; }
+@media (max-width: 760px) {
+  .lf .lf-top { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .lf .lf-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .lf .lf-bar { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 420px) { .lf .lf-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 32px; } }
+
+/* spread: footer runs wider than the page content */
+.lf .ln-wrap { max-width: 1440px; padding-inline: clamp(20px, 5vw, 72px); }
+.lf .lf-top { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+.lf .lf-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); justify-items: end; }
+.lf .lf-cols div { min-width: 140px; }
+@media (max-width: 760px) { .lf .lf-cols { justify-items: start; } }
+
+/* footer: final responsive rules and quieter wordmark */
+.lf-mark { background: linear-gradient(180deg, rgba(168,198,232,.13) 0%, rgba(168,198,232,.04) 65%, rgba(168,198,232,0) 100%); -webkit-background-clip: text; background-clip: text; }
+.lf .lf-bar { align-items: center; }
+@media (max-width: 860px) {
+  .lf .lf-top { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .lf .lf-cols { justify-items: start; }
+  .lf .lf-cols div { min-width: 0; }
+}
+@media (max-width: 520px) {
+  .lf .lf-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
+  .lf .lf-bar { flex-direction: column; align-items: flex-start; }
+}
+.lf-mark { font-size: clamp(4.5rem, 20.5vw, 23rem); margin-left: -.04em; margin-right: -.04em; }
