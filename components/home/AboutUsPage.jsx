@@ -81,11 +81,10 @@ export default function AboutUsPage() {
         <section className="team" aria-labelledby="team-h">
           {" "}
           <div className="team-copy">
-            <h2 id="team-h">{"Our "}<span className="acc">{"Team"}</span></h2>
-            <p>{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development, and ground-level intelligence."}</p>
-            <p>{"We combine technology with local market knowledge to connect fragmented information, verify evidence, and deliver actionable market intelligence."}</p>
-            <p>{"Working closely with businesses, researchers, and local communities, we help organisations better understand and navigate African markets."}</p>
-            <p>{"Our mission is not just to build AI. It is to create the connected intelligence layer for African markets."}</p>
+            <p className="lab">{"Team"}</p>
+            <h2 id="team-h"><span className="acc">{"Our"}</span>{" Team"}</h2>
+            <p className="lead">{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and ground-level intelligence. We combine technology with local market knowledge to connect fragmented information, verify evidence and deliver actionable market intelligence."}</p>
+            <p>{"We work closely with businesses, researchers and local communities to help organisations better understand and navigate African markets. Our mission is not just to build AI. It is to create the connected intelligence layer for African markets."}</p>
           </div>
           {" "}
         </section>

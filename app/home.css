@@ -1121,6 +1121,15 @@ body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96)
 #pg-about-us .pg-head > :not(.about-bg) { position: relative; z-index: 1; }
 #pg-about-us .about-bg { position: absolute; z-index: 0; pointer-events: none; max-width: none; }
 #pg-about-us .pg-in { overflow-x: clip; }
+
+/* about: team styled like the page header, on the right */
+#pg-about-us .team { justify-items: end !important; text-align: left !important; }
+#pg-about-us .team .team-copy { justify-items: start !important; max-width: 720px !important; width: 100%; gap: 0 !important; }
+#pg-about-us .team .lab { margin: 0 0 14px !important; font-size: 12.9px !important; color: #A8C6E8 !important; }
+#pg-about-us .team #team-h { font-size: clamp(3rem, 2rem + 3.4vw, 4.6rem) !important; line-height: .98 !important; letter-spacing: -.005em !important; margin: 0 0 22px !important; }
+#pg-about-us .team #team-h .acc { color: #80AADC !important; }
+#pg-about-us .team .team-copy p:not(.lab) { font-size: 1.0625rem !important; line-height: 1.7 !important; color: #C9D3E4 !important; margin: 0 0 16px !important; max-width: 720px; }
+@media (max-width: 760px) { #pg-about-us .team { justify-items: stretch !important; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
