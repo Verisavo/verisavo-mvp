@@ -100,37 +100,6 @@ export default function AboutUsPage() {
           {" "}
         </section>
         {" "}
-        <section className="pg-sec" aria-labelledby="flow-h">
-          {" "}
-          <div className="intro">
-            <h2 id="flow-h">{"From market reality to "}<span className="acc">{"human decision"}</span></h2>
-            <p>
-              {"Each layer has its own job. Together they turn scattered observations into an understanding a team can act on."}
-            </p>
-          </div>
-          {" "}
-        </section>
-        {" "}
-        <section className="split2" aria-label="Africa and SavoScouts">
-          {" "}
-          <div className="glass">
-            <p className="lab">{"Why Africa"}</p>
-            <h2>{"Africa is not "}<span className="acc">{"one market"}</span></h2>
-            <p>
-              {"Fifty-four countries, thousands of cities and local economies, many languages, regulatory systems, distribution networks and ways of buying. That diversity is why Verisavo exists, and why every answer should define the geography it applies to."}
-            </p>
-          </div>
-          {" "}
-          <div className="glass">
-            <p className="lab">{"SavoScouts"}</p>
-            <h2>{"Intelligence from "}<span className="acc">{"the ground"}</span></h2>
-            <p>
-              {"Some market realities are poorly documented, especially in informal markets. When an Intelligence Gap could change a decision, Verisavo can gather targeted Ground-Level Intelligence through SavoScouts, its governed contributor network. Observations are designed to be geo-tagged, time-stamped and verified before they become evidence."}
-            </p>
-          </div>
-          {" "}
-        </section>
-        {" "}
         <section className="team" aria-labelledby="team-h">
           {" "}
           <div className="team-people">
