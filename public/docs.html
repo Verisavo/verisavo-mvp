@@ -6,7 +6,7 @@
 <title>Verisavo Docs</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
 <style>
 /* Layout: three-column documentation shell. Sidebar of guides, a reading column near 68ch, and an on-this-page rail. */
 :root {
@@ -192,6 +192,20 @@ dl.gloss dd { color: var(--body); }
 .toc a:hover { color: var(--ink); }
 .toc a.on { color: var(--accent-ink); border-left-color: var(--accent); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+/* >>> type */
+
+:root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
+.doc h1 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; font-size: clamp(2.6rem, 1.9rem + 2vw, 3.4rem) !important; line-height: 1 !important; }
+.doc h2 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; font-size: 2rem !important; line-height: 1.05 !important; }
+.flow-t, .flow-th { font-family: var(--sans); }
+.flow-n, .flow-nh { font: 600 13px var(--display) !important; letter-spacing: .02em !important; }
+.side h4 { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.crumb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.9rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.tbl thead th { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.prompt-h { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.pager a small { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.toc h5 { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+/* <<< type */
 </style>
 
 <header class="top">

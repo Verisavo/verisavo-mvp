@@ -730,3 +730,59 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
   .lf .lf-bar { flex-direction: column; align-items: flex-start; }
 }
 .lf-mark { font-size: clamp(4.5rem, 20.5vw, 23rem); margin-left: -.04em; margin-right: -.04em; }
+
+/* >>> type */
+
+.ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
+.ln h1, .ln h2, .ln .ms-l, .ln .v3-big, .ln .ln-big { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; }
+.ln .v3-hero h1 { font-size: clamp(3.3rem, 1.6rem + 5.6vw, 6.6rem) !important; line-height: .94 !important; }
+.ln h2 { line-height: 1 !important; }
+.ln .ms-l { font-size: clamp(2rem, 1.05rem + 3vw, 3.7rem) !important; line-height: 1.02 !important; }
+.ln .ln-close h2 { font-size: clamp(2.3rem, 1.2rem + 3vw, 4rem) !important; max-width: 34ch !important; }
+.ln .net-cols text, .ln .net-memt { font: 600 12px var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
+.ln .net-scroll::after { font: 500 .8125rem/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
+.ln .v3-lede { font-size: clamp(1.05rem, .98rem + .35vw, 1.22rem); line-height: 1.65; }
+.ln .hm-n { font: 600 1.6rem/1 var(--display) !important; letter-spacing: 0 !important; color: var(--b500); }
+.ln .hm-t { font: 600 1.85rem/1.05 var(--display) !important; letter-spacing: -.005em !important; }
+.ln .hm-b h3 { font: 600 1.06rem/1.4 var(--sans) !important; letter-spacing: -.01em !important; }
+.ln .hm-b p, .ln .v3-net-note { line-height: 1.7; }
+.ln .v3-trust h3 { font: 600 1.7rem/1.05 var(--display) !important; letter-spacing: -.005em !important; }
+.ln .v3-n { font: 600 .875rem/1 var(--sans) !important; color: var(--b500); }
+.ln .v3-n::after { content: " ·"; }
+.ln .net-svg text { font-family: var(--sans) !important; letter-spacing: 0 !important; }
+.lf .lf-cols h3 { font: 600 .9rem/1.2 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; color: #fff !important; }
+.lf .lf-bar { font: 400 .875rem/1.4 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
+.lf .lf-bar button { font: inherit !important; letter-spacing: 0 !important; text-transform: none !important; }
+.lf .lf-mark { font-family: var(--display) !important; font-weight: 700 !important; letter-spacing: -.01em !important; font-size: clamp(6rem, 29vw, 30rem) !important; line-height: .78 !important; }
+.ln-eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ln-kicker { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ln-srcs { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ln-illus { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.mk-bar { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.vr-f dt, .ob-f dt { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.vr-rel { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.vr-stamp { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.mm-k { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.mm-d { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.an-gap span { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.an-src { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ch-ev summary { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.832rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ch-ev b { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.gp span { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.gp em { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ob-ch li { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.mk-foot { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.dc-sectors { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.9rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.cz-meta { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.cz-stats span { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ln-chips button { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.lf-cols h3 { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.lf-bar { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.v3-kick { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.832rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.v3-tick-lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.v3-axes { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.v3-lad-h { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.hw-k { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ms-cap { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ms-eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+/* <<< type */

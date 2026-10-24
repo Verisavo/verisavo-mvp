@@ -1010,3 +1010,39 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
 #pg-research .ar-body .cs-read { color: var(--ap-accent); }
 #rd-tag[hidden] { display: none !important; }
 /* <<< research-cases */
+
+/* >>> type */
+
+:root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
+.pg h1, .pg h2, .hero h1, .ch h2, .split h2, .va h2, .rs-detail h1, .rs-detail h2, .ar-sec h2, .cx-sec h2, .cx-close h2, #pg-research h1, #pg-research h2, .cs-intro h2 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; line-height: 1.02 !important; }
+.pg h1, #pg-research h1, .rs-detail h1 { line-height: .98 !important; }
+.cs-card h3, .rs-card h3, .ar-feat-body h3, .hl-body h3, #pg-research .rs-card h3, #pg-research .cs-card h3, #pg-research .ar-feat-body h3 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; font-size: clamp(1.45rem, 1.2rem + .6vw, 1.75rem) !important; line-height: 1.08 !important; }
+.pr-price, .cx-stat b { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: 0 !important; }
+.rs-detail.rd-light .cx-brief h2 { font-family: var(--sans) !important; font-size: .9375rem !important; font-weight: 600 !important; letter-spacing: 0 !important; text-transform: none !important; }
+.pg p { line-height: 1.65; }
+.pill > button { font: 500 .875rem/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
+.mnav button, .mnav a { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.845rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.sources .lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ch .eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.scroll button { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.final .eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.foot-bar { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.va .progress li { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.894rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.va .preview small { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.894rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.pg .lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.pg-link { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.collage figcaption { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.collage-note { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.soon-lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.tm-role { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.rs-chip { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.rs-meta { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.rs-soon { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.hl-pager button { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.ca-tags li { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.832rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.cx-q cite { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.cx figcaption, .cx-k { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.cx-table thead th { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.rs-detail.rd-light .cx-brief h2 { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.9rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+.cx-exn { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
+/* <<< type */
