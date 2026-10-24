@@ -210,7 +210,7 @@ export default function Main() {
         <p className="lead">Verisavo separates what the evidence establishes from what it only suggests, and from what it cannot yet answer. You see the sources behind each claim and the gap that matters most.</p>
         <a className="doclink" href="/docs.html#intelligence-states">How Verisavo labels certainty <span aria-hidden="true">→</span></a>
       </div>
-      <article className="ans" aria-label="Example answer">
+      <div className="ans-wrap"><article className="ans" aria-label="Example answer">
         <div className="ans-q"><span className="ans-k">Question</span><p>Why are enquiries rising in Lugbe while sales fall?</p></div>
         <ul className="ans-list">
           <li><span className="st st-fact">Fact</span><div><p>Enquiries from Lugbe rose over the last eight weeks while completed sales fell.</p><small>Company data · sales records, Abuja team</small></div></li>
@@ -218,9 +218,9 @@ export default function Main() {
           <li><span className="st st-unk">Unknown</span><div><p>Whether the product was in stock at the Lugbe retailers buyers were sent to.</p><small>No evidence yet</small></div></li>
         </ul>
         <div className="ans-gap"><span className="ans-k">Intelligence Gap</span><p>Check shelf availability at the main Lugbe retailers. This is the question most likely to change the answer.</p></div>
-      </article>
+      </article><p className="sample-note">Example for illustration. The place, figures and sources are not real customer data.</p></div>
     </div>
-    <p className="sample-note">Example for illustration. The place, figures and sources are not real customer data.</p>
+    
   </div>
 </section>
       {" "}
