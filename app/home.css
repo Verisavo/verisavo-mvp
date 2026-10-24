@@ -1130,6 +1130,15 @@ body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96)
 #pg-about-us .team #team-h .acc { color: #80AADC !important; }
 #pg-about-us .team .team-copy p:not(.lab) { font-size: 1.0625rem !important; line-height: 1.7 !important; color: #C9D3E4 !important; margin: 0 0 16px !important; max-width: 720px; }
 @media (max-width: 760px) { #pg-about-us .team { justify-items: stretch !important; } }
+
+/* careers: evidence text header background (as About) */
+#pg-careers .pg-head { position: relative; isolation: isolate; }
+#pg-careers .pg-head > :not(.about-bg) { position: relative; z-index: 1; }
+#pg-careers .about-bg { position: absolute; z-index: 0; pointer-events: none; max-width: none; }
+#pg-careers .pg-in { overflow-x: clip; }
+
+#pg-about-us .pg-back, #pg-careers .pg-back { position: relative; z-index: 3; }
+#pg-careers .pg-head .lead { font-size: 1.0625rem !important; line-height: 1.7 !important; max-width: 720px !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
