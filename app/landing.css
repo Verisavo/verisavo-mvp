@@ -678,3 +678,6 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
   .ln .v3-hero h1 br { display: none; }
   .ln .v3-net-note { margin-top: 24px; font-size: .9rem; }
 }
+
+/* closing headline: one sentence per line on wide screens */
+.ln .ln-close h2 { max-width: 30ch; font-size: clamp(2rem, 1.1rem + 2.6vw, 3.4rem); text-wrap: balance; }
