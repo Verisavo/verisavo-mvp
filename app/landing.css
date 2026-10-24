@@ -808,3 +808,6 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ms-cap { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.8rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .ms-eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 /* <<< type */
+
+/* footer without the large wordmark */
+.lf .lf-bar { margin-top: clamp(48px, 6vw, 72px) !important; }
