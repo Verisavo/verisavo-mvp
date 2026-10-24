@@ -228,6 +228,7 @@ const I = {
   pin: '<path d="M8 14.5s4.5-4.2 4.5-7.6a4.5 4.5 0 0 0-9 0c0 3.4 4.5 7.6 4.5 7.6z"/><circle cx="8" cy="6.8" r="1.6"/>',
   shield: '<path d="M8 1.8 13 3.6v3.8c0 3-2 5.2-5 6.7-3-1.5-5-3.7-5-6.7V3.6z"/>',
   chat: '<path d="M2.5 3h11v7.5h-6L4 13.5v-3H2.5z"/>',
+  graph: '<circle cx="3.5" cy="4" r="1.6"/><circle cx="12.5" cy="3.5" r="1.6"/><circle cx="8" cy="12" r="1.6"/><path d="M5 4.6 11 3.8M4.3 5.4l2.9 5M11.8 5l-2.9 5.4"/>',
   clock: '<circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/>',
   info: '<circle cx="8" cy="8" r="6.2"/><path d="M8 7.2v4M8 4.8v.1"/>',
   warn: '<path d="M8 2 14.5 13.5h-13z"/><path d="M8 6.5v3.2M8 11.6v.1"/>',
@@ -278,6 +279,24 @@ const FLOW = `<figure class="figure"><svg viewBox="0 0 960 268" role="img" aria-
   <path d="M717 124 V175" class="flow-l" marker-end="url(#fa)"/><path d="M875 180 V125" class="flow-l" marker-end="url(#fa)"/>
 </svg><figcaption>How evidence is designed to move through Verisavo. When the evidence cannot answer a question, the gap loops back through targeted investigation before it reaches a decision.</figcaption></figure>`;
 
+const GRAPHFIG = `<figure class="figure"><svg viewBox="0 0 960 300" role="img" aria-label="Four separate sources about falling cooking oil sales are connected in the Market Intelligence Graph into one hypothesis that still needs corroboration">
+  <defs><marker id="fg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" class="flow-ah"/></marker></defs>
+  <rect x="17" y="16" width="270" height="60" rx="12" class="flow-box"/><text x="33" y="35" class="flow-n">COMPANY DATA</text><text x="33" y="53" class="flow-t">Revenue is down</text><text x="33" y="68" class="flow-s">Where, and since when?</text><path d="M287 46 C 325 46, 322 150, 358 150" class="flow-l"/><rect x="17" y="86" width="270" height="60" rx="12" class="flow-box"/><text x="33" y="105" class="flow-n">DISTRIBUTOR RECORDS</text><text x="33" y="123" class="flow-t">Fewer orders</text><text x="33" y="138" class="flow-s">Where is coverage weakening?</text><path d="M287 116 C 325 116, 322 150, 358 150" class="flow-l"/><rect x="17" y="156" width="270" height="60" rx="12" class="flow-box"/><text x="33" y="175" class="flow-n">COMPETITOR SIGNALS</text><text x="33" y="193" class="flow-t">Smaller rival pack launched</text><text x="33" y="208" class="flow-s">Is affordability changing demand?</text><path d="M287 186 C 325 186, 322 150, 358 150" class="flow-l"/><rect x="17" y="226" width="270" height="60" rx="12" class="flow-box flow-dash"/><text x="33" y="245" class="flow-n">SAVOSCOUT SHELF CHECKS</text><text x="33" y="263" class="flow-t">Stock and shelf space</text><text x="33" y="278" class="flow-s">What is happening on the ground?</text><path d="M287 256 C 325 256, 322 150, 358 150" class="flow-l"/>
+  <rect x="362" y="112" width="216" height="76" rx="12" class="flow-box"/>
+  <circle cx="384" cy="136" r="4" class="flow-ah"/><circle cx="404" cy="128" r="3" class="flow-ah"/><circle cx="398" cy="146" r="3" class="flow-ah"/>
+  <path d="M384 136 L404 128 M384 136 L398 146 M404 128 L398 146" class="flow-l" style="stroke-width:1"/>
+  <text x="418" y="140" class="flow-t">Market Intelligence</text><text x="418" y="156" class="flow-t">Graph</text>
+  <text x="380" y="176" class="flow-s">Linked by place, time and evidence</text>
+  <path d="M578 150 H634" class="flow-l" marker-end="url(#fg)"/>
+  <rect x="640" y="96" width="303" height="108" rx="12" class="flow-hi"/>
+  <text x="658" y="120" class="flow-nh">HYPOTHESIS</text>
+  <text x="658" y="143" class="flow-th">Distribution gap meets a</text><text x="658" y="160" class="flow-th">cheaper rival pack</text>
+  <text x="658" y="182" class="flow-sh">Sales fall where deliveries were cut</text>
+  <rect x="640" y="226" width="303" height="60" rx="12" class="flow-box flow-dash"/>
+  <text x="658" y="250" class="flow-t">Next: corroborate</text><text x="658" y="268" class="flow-s">Retailer checks, coverage before and after</text>
+  <path d="M791 204 V221" class="flow-l flow-d" marker-end="url(#fg)"/>
+</svg><figcaption>Illustrative. Each source shows a fragment. Connected, they point to one explanation, labelled as a hypothesis until more evidence supports it.</figcaption></figure>`;
+
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
   <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects fragmented market evidence so your team can see what is happening, why, what is still unknown and what it could mean for the decision ahead.</p>
@@ -322,7 +341,7 @@ const PAGES = [
   <ol class="steps">
    <li><b>Capture: Bring market information together.</b><p>Verisavo gathers signals from company data, public records, digital platforms, market research and local communities. When important information is missing, SavoScouts can gather fresh intelligence directly from the ground.</p></li>
    <li><b>Verify: Establish what can be trusted.</b><p>Every piece of evidence is assessed for its source, location, time, relevance and reliability. Verisavo compares information across sources, identifies inconsistencies and makes uncertainty visible rather than presenting assumptions as facts.</p></li>
-   <li><b>Connect: Reveal the relationships behind market change.</b><p>Verisavo connects evidence across businesses, products, customers, competitors, prices, locations, distribution channels and time. Its Market Intelligence Network reveals patterns and relationships that isolated information cannot show.</p></li>
+   <li><b>Connect: Reveal the relationships behind market change.</b><p>Verisavo connects evidence across businesses, products, customers, competitors, prices, locations, distribution channels and time. It builds a <a href="#market-graph">Market Intelligence Graph</a> of how they relate, so patterns can be examined across sources rather than one at a time. Every connection stays tied to its evidence.</p></li>
    <li><b>Evolve: Build intelligence that grows with the market.</b><p>Verisavo's Market Memory preserves important signals, relationships, findings and supporting evidence over time. As new information emerges, Verisavo tracks changes, updates existing understanding and revisits previous conclusions, creating a continuously evolving picture of the market.</p></li>
    <li><b>Understand: Turn connected intelligence into clearer decisions.</b><p>The Verisavo Intelligence Assistant brings the evidence together to answer market questions, explain possible causes, identify Intelligence Gaps and assess decision options. Conclusions remain traceable, uncertainties are stated, and the final decision stays with the business.</p></li>
   </ol>
@@ -333,7 +352,7 @@ const PAGES = [
    <tr><th><a href="#signals">Signals</a></th><td>The smallest meaningful sign that something is happening, such as a price change or a stockout.</td></tr>
    <tr><th><a href="#evidence">Evidence</a></th><td>A signal with its context attached: source, place, time, scope and method.</td></tr>
    <tr><th><a href="#evidence">Verification</a></th><td>Checks whether evidence is reliable enough for the purpose it will serve.</td></tr>
-   <tr><th>Connection</th><td>Links evidence across businesses, products, places and earlier findings.</td></tr>
+   <tr><th><a href="#market-graph">Market Intelligence Graph</a></th><td>Links evidence across businesses, products, places, time and earlier findings.</td></tr>
    <tr><th><a href="#market-memory">Market Memory</a></th><td>Records what was known, what changed and which evidence changed it.</td></tr>
    <tr><th><a href="#asking-questions">Intelligence Assistant</a></th><td>The conversational way to question all of the above.</td></tr>
    <tr><th>Your decision</th><td>Made by your team, with the evidence and uncertainty in view.</td></tr>
@@ -358,6 +377,32 @@ const PAGES = [
   <h2 id="verification">How verification works</h2>
   <p>Checks are designed to include consistency of location and time, comparison with other sources and contributors, a contributor's track record, and repeat observation where the stakes justify it.</p>
   ${note("<b>Verification is not absolute truth.</b> It assesses whether evidence is reliable enough for its purpose. When reliable sources disagree, the contradiction is kept and flagged.", "warn")}` },
+
+ { g: "Core concepts", id: "market-graph", t: "Market Intelligence Graph", ic: "graph", crumb: "Core concepts", body: `
+  <p class="intro">The Market Intelligence Graph is how Verisavo organises what it knows about a market. It links businesses, products, customers, competitors, prices, places, distribution channels and events, so they can be examined together rather than one report at a time. In the product you explore it as the Market Intelligence Network. ${DEV}</p>
+  <h2 id="parts">What it is made of</h2>
+  <div class="tbl"><table><thead><tr><th>Part</th><th>What it is</th></tr></thead><tbody>
+   <tr><th>Entities</th><td>The things in the market: a brand, a product, a retailer, a distributor, a price, a location, an event.</td></tr>
+   <tr><th>Relationships</th><td>How they connect: a retailer stocks a product, a distributor supplies a store, a price change comes before a fall in sales.</td></tr>
+   <tr><th><a href="#evidence">Evidence</a></th><td>What supports each entity and relationship, and its <a href="#intelligence-states">intelligence state</a>.</td></tr>
+   <tr><th>Time</th><td>When each relationship held. A retailer that stocked a product in March may not stock it in May.</td></tr>
+  </tbody></table></div>
+  <h2 id="not-proof">A connection is not a cause</h2>
+  <p>A sales dashboard can show that a product's sales fell by 20%. The graph lets Verisavo check whether that fall lines up with stockouts, competitor pricing, weaker distributor coverage or a change in what customers buy, and where several of these meet. It does not decide which one caused the fall. It sets the competing explanations side by side with their evidence and shows what would need to be checked to tell them apart.</p>
+  ${note("<b>The graph shows relationships. The evidence decides how confidently they can be explained.</b> Every link carries its own label, from Fact to Unknown, and a missing link that could change a decision becomes an <a href=\"#intelligence-gaps\">Intelligence Gap</a>.", "warn")}
+  <h2 id="example">Example: falling sales of cooking oil</h2>
+  <p>A cooking oil brand sees sales fall across Lagos and Ogun State. Each source on its own shows only a fragment.</p>
+  ${GRAPHFIG}
+  <p>Connected, the evidence might show that the fall is concentrated in neighbourhoods where deliveries were cut, and that the rival's smaller, cheaper pack is gaining shelf space there. That is a <b>hypothesis</b>, not a finding. The next steps are to corroborate it: check pack-size affordability with retailers, compare coverage before and after the change, and test whether restoring deliveries in specific areas recovers sales. <em>Illustrative example.</em></p>
+  <h2 id="fits">How it fits with the rest</h2>
+  <div class="tbl"><table><thead><tr><th>Part</th><th>Its job</th></tr></thead><tbody>
+   <tr><th><a href="#evidence">Evidence and verification</a></th><td>Holds each observation with its context, and assesses how reliable it is.</td></tr>
+   <tr><th>Market Intelligence Graph</th><td>Connects entities, events and relationships across sources.</td></tr>
+   <tr><th><a href="#market-memory">Market Memory</a></th><td>Records how those connections and their evidence change over time.</td></tr>
+   <tr><th><a href="#asking-questions">Intelligence Assistant</a></th><td>Uses the connected evidence to answer a specific business question.</td></tr>
+  </tbody></table></div>
+  <p>The graph might link one product to 30 retailers and three distributors. Market Memory keeps how those links have changed. The Assistant uses both to work through the question in front of you.</p>
+  <p>Graph technology itself is not new. What Verisavo is building is its use for African markets: linking fragmented sources with first-hand observation, keeping every link tied to evidence and time, making uncertainty explicit, and pointing SavoScouts at the gaps that matter to a decision.</p>` },
 
  { g: "Core concepts", id: "intelligence-states", t: "Intelligence states", ic: "tag", crumb: "Core concepts", body: `
   <p class="intro">Verisavo labels every finding with one of five states, so you can see where the evidence is strong and where the risk sits.</p>
@@ -459,6 +504,7 @@ const PAGES = [
    <dt>Intelligence Gap</dt><dd>A question the evidence cannot answer that could change a decision.</dd>
    <dt>Ground-Level Intelligence</dt><dd>Verified evidence gathered directly from markets.</dd>
    <dt>SavoScouts</dt><dd>Verisavo's contributor network that gathers Ground-Level Intelligence.</dd>
+   <dt>Market Intelligence Graph</dt><dd>The connected, time-aware structure that links market entities and relationships to their evidence. Explored in the product as the Market Intelligence Network.</dd>
    <dt>Market Memory</dt><dd>The record of how understanding of a market changes over time.</dd>
    <dt>Intelligence Assistant</dt><dd>The conversational way to ask questions and explore evidence.</dd>
    <dt>Client Intelligence</dt><dd>Private information that belongs to your organisation.</dd>
@@ -468,6 +514,7 @@ const PAGES = [
  { g: "Reference", id: "faq", t: "FAQ", ic: "chat", crumb: "Reference", body: `
   <p class="intro">Short answers to common questions.</p>
   <details class="faq"><summary>How is Verisavo different from a general AI assistant?</summary><p>Answers are built from connected market evidence. Each one shows its sources, how reliable they are and what is still unknown, and gaps can be investigated on the ground.</p></details>
+  <details class="faq"><summary>How does Verisavo connect the evidence?</summary><p>Through the <a href="#market-graph">Market Intelligence Network</a>. It links businesses, products, customers, competitors, prices, places and events, and keeps every link tied to its evidence and date. A connection shows where to look, not what caused a change, so each finding still carries its label, from Fact to Unknown.</p></details>
   <details class="faq"><summary>Which markets does Verisavo cover?</summary><p>Verisavo is being built for African markets, starting with selected cities. Coverage grows as evidence and investigations build up.</p></details>
   <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>Yes. Verisavo works on the web and on WhatsApp.</p></details>
   <details class="faq"><summary>Is my company data shared with other customers?</summary><p>No. Your company data stays private, protected and under your control.</p></details>

@@ -261,7 +261,7 @@ export default function Main() {
     </div>
     <div className="uc-grid">
       <a className="uc" href="/docs.html#asking-questions"><h3>Where to launch first</h3><p>Compare cities and neighbourhoods on demand, competition and reach.</p><span className="uc-go" aria-hidden="true">→</span></a>
-      <a className="uc" href="/docs.html#asking-questions"><h3>Why sales changed</h3><p>Trace a shift in sales to prices, supply, competitors or customers.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/docs.html#market-graph"><h3>Why sales changed</h3><p>Trace a shift in sales to prices, supply, competitors or customers.</p><span className="uc-go" aria-hidden="true">→</span></a>
       <a className="uc" href="/docs.html#signals"><h3>Who you compete with</h3><p>See who sells nearby, at what price and through which channels.</p><span className="uc-go" aria-hidden="true">→</span></a>
       <a className="uc" href="/docs.html#savoscouts"><h3>How far distribution reaches</h3><p>Find where your product is on shelves and where it runs out.</p><span className="uc-go" aria-hidden="true">→</span></a>
       <a className="uc" href="/docs.html#evidence"><h3>How to price</h3><p>Compare your prices with what people pay, place by place.</p><span className="uc-go" aria-hidden="true">→</span></a>
@@ -379,6 +379,19 @@ export default function Main() {
             {" "}
             <details>
               <summary>
+                {"How does Verisavo connect the evidence?"}
+                <span aria-hidden="true">
+                  <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#1F273F" strokeWidth="1.5" strokeLinecap="round"></path></svg>
+                </span>
+              </summary>
+              {" "}
+              <p>
+                {"Through the Market Intelligence Network. It links businesses, products, customers, competitors, prices, places and events, and keeps every link tied to its evidence and date. A connection shows where to look, not what caused a change, so each finding still carries its label, from Fact to Unknown."}
+              </p>
+            </details>
+            {" "}
+            <details>
+              <summary>
                 {"What are SavoScouts?"}
                 <span aria-hidden="true">
                   <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#1F273F" strokeWidth="1.5" strokeLinecap="round"></path></svg>
@@ -431,7 +444,7 @@ export default function Main() {
     </div>
     <div className="stat-grid">
       <div className="stat"><span className="chip-s s-on">Available</span><ul><li>Ask market questions</li><li>Answers with sources</li><li>Fact, Inference and Unknown labels</li><li>Intelligence Gaps</li></ul></div>
-      <div className="stat"><span className="chip-s s-dev">In development</span><ul><li>SavoScouts investigations</li><li>Market Memory</li></ul></div>
+      <div className="stat"><span className="chip-s s-dev">In development</span><ul><li>SavoScouts investigations</li><li>Market Intelligence Network</li><li>Market Memory</li></ul></div>
       <div className="stat"><span className="chip-s s-plan">Planned</span><ul><li>Market Simulation</li></ul></div>
     </div>
     <p className="price-line">Start free with 5 questions. Verisavo Monthly is $6.99 a month. <button type="button" className="linkbtn" data-href="/#pricing">See pricing</button></p>
