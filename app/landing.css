@@ -642,7 +642,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ms-l { grid-area: 1 / 1; align-self: end; font: 400 clamp(1.55rem, .95rem + 2.2vw, 3rem)/1.14 var(--serif); letter-spacing: -.02em; color: var(--i9); text-wrap: balance; opacity: 0; transform: translateY(18px); filter: blur(4px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .6s ease; pointer-events: none; }
 .ms-l.past { transform: translateY(-18px); }
 .ms-l.on { opacity: 1; transform: none; filter: none; }
-.ms-l.ms-v { color: var(--b700); }
+.ms-l.ms-v { color: inherit; }
 .ms-prog { display: flex; align-items: center; gap: 14px; }
 .ms-count { font: 500 .66rem/1 var(--mono); letter-spacing: .12em; color: var(--b700); min-width: 62px; }
 .ms-bar { position: relative; width: 140px; height: 2px; background: rgba(58,82,146,.18); border-radius: 2px; overflow: hidden; }
