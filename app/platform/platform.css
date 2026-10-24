@@ -1146,6 +1146,25 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
   .vs-lab { display: block; grid-column: 1 / -1; font: 600 .75rem/1 var(--sans); letter-spacing: .04em; color: #80AADC; margin-bottom: 2px; }
   .vs-v .vs-lab { color: #4362B2; }
 }
+
+/* comparison v2: light */
+#platform.band { background: #fff !important; color: #1F273F !important; }
+#platform .band-head h2 { color: #1F273F !important; }
+#platform .band-head p { color: var(--body, #3D4559) !important; }
+#platform .vs-headrow > div { color: #6B7488; }
+#platform .vs-headrow .vs-hv { color: #1F273F; }
+#platform .vs-dot { background: #4362B2; box-shadow: 0 0 0 4px rgba(67,98,178,.15); }
+#platform .vs-row + .vs-row .vs-q, #platform .vs-row + .vs-row .vs-g { border-top-color: #D5DCE8; }
+#platform .vs-q { color: #1F273F; }
+#platform .vs-n { color: #80AADC; }
+#platform .vs-g p { color: #6B7488 !important; }
+#platform .vs-g .vs-i { stroke: #A8B3C7; }
+#platform .vs-v { background: #1F273F; }
+#platform .vs-v p { color: #fff !important; }
+#platform .vs-row + .vs-row:not(:nth-child(2)) .vs-v { border-top-color: rgba(168,198,232,.18); }
+#platform .vs-v .vs-i { stroke: #1F273F; background: #A8C6E8; }
+#platform .vs-src { color: #6B7488 !important; }
+@media (max-width: 900px) { #platform .vs-row + .vs-row { border-top-color: #D5DCE8; } #platform .vs-v .vs-lab { color: #A8C6E8; } #platform .vs-g .vs-lab { color: #4362B2; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
