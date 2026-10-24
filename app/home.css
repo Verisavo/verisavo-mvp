@@ -1020,6 +1020,18 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
 .pr-price, .cx-stat b { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: 0 !important; }
 .rs-detail.rd-light .cx-brief h2 { font-family: var(--sans) !important; font-size: .9375rem !important; font-weight: 600 !important; letter-spacing: 0 !important; text-transform: none !important; }
 .pg p { line-height: 1.65; }
+/* About, Careers, Contact: body text like the reference (larger, light slate, roomier) */
+#pg-about-us, #pg-careers, #pg-contact { --body-d: #C9D3E4; }
+#pg-about-us p:not(.lab):not(.rs-meta):not(.collage-note), #pg-careers p:not(.lab), #pg-contact p:not(.lab), #pg-careers li, #pg-contact li { color: var(--body-d) !important; font-weight: 400 !important; line-height: 1.7 !important; }
+#pg-about-us .lead, #pg-careers .lead, #pg-contact .lead { font-size: clamp(1.15rem, 1.05rem + .45vw, 1.4rem) !important; line-height: 1.6 !important; color: #E3EBF8 !important; }
+#pg-about-us .pg-sec .intro p, #pg-about-us .team-copy p, #pg-about-us p:not(.lead):not(.lab):not(.rs-meta):not(.collage-note) { font-size: 1.0625rem !important; }
+#pg-about-us .card p, #pg-about-us .hl-body p { font-size: 1rem !important; }
+#pg-about-us .card h3, #pg-about-us .hl-body h3 { font: 600 1.15rem/1.3 var(--sans) !important; letter-spacing: -.01em !important; color: #fff !important; }
+#pg-careers .ca-points li { font-size: 1.0625rem !important; }
+#pg-careers .ca-points b, #pg-contact b { color: #fff !important; font-weight: 600 !important; }
+#pg-careers .ca-small, #pg-contact .info3 p { font-size: 1rem !important; }
+#pg-contact label, #pg-contact .lab { color: var(--b300) !important; }
+#pg-contact input, #pg-contact textarea { font-size: 1rem !important; }
 .pill > button { font: 500 .875rem/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
 .sources .lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .ch .eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
