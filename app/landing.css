@@ -576,3 +576,16 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
   .hw2 .hw-v { min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .hw-tx { animation: none; } }
+/* How it works: minimal list */
+.hm { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--b200); }
+.hm li { display: grid; grid-template-columns: 64px minmax(0, 200px) minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 30px 0; border-bottom: 1px solid var(--b200); }
+.hm-n { font: 500 .7rem/1 var(--mono); letter-spacing: .12em; color: var(--b500); }
+.hm-t { font: 500 1.3rem/1.2 var(--sans); letter-spacing: -.02em; color: var(--i9); }
+.hm-b { display: grid; gap: 10px; max-width: 64ch; }
+.hm-b h3 { font: 500 1.05rem/1.4 var(--sans); letter-spacing: -.01em; color: var(--i9); }
+.hm-b p { font-size: .98rem; line-height: 1.7; color: var(--b800); }
+.hm-doc { margin-top: 32px; }
+@media (max-width: 760px) {
+  .hm li { grid-template-columns: 40px minmax(0, 1fr); gap: 8px 14px; padding: 24px 0; }
+  .hm-b { grid-column: 2; }
+}
