@@ -281,7 +281,7 @@ const FLOW = `<figure class="figure"><svg viewBox="0 0 960 268" role="img" aria-
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
   <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects fragmented market evidence so your team can see what is happening, why, what is still unknown and what it could mean for the decision ahead.</p>
-  <div class="cards">${card("quickstart","bolt","Quickstart","From early access to your first answered question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, remember and answer.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
+  <div class="cards">${card("quickstart","bolt","Quickstart","From early access to your first answered question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, evolve and understand.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
   <h2 id="problem">The problem it solves</h2>
   <p>The information you need to understand a market usually exists. It sits in your company data, public records, digital platforms, research reports, field notes and the knowledge of distributors and traders. It rarely adds up to one picture, and it is hard to tell which pieces are reliable, current or relevant to the question in front of you.</p>
   <p>More data does not fix this on its own. Verisavo connects evidence, keeps its context and is honest about what it cannot yet answer.</p>
@@ -317,14 +317,14 @@ const PAGES = [
   <div class="cards">${card("asking-questions","chat","Ask better questions","How to frame questions that lead to useful answers.")}${card("intelligence-gaps","info","Intelligence Gaps","What to do when an answer says Unknown.")}</div>` },
 
  { g: "Core concepts", id: "how-it-works", t: "How it works", ic: "layers", crumb: "Core concepts", body: `
-  <p class="intro">Verisavo turns scattered observations about a market into connected, evidence-grounded understanding, and keeps that understanding up to date. It does this in five steps.</p>
+  <p class="intro">Verisavo turns scattered observations about a market into connected, evidence-grounded understanding, and keeps that understanding up to date. It does this in five steps, from fragmented information to connected market intelligence.</p>
   <h2 id="five-steps">The five steps</h2>
   <ol class="steps">
-   <li><b>Capture</b><p>We gather signals from your company data, public records, digital platforms and market research, and from SavoScouts on the ground when the evidence runs out. ${DEV.replace("In development","SavoScouts in development")}</p></li>
-   <li><b>Verify</b><p>We check each piece of evidence for source, place, time and reliability, compare it across sources and flag contradictions instead of hiding them. Verification judges whether evidence is reliable enough for its purpose. It does not claim absolute truth.</p></li>
-   <li><b>Connect</b><p>We link evidence across businesses, products, prices, places, channels and time, so the relationships behind a change become visible. A stockout, a late delivery and a competitor gaining shelf space may be one story, not three.</p></li>
-   <li><b>Remember</b><p>We keep a <a href="#market-memory">Market Memory</a> of what changed, when it changed and which evidence changed it, so understanding builds over time instead of starting over. ${DEV}</p></li>
-   <li><b>Answer</b><p>We answer your question with the evidence attached, label each point as Fact, Inference, Hypothesis, Assumption or Unknown, and name the <a href="#intelligence-gaps">Intelligence Gaps</a> that could change your decision. ${NOW}</p></li>
+   <li><b>01 — Capture: Bring market information together.</b><p>Verisavo gathers signals from company data, public records, digital platforms, market research and local communities. When important information is missing, SavoScouts can gather fresh intelligence directly from the ground. ${DEV.replace("In development","SavoScouts in development")}</p></li>
+   <li><b>02 — Verify: Establish what can be trusted.</b><p>Every piece of evidence is assessed for its source, location, time, relevance and reliability. Verisavo compares information across sources, identifies inconsistencies and makes uncertainty visible rather than presenting assumptions as facts.</p></li>
+   <li><b>03 — Connect: Reveal the relationships behind market change.</b><p>Verisavo connects evidence across businesses, products, customers, competitors, prices, locations, distribution channels and time. Its Market Intelligence Network reveals patterns and relationships that isolated information cannot show.</p></li>
+   <li><b>04 — Evolve: Build intelligence that grows with the market.</b><p>Verisavo's Market Memory preserves important signals, relationships, findings and supporting evidence over time. As new information emerges, Verisavo tracks changes, updates existing understanding and revisits previous conclusions, creating a continuously evolving picture of the market. ${DEV}</p></li>
+   <li><b>05 — Understand: Turn connected intelligence into clearer decisions.</b><p>The Verisavo Intelligence Assistant brings the evidence together to answer market questions, explain possible causes, identify Intelligence Gaps and assess decision options. Conclusions remain traceable, uncertainties are stated, and the final decision stays with the business. ${NOW}</p></li>
   </ol>
   ${FLOW}
   <h2 id="layers">The layers</h2>
