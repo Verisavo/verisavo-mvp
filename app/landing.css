@@ -633,14 +633,14 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ln .ln-close h2 + p { margin-top: 20px; }
 .ln .ln-close .ln-q { margin-top: 36px; }
 /* why Verisavo exists: an immersive scene with the statement playing line by line */
-.ms-story { position: relative; height: 460vh; background: #fff; }
+.ms-story { position: relative; height: 540vh; background: #fff; }
 .ms-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; padding: 84px clamp(12px, 2.4vw, 32px) clamp(12px, 2.4vw, 32px); }
 .ms-story .ms-frame { margin: 0; aspect-ratio: auto; height: 100%; width: 100%; max-width: 1480px; justify-self: center; border-radius: 22px; }
 .ms-veil { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 62% at 18% 88%, rgba(245,248,252,.96) 0%, rgba(245,248,252,.82) 40%, rgba(245,248,252,0) 75%); }
 .ms-copy { position: absolute; left: clamp(20px, 4vw, 64px); bottom: clamp(24px, 5vw, 64px); width: min(720px, calc(100% - 40px)); display: grid; gap: 22px; }
 .ms-eb { font: 500 .68rem/1.2 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--b700); }
 .ms-lines { display: grid; }
-.ms-l { grid-area: 1 / 1; align-self: end; font: 400 clamp(1.7rem, 1rem + 2.6vw, 3.4rem)/1.12 var(--serif); letter-spacing: -.02em; color: var(--i9); text-wrap: balance; opacity: 0; transform: translateY(18px); filter: blur(4px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .6s ease; pointer-events: none; }
+.ms-l { grid-area: 1 / 1; align-self: end; font: 400 clamp(1.55rem, .95rem + 2.2vw, 3rem)/1.14 var(--serif); letter-spacing: -.02em; color: var(--i9); text-wrap: balance; opacity: 0; transform: translateY(18px); filter: blur(4px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .6s ease; pointer-events: none; }
 .ms-l.past { transform: translateY(-18px); }
 .ms-l.on { opacity: 1; transform: none; filter: none; }
 .ms-l.ms-v { color: var(--b700); }
@@ -650,7 +650,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ms-bar i { position: absolute; inset: 0; background: var(--i9); transform-origin: left; transform: scaleX(0); }
 .ms-story .ms-cap { left: auto; right: 18px; bottom: 16px; }
 @media (max-width: 760px) {
-  .ms-story { height: 420vh; }
+  .ms-story { height: 500vh; }
   .ms-sticky { padding: 76px 10px 10px; }
   .ms-story .ms-frame { border-radius: 16px; }
   .ms-veil { background: linear-gradient(0deg, rgba(245,248,252,.97) 0%, rgba(245,248,252,.9) 38%, rgba(245,248,252,0) 64%); }
