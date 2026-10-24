@@ -1297,10 +1297,8 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .ax-nl { stroke: #80AADC; stroke-width: 1.6; stroke-dasharray: 5 5; }
 .ax-nh { fill: #1F273F; } .ax-nht { font: 600 14px var(--sans); fill: #fff; }
 .ax-nn { fill: #fff; stroke: #A8C6E8; } .ax-nt { font: 500 12.5px var(--sans); fill: #1F273F; }
-.ax-wide { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: none; }
-.ax-wide .ax-tile-v { border-bottom: 0; border-right: 1px solid #E3EBF8; }
-.ax-wide .ax-tile-t { align-self: center; }
-@media (max-width: 860px) { .ax-wide { grid-template-columns: minmax(0, 1fr); } .ax-wide .ax-tile-v { border-right: 0; border-bottom: 1px solid #E3EBF8; } }
+.ax-wide { grid-column: 1 / -1; }
+.ax-wide .ax-tile-t { max-width: 900px; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
