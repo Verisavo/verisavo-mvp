@@ -765,6 +765,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ln .net-n text { font: 500 13px var(--sans) !important; fill: var(--i9) !important; }
 .ln .net-src text, .ln .net-out text, .ln .net-gap text { font: 500 13px var(--sans) !important; }
 .ln .net-sm { font-size: 10.5px !important; }
+.lf .lf-logo { font-size: 2rem !important; }
 .lf .lf-cols h3 { font: 600 .9rem/1.2 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; color: #fff !important; }
 .lf .lf-bar { font: 400 .875rem/1.4 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
 .lf .lf-bar button { font: inherit !important; letter-spacing: 0 !important; text-transform: none !important; }

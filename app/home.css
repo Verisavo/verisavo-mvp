@@ -1084,6 +1084,8 @@ figure.cx-ex:not(.cx-cmp):not(.cx-path):not(.cx-figs) { display: grid; gap: 16px
 .pr-tag, .pr-with { font: 600 .8125rem/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
 .card .n { font: 600 1.25rem/1 var(--display) !important; letter-spacing: 0 !important; color: var(--b400) !important; }
 #pg-careers .ca-addr { font: 600 clamp(1.4rem, 1.1rem + .9vw, 1.9rem)/1.1 var(--display) !important; letter-spacing: 0 !important; }
+header .logo, .top .logo, body > .logo, .hdr .logo { font-size: clamp(1.55rem, 1.3rem + .6vw, 1.85rem) !important; }
+.pg-foot .logo { font-size: 1.5rem !important; }
 .pill > button { font: 500 .875rem/1 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
 .sources .lab { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .ch .eb { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
