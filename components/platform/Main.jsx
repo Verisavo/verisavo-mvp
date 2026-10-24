@@ -261,7 +261,7 @@ export default function Main() {
     </div>
     <div className="uc-grid">
       <a className="uc" href="/docs.html#asking-questions"><h3>Where to launch first</h3><p>Compare cities and neighbourhoods on demand, competition and reach.</p><span className="uc-go" aria-hidden="true">→</span></a>
-      <a className="uc" href="/docs.html#market-graph"><h3>Why sales changed</h3><p>Trace a shift in sales to prices, supply, competitors or customers.</p><span className="uc-go" aria-hidden="true">→</span></a>
+      <a className="uc" href="/docs.html#intelligence-graph"><h3>Why sales changed</h3><p>Trace a shift in sales to prices, supply, competitors or customers.</p><span className="uc-go" aria-hidden="true">→</span></a>
       <a className="uc" href="/docs.html#signals"><h3>Who you compete with</h3><p>See who sells nearby, at what price and through which channels.</p><span className="uc-go" aria-hidden="true">→</span></a>
       <a className="uc" href="/docs.html#savoscouts"><h3>How far distribution reaches</h3><p>Find where your product is on shelves and where it runs out.</p><span className="uc-go" aria-hidden="true">→</span></a>
       <a className="uc" href="/docs.html#evidence"><h3>How to price</h3><p>Compare your prices with what people pay, place by place.</p><span className="uc-go" aria-hidden="true">→</span></a>
