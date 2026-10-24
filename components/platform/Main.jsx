@@ -243,10 +243,11 @@ export default function Main() {
           <caption className="vh">How Verisavo differs from general AI tools</caption>
           <thead><tr><th scope="col"><span className="vh">Question</span></th><th scope="col">General AI tools</th><th scope="col" className="cmp-v">Verisavo</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Where answers come from</th><td>Training data and the open web</td><td className="cmp-v">Your company data, public records, digital platforms and Ground-Level Intelligence, connected</td></tr>
-            <tr><th scope="row">Can you check the source?</th><td>Often not</td><td className="cmp-v">Each claim links to its source, place and date</td></tr>
-            <tr><th scope="row">When evidence is thin</th><td>Usually answers anyway</td><td className="cmp-v">Says Unknown and names the Intelligence Gap</td></tr>
-            <tr><th scope="row">Places with little online</th><td>Little to go on</td><td className="cmp-v">Can be checked on the ground by SavoScouts</td></tr>
+            <tr><th scope="row">Where do answers come from?</th><td>Training data and available sources</td><td className="cmp-v">Company data, public records, digital platforms and verified intelligence from the ground</td></tr>
+            <tr><th scope="row">Can you verify the answer?</th><td>Sources and reasoning may be limited</td><td className="cmp-v">Evidence linked to its source, location, date and reliability</td></tr>
+            <tr><th scope="row">What if evidence is missing?</th><td>May generate uncertain answers</td><td className="cmp-v">States what is unknown and identifies Intelligence Gaps</td></tr>
+            <tr><th scope="row">What about offline markets?</th><td>Limited by available digital information</td><td className="cmp-v">SavoScouts gather intelligence on the ground, verified before it is used</td></tr>
+            <tr><th scope="row">Does understanding improve?</th><td>Depends on the tool and its memory</td><td className="cmp-v">Market Memory tracks changes and builds understanding over time</td></tr>
           </tbody>
         </table>
       </div>
