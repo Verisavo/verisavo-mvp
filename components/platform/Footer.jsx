@@ -13,12 +13,6 @@ export default function Footer() {
           {" "}
         </div>
         {" "}
-        <nav className="foot-links" aria-label="Footer">
-          <a href="/docs.html">{"Docs"}</a>
-          <a href="/docs.html#quickstart">{"Quickstart"}</a>
-          <a href="/docs.html#glossary">{"Glossary"}</a>
-          <button type="button" data-href="/#pricing">{"Pricing"}</button>
-        </nav>
         {" "}
         <div className="foot-bar">
           {" "}
