@@ -1120,6 +1120,9 @@ body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96)
 
 #pg-about-us .team-copy { gap: 16px !important; max-width: 760px !important; }
 #pg-about-us .team-copy h2 { margin-bottom: 8px; }
+
+/* about: white band behind closing CTA */
+#pg-about-us.pg .cta-band.glass { background: #1F273F !important; border-color: #1F273F !important; box-shadow: 0 0 0 100vmax #fff !important; clip-path: inset(-64px -100vmax); margin-block: 64px !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }

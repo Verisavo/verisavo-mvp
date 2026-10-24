@@ -82,10 +82,10 @@ export default function AboutUsPage() {
           {" "}
           <div className="team-copy">
             <h2 id="team-h">{"Our "}<span className="acc">{"Team"}</span></h2>
-            <p>{"Behind Verisavo is a team bringing together expertise in artificial intelligence, market research, data engineering, product development and ground-level intelligence."}</p>
-            <p>{"We combine technology with local market knowledge to connect fragmented information, verify evidence and help businesses better understand African markets."}</p>
-            <p>{"We are an ambitious, fast-moving team working closely with businesses, researchers and local communities to solve real market challenges."}</p>
-            <p>{"Our mission goes beyond building another AI product. We are laying the foundation for a more connected and reliable understanding of African markets."}</p>
+            <p>{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development, and ground-level intelligence."}</p>
+            <p>{"We combine technology with local market knowledge to connect fragmented information, verify evidence, and deliver actionable market intelligence."}</p>
+            <p>{"Working closely with businesses, researchers, and local communities, we help organisations better understand and navigate African markets."}</p>
+            <p>{"Our mission is not just to build AI. It is to create the connected intelligence layer for African markets."}</p>
           </div>
           {" "}
         </section>
