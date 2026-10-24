@@ -1165,6 +1165,18 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 #platform .vs-v .vs-i { stroke: #1F273F; background: #A8C6E8; }
 #platform .vs-src { color: #6B7488 !important; }
 @media (max-width: 900px) { #platform .vs-row + .vs-row { border-top-color: #D5DCE8; } #platform .vs-v .vs-lab { color: #A8C6E8; } #platform .vs-g .vs-lab { color: #4362B2; } }
+
+/* who: indigo */
+#decisions { background: #1F273F; padding-top: clamp(72px, 9vw, 112px) !important; padding-bottom: clamp(72px, 9vw, 112px) !important; }
+#decisions .dq-head h2 { color: #fff !important; }
+#decisions .dq-head .lead { color: #A8C6E8 !important; }
+#decisions .dq-list { border-top-color: rgba(255,255,255,.85); }
+#decisions .dq-list > li { border-bottom-color: rgba(168,198,232,.18); }
+#decisions .dq-list > li:hover { background: linear-gradient(90deg, rgba(168,198,232,.08), transparent); }
+#decisions .dq-area { color: #fff; }
+#decisions .dq-n { color: #80AADC; }
+#decisions .dq-q { color: #fff !important; }
+#decisions .dq-d { color: #A8B3C7 !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
