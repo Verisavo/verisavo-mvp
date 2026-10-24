@@ -1115,8 +1115,6 @@ body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96)
 #pg-about-us .team-copy h2 { margin-bottom: 8px; }
 
 
-/* about: white strip between team and press */
-#pg-about-us .pg-sec[aria-labelledby="hl-h"]::before { content: ""; display: block; height: clamp(48px, 6vw, 80px); margin: 0 0 clamp(48px, 6vw, 80px); background: #fff; box-shadow: 0 0 0 100vmax #fff; clip-path: inset(0 -100vmax); }
 
 /* about: evidence text header background */
 #pg-about-us .pg-head { position: relative; isolation: isolate; }
