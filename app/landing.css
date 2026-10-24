@@ -750,6 +750,12 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ln .v3-n { font: 600 .875rem/1 var(--sans) !important; color: var(--b500); }
 .ln .v3-n::after { content: " ·"; }
 .ln .net-svg text { font-family: var(--sans) !important; letter-spacing: 0 !important; }
+.ln { --body: #3D4559; }
+.ln .ln-sub, .ln .v3-lede, .ln .hm-b p, .ln .v3-net-note, .ln .v3-trust p:not(.ln-eb) { color: var(--body) !important; font-weight: 400 !important; }
+.ln .ln-sub, .ln .v3-lede { font-size: clamp(1.08rem, 1rem + .35vw, 1.25rem) !important; line-height: 1.65 !important; }
+.ln .hm-b p, .ln .v3-trust p:not(.ln-eb) { font-size: 1.0625rem !important; line-height: 1.7 !important; }
+.ln .v3-net-note { font-size: 1rem !important; }
+.ln .hm-b h3 { color: var(--i9) !important; }
 .lf .lf-cols h3 { font: 600 .9rem/1.2 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; color: #fff !important; }
 .lf .lf-bar { font: 400 .875rem/1.4 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; }
 .lf .lf-bar button { font: inherit !important; letter-spacing: 0 !important; text-transform: none !important; }
