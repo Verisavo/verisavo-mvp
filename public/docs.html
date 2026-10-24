@@ -371,7 +371,7 @@ const PAGES = [
   ${prompt("Why are enquiries for our solar kits rising in Lugbe, Abuja, while conversion has fallen over the last quarter?")}
   <h2 id="read-answer">Read the answer</h2>
   <p>Every answer is built to show you four things:</p>
-  <ul><li><strong>What the evidence supports</strong>, labelled with its <a href="#intelligence-states">intelligence state</a>.</li><li><strong>Where it comes from</strong>: the source, place, time and method behind each point.</li><li><strong>What conflicts</strong>: evidence that disagrees stays visible rather than being dropped.</li><li><strong>What is still unknown</strong>: the questions the evidence cannot answer yet.</li></ul>
+  <ul><li><strong>What the evidence supports</strong>, separated from what is inferred or still <a href="#intelligence-states">unknown</a>.</li><li><strong>Where it comes from</strong>: the source, place, time and method behind each point.</li><li><strong>What conflicts</strong>: evidence that disagrees stays visible rather than being dropped.</li><li><strong>What is still unknown</strong>: the questions the evidence cannot answer yet.</li></ul>
   <h2 id="next">Next steps</h2>
   <div class="cards">${card("asking-questions","chat","Ask better questions","How to frame questions that lead to useful answers.")}${card("intelligence-gaps","info","Intelligence Gaps","What to do when an answer says Unknown.")}</div>` },
 
@@ -469,7 +469,7 @@ const PAGES = [
   </tbody></table></div>
   <h2 id="not-proof">A connection is not a cause</h2>
   <p>A sales dashboard can show that a product's sales fell by 20%. The graph lets Verisavo check whether that fall lines up with stockouts, competitor pricing, weaker distributor coverage or a change in what customers buy, and where several of these meet. It does not decide which one caused the fall. It sets the competing explanations side by side with their evidence and shows what would need to be checked to tell them apart.</p>
-  ${note("<b>The graph shows relationships. The evidence decides how confidently they can be explained.</b> Every link carries its own label, from Fact to Unknown, and a missing link that could change a decision becomes an <a href=\"#intelligence-gaps\">Intelligence Gap</a>.", "warn")}
+  ${note("<b>The graph shows relationships. The evidence decides how confidently they can be explained.</b> Every link is tied to its evidence and to how well supported it is, and a missing link that could change a decision becomes an <a href=\"#intelligence-gaps\">Intelligence Gap</a>.", "warn")}
   <h2 id="example">Example: falling sales of cooking oil</h2>
   <p>A cooking oil brand sees sales fall across Lagos and Ogun State. Each source on its own shows only a fragment.</p>
   ${GRAPHFIG}
@@ -486,7 +486,7 @@ const PAGES = [
   <p>Graph technology itself is not new. What Verisavo is building is its use for African markets: linking fragmented sources with first-hand observation, keeping every link tied to evidence and time, making uncertainty explicit, and pointing SavoScouts at the gaps that matter to a decision.</p>` },
 
  { g: "Core concepts", id: "intelligence-states", t: "Intelligence states", ic: "tag", crumb: "Core concepts", body: `
-  <p class="intro">Verisavo labels every finding with one of five states, so you can see where the evidence is strong and where the risk sits.</p>
+  <p class="intro">Verisavo's intelligence framework distinguishes five states of knowledge, so it can separate what the evidence supports from what is inferred, proposed or still unknown. They show where the evidence is strong and where the risk sits.</p>
   <div class="states">
    <div class="state"><span class="chip c-fact">Fact</span><p><strong>Sufficiently supported within a defined scope.</strong> Rely on it, within its scope.</p></div>
    <div class="state"><span class="chip c-inf">Inference</span><p><strong>Reasonably derived from evidence, but not directly observed.</strong> Weigh it, and know what it rests on.</p></div>
@@ -609,7 +609,7 @@ const PAGES = [
  { g: "Reference", id: "faq", t: "FAQ", ic: "chat", crumb: "Reference", body: `
   <p class="intro">Short answers to common questions.</p>
   <details class="faq"><summary>How is Verisavo different from a general AI assistant?</summary><p>Answers are built from connected market evidence. Each one shows its sources, how reliable they are and what is still unknown, and gaps can be investigated on the ground.</p></details>
-  <details class="faq"><summary>How does Verisavo connect the evidence?</summary><p>Through the <a href="#intelligence-graph">Market Intelligence Network</a>. It links businesses, products, customers, competitors, prices, places and events, and keeps every link tied to its evidence and date. A connection shows where to look, not what caused a change, so each finding still carries its label, from Fact to Unknown.</p></details>
+  <details class="faq"><summary>How does Verisavo connect the evidence?</summary><p>Through the <a href="#intelligence-graph">Market Intelligence Network</a>. It links businesses, products, customers, competitors, prices, places and events, and keeps every link tied to its evidence and date. A connection shows where to look, not what caused a change, so each finding still shows how well the evidence supports it.</p></details>
   <details class="faq"><summary>Which markets does Verisavo cover?</summary><p>Verisavo is being built for African markets, starting with selected cities. Coverage grows as evidence and investigations build up.</p></details>
   <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>Yes. Verisavo works on the web and on WhatsApp.</p></details>
   <details class="faq"><summary>Is my company data shared with other customers?</summary><p>No. Your company data stays private, protected and under your control.</p></details>
