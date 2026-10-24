@@ -213,6 +213,7 @@ dl.gloss dd { color: var(--body); }
 .pager a small { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.858rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .toc h5 { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.884rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 /* <<< type */
+.tbl tr.hl td, .tbl tr.hl th { background: var(--accent-soft); font-weight: 600; }
 </style>
 
 <header class="top">
@@ -341,6 +342,22 @@ const PAGES = [
   <p>Commercial, strategy and operations teams making decisions about African markets: where to launch, how to price, whether distribution is reaching shops, what competitors are doing and why sales are changing.</p>
   ${note("<b>Decisions stay human.</b> Verisavo brings evidence, context and uncertainty closer to you. It does not make the decision for you.")}` },
 
+ { g: "Get started", id: "seven-layers", t: "The seven layers", ic: "layers", crumb: "Get started", body: `
+  <p class="intro">Africa is not a continent without information. Much of what is needed to understand its markets exists, but in incomplete chapters: some in public records, others in research reports, digital platforms, company systems and the everyday experience of people on the ground. Each reveals something about the market. None tells the whole story on its own.</p>
+  <h2 id="layers">Seven layers of market intelligence</h2>
+  <p>One way to explain why Verisavo exists is to describe market intelligence as seven layers. The first six are sources and tools that each see part of the market. The seventh is the layer that connects them.</p>
+  <div class="tbl"><table><thead><tr><th>Layer</th><th>Intelligence</th><th>What it reveals</th><th>The missing chapter</th></tr></thead><tbody>
+   <tr><td>01</td><th>Public Intelligence</th><td>Government records, economic indicators, regulations and demographics.</td><td>Records can be outdated, incomplete or geographically limited.</td></tr><tr><td>02</td><th>Research Intelligence</th><td>Industry reports, surveys, market studies and sector analysis.</td><td>Research captures particular moments, leaving changes between studies unexplained.</td></tr><tr><td>03</td><th>Digital Intelligence</th><td>Search trends, social conversations, online marketplaces and digital activity.</td><td>Much of Africa's offline economic activity leaves limited digital traces.</td></tr><tr><td>04</td><th>Business Intelligence</th><td>Sales, customers, inventory, distribution and operational performance.</td><td>Businesses see what happens internally but not always why the surrounding market changes.</td></tr><tr><td>05</td><th>Ground-Level Intelligence</th><td>Observations from retailers, consumers, distributors and local communities.</td><td>Valuable knowledge often remains informal, fragmented or unverified.</td></tr><tr><td>06</td><th>Artificial Intelligence</th><td>Analyses available information, recognises patterns and generates explanations.</td><td>AI can reason over available information but cannot reliably recover missing facts without new evidence.</td></tr><tr class="hl"><td>07</td><th>Connected Market Intelligence (Verisavo)</th><td>Connects, verifies and relates information across the other layers, keeps Market Memory and identifies gaps for further investigation.</td><td>Brings the fragmented chapters together into an evolving, evidence-grounded understanding of African markets.</td></tr>
+  </tbody></table></div>
+  ${note("This is a storytelling framework Verisavo uses to explain its role. It is not an established industry classification, and it does not claim that other systems cannot combine these sources.")}
+  <h2 id="chapters">Africa's incomplete chapters</h2>
+  <p>Imagine trying to understand a book whose chapters are scattered across thousands of libraries. Some are out of date, some contradict one another, and some exist only in the memories of people who lived the story.</p>
+  <p>A government report may show population growth but not how household buying is changing. A company's sales records may show falling revenue but not the competitor winning customers nearby. A digital platform may capture online conversation but miss the transactions in neighbourhood shops and open markets. Even AI is limited by the information it can reach and the evidence available to support its conclusions.</p>
+  <p>The problem is not only missing data. It is missing connections, incomplete evidence and unanswered questions.</p>
+  <h2 id="seventh">The seventh layer</h2>
+  <p>Verisavo is not another chapter of market information. It connects public information, research, digital signals, company data and verified Ground-Level Intelligence. It shows how they relate, makes uncertainty visible, names what is missing and keeps <a href="#market-memory">Market Memory</a> as new evidence arrives.</p>
+  <p>The result is not a claim to know everything about African markets. It is a system designed to build a clearer, more connected understanding of them, one verified piece of evidence at a time.</p>` },
+
  { g: "Get started", id: "quickstart", t: "Quickstart", ic: "bolt", crumb: "Get started", body: `
   <p class="intro">Get early access, ask your first market question and learn to read the answer. This takes about five minutes.</p>
   <h2 id="access">Get early access</h2>
@@ -380,6 +397,7 @@ const PAGES = [
    <tr><th><a href="#asking-questions">Intelligence Assistant</a></th><td>The conversational way to question all of the above.</td></tr>
    <tr><th>Your decision</th><td>Made by your team, with the evidence and uncertainty in view.</td></tr>
   </tbody></table></div>
+  <p>These layers describe how evidence moves inside Verisavo. For how Verisavo relates to other sources of market intelligence, see <a href="#seven-layers">The seven layers</a>.</p>
   <h2 id="principles">Principles</h2>
   <ul><li><strong>Evidence before assertion.</strong> A fluent answer is not the same as a supported one.</li><li><strong>Context before conclusion.</strong> A price in one market in March says little about another market in May.</li><li><strong>Unknown is a valid answer.</strong> A named gap is more useful than a confident guess.</li><li><strong>Markets change.</strong> Understanding is updated, not filed away.</li></ul>` },
 

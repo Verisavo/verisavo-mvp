@@ -1014,6 +1014,8 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .va-main.va-dark .va-sugg:hover { background: #283252 !important; }
 .va-main.va-dark .va-composer { background: #1A2136 !important; }
 .va-main.va-dark .va-bed { opacity: .55; }
+.sec.sample { padding-bottom: clamp(48px, 6vw, 80px) !important; }
+.sample .src-strip { margin-bottom: 0 !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }

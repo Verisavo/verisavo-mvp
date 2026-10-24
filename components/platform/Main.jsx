@@ -201,28 +201,10 @@ export default function Main() {
         {" "}
       </section>
       {" "}
-<section className="sec sample" id="sample" aria-labelledby="sample-title">
+<section className="sec sample" id="sample" aria-label="Sources">
   <div className="wrap">
     <p className="src-strip"><span className="src-k">Built from</span><span className="src-v">Company data</span><span className="src-v">Public records</span><span className="src-v">Digital platforms</span><span className="src-v">Market research</span><span className="src-v">SavoScouts</span></p>
-    <div className="sample-grid">
-      <div className="sample-intro">
-        <p className="eyebrow">What an answer looks like</p>
-        <h2 id="sample-title">Every claim shows how much we know.</h2>
-        <p className="lead">Verisavo separates what the evidence establishes from what it only suggests, and from what it cannot yet answer. You see the sources behind each claim and the gap that matters most.</p>
-        <a className="doclink" href="/docs.html#intelligence-states">How Verisavo labels certainty <span aria-hidden="true">→</span></a>
-      </div>
-      <div className="ans-wrap"><article className="ans" aria-label="Example answer">
-        <div className="ans-q"><span className="ans-k">Question</span><p>Why are enquiries rising in Lugbe while sales fall?</p></div>
-        <ul className="ans-list">
-          <li><span className="st st-fact">Fact</span><div><p>Enquiries from Lugbe rose over the last eight weeks while completed sales fell.</p><small>Company data · sales records, Abuja team</small></div></li>
-          <li><span className="st st-inf">Inference</span><div><p>Two competitors cut prices on similar products in the same period, so buyers may be comparing before they commit.</p><small>Digital platforms · online price listings</small></div></li>
-          <li><span className="st st-unk">Unknown</span><div><p>Whether the product was in stock at the Lugbe retailers buyers were sent to.</p><small>No evidence yet</small></div></li>
-        </ul>
-        <div className="ans-gap"><span className="ans-k">Intelligence Gap</span><p>Check shelf availability at the main Lugbe retailers. This is the question most likely to change the answer.</p></div>
-      </article><p className="sample-note">Example for illustration. The place, figures and sources are not real customer data.</p></div>
     </div>
-    
-  </div>
 </section>
       <Capabilities />
       {" "}
