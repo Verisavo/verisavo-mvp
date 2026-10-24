@@ -606,7 +606,7 @@ export default function AboutUsPage() {
         {" "}
         <section className="cta-band glass" aria-labelledby="work-h">
           {" "}
-          <h2 id="work-h">{"Work "}<span className="acc">{"with us"}</span></h2>
+          <h2 id="work-h">{"Start a "}<span className="acc">{"conversation"}</span></h2>
           {" "}
           <p>{"Questions about a market, partnerships or early access? We would like to hear from you."}</p>
           {" "}
