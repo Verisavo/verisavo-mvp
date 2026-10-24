@@ -658,3 +658,59 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
   .ms-story .ms-cap { top: 14px; bottom: auto; right: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .ms-l { transition: opacity .2s; transform: none !important; filter: none; } }
+/* network diagram, refined */
+.net-card { position: relative; padding: clamp(14px, 2.4vw, 32px); background: #FBFCFE; background-image: radial-gradient(rgba(58,82,146,.07) 1px, transparent 1.2px); background-size: 20px 20px; }
+.net-cols text { font: 500 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; fill: var(--b700); }
+.net-cols .net-cn { fill: var(--b400); }
+.net-src rect { fill: #fff; stroke: var(--b200); transition: stroke .2s; }
+.net-src:hover rect { stroke: var(--b500); }
+.net-src text { font: 500 13px var(--sans); fill: var(--i9); letter-spacing: -.005em; }
+.net-ic { fill: none; stroke: var(--b600); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+.net-port { fill: #fff; stroke: var(--b500); stroke-width: 1.4; }
+.net-scout rect { stroke-dasharray: 4 3; stroke: var(--b400); }
+.net-mem { stroke: var(--b300); stroke-dasharray: 2 6; transform-origin: 590px 258px; animation: net-spin 90s linear infinite; }
+@keyframes net-spin { to { transform: rotate(360deg); } }
+.net-e { stroke: var(--b300); stroke-width: 1; transition: stroke .2s, stroke-width .2s, opacity .2s; }
+.net-svg.hov .net-e { opacity: .35; }
+.net-svg.hov .net-e.hl { opacity: 1; stroke: var(--i9); stroke-width: 1.6; }
+.net-n { cursor: default; outline: none; }
+.net-hit { fill: transparent; }
+.net-c { fill: #fff; stroke: var(--i9); stroke-width: 1.6; transition: r .2s; }
+.net-n.net-f .net-c { fill: var(--i9); }
+.net-big .net-c { fill: var(--b600); stroke: var(--i9); stroke-width: 2; }
+.net-ring { fill: none; stroke: var(--b400); stroke-width: 1.2; opacity: .6; animation: net-pulse 2.8s ease-out infinite; transform-origin: 0 0; }
+@keyframes net-pulse { 0% { transform: scale(.7); opacity: .7; } 100% { transform: scale(1.5); opacity: 0; } }
+.net-lbl { font: 500 12px var(--mono); fill: var(--i9); paint-order: stroke; stroke: #F6F9FD; stroke-width: 5px; stroke-linejoin: round; }
+.net-n:hover .net-c, .net-n:focus-visible .net-c { stroke: var(--b600); }
+.net-out rect { fill: #fff; stroke: var(--b200); }
+.net-ot { font: 600 13px var(--sans); fill: var(--i9); }
+.net-os { font: 500 9.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; fill: var(--b600); }
+.net-out.o-fact rect { fill: var(--i9); stroke: var(--i9); }
+.net-out.o-fact .net-ot { fill: #fff; }
+.net-out.o-fact .net-os { fill: var(--b300); }
+.net-out.o-inf rect { fill: var(--b100); stroke: var(--b300); }
+.net-out.o-hyp rect { stroke: var(--b400); }
+.net-out.o-unk rect { stroke: var(--b500); stroke-dasharray: 4 3; }
+.net-out .net-port { fill: #fff; }
+.net-gap rect { fill: #fff; stroke: var(--b500); stroke-dasharray: 5 4; }
+.net-gap circle { fill: none; stroke: var(--b500); stroke-dasharray: 2 2.5; }
+.net-gap text { font: 600 13px var(--sans); fill: var(--i9); }
+.net-gap .net-q { font: 600 12px var(--mono); fill: var(--b700); }
+.net-sm { font: 500 9.5px var(--mono) !important; letter-spacing: .08em; text-transform: uppercase; fill: var(--b600) !important; }
+.net-memt { font: 500 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; fill: var(--b600); paint-order: stroke; stroke: #F6F9FD; stroke-width: 6px; }
+.v3-net-foot { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px 40px; flex-wrap: wrap; margin-top: 24px; }
+.ln .v3-net-foot .v3-net-note { margin-top: 0; max-width: 62ch; color: var(--b800); }
+.net-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; font: 500 .62rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--b700); }
+.net-legend li { display: inline-flex; align-items: center; gap: 8px; }
+.net-legend i { display: inline-block; }
+.lg-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--b600); }
+.lg-node { width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 0 0 1.6px var(--i9); }
+.lg-gap { width: 18px; border-top: 1.5px dashed var(--b500); }
+@media (prefers-reduced-motion: reduce) { .net-mem, .net-ring { animation: none; } }
+.net-n .net-hit { fill: transparent !important; stroke: none !important; }
+.net-n .net-ring { fill: none !important; }
+.net-out .net-ot { font: 600 13px var(--sans); }
+.net-out .net-os { font: 500 9px var(--mono); letter-spacing: .08em; }
+.net-out.o-fact .net-os { fill: var(--b300); }
+.net-out.o-fact .net-ot { fill: #fff; }
+.net-gap .net-sm { letter-spacing: .03em; font-size: 9px !important; }
