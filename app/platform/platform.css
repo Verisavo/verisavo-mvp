@@ -1083,6 +1083,23 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 @media (max-width: 900px) { .qd-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .qd-steps li:nth-child(3) { padding-left: 0; border-left: 0; } .qd-steps li:nth-child(n+3) { border-top: 1px solid #D5DCE8; } }
 @media (max-width: 560px) { .qd-steps { grid-template-columns: minmax(0, 1fr); } .qd-steps li, .qd-steps li + li { padding: 20px 0 8px; border-left: 0; } .qd-steps li + li { border-top: 1px solid #D5DCE8; } }
 .pg2-t .pg2-sub { color: #fff !important; font-weight: 600 !important; font-size: 1.0625rem !important; }
+
+/* decisions */
+.dq-head { display: grid; justify-items: center; text-align: center; gap: 14px; margin-bottom: clamp(32px, 5vw, 52px); }
+.dq-head h2 { margin: 0; }
+.dq-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid #1F273F; }
+.dq-list > li { display: grid; grid-template-columns: minmax(150px, 1fr) minmax(0, 3fr) minmax(0, 2fr); gap: 28px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid #D5DCE8; transition: background .2s; }
+.dq-list > li:hover { background: linear-gradient(90deg, #F3F7FC, transparent); }
+.dq-area { font: 600 1.5rem/1.1 var(--display, var(--sans)); color: #4362B2; }
+.dq-q { margin: 0; font-size: 1.2rem !important; line-height: 1.45 !important; color: #1F273F !important; font-weight: 500; }
+.dq-ev { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.dq-ev li { font-size: .85rem; line-height: 1; padding: 8px 12px; border-radius: 999px; background: #E3EBF8; color: #1F273F; white-space: nowrap; }
+.dq-note { margin: 22px 0 0; font-size: .9rem !important; color: #6B7488 !important; text-align: center; }
+#decisions .dq-head h2 { font-size: clamp(2.4rem, 1.4rem + 3vw, 4rem) !important; line-height: 1 !important; }
+#decisions { padding-bottom: clamp(56px, 7vw, 96px); }
+.cta-wrap { padding-top: clamp(40px, 5vw, 72px) !important; }
+.cta { box-shadow: none !important; }
+@media (max-width: 900px) { .dq-list > li { grid-template-columns: minmax(0, 1fr); gap: 12px; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
