@@ -1,5 +1,5 @@
 import Capabilities from "./Capabilities";
-import { AX_HERO, AX_GALLERY, AX_WORKS } from "./axMarkup";
+import { AX_GALLERY, AX_WORKS } from "./axMarkup";
 // Converted from the original static page. Markup only: behaviour lives in lib/platform/.
 export default function Main() {
   return (
@@ -28,7 +28,6 @@ export default function Main() {
             <button type="button" className="btn btn-rect solid" id="ask-cta">{"Ask Verisavo"}</button>
             {" "}
           </div>
-          <div style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: AX_HERO }} />
           {" "}
         </div>
         {" "}
