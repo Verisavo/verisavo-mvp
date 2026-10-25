@@ -1219,6 +1219,26 @@ html body :is(#pg-about-us, #pg-careers, #pg-pricing, #pg-contact).pg .pg-foot b
 @media (max-width: 760px) { #pg-research .ix-feat { grid-template-columns: minmax(0, 1fr); gap: 22px; } #pg-research .ix-art { aspect-ratio: 16 / 10; } }
 @media (prefers-reduced-motion: reduce) { #pg-research .ix-art, #pg-research .ix-body { transition: none; } }
 
+
+/* ===== pricing: light page, roomier layout, cards unchanged ===== */
+html body:has(#pg-pricing.open):not(.menu-open) .top::before { display: block !important; opacity: 1 !important; background: rgba(244,246,250,.96) !important; box-shadow: 0 1px 0 rgba(31,39,63,.08) !important; }
+html body:has(#pg-pricing.open):not(.menu-open) .logo { color: #1F273F !important; }
+html body:has(#pg-pricing.open):not(.menu-open) .pill { background: #1F273F !important; box-shadow: none !important; }
+html body #pg-pricing.pg { background: #F4F6FA !important; color: #1F273F; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html body #pg-pricing.pg .pg-back { color: #1F273F !important; }
+html body #pg-pricing.pg .pr-head :is(h1, .lab, p) { color: #1F273F !important; }
+html body #pg-pricing.pg .pr-head h1 .acc, html body #pg-pricing.pg .pr-head h1 span { color: #4362B2 !important; }
+html body #pg-pricing.pg .pr-head p:not(.lab) { color: #3D4559 !important; }
+html body #pg-pricing.pg .pr-head .lab { color: #4362B2 !important; }
+html body #pg-pricing.pg .pr-head { padding-block: clamp(24px, 4vw, 56px) clamp(8px, 2vw, 24px); }
+html body #pg-pricing.pg .pr-head h1 { font-size: clamp(2.8rem, 1.6rem + 4vw, 5.2rem) !important; line-height: 1 !important; }
+html body #pg-pricing.pg .pr-head p:not(.lab) { font-size: 1.125rem !important; line-height: 1.65 !important; max-width: 56ch; }
+html body #pg-pricing.pg .pg-in.pg-narrow:has(.pr-plans) { max-width: min(1280px, var(--container, 1500px)) !important; }
+html body #pg-pricing.pg .pr-plans { gap: clamp(20px, 2.4vw, 32px) !important; margin-bottom: clamp(40px, 6vw, 96px); }
+html body #pg-pricing.pg .pr-card { padding: clamp(32px, 3vw, 44px) clamp(28px, 2.6vw, 40px) !important; gap: 16px !important; border-radius: 16px !important; min-height: 520px; }
+html body #pg-pricing.pg .pr-card:not(.pr-main) { box-shadow: 0 30px 60px -40px rgba(31,39,63,.6) !important; }
+html body #pg-pricing.pg .pr-card.pr-main { box-shadow: 0 0 0 1px #DCE4F0, 0 30px 60px -40px rgba(31,39,63,.45) !important; }
+@media (max-width: 900px) { html body #pg-pricing.pg .pr-card { min-height: 0; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
