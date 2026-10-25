@@ -1453,6 +1453,9 @@ footer.foot.foot .logo, .foot .logo { color: #1F273F !important; }
 html body .pcard { max-width: 1100px !important; }
 .chat { border-radius: 20px !important; }
 .chat textarea { min-height: 128px !important; max-height: 260px !important; font-size: 1.125rem !important; line-height: 1.6 !important; }
+html body #ask-form .chat-body { padding-right: 20px !important; }
+html body #ask-form textarea { border: 1px solid #DCE4F0 !important; border-radius: 14px !important; padding: 14px 16px !important; background: #FFFFFF !important; box-sizing: border-box; transition: border-color .2s, box-shadow .2s; }
+html body #ask-form textarea:focus { border-color: #618CD0 !important; box-shadow: 0 0 0 4px rgba(97,140,208,.14) !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
