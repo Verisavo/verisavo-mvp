@@ -1556,6 +1556,11 @@ html body #va .va-chip.va-sugg small { display: none !important; }
 html body #va .va-chip.va-sugg b { font: 500 .8125rem/1 var(--sans) !important; color: #1F273F !important; margin: 0 !important; white-space: nowrap; }
 html body #va .va-chip.va-sugg .va-sugg-ic { width: auto !important; height: auto !important; background: none !important; margin: 0 !important; padding: 0 !important; color: #4362B2 !important; }
 html body #va .va-chip.va-sugg .va-sugg-ic .vi { width: 15px !important; height: 15px !important; }
+/* workspace composer: softer outline, send always indigo */
+html body #va .va-composer { border: 2px solid #CCDDF1 !important; }
+html body #va .va-composer:focus-within { border-color: #A8C6E8 !important; }
+html body #va #va-in:focus { border-color: #DCE4F0 !important; box-shadow: none !important; }
+html body #va .va-send:disabled { opacity: 1 !important; background: #1F273F !important; color: #FFFFFF !important; cursor: default; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
