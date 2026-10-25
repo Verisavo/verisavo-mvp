@@ -1564,8 +1564,8 @@ html body #va .va-send:disabled { opacity: 1 !important; background: #1F273F !im
 /* workspace: lift the question box off the bottom once a conversation has started */
 html body .va.va-has-thread .va-dock { padding-bottom: 56px !important; }
 @media (max-width: 640px) { html body .va.va-has-thread .va-dock { padding-bottom: 24px !important; } }
-/* workspace: soft blue avatars instead of indigo */
-html body #va .va-av, html body #va .va-mark, html body .va .va-av, html body .va .va-mark { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: inset 0 0 0 1px #CCDDF1 !important; }
+/* workspace: the person's avatar is soft blue; the Verisavo mark stays indigo */
+html body #va .va-av, html body .va .va-av { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: inset 0 0 0 1px #CCDDF1 !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
