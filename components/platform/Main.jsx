@@ -214,7 +214,7 @@ export default function Main() {
           {" "}
           <div className="band-head">
             {" "}
-            <h2 id="platform-title">{"The connected intelligence layer for African markets."}</h2>
+            <h2 id="platform-title">{"Beyond the Answer"}</h2>
             {" "}
             <p>
               {"Verisavo connects what the market shows with what your company knows, supported by verified Ground-Level Intelligence."}
