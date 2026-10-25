@@ -1139,6 +1139,72 @@ body.page-light:not(.menu-open) .top::before { background: rgba(244,246,250,.96)
 
 #pg-about-us .pg-back, #pg-careers .pg-back { position: relative; z-index: 3; }
 #pg-careers .pg-head .lead { font-size: 1.0625rem !important; line-height: 1.7 !important; max-width: 720px !important; }
+
+/* ===== inner pages: indigo header, light body (as home and product) ===== */
+#pg-about-us.pg, #pg-careers.pg, #pg-pricing.pg { overflow-x: hidden; }
+#pg-about-us .pg-in, #pg-careers .pg-in, #pg-pricing .pg-in { overflow-x: visible !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='believe-h'] { position: relative; background: #F5F8FC; box-shadow: 0 0 0 100vmax #F5F8FC; clip-path: inset(calc(clamp(64px, 10vh, 110px) / -2) -100vmax); }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='believe-h'] :is(h2, h3, h4, b, strong, summary, dt) { color: #1F273F !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='believe-h'] :is(p, li, dd):not(.zz1):not(.zz2) { color: #3D4559 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='believe-h'] :is(.lab, .n, .rs-meta, .ca-team, .ca-loc, .ca-count) { color: #4362B2 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='believe-h'] .acc { color: #4362B2 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='believe-h'] .pg-link { color: #1F273F !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='believe-h'] .card { background: #fff !important; border: 1px solid #DCE4F0 !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html body #pg-about-us#pg-about-us.pg.pg .team { position: relative; background: #FFFFFF; box-shadow: 0 0 0 100vmax #FFFFFF; clip-path: inset(calc(clamp(64px, 10vh, 110px) / -2) -100vmax); }
+html body #pg-about-us#pg-about-us.pg.pg .team :is(h2, h3, h4, b, strong, summary, dt) { color: #1F273F !important; }
+html body #pg-about-us#pg-about-us.pg.pg .team :is(p, li, dd):not(.zz1):not(.zz2) { color: #3D4559 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .team :is(.lab, .n, .rs-meta, .ca-team, .ca-loc, .ca-count) { color: #4362B2 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .team .acc { color: #4362B2 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .team .pg-link { color: #1F273F !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='hl-h'] { position: relative; background: #F5F8FC; box-shadow: 0 0 0 100vmax #F5F8FC; clip-path: inset(calc(clamp(64px, 10vh, 110px) / -2) -100vmax); }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='hl-h'] :is(h2, h3, h4, b, strong, summary, dt) { color: #1F273F !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='hl-h'] :is(p, li, dd):not(.zz1):not(.zz2) { color: #3D4559 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='hl-h'] :is(.lab, .n, .rs-meta, .ca-team, .ca-loc, .ca-count) { color: #4362B2 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='hl-h'] .acc { color: #4362B2 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='hl-h'] .pg-link { color: #1F273F !important; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby='hl-h'] .hl-card { background: #fff !important; border: 1px solid #DCE4F0 !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html body #pg-about-us#pg-about-us.pg.pg .hl-card .rs-tag, html body #pg-about-us#pg-about-us.pg.pg .hl-card .rs-soon { color: #3A5292 !important; border-color: #A8C6E8 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-grid { position: relative; background: #FFFFFF; box-shadow: 0 0 0 100vmax #FFFFFF; clip-path: inset(calc(clamp(64px, 10vh, 110px) / -2) -100vmax); }
+html body #pg-careers#pg-careers.pg.pg .ca-grid :is(h2, h3, h4, b, strong, summary, dt) { color: #1F273F !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-grid :is(p, li, dd):not(.zz1):not(.zz2) { color: #3D4559 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-grid :is(.lab, .n, .rs-meta, .ca-team, .ca-loc, .ca-count) { color: #4362B2 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-grid .acc { color: #4362B2 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-grid .pg-link { color: #1F273F !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-roles { position: relative; background: #F5F8FC; box-shadow: 0 0 0 100vmax #F5F8FC; clip-path: inset(calc(clamp(64px, 10vh, 110px) / -2) -100vmax); }
+html body #pg-careers#pg-careers.pg.pg .ca-roles :is(h2, h3, h4, b, strong, summary, dt) { color: #1F273F !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-roles :is(p, li, dd):not(.zz1):not(.zz2) { color: #3D4559 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-roles :is(.lab, .n, .rs-meta, .ca-team, .ca-loc, .ca-count) { color: #4362B2 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-roles .acc { color: #4362B2 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-roles .pg-link { color: #1F273F !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-job { background: #fff !important; border: 1px solid #DCE4F0 !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-roles h2 { color: #1F273F !important; } html body #pg-careers#pg-careers.pg.pg .ca-job summary span { color: #3D4559 !important; } html body #pg-careers#pg-careers.pg.pg .ca-job summary b { color: #1F273F !important; } html body #pg-careers#pg-careers.pg.pg .ca-go { color: #1F273F !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-job :is(.btn, button, a) { color: #1F273F; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-plans { position: relative; background: #F5F8FC; box-shadow: 0 0 0 100vmax #F5F8FC; clip-path: inset(calc(clamp(64px, 10vh, 110px) / -2) -100vmax); }
+html body #pg-pricing#pg-pricing.pg.pg .pr-plans :is(h2, h3, h4, b, strong, summary, dt) { color: #1F273F !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-plans :is(p, li, dd):not(.zz1):not(.zz2) { color: #3D4559 !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-plans :is(.lab, .n, .rs-meta, .ca-team, .ca-loc, .ca-count) { color: #4362B2 !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-plans .acc { color: #4362B2 !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-plans .pg-link { color: #1F273F !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-card { background: #fff !important; border: 1px solid #DCE4F0 !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-card.pr-main { box-shadow: 0 0 0 2px #1F273F, 0 24px 50px -30px rgba(31,39,63,.5) !important; border-color: #1F273F !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pr-card :is(.pr-price, .pr-name) { color: #1F273F !important; } html body #pg-pricing#pg-pricing.pg.pg .pr-card :is(a, button) { }
+html body #pg-pricing#pg-pricing.pg.pg .pr-one { color: #C9D3E4 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box { background: #fff !important; border: 1px solid #DCE4F0 !important; box-shadow: 0 30px 70px -40px rgba(0,0,0,.5); }
+html body #pg-contact#pg-contact.pg.pg .ct-box :is(h2, h3, h4, b, strong, summary, dt) { color: #1F273F !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box :is(p, li, dd):not(.zz1):not(.zz2) { color: #3D4559 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box :is(.lab, .n, .rs-meta, .ca-team, .ca-loc, .ca-count) { color: #4362B2 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box .acc { color: #4362B2 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box .pg-link { color: #1F273F !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box h1 { color: #1F273F !important; } html body #pg-contact#pg-contact.pg.pg .ct-box h1 .acc { color: #4362B2 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box :is(input, textarea) { background: #F5F8FC !important; color: #1F273F !important; border: 1px solid #DCE4F0 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box :is(input, textarea)::placeholder { color: #7A8196 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box .obtn { background: #1F273F !important; color: #fff !important; border-color: #1F273F !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box .note button { color: #1F273F !important; }
+html body #pg-contact#pg-contact.pg.pg .ct-box .info3 > div { background: #F5F8FC !important; border-color: #DCE4F0 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-grid { clip-path: inset(calc(clamp(64px, 10vh, 110px) / -2) -100vmax -140px) !important; }
+#pg-pricing .pg-head { position: relative; isolation: isolate; }
+#pg-pricing .pg-head > :not(.about-bg) { position: relative; z-index: 1; }
+#pg-pricing .about-bg { position: absolute; z-index: 0; pointer-events: none; max-width: none; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }

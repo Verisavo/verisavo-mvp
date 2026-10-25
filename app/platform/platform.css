@@ -1422,6 +1422,12 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .ax-works .ax-wgrid h3 { margin: 16px 0 8px !important; font-size: 1.55rem !important; }
 .ax-works .ax-wfoot { justify-content: center; border-top: 0 !important; margin-top: 24px !important; padding-top: 0 !important; }
 @media (max-width: 760px) { .ax-works .ax-wgrid { grid-template-columns: minmax(0, 1fr) !important; } }
+
+/* chat box: white with a soft border by default */
+.stage .chat:not(.dark) { background: linear-gradient(180deg, #FFFFFF, #F7F9FD) !important; border: 1px solid #DCE4F0 !important; box-shadow: 0 0 0 1px rgba(255,255,255,.9) inset, 0 30px 60px -34px rgba(31,39,63,.35) !important; }
+.stage .chat:not(.dark):focus-within { border-color: #A8C6E8 !important; box-shadow: 0 0 0 4px rgba(168,198,232,.35), 0 30px 60px -34px rgba(31,39,63,.35) !important; }
+.stage .chat:not(.dark) textarea { color: #1F273F !important; }
+.stage .chat:not(.dark) textarea::placeholder { color: #6B7488 !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }

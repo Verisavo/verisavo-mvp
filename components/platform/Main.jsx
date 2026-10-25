@@ -45,7 +45,7 @@ export default function Main() {
             {" "}
             <div className="pcard">
               {" "}
-              <form className="chat dark" id="ask-form" noValidate>
+              <form className="chat" id="ask-form" noValidate>
                 {" "}
                 <button type="button" className="chat-theme" id="chat-theme" aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode">
                   <svg className="ct-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 12.3A6 6 0 0 1 7.7 4.5a6 6 0 1 0 7.8 7.8z"></path></svg>
