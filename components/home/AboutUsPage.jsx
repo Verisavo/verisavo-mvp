@@ -13,14 +13,11 @@ export default function AboutUsPage() {
           {" "}
           <h1 id="about-h"><span className="acc">{"About"}</span>{" Verisavo"}</h1>
           {" "}
-          <p className="lead">
-            {"Verisavo is a connected intelligence layer for African markets. We help organisations understand what is happening in the market around them, why it may be happening, what remains unknown and what it could mean for the decision ahead."}
-          </p>
+          <p className="lead">{"Verisavo is building a connected intelligence layer for African markets, helping businesses understand what is happening around them, why it matters, what remains unknown and what it means for their next decision."}</p>
           {" "}
-          <p>
-            {"The information organisations need already exists. It sits in company data, public records, digital platforms, research, field observations and the knowledge of people on the ground, but it rarely forms a coherent picture. Verisavo is being built to connect that evidence, keep each piece tied to its source, place and time, and show clearly where it falls short."}
-          </p>
+          <p>{"Across Africa, valuable market information exists in company data, public records, digital platforms, research and local communities. Yet much of it remains fragmented, making it difficult to see the bigger picture."}</p>
           {" "}
+          <p>{"Verisavo connects these scattered pieces, verifies evidence and reveals the relationships behind market changes. By combining technology with intelligence from the ground, we are building an evolving understanding of African markets that helps businesses make better-informed decisions."}</p>
         </header>
         {" "}
         
