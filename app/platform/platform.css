@@ -1561,6 +1561,9 @@ html body #va .va-composer { border: 2px solid #CCDDF1 !important; }
 html body #va .va-composer:focus-within { border-color: #A8C6E8 !important; }
 html body #va #va-in:focus { border-color: #DCE4F0 !important; box-shadow: none !important; }
 html body #va .va-send:disabled { opacity: 1 !important; background: #1F273F !important; color: #FFFFFF !important; cursor: default; }
+/* workspace: lift the question box off the bottom once a conversation has started */
+html body .va.va-has-thread .va-dock { padding-bottom: 56px !important; }
+@media (max-width: 640px) { html body .va.va-has-thread .va-dock { padding-bottom: 24px !important; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
