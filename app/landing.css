@@ -909,7 +909,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 /* network: equal answer states, no text cursor */
 .ln .net-svg, .ln .net-svg text { cursor: default; -webkit-user-select: none; user-select: none; }
 .ln .net-out.net-o0 rect { fill: url(#ohfill) !important; stroke: rgba(255,255,255,.9) !important; }
-.ln .net-out.net-o0 text { fill: #1F273F !important; }
+.ln .net-out.net-o0 text { fill: var(--b700) !important; }
 
 /* network: all nodes white */
 .ln .net-n.net-f circle { fill: #fff; }
