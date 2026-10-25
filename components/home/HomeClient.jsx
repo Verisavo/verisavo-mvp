@@ -15,6 +15,7 @@ export default function HomeClient() {
       (await import("@/lib/home/site")).default();
       (await import("@/lib/platform/mnavbg")).default();
       (await import("@/lib/home/aboutbg")).default();
+      (await import("@/lib/home/insightsfeat")).default();
       (await import("@/lib/home/cases")).default();
       window.THREE = await import("three");
       (await import("@/lib/home/landing")).default();
