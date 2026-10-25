@@ -1243,6 +1243,8 @@ html body #pg-pricing.pg .pr-card.pr-main { box-shadow: 0 0 0 1px #DCE4F0, 0 30p
 html:has(body.page-open), html:has(body.rd-open) { overflow: hidden !important; }
 
 /* ===== about: light layout, layered like home and product ===== */
+html body #pg-about-us#pg-about-us.pg.pg .pg-head { display: grid; justify-items: center; text-align: center; }
+html body #pg-about-us#pg-about-us.pg.pg .pg-head p:not(.lab) { margin-inline: auto; max-width: 720px !important; }
 html body #pg-about-us#pg-about-us.pg.pg { background: #FFFFFF !important; color: #1F273F; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; overflow-x: hidden; }
 html body #pg-about-us#pg-about-us.pg.pg .pg-in { overflow-x: visible !important; }
 html body #pg-about-us#pg-about-us.pg.pg .pg-back { color: #1F273F !important; position: relative; z-index: 3; }
