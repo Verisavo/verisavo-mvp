@@ -915,6 +915,8 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ln .net-n.net-f circle { fill: #fff; }
 /* network: moving dots in Royal Indigo */
 .ln .net-dot, .ln .net-dot-g { fill: #1F273F !important; }
+/* network: labels sit above the moving dots */
+.ln .net-n text { paint-order: stroke; stroke: #F3F6FB; stroke-width: 5px; stroke-linejoin: round; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
