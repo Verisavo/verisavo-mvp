@@ -748,7 +748,7 @@ export default function ResearchPage() {
                   {"Market information in Africa is not missing, it is scattered. Henry explains why Verisavo starts by connecting evidence rather than collecting more of it."}
                 </p>
                 {" "}
-                <p className="rs-meta">{"By Henry Oranika · September 2026 · 5 min read"}</p>
+                <p className="rs-meta">{"By Henry O. · September 2026 · 5 min read"}</p>
                 {" "}
                 <span className="rs-soon" hidden>{"Article"}</span>
                 {" "}
@@ -788,7 +788,7 @@ export default function ResearchPage() {
                   {"How the research team separates what the evidence supports from what it only suggests, and why an honest Unknown is part of a good answer."}
                 </p>
                 {" "}
-                <p className="rs-meta">{"By Angel Ozougwu · September 2026 · 4 min read"}</p>
+                <p className="rs-meta">{"By Angel O. · September 2026 · 4 min read"}</p>
                 {" "}
                 <span className="rs-soon" hidden>{"Article"}</span>
                 {" "}
@@ -835,7 +835,7 @@ export default function ResearchPage() {
                   {"The operating principles behind our contributor network: targeted questions, clear consent, and observations that are geo-tagged, time-stamped and verified."}
                 </p>
                 {" "}
-                <p className="rs-meta">{"By Ifeanyi Iwele · August 2026 · 4 min read"}</p>
+                <p className="rs-meta">{"By Ifeanyi I. · August 2026 · 4 min read"}</p>
                 {" "}
                 <span className="rs-soon" hidden>{"Article"}</span>
                 {" "}
@@ -870,7 +870,7 @@ export default function ResearchPage() {
                   {"Notes on why so much everyday commerce goes uncounted in official data, and what it takes to see it clearly."}
                 </p>
                 {" "}
-                <p className="rs-meta">{"By Angel Ozougwu · August 2026 · 4 min read"}</p>
+                <p className="rs-meta">{"By Angel O. · August 2026 · 4 min read"}</p>
                 {" "}
                 <span className="rs-soon" hidden>{"Article"}</span>
                 {" "}
@@ -998,7 +998,7 @@ export default function ResearchPage() {
                   {"One empty shelf is a signal, not a conclusion. A short walk through how one observation becomes evidence, and when it is worth investigating."}
                 </p>
                 {" "}
-                <p className="rs-meta">{"By Henry Oranika · July 2026 · 4 min read"}</p>
+                <p className="rs-meta">{"By Henry O. · July 2026 · 4 min read"}</p>
                 {" "}
                 <span className="rs-soon" hidden>{"Article"}</span>
                 {" "}
@@ -1069,7 +1069,7 @@ export default function ResearchPage() {
                   {"Why market knowledge should not live in one-off reports, and how each question and investigation can strengthen the next decision."}
                 </p>
                 {" "}
-                <p className="rs-meta">{"By Ifeanyi Iwele · July 2026 · 4 min read"}</p>
+                <p className="rs-meta">{"By Ifeanyi I. · July 2026 · 4 min read"}</p>
                 {" "}
                 <span className="rs-soon" hidden>{"Article"}</span>
                 {" "}

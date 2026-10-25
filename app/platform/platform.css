@@ -1436,6 +1436,31 @@ footer.foot.foot .logo, .foot .logo { color: #1F273F !important; }
 .foot .foot-bar { border-top-color: rgba(31,39,63,.1) !important; color: #5B6478 !important; }
 .foot :is(.foot-bar span, .foot-bar nav button, .foot-links a, .foot-links button) { color: #5B6478 !important; }
 .foot :is(.foot-bar nav button, .foot-links a, .foot-links button):hover { color: #1F273F !important; }
+
+/* ===== product page layered like the homepage ===== */
+.hero { background: #fff !important; border-bottom: 0 !important; }
+.hero h1, .hero h1 .l1 { color: #1F273F !important; }
+.hero h1 .tone { color: #4362B2 !important; }
+.hero .hero-title .sub, .hero p { color: #3D4559 !important; }
+.hero #ask-cta.btn { background: #1F273F !important; color: #fff !important; border-color: #1F273F !important; }
+.hero #ask-cta.btn:hover { background: #3A5292 !important; }
+.hero::after { background: linear-gradient(90deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.78) 38%, rgba(255,255,255,.15) 70%, rgba(255,255,255,0) 100%) !important; }
+@media (max-width: 760px) { .hero::after { background: rgba(255,255,255,.82) !important; } }
+.oh-ans { background: #F5F8FC !important; }
+/* ===== menu: light, moving text kept ===== */
+html body .mnav::before { display: none !important; }
+html body .mnav::after { background: radial-gradient(ellipse 42% 62% at 88% 46%, rgba(244,246,250,.92), rgba(244,246,250,.5) 70%, rgba(244,246,250,0)) !important; }
+html body.menu-open .logo { color: #1F273F !important; }
+html body.menu-open :is(.pill, .vmenu) { background: rgba(31,39,63,.06) !important; box-shadow: inset 0 0 0 1px rgba(31,39,63,.18) !important; }
+html body.menu-open :is(.pill, .vmenu, .pill button, .pill a, .vmenu button, .snd, #menu-btn) { color: #1F273F !important; }
+html body.menu-open .pill :is(button, a) { color: #1F273F !important; }
+
+.mnav { background: #F4F6FA !important; }
+.mnav button, .mnav a { color: #3A5292 !important; }
+.mnav-big button:hover, .mnav-big button:focus-visible, .mnav-big a:hover, .mnav-big a:focus-visible, .mnav-small button:hover, .mnav-small button:focus-visible { color: #1F273F !important; }
+.mnav-big button::after, .mnav-big a::after { background: #1F273F !important; }
+.mnav-foot, .mnav-foot a, .mnav-foot button { color: #1F273F !important; }
+.mnav-foot a:hover, .mnav-foot button:hover { color: #4362B2 !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
