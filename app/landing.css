@@ -946,6 +946,9 @@ footer.lf.lf .lf-cols h3, .lf .lf-cols h3 { color: #1F273F !important; font: 700
 .lf .lf-bar button:hover { color: #1F273F !important; }
 .lf .lf-top-btn { border-color: rgba(31,39,63,.18) !important; }
 .lf .lf-mark { color: rgba(31,39,63,.06) !important; }
+/* section labels: no numbers; story label removed */
+html body .ln .v3-n { display: none !important; }
+html body .ln .ms-eb { display: none !important; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
