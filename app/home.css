@@ -1239,6 +1239,8 @@ html body #pg-pricing.pg .pr-card { padding: clamp(32px, 3vw, 44px) clamp(28px, 
 html body #pg-pricing.pg .pr-card:not(.pr-main) { box-shadow: 0 30px 60px -40px rgba(31,39,63,.6) !important; }
 html body #pg-pricing.pg .pr-card.pr-main { box-shadow: 0 0 0 1px #DCE4F0, 0 30px 60px -40px rgba(31,39,63,.45) !important; }
 @media (max-width: 900px) { html body #pg-pricing.pg .pr-card { min-height: 0; } }
+/* open pages: lock the page behind so only the open page scrolls */
+html:has(body.page-open), html:has(body.rd-open) { overflow: hidden !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
