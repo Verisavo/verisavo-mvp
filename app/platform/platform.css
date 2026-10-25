@@ -1428,6 +1428,14 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 .stage .chat:not(.dark):focus-within { border-color: #A8C6E8 !important; box-shadow: 0 0 0 4px rgba(168,198,232,.35), 0 30px 60px -34px rgba(31,39,63,.35) !important; }
 .stage .chat:not(.dark) textarea { color: #1F273F !important; }
 .stage .chat:not(.dark) textarea::placeholder { color: #6B7488 !important; }
+
+/* ===== footer: light, as Insights ===== */
+.foot { background: #F4F6FA !important; color: #5B6478 !important; border-top: 1px solid rgba(31,39,63,.1); }
+footer.foot.foot .logo, .foot .logo { color: #1F273F !important; }
+.foot :is(.foot-brand span, .foot-brand p) { color: #5B6478 !important; }
+.foot .foot-bar { border-top-color: rgba(31,39,63,.1) !important; color: #5B6478 !important; }
+.foot :is(.foot-bar span, .foot-bar nav button, .foot-links a, .foot-links button) { color: #5B6478 !important; }
+.foot :is(.foot-bar nav button, .foot-links a, .foot-links button):hover { color: #1F273F !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }

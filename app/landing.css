@@ -920,21 +920,32 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 /* network: answer labels and gap note in Royal Indigo */
 .ln .net-out text, .ln .net-out.net-o0 text, .ln .net-out text.o-inf, .ln .net-out text.o-hyp, .ln .net-out text.o-unk, .ln .net-gap .net-sm { fill: #1F273F !important; }
 
-/* how it works: Built on trust card layout */
-.ln .v3-how .hm-doc, .ln .v3-how .hw-doc { display: table !important; margin: 32px auto 0 !important; }
-
+/* how it works: list layout on grey */
 .ln .v3-how { background: var(--pap) !important; }
-.ln .v3-how .ln-head { display: flex !important; flex-direction: column; align-items: center; text-align: center; max-width: none !important; width: 100%; grid-template-columns: none !important; gap: 14px; margin-bottom: 40px; }
-.ln .v3-how .ln-head .ln-sub { margin: 0 auto; }
-.ln .v3-how .hm { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; border-top: 0 !important; }
-.ln .v3-how .hm li { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 10px !important; align-content: start; align-items: start; padding: 24px 24px 28px !important; background: #fff; border: 1px solid #D6E2F2 !important; border-radius: 14px; }
-.ln .v3-how .hm li:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 8px); }
-.ln .v3-how .hm-n { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: #E3EBF8; color: #3A5292 !important; font: 600 .9rem/1 var(--sans) !important; margin-bottom: 6px; }
-.ln .v3-how .hm-t { font: 600 1.7rem/1.05 var(--display, var(--sans)) !important; color: #1F273F; }
-.ln .v3-how .hm-b { grid-column: auto !important; max-width: none !important; gap: 8px; }
-.ln .v3-how .hm-b h3 { margin: 0; }
-.ln .v3-how .hm-b p { margin: 0; font-size: 1rem !important; line-height: 1.6 !important; max-width: none !important; }
-@media (max-width: 720px) { .ln .v3-how .hm { grid-template-columns: minmax(0, 1fr); } .ln .v3-how .hm li:last-child:nth-child(odd) { width: auto; justify-self: stretch; } }
+
+
+/* spacing between story and network */
+.ln .v3-net { padding-top: clamp(80px, 10vw, 140px) !important; }
+/* closing CTA as a contained box, with space before the footer */
+.ln .ln-close { background: #fff !important; padding-block: clamp(64px, 8vw, 110px) !important; overflow: visible !important; }
+.ln .ln-close::before { display: none !important; }
+.ln .ln-close .ln-wrap { position: relative; isolation: isolate; overflow: hidden; background: var(--i9); border-radius: 22px; width: min(var(--container, 1500px), calc(100% - 2 * var(--gutter, 32px))) !important; max-width: none !important; margin-inline: auto !important; padding: clamp(56px, 7vw, 96px) clamp(20px, 5vw, 64px) !important; }
+.ln .ln-close .ln-wrap::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: radial-gradient(rgba(168,198,232,.22) 1px, transparent 1.2px); background-size: 22px 22px; -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 0%, transparent 75%); mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 0%, transparent 75%); }
+@media (max-width: 560px) { .ln .ln-close .ln-wrap { border-radius: 16px; width: calc(100% - 24px); } }
+
+/* ===== footer: light, as Insights ===== */
+.lf { background: #F4F6FA !important; color: #5B6478 !important; border-top: 1px solid rgba(31,39,63,.1); }
+.lf::before, .lf::after { display: none !important; }
+.lf .lf-logo { color: #1F273F !important; }
+.lf .lf-brand p { color: #5B6478 !important; }
+footer.lf.lf .lf-cols h3, .lf .lf-cols h3 { color: #1F273F !important; font: 700 .72rem/1 var(--sans) !important; letter-spacing: .14em !important; text-transform: uppercase !important; }
+.lf .lf-cols a, .lf .lf-cols button { color: #2E3650 !important; }
+.lf .lf-cols a:hover, .lf .lf-cols button:hover { color: #1F273F !important; }
+.lf .lf-bar { border-top-color: rgba(31,39,63,.1) !important; color: #5B6478 !important; }
+.lf .lf-bar :is(span, button, a) { color: #5B6478 !important; }
+.lf .lf-bar button:hover { color: #1F273F !important; }
+.lf .lf-top-btn { border-color: rgba(31,39,63,.18) !important; }
+.lf .lf-mark { color: rgba(31,39,63,.06) !important; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
