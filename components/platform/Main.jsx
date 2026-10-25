@@ -1,4 +1,3 @@
-import Capabilities from "./Capabilities";
 import { AX_GALLERY, AX_WORKS } from "./axMarkup";
 // Converted from the original static page. Markup only: behaviour lives in lib/platform/.
 export default function Main() {
@@ -207,7 +206,6 @@ export default function Main() {
     <p className="src-strip"><span className="src-k">Built from</span><span className="src-v">Company data</span><span className="src-v">Public records</span><span className="src-v">Digital platforms</span><span className="src-v">Market research</span><span className="src-v">SavoScouts</span></p>
     </div>
 </section>
-      <Capabilities />
       {" "}
       <section className="band" id="platform" aria-labelledby="platform-title">
         {" "}
