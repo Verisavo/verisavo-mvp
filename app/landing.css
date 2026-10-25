@@ -949,6 +949,9 @@ footer.lf.lf .lf-cols h3, .lf .lf-cols h3 { color: #1F273F !important; font: 700
 /* section labels: no numbers; story label removed */
 html body .ln .v3-n { display: none !important; }
 html body .ln .ms-eb { display: none !important; }
+html body .ln .ms-prog::before { content: "Why Verisavo exists"; font: 600 .8125rem/1 var(--sans); color: #4362B2; white-space: nowrap; }
+html body .ln .ms-prog { max-width: 100%; min-width: 0; }
+html body .ln .ms-bar { flex: 0 1 140px; min-width: 32px; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
