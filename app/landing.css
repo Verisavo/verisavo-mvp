@@ -992,6 +992,15 @@ html body .ln .net-svg-m :is(.net-src, .net-out, .net-gap) rect { fill: url(#ohf
 html body .ln .net-svg-m .net-n circle { fill: #FFFFFF !important; filter: url(#ohshm) !important; }
 html body .ln .net-svg-m { max-width: 340px !important; margin: 0 auto !important; }
 html body .ln .net-svg-m :is(.net-src, .net-out, .net-gap) text { text-anchor: middle; }
+/* story: calmer text area at the bottom */
+html body .ln .ms-veil { display: block !important; opacity: 1 !important; background: radial-gradient(ellipse 72% 58% at 14% 100%, rgba(245,248,252,.97) 0%, rgba(245,248,252,.9) 38%, rgba(245,248,252,.55) 58%, rgba(245,248,252,0) 78%) !important; }
+html body .ln .ms-copy { width: min(600px, calc(100% - 40px)) !important; }
+html body .ln .ms-l { font-size: clamp(1.75rem, 1rem + 2.3vw, 3rem) !important; line-height: 1.06 !important; }
+@media (max-width: 760px) {
+  html body .ln .ms-veil { background: linear-gradient(0deg, rgba(245,248,252,.98) 0%, rgba(245,248,252,.92) 40%, rgba(245,248,252,0) 70%) !important; }
+  html body .ln .ms-copy { width: auto !important; }
+  html body .ln .ms-l { font-size: clamp(1.6rem, 1.1rem + 2.4vw, 2.1rem) !important; }
+}
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
