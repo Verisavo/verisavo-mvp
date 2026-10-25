@@ -1493,6 +1493,18 @@ html body #va .va-chip :is(b, strong) { color: #1F273F !important; }
 html body #va .va-chip :is(small, span:not(.va-sugg-ic), p) { color: #6B7385 !important; }
 html body #va .va-sugg-ic { background: #F1F4F9 !important; color: #1F273F !important; }
 html body #va .va-who :is(span, small) { color: #6B7385 !important; }
+/* product: clean, consistent style */
+html body :is(.ax-head, .band-head) p { color: #5B6478 !important; }
+html body :is(.ax-head, .band-head) h2 { color: #1F273F !important; }
+html body .ax-works .ax-wgrid { gap: 16px !important; }
+html body .ax-works .ax-wgrid article { background: #FFFFFF !important; border: 1px solid #E9EDF3 !important; border-radius: 18px !important; box-shadow: none !important; padding: 28px 28px 30px !important; transition: border-color .25s, box-shadow .25s, transform .25s !important; }
+html body .ax-works .ax-wgrid article:hover { border-color: #CCDDF1 !important; box-shadow: 0 18px 40px -30px rgba(31,39,63,.4) !important; transform: translateY(-2px); }
+html body .ax-works .ax-ic { width: 36px !important; height: 36px !important; padding: 8px !important; border-radius: 10px !important; background: #F1F4F9 !important; color: #1F273F !important; stroke: #1F273F !important; box-sizing: border-box; }
+html body .ax-works .ax-wgrid h3 { color: #1F273F !important; margin-top: 14px !important; }
+html body .ax-works .ax-wgrid p { color: #5B6478 !important; }
+html body .vs .vs-row { border-color: #EEF1F6 !important; }
+html body .vs :is(.vs-g, .vs-gen, [class*="vs-g"]) { color: #6B7385; }
+html body .oh-tile .oh-n, html body .oh-tile .oh-num { color: #80AADC !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
