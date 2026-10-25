@@ -1566,6 +1566,18 @@ html body .va.va-has-thread .va-dock { padding-bottom: 56px !important; }
 @media (max-width: 640px) { html body .va.va-has-thread .va-dock { padding-bottom: 24px !important; } }
 /* workspace: the person's avatar is soft blue; the Verisavo mark stays indigo */
 html body #va .va-av, html body .va .va-av { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: inset 0 0 0 1px #CCDDF1 !important; }
+/* market menus: 54 countries grouped by region, with search */
+html body .va-pop#va-scope-menu, html body .place-menu#place-menu { display: block; min-width: 248px; max-height: min(380px, 60vh); padding: 0 6px 6px; }
+html body .va-pop#va-scope-menu[hidden], html body .place-menu#place-menu[hidden] { display: none; }
+html body #va-scope-menu > li, html body #place-menu > li { margin: 1px 0; }
+html body #va-scope-menu .mk-s, html body #place-menu .mk-s { position: sticky; top: 0; z-index: 1; background: #fff; padding: 6px 0 6px; margin: 0; }
+html body .mk-q { width: 100%; box-sizing: border-box; height: 36px; padding: 0 12px; border: 1px solid #CCDDF1; border-radius: 9px; background: #F7F9FC; font: 500 .875rem/1 var(--sans, sans-serif); color: #1F273F; outline: none; }
+html body .mk-q:focus { border-color: #80AADC; background: #fff; }
+html body .mk-q::placeholder { color: #8A93A6; }
+html body .mk-h { padding: 12px 10px 4px; font: 600 .6875rem/1.2 var(--sans, sans-serif); letter-spacing: .06em; text-transform: uppercase; color: #8A93A6; }
+html body .mk-none { padding: 10px; font: 500 .8125rem/1.3 var(--sans, sans-serif); color: #8A93A6; }
+html body #va-scope-menu li[hidden], html body #place-menu li[hidden] { display: none; }
+@media (max-width: 640px) { html body .va-pop#va-scope-menu, html body .place-menu#place-menu { min-width: min(280px, calc(100vw - 32px)); } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
