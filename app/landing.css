@@ -905,6 +905,11 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .oh-tile.in .oh-pill, .oh-tile.in .oh-tl { transition: none; animation: ohLater 8s ease infinite; }
 .oh-tile.t4 .oh-tab.on rect { transition: fill .3s; }
 @media (prefers-reduced-motion: reduce) { .oh-tile.in .oh-steps li, .oh-tile.in .oh-panel, .oh-tile.in .oh-ln, .oh-tile.in .oh-dt, .oh-tile.in .oh-mk, .oh-tile.in .oh-pill, .oh-tile.in .oh-tl { animation: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; } }
+
+/* network: equal answer states, no text cursor */
+.ln .net-svg, .ln .net-svg text { cursor: default; -webkit-user-select: none; user-select: none; }
+.ln .net-out.net-o0 rect { fill: url(#ohfill) !important; stroke: rgba(255,255,255,.9) !important; }
+.ln .net-out.net-o0 text { fill: #1F273F !important; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
