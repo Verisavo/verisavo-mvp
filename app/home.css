@@ -1322,6 +1322,25 @@ html body #pg-pricing#pg-pricing.pg.pg .pr-main .pr-list li { color: #1F273F !im
 html body #pg-pricing#pg-pricing.pg.pg .pr-main .pr-one { border-top-color: #EEF1F6 !important; }
 html body #pg-pricing#pg-pricing.pg.pg .pr-next { border-style: solid !important; border-color: rgba(168,198,232,.22) !important; }
 html body #pg-pricing#pg-pricing.pg.pg .pr-head p.pr-lead { color: #5B6478 !important; }
+/* careers + contact: clean, consistent style */
+html body #pg-careers#pg-careers.pg.pg .ca2-card { border: 1px solid #E9EDF3 !important; box-shadow: none !important; border-radius: 18px !important; transition: border-color .25s, box-shadow .25s, transform .25s; }
+html body #pg-careers#pg-careers.pg.pg .ca2-card:hover { border-color: #CCDDF1 !important; box-shadow: 0 18px 40px -30px rgba(31,39,63,.4) !important; transform: translateY(-2px); }
+html body #pg-careers#pg-careers.pg.pg .ca2-n { width: auto !important; height: auto !important; background: none !important; border-radius: 0 !important; display: block !important; margin-bottom: 6px !important; font: 500 .75rem/1 "Geist Mono", ui-monospace, monospace !important; letter-spacing: .06em; color: #80AADC !important; }
+html body #pg-careers#pg-careers.pg.pg .ca2-card p { color: #5B6478 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca2-head p.lab, html body #pg-careers#pg-careers.pg.pg .pg-head p.lead { color: #5B6478; }
+html body #pg-careers#pg-careers.pg.pg .ca-job { border-color: #E9EDF3 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-job:hover, html body #pg-careers#pg-careers.pg.pg .ca-job[open] { border-color: #CCDDF1 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-job summary span:not(.ca-team):not(.ca-loc):not(.ca-go) { color: #5B6478 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-job :is(.ca-team, .ca-loc) { background: #F7F9FC !important; border-color: #E9EDF3 !important; color: #5B6478 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-job .ca-go { border-color: #E3E8F0 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca2-filter button:not([aria-pressed="true"]) { background: #FFFFFF !important; border-color: #E3E8F0 !important; color: #1F273F !important; }
+html body #pg-careers#pg-careers.pg.pg .ca2-filter button:not([aria-pressed="true"]) i { color: #8A93A6 !important; }
+html body #pg-careers#pg-careers.pg.pg .ca-apply { border-radius: 24px !important; }
+html body #pg-contact#pg-contact.pg.pg .ct3-form { border: 1px solid #E3E8F0 !important; border-radius: 22px !important; box-shadow: 0 30px 60px -44px rgba(31,39,63,.4) !important; }
+html body #pg-contact#pg-contact.pg.pg p.ct3-lead { color: #5B6478 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct3-form :is(input, textarea) { background: #F7F9FC !important; border-color: #E9EDF3 !important; }
+html body #pg-contact#pg-contact.pg.pg .ct3-form :is(input, textarea):focus { background: #FFFFFF !important; border-color: #80AADC !important; }
+html body #pg-contact#pg-contact.pg.pg .ct3-head::after { background: #EEF1F6 !important; }
 /* open pages: the top bar stops short of the page scrollbar */
 body.page-open .top::before, body.rd-open .top::before { right: var(--sbw, 0px) !important; }
 body.page-open .top, body.rd-open .top { right: calc(var(--edge, 24px) + var(--sbw, 0px)) !important; }
