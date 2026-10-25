@@ -1364,7 +1364,8 @@ html body #pg-careers#pg-careers.pg.pg .ca-jd ul { gap: 10px !important; }
 html body #pg-careers#pg-careers.pg.pg .ca-jd a.obtn { margin-top: 28px !important; padding: 14px 22px !important; border-radius: 10px !important; background: #1F273F !important; border: 1px solid #1F273F !important; color: #fff !important; font-weight: 600 !important; gap: 8px; transition: background .2s; }
 html body #pg-careers#pg-careers.pg.pg .ca-jd a.obtn:hover { background: #3A5292 !important; border-color: #3A5292 !important; }
 @media (max-width: 760px) { html body #pg-careers#pg-careers.pg.pg .ca-job summary { grid-template-columns: auto auto minmax(0, 1fr) 34px !important; } html body #pg-careers#pg-careers.pg.pg .ca-job .ca-jd { margin: 0 18px; } }
-html body #pg-careers#pg-careers.pg.pg p.ca-eq { color: #5B6478 !important; font-size: .9375rem !important; margin: 4px 0 0; }
+html body #pg-careers#pg-careers.pg.pg p.ca-eq { color: #5B6478 !important; font-size: .9375rem !important; margin: 8px auto 0 !important; max-width: 60ch !important; text-align: center; }
+html body #pg-careers#pg-careers.pg.pg { overflow-x: hidden !important; }
 
 html body #pg-careers#pg-careers.pg.pg .ca-apply { background: #1F273F !important; border: 0 !important; border-radius: 22px !important; padding: clamp(32px, 5vw, 64px) !important; display: grid; justify-items: center; text-align: center; gap: 18px; }
 html body #pg-careers#pg-careers.pg.pg .ca-apply h2 { color: #fff !important; margin: 0; }
