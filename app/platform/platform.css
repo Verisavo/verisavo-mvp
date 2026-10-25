@@ -1461,6 +1461,38 @@ html body #ask-form textarea:focus { border-color: #618CD0 !important; box-shado
 html body #va-theme, html body .va-theme { display: none !important; }
 html body .va-main:not(.va-dark) { background: #FFFFFF !important; }
 html body .va-main:not(.va-dark) .va-bed { opacity: .14 !important; }
+/* workspace: clean light style */
+html body #va .va-ib { color: #1F273F !important; border-radius: 10px !important; transition: background-color .2s, color .2s !important; }
+html body #va .va-ib:hover { background: #EEF2F8 !important; color: #1F273F !important; }
+html body #va .va-ib .vi, html body #va .va-ib svg { stroke-width: 1.6; }
+html body #va .va-top { border-bottom: 1px solid #EEF1F6 !important; }
+html body #va .va-scope { background: #FFFFFF !important; border: 1px solid #E3E8F0 !important; color: #1F273F !important; box-shadow: none !important; }
+html body #va .va-main .va-bed { display: none !important; }
+html body #va .va-side { background: #F7F9FC !important; border-right: 1px solid #EEF1F6 !important; }
+html body #va .va-new { background: #FFFFFF !important; border: 1px solid #E3E8F0 !important; box-shadow: 0 1px 2px rgba(31,39,63,.05) !important; color: #1F273F !important; }
+html body #va .va-nav, html body #va .va-search { color: #1F273F !important; }
+html body #va .va-h-recent { color: #8A93A6 !important; }
+html body #va .va-soon-tag { background: #EEF2F8 !important; color: #5B6478 !important; }
+html body #va .va-recent .is-cur, html body #va .va-recent [aria-current="true"], html body #va .va-recent .on { background: #E9EEF6 !important; color: #1F273F !important; }
+html body #va .va-msg-u { background: #F1F4F9 !important; color: #1F273F !important; border: 0 !important; }
+html body #va .va-card { background: #FFFFFF !important; border: 1px solid #E3E8F0 !important; box-shadow: 0 1px 2px rgba(31,39,63,.04) !important; }
+html body #va .va-card :is(p, span:not(.va-state)) { color: #4A5368 !important; }
+html body #va .va-card :is(b, strong, h3, h4) { color: #1F273F !important; }
+html body #va .va-state { background: #EEF2F8 !important; color: #3A5292 !important; }
+html body #va .va-mark { background: #1F273F !important; color: #FFFFFF !important; }
+html body #va .va-hi { color: #1F273F !important; } html body #va .va-sub { color: #5B6478 !important; }
+html body #va .va-composer { border: 1px solid #DCE3EE !important; border-radius: 18px !important; box-shadow: 0 8px 28px -14px rgba(31,39,63,.22) !important; }
+html body #va .va-composer:focus-within { border-color: #80AADC !important; box-shadow: 0 0 0 4px rgba(97,140,208,.12), 0 8px 28px -14px rgba(31,39,63,.22) !important; }
+html body #va #va-in { scrollbar-width: none; overflow-y: auto; }
+html body #va #va-in::-webkit-scrollbar { display: none; }
+html body #va .va-send { background: #1F273F !important; color: #FFFFFF !important; border-radius: 50% !important; }
+html body #va .va-send:disabled { background: #E9EEF5 !important; color: #A3ABBC !important; }
+html body #va .va-chip { background: #FFFFFF !important; border: 1px solid #E9EDF3 !important; color: #1F273F !important; box-shadow: none !important; transition: border-color .2s, box-shadow .2s, transform .2s !important; }
+html body #va .va-chip:hover { border-color: #CCDDF1 !important; box-shadow: 0 10px 24px -18px rgba(31,39,63,.35) !important; transform: translateY(-1px); }
+html body #va .va-chip :is(b, strong) { color: #1F273F !important; }
+html body #va .va-chip :is(small, span:not(.va-sugg-ic), p) { color: #6B7385 !important; }
+html body #va .va-sugg-ic { background: #F1F4F9 !important; color: #1F273F !important; }
+html body #va .va-who :is(span, small) { color: #6B7385 !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
