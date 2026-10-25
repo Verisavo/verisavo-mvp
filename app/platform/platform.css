@@ -1461,6 +1461,17 @@ html body #ask-form textarea:focus { border-color: #618CD0 !important; box-shado
 html body #va-theme, html body .va-theme { display: none !important; }
 html body .va-main:not(.va-dark) { background: #FFFFFF !important; }
 html body .va-main:not(.va-dark) .va-bed { opacity: .14 !important; }
+/* question box: indigo frame, white typing area */
+html body #ask-form.chat { background: #1F273F !important; border: 2px solid #1F273F !important; box-shadow: 0 30px 60px -30px rgba(31,39,63,.55) !important; }
+html body #ask-form.chat:focus-within { border-color: #3A5292 !important; }
+html body #ask-form textarea { border-color: #FFFFFF !important; }
+html body #ask-form .chip { background: rgba(255,255,255,.06) !important; border-color: rgba(204,221,241,.28) !important; color: #E3EBF8 !important; }
+html body #ask-form .chip:hover { background: rgba(255,255,255,.12) !important; color: #FFFFFF !important; }
+html body #ask-form .add-btn { color: #E3EBF8 !important; }
+html body #ask-form .add-btn:hover { background: rgba(255,255,255,.1) !important; color: #FFFFFF !important; }
+html body #ask-form .send-q { background: #FFFFFF !important; color: #1F273F !important; border-color: #FFFFFF !important; }
+html body #ask-form .send-q:hover { background: #E3EBF8 !important; border-color: #E3EBF8 !important; }
+html body #ask-form .send-q * { color: #1F273F !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
