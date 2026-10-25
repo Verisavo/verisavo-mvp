@@ -1411,6 +1411,17 @@ body:has(> dialog.va[open]) > :not(dialog):not(script) { filter: blur(4px) satur
 @media (max-width: 860px) { .oh-grid5 .oh-tile { grid-column: 1 / -1 !important; margin-top: 0 !important; max-width: none; } .oh-grid5 .oh-tile.p2, .oh-grid5 .oh-tile.p4 { margin-left: 12% !important; } }
 @media (max-width: 560px) { .oh-grid5 .oh-tile.p2, .oh-grid5 .oh-tile.p4 { margin-left: 0 !important; } }
 @media (prefers-reduced-motion: reduce) { .oh-tile.in .oh-bt i { animation: none; width: calc(var(--w) * 100%); } .oh-tile.in .oh-hl, .oh-tile.in .oh-hp, .oh-tile.in .oh-w, .oh-tile.in .oh-e, .oh-tile.in .oh-band { animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; } }
+
+/* works: Built on trust card layout */
+.ax-works { background: #F5F8FC !important; }
+.ax-works .ax-head-l { justify-items: center !important; text-align: center !important; }
+.ax-works .ax-head h2 { font-size: clamp(2.2rem, 1.4rem + 2.4vw, 3.2rem) !important; }
+.ax-works .ax-wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 16px !important; border-top: 0 !important; max-width: 1300px; margin: 0 auto; }
+.ax-works .ax-wgrid article, .ax-works .ax-wgrid article + article { padding: 24px 22px 26px !important; border: 1px solid #DCE4F0 !important; border-left: 1px solid #DCE4F0 !important; border-radius: 14px; background: #fff; }
+.ax-works .ax-wgrid .ax-ic { width: 30px; height: 30px; padding: 7px; border-radius: 8px; background: #E3EBF8; stroke-width: 1.6; }
+.ax-works .ax-wgrid h3 { margin: 16px 0 8px !important; font-size: 1.55rem !important; }
+.ax-works .ax-wfoot { justify-content: center; border-top: 0 !important; margin-top: 24px !important; padding-top: 0 !important; }
+@media (max-width: 760px) { .ax-works .ax-wgrid { grid-template-columns: minmax(0, 1fr) !important; } }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
