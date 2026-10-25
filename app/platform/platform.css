@@ -1505,6 +1505,17 @@ html body .ax-works .ax-wgrid p { color: #5B6478 !important; }
 html body .vs .vs-row { border-color: #EEF1F6 !important; }
 html body .vs :is(.vs-g, .vs-gen, [class*="vs-g"]) { color: #6B7385; }
 html body .oh-tile .oh-n, html body .oh-tile .oh-num { color: #80AADC !important; }
+/* tiles: tablet uses a simple two-column grid, phones one column */
+@media (min-width: 561px) and (max-width: 1024px) {
+  html body .oh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; column-gap: 20px !important; row-gap: 44px !important; }
+  html body .oh-grid .oh-tile { grid-column: auto !important; margin: 0 !important; max-width: none !important; justify-self: stretch !important; }
+  html body .oh-grid5 .oh-tile:last-child { grid-column: 1 / -1 !important; justify-self: center !important; width: calc(50% - 10px) !important; }
+}
+@media (max-width: 560px) {
+  html body .oh-grid .oh-tile { grid-column: 1 / -1 !important; margin: 0 !important; max-width: none !important; width: auto !important; }
+}
+/* phone menu: no sideways scroll */
+html body .mnav { overflow-x: hidden !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }

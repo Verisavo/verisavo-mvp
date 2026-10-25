@@ -952,6 +952,46 @@ html body .ln .ms-eb { display: none !important; }
 html body .ln .ms-prog::before { content: "Why Verisavo exists"; font: 600 .8125rem/1 var(--sans); color: #4362B2; white-space: nowrap; }
 html body .ln .ms-prog { max-width: 100%; min-width: 0; }
 html body .ln .ms-bar { flex: 0 1 140px; min-width: 32px; }
+/* home: clean, consistent style */
+html body .ln .v3-net-head { border-top-color: #E3E8F0 !important; }
+html body .ln .hm, html body .ln .hm li { border-color: #E9EDF3 !important; }
+html body .ln :is(.ln-sub, .v3-net-note) { color: #5B6478 !important; }
+html body .ln .hm-b p { color: #5B6478 !important; }
+html body .ln .v3-tr2 { gap: 16px !important; }
+html body .ln .v3-tr2 article { border-color: #E9EDF3 !important; border-radius: 18px !important; padding: 28px 28px 30px !important; box-shadow: none !important; transition: border-color .25s, box-shadow .25s, transform .25s; }
+html body .ln .v3-tr2 article:hover { border-color: #CCDDF1 !important; box-shadow: 0 18px 40px -30px rgba(31,39,63,.4) !important; transform: translateY(-2px); }
+html body .ln .v3-tr2-ic { width: 36px !important; height: 36px !important; border-radius: 10px !important; background: #F1F4F9 !important; color: #1F273F !important; }
+html body .ln .v3-tr2 article h3 { color: #1F273F !important; }
+html body .ln .v3-tr2 article p { color: #5B6478 !important; }
+/* tiles: tablet uses a simple two-column grid, phones one column */
+@media (min-width: 561px) and (max-width: 1024px) {
+  html body .oh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; column-gap: 20px !important; row-gap: 44px !important; }
+  html body .oh-grid .oh-tile { grid-column: auto !important; margin: 0 !important; max-width: none !important; justify-self: stretch !important; }
+  html body .oh-grid5 .oh-tile:last-child { grid-column: 1 / -1 !important; justify-self: center !important; width: calc(50% - 10px) !important; }
+}
+@media (max-width: 560px) {
+  html body .oh-grid .oh-tile { grid-column: 1 / -1 !important; margin: 0 !important; max-width: none !important; width: auto !important; }
+}
+/* network: portrait version on phones, full drawing on tablets */
+.ln .net-svg-m { display: none; }
+@media (max-width: 640px) {
+  html body .ln .net-svg:not(.net-svg-m) { display: none !important; }
+  html body .ln .net-svg-m { display: block !important; width: 100% !important; min-width: 0 !important; height: auto !important; }
+  html body .ln .net-scroll { overflow: visible !important; }
+  html body .ln .net-scroll::after { display: none !important; }
+  html body .ln .net-svg-m text { font-size: 12px; }
+  html body .ln .net-svg-m .net-cols text { font-size: 11px; }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+  html body .ln .net-svg:not(.net-svg-m) { min-width: 0 !important; width: 100% !important; }
+  html body .ln .net-scroll::after { display: none !important; }
+  html body .ln .net-svg:not(.net-svg-m) text { font-size: 17px; }
+  html body .ln .net-svg:not(.net-svg-m) .net-cols text { font-size: 15px; }
+}
+html body .ln .net-svg-m :is(.net-src, .net-out, .net-gap) rect { fill: url(#ohfillm) !important; filter: url(#ohshm) !important; }
+html body .ln .net-svg-m .net-n circle { fill: #FFFFFF !important; filter: url(#ohshm) !important; }
+html body .ln .net-svg-m { max-width: 340px !important; margin: 0 auto !important; }
+html body .ln .net-svg-m :is(.net-src, .net-out, .net-gap) text { text-anchor: middle; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
