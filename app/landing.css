@@ -1001,6 +1001,8 @@ html body .ln .ms-l { font-size: clamp(1.75rem, 1rem + 2.3vw, 3rem) !important; 
   html body .ln .ms-copy { width: auto !important; }
   html body .ln .ms-l { font-size: clamp(1.6rem, 1.1rem + 2.4vw, 2.1rem) !important; }
 }
+/* network: no decorative diagonal lines */
+html body .ln .net-card::before, html body .ln .net-card::after { display: none !important; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
