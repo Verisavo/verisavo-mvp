@@ -1031,9 +1031,8 @@ html body .ln .v3-hero::after { content: ""; position: absolute; inset: 0; z-ind
 }
 @media (max-width: 640px) { html body .ln .v3-hero::after { -webkit-mask-size: 260px 260px, 220px 220px, 240px 240px; mask-size: 260px 260px, 220px 220px, 240px 240px; } }
 @media (prefers-reduced-motion: reduce) { html body .ln .v3-hero::after { animation: none !important; opacity: .6; } }
-/* hero dots drawn on a canvas: patterns light up and fade across the grid */
-html body .ln .v3-hero.hd-on::before, html body .ln .v3-hero.hd-on::after { display: none !important; }
-html body .ln .v3-hero .hd-cv { position: absolute; inset: 0; z-index: -1; pointer-events: none; -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 30%, #000 20%, transparent 75%); mask-image: radial-gradient(ellipse 70% 80% at 50% 30%, #000 20%, transparent 75%); }
+/* hero dots: still, no motion */
+html body .ln .v3-hero::after { display: none !important; animation: none !important; }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
