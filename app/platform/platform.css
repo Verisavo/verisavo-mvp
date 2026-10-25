@@ -1534,7 +1534,7 @@ html body #va .va-hi { position: absolute; left: 0; right: 0; bottom: 16px; just
 html body #va .va-hi::before { content: none !important; display: none !important; }
 html body #va.va-has-thread .va-hi, html body .va.va-has-thread .va-hi { display: none !important; }
 @media (max-height: 680px) { html body #va .va-hi { display: none !important; } }
-html body #va .va-sub { font-size: .875rem !important; line-height: 1.55 !important; max-width: 46ch; margin-inline: auto; }
+html body #va .va-sub { font-size: .875rem !important; line-height: 1.55 !important; max-width: 64ch !important; margin-inline: auto; text-wrap: pretty; }
 /* workspace composer: same style as the Product page question box */
 html body #va .va-composer { background: #F7F9FC !important; border: 3px solid #80AADC !important; border-radius: 20px !important; padding: 14px !important; box-shadow: 0 24px 50px -32px rgba(31,39,63,.35) !important; }
 html body #va .va-composer:focus-within { border-color: #4D74C3 !important; box-shadow: 0 24px 50px -32px rgba(31,39,63,.35) !important; }
