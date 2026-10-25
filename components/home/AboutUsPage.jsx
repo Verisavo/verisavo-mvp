@@ -80,8 +80,9 @@ export default function AboutUsPage() {
           <div className="team-copy">
             <p className="lab">{"Team"}</p>
             <h2 id="team-h"><span className="acc">{"Our"}</span>{" Team"}</h2>
-            <p className="lead">{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and ground-level intelligence. We combine technology with local market knowledge to connect fragmented information, verify evidence and deliver actionable market intelligence."}</p>
-            <p>{"We work closely with businesses, researchers and local communities to help organisations better understand and navigate African markets. Our mission is not just to build AI. It is to create the connected intelligence layer for African markets."}</p>
+            <p className="lead">{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and ground-level intelligence. We combine technology with local market knowledge to connect fragmented information, verify evidence and build reliable market intelligence."}</p>
+            <p>{"Our team works closely with businesses, researchers and local communities to address real market challenges and help businesses make better-informed decisions."}</p>
+            <p>{"Our ambition goes beyond building another AI product. We are laying the foundation for a connected intelligence layer that makes African markets clearer, more accessible and easier to understand."}</p>
           </div>
           {" "}
         </section>
