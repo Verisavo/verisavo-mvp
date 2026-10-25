@@ -200,7 +200,7 @@ export default function AssistantWindow() {
           {" "}
           <div className="va-body" id="va-body">
             {" "}
-            <div className="va-hello" id="va-hello">{" "}<p className="va-hi">{"Verisavo Intelligence Assistant"}</p><h2 id="va-greet">{"What do you need to understand?"}</h2><p className="va-sub">{"Ask about a market, a competitor or a decision. Every answer shows its evidence, and what is still unknown."}</p></div>
+            <div className="va-hello" id="va-hello">{" "}<p className="va-hi">{"Verisavo Intelligence Assistant"}</p><h2 id="va-greet">{"What do you need to understand?"}</h2><p className="va-sub">{"Ask about a market, a competitor or a decision. Answers are designed to show their evidence, and what is still unknown."}</p></div>
             {" "}
             <ol className="va-thread" id="va-thread" aria-live="polite"></ol>
             {" "}

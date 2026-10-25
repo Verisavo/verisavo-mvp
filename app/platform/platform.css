@@ -1528,6 +1528,13 @@ html body .foot-cols :is(a, button):hover { color: #1F273F !important; }
   html body *, html body *::before, html body *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
   html body .net-dot, html body .net-dot-g { display: none !important; }
 }
+/* workspace: assistant name as a quiet footer label, no dot */
+html body #va .va-main { position: relative; }
+html body #va .va-hi { position: absolute; left: 0; right: 0; bottom: 16px; justify-content: center; font: 500 .8125rem/1.2 var(--sans) !important; color: #8A93A6 !important; pointer-events: none; z-index: 1; }
+html body #va .va-hi::before { content: none !important; display: none !important; }
+html body #va.va-has-thread .va-hi, html body .va.va-has-thread .va-hi { display: none !important; }
+@media (max-height: 680px) { html body #va .va-hi { display: none !important; } }
+html body #va .va-sub { font-size: .875rem !important; line-height: 1.55 !important; max-width: 46ch; margin-inline: auto; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
