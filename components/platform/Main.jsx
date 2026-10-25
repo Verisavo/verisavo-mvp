@@ -190,7 +190,7 @@ export default function Main() {
                   <path d="M8 1.8l5 1.9v4.1c0 3-2 5.3-5 6.6-3-1.3-5-3.6-5-6.6V3.7z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"></path>
                   <path d="M5.8 8.1l1.5 1.5 2.9-3.1" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"></path>
                 </svg>
-                {"Every answer shows the evidence behind it, how confident it is, and what is still unknown."}
+                {"Answers are designed to show the evidence behind them, how confident they are, and what is still unknown."}
               </p>
               {" "}
             </div>

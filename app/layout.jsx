@@ -1,3 +1,14 @@
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? "https://" + process.env.VERCEL_PROJECT_PRODUCTION_URL : "http://localhost:3000");
+
+export const metadata = {
+  metadataBase: new URL(SITE),
+  title: "Verisavo · The intelligence layer for African markets",
+  description: "Verisavo connects fragmented market information, from company data and public records to evidence gathered on the ground, so teams can see what is happening, what the evidence supports and what is still unknown.",
+  applicationName: "Verisavo",
+  openGraph: { type: "website", siteName: "Verisavo", locale: "en_GB" },
+  twitter: { card: "summary_large_image" }
+};
+
 export const viewport = {
   width: "device-width",
   initialScale: 1,

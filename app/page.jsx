@@ -1,44 +1,12 @@
-import "./home.css";
-import "./landing.css";
-import Header from "@/components/home/Header";
-import Menu from "@/components/home/Menu";
-import AboutUsPage from "@/components/home/AboutUsPage";
-import ResearchPage from "@/components/home/ResearchPage";
-import ResearchDetail from "@/components/home/ResearchDetail";
-import PricingPage from "@/components/home/PricingPage";
-import CareersPage from "@/components/home/CareersPage";
-import ContactPage from "@/components/home/ContactPage";
-import Main from "@/components/home/Main";
-import Footer from "@/components/home/Footer";
-import ComingSoonDialog from "@/components/home/ComingSoonDialog";
-import LegalDialog from "@/components/home/LegalDialog";
-import EarlyAccessDialog from "@/components/home/EarlyAccessDialog";
-import AuthDialog from "@/components/home/AuthDialog";
-import HomeClient from "@/components/home/HomeClient";
+import HomeShell from "@/components/home/HomeShell";
 
 export const metadata = {
-  title: "Verisavo",
-  description: "Verisavo is a connected intelligence layer for African markets."
+  title: "Verisavo · The intelligence layer for African markets",
+  description: "Verisavo connects fragmented market information, from company data and public records to evidence gathered on the ground, so teams can see what is happening, what the evidence supports and what is still unknown.",
+  alternates: { canonical: "/" },
+  openGraph: { title: "Verisavo · The intelligence layer for African markets", description: "Verisavo connects fragmented market information, from company data and public records to evidence gathered on the ground, so teams can see what is happening, what the evidence supports and what is still unknown.", url: "/", images: [{ url: "/opengraph-image.png", width: 1200, height: 630, alt: "Verisavo, the intelligence layer for African markets" }] }
 };
 
-export default function HomePage() {
-  return (
-    <>
-      <Header />
-      <Menu />
-      <AboutUsPage />
-      <ResearchPage />
-      <ResearchDetail />
-      <PricingPage />
-      <CareersPage />
-      <ContactPage />
-      <Main />
-      <Footer />
-      <ComingSoonDialog />
-      <LegalDialog />
-      <EarlyAccessDialog />
-      <AuthDialog />
-      <HomeClient />
-    </>
-  );
+export default function Page() {
+  return <HomeShell />;
 }

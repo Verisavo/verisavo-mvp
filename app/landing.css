@@ -1005,6 +1005,11 @@ html body .ln .ms-l { font-size: clamp(1.75rem, 1rem + 2.3vw, 3rem) !important; 
 html body .ln .net-card::before, html body .ln .net-card::after { display: none !important; }
 /* network: Market Memory ring a little stronger */
 html body .ln .net-mem { stroke: rgba(31,39,63,.26) !important; stroke-width: 1.6 !important; stroke-dasharray: 2.5 6 !important; stroke-linecap: round; }
+/* reduced motion: everything settles immediately, moving dots hidden */
+@media (prefers-reduced-motion: reduce) {
+  html body *, html body *::before, html body *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  html body .net-dot, html body .net-dot-g { display: none !important; }
+}
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }

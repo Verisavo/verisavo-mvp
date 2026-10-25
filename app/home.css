@@ -1349,6 +1349,18 @@ html body #pg-contact#pg-contact.pg.pg .ct3-head::after { background: #EEF1F6 !i
 }
 /* phone menu: no sideways scroll */
 html body .mnav { overflow-x: hidden !important; }
+/* footer link columns (inner pages and product page) */
+html body .foot-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 28px 0 32px; max-width: 640px; }
+html body .foot-cols div { display: grid; gap: 12px; align-content: start; justify-items: start; }
+html body .foot-cols h3 { margin: 0 0 4px; font: 600 .75rem/1 var(--sans, "Geist", sans-serif) !important; letter-spacing: 0 !important; text-transform: none !important; color: #1F273F !important; }
+html body .foot-cols :is(a, button) { background: none; border: 0; padding: 0; cursor: pointer; font: 400 .9375rem/1.2 var(--sans, "Geist", sans-serif) !important; color: #5B6478 !important; text-decoration: none; text-align: left; }
+html body .foot-cols :is(a, button):hover { color: #1F273F !important; }
+@media (max-width: 560px) { html body .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; } }
+/* reduced motion: everything settles immediately, moving dots hidden */
+@media (prefers-reduced-motion: reduce) {
+  html body *, html body *::before, html body *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  html body .net-dot, html body .net-dot-g { display: none !important; }
+}
 /* open pages: the top bar stops short of the page scrollbar */
 body.page-open .top::before, body.rd-open .top::before { right: var(--sbw, 0px) !important; }
 body.page-open .top, body.rd-open .top { right: calc(var(--edge, 24px) + var(--sbw, 0px)) !important; }

@@ -9,7 +9,7 @@ export default function Header() {
         {" "}
         <ul className="links">
           {" "}
-          <li><button type="button" data-href="/#about-us">{"About us"}</button></li>
+          <li><button type="button" data-href="/about">{"About us"}</button></li>
           {" "}
           <li><button type="button" data-scroll="main" data-spy="product">{"Product"}</button></li>
           {" "}

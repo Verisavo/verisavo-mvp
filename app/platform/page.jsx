@@ -12,8 +12,10 @@ import AuthDialog from "@/components/platform/AuthDialog";
 import PlatformClient from "@/components/platform/PlatformClient";
 
 export const metadata = {
-  title: "Verisavo Intelligence Assistant",
-  description: "Verisavo is a connected intelligence layer for African markets."
+  title: "Verisavo Intelligence Assistant · Ask about your market",
+  description: "Ask market questions in plain language and see the evidence behind each answer, how confident it is and what is still unknown. In early access on WhatsApp.",
+  alternates: { canonical: "/platform" },
+  openGraph: { title: "Verisavo Intelligence Assistant", description: "Ask market questions in plain language and see the evidence behind each answer, how confident it is and what is still unknown.", url: "/platform", images: [{ url: "/opengraph-image.png", width: 1200, height: 630, alt: "Verisavo, the intelligence layer for African markets" }] }
 };
 
 export default function PlatformPage() {

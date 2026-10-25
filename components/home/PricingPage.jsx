@@ -8,7 +8,7 @@ export default function PricingPage() {
         <button type="button" className="pg-link pg-back" data-back=""><span aria-hidden="true">{"←"}</span>{" Back"}</button>
         {" "}
         <header className="pg-head pr-head">
-          <p className="lab">{"Pricing"}</p>
+          <p className="lab">{"Early access pricing"}</p>
           <h1 id="pricing-h">{"Start free. "}<span className="acc">{"Go further when you need to."}</span></h1>
           <p className="pr-lead">{"Ask your first market questions free. Upgrade when you need more intelligence, context and continuity."}</p>
         </header>
@@ -40,7 +40,7 @@ export default function PricingPage() {
               <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Verisavo Dashboard"}</span></li>
             </ul>
             <p className="pr-one">{"One account. One subscription. Cancel anytime."}</p>
-            <button type="button" className="obtn solid pr-cta" data-ask="">{"Ask Verisavo "}<span aria-hidden="true">{"→"}</span></button>
+            <button type="button" className="obtn solid pr-cta" data-dialog="access">{"Get early access "}<span aria-hidden="true">{"→"}</span></button>
           </article>
           {" "}
           <article className="pr-card glass pr-next" aria-labelledby="pr-pro">
@@ -69,6 +69,7 @@ export default function PricingPage() {
             {" "}
           </div>
           {" "}
+          <nav className="foot-cols" aria-label="Footer"><div><h3>{"Product"}</h3><a href="/platform">{"Overview"}</a><button type="button" data-page="pricing">{"Pricing"}</button><a href="/docs">{"Docs"}</a><button type="button" data-dialog="signin">{"Sign in"}</button></div><div><h3>{"Company"}</h3><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="contact">{"Contact us"}</button><a href="mailto:hello@verisavo.com?subject=Investor%20enquiry">{"For investors"}</a></div><div><h3>{"Insights"}</h3><button type="button" data-page="research" data-tab="research">{"Research"}</button><button type="button" data-page="research" data-tab="articles">{"Articles"}</button><button type="button" data-page="research" data-tab="cases">{"Case studies"}</button></div></nav>
           <div className="foot-bar">
             {" "}
             <span>{"© 2026 Verisavo. All rights reserved."}</span>

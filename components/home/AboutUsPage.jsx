@@ -17,7 +17,7 @@ export default function AboutUsPage() {
           {" "}
           <p>{"Across Africa, valuable market information exists in company data, public records, digital platforms, research and local communities. Yet much of it remains fragmented, making it difficult to see the bigger picture."}</p>
           {" "}
-          <p>{"Verisavo connects these scattered pieces, verifies evidence and reveals the relationships behind market changes. By combining technology with intelligence from the ground, we are building an evolving understanding of African markets that helps businesses make better-informed decisions."}</p>
+          <p>{"Verisavo is designed to connect these scattered pieces, assess the evidence and reveal the relationships behind market changes. By combining technology with intelligence from the ground, we are building an evolving understanding of African markets that helps businesses make better-informed decisions."}</p>
         </header>
         {" "}
         
@@ -62,7 +62,7 @@ export default function AboutUsPage() {
             <article className="card glass">
               <span className="n">{"05"}</span>
               <h3>{"Markets change"}</h3>
-              <p>{"Understanding is never final. Market Memory records what changed and which evidence changed it."}</p>
+              <p>{"Understanding is never final. Market Memory is designed to record what changed and which evidence changed it."}</p>
             </article>
             {" "}
             <article className="card glass">
@@ -80,7 +80,7 @@ export default function AboutUsPage() {
           <div className="team-copy">
             <p className="lab">{"Team"}</p>
             <h2 id="team-h"><span className="acc">{"Our"}</span>{" Team"}</h2>
-            <p className="lead">{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and ground-level intelligence. We combine technology with local market knowledge to connect fragmented information, verify evidence and build reliable market intelligence."}</p>
+            <p className="lead">{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and ground-level intelligence. We combine technology with local market knowledge to connect fragmented information, assess how far evidence can be trusted and build market intelligence that is honest about its limits."}</p>
             <p>{"Our team works closely with businesses, researchers and local communities to address real market challenges and help businesses make better-informed decisions."}</p>
             <p>{"Our ambition goes beyond building another AI product. We are laying the foundation for a connected intelligence layer that makes African markets clearer, more accessible and easier to understand."}</p>
           </div>
@@ -470,6 +470,7 @@ export default function AboutUsPage() {
             {" "}
           </div>
           {" "}
+          <nav className="foot-cols" aria-label="Footer"><div><h3>{"Product"}</h3><a href="/platform">{"Overview"}</a><button type="button" data-page="pricing">{"Pricing"}</button><a href="/docs">{"Docs"}</a><button type="button" data-dialog="signin">{"Sign in"}</button></div><div><h3>{"Company"}</h3><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="contact">{"Contact us"}</button><a href="mailto:hello@verisavo.com?subject=Investor%20enquiry">{"For investors"}</a></div><div><h3>{"Insights"}</h3><button type="button" data-page="research" data-tab="research">{"Research"}</button><button type="button" data-page="research" data-tab="articles">{"Articles"}</button><button type="button" data-page="research" data-tab="cases">{"Case studies"}</button></div></nav>
           <div className="foot-bar">
             {" "}
             <span>{"© 2026 Verisavo. All rights reserved."}</span>
