@@ -1010,6 +1010,27 @@ html body .ln .net-mem { stroke: rgba(31,39,63,.26) !important; stroke-width: 1.
   html body *, html body *::before, html body *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
   html body .net-dot, html body .net-dot-g { display: none !important; }
 }
+/* hero dots: a little more visible, with soft patches that fade in and out across the grid */
+html body .ln .v3-hero::before { background-image: radial-gradient(rgba(58,82,146,.24) 1.1px, transparent 1.4px) !important; }
+html body .ln .v3-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(rgba(67,98,178,.62) 1.25px, transparent 1.6px); background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(circle at center, #000 0, rgba(0,0,0,.6) 28%, transparent 62%), radial-gradient(circle at center, #000 0, rgba(0,0,0,.6) 28%, transparent 62%), radial-gradient(circle at center, #000 0, rgba(0,0,0,.6) 28%, transparent 62%);
+  mask-image: radial-gradient(circle at center, #000 0, rgba(0,0,0,.6) 28%, transparent 62%), radial-gradient(circle at center, #000 0, rgba(0,0,0,.6) 28%, transparent 62%), radial-gradient(circle at center, #000 0, rgba(0,0,0,.6) 28%, transparent 62%);
+  -webkit-mask-size: 420px 420px, 340px 340px, 380px 380px; mask-size: 420px 420px, 340px 340px, 380px 380px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: 8% 18%, 88% 12%, 22% 78%; mask-position: 8% 18%, 88% 12%, 22% 78%;
+  animation: heroDots 16s ease-in-out infinite; }
+@keyframes heroDots {
+  0%   { opacity: 0;  -webkit-mask-position: 8% 18%, 88% 12%, 22% 78%;  mask-position: 8% 18%, 88% 12%, 22% 78%; }
+  18%  { opacity: 1; }
+  40%  { opacity: 0;  -webkit-mask-position: 14% 26%, 80% 20%, 30% 70%; mask-position: 14% 26%, 80% 20%, 30% 70%; }
+  41%  { -webkit-mask-position: 92% 30%, 12% 8%, 78% 82%;  mask-position: 92% 30%, 12% 8%, 78% 82%; }
+  60%  { opacity: 1; }
+  82%  { opacity: 0;  -webkit-mask-position: 84% 38%, 20% 14%, 70% 74%; mask-position: 84% 38%, 20% 14%, 70% 74%; }
+  100% { opacity: 0;  -webkit-mask-position: 8% 18%, 88% 12%, 22% 78%;  mask-position: 8% 18%, 88% 12%, 22% 78%; }
+}
+@media (max-width: 640px) { html body .ln .v3-hero::after { -webkit-mask-size: 260px 260px, 220px 220px, 240px 240px; mask-size: 260px 260px, 220px 220px, 240px 240px; } }
+@media (prefers-reduced-motion: reduce) { html body .ln .v3-hero::after { animation: none !important; opacity: .6; } }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
