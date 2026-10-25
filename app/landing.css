@@ -869,6 +869,42 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 @media (max-width: 860px) { .oh-grid { grid-template-columns: minmax(0, 1fr); row-gap: 48px; } .oh-tile.t1, .oh-tile.t2, .oh-tile.t3, .oh-tile.t4 { grid-column: 1 / -1; margin-top: 0; max-width: none; } .oh-tile.t2, .oh-tile.t4 { margin-left: 12%; } }
 @media (max-width: 560px) { .oh-tile.t2, .oh-tile.t4 { margin-left: 0; } .oh-vis { padding: 16px 16px 0; } }
 @media (prefers-reduced-motion: reduce) { .oh-steps li, .oh-ln, .oh-dt, .oh-mk, .oh-pill { transition: none !important; } }
+
+/* ===== oh: network in the soft style ===== */
+.ln .net-card { position: relative; overflow: hidden; border-radius: 6px !important; background: radial-gradient(ellipse 65% 70% at 50% 48%, #FBFCFE 0%, #EFF3F9 55%, #E4EAF3 100%) !important; }
+.ln .net-card::before, .ln .net-card::after { content: ""; position: absolute; left: -20%; width: 140%; height: 1px; background: rgba(31,39,63,.07); pointer-events: none; }
+.ln .net-card::before { top: 22%; transform: rotate(-8deg); } .ln .net-card::after { top: 84%; transform: rotate(6deg); }
+.ln .net-scroll { position: relative; z-index: 1; }
+.ln .net-src rect, .ln .net-out rect, .ln .net-gap rect { rx: 20px; ry: 20px; fill: url(#ohfill); stroke: rgba(255,255,255,.9); stroke-width: 1; filter: url(#ohsh); }
+.ln .net-scout rect, .ln .net-gap rect { stroke: #A8C6E8; stroke-dasharray: 4 4; }
+.ln .net-out.net-o0 rect { fill: #1F273F; stroke: #1F273F; }
+.ln .net-src text, .ln .net-out text, .ln .net-gap text { font-weight: 500 !important; }
+.ln .net-e { stroke: rgba(31,39,63,.18); stroke-width: 1; }
+.ln .net-p { stroke: rgba(67,98,178,.28); stroke-width: 1.2; }
+.ln .net-mem { stroke: rgba(31,39,63,.18); }
+.ln .net-n circle { stroke: #1F273F; stroke-width: 1.5; filter: url(#ohsh); }
+.ln .net-dot { fill: #4362B2; }
+.ln .net-e, .ln .net-p { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(.45,0,.2,1); }
+.ln .net-card.in .net-e, .ln .net-card.in .net-p { stroke-dashoffset: 0; }
+.ln .net-src, .ln .net-out, .ln .net-gap, .ln .net-n, .ln .net-mem, .ln .net-memt, .ln .net-dot, .ln .net-loop { opacity: 0; transition: opacity .6s ease; }
+.ln .net-card.in .net-src, .ln .net-card.in .net-out, .ln .net-card.in .net-gap, .ln .net-card.in .net-n, .ln .net-card.in .net-mem, .ln .net-card.in .net-memt, .ln .net-card.in .net-dot, .ln .net-card.in .net-loop { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .ln .net-e, .ln .net-p, .ln .net-src, .ln .net-out, .ln .net-gap, .ln .net-n, .ln .net-mem, .ln .net-memt, .ln .net-dot, .ln .net-loop { transition: none !important; } }
+
+/* ===== oh: continuous motion, as in the reference ===== */
+@keyframes ohStep { 0% { opacity: 0; transform: translateY(10px); } 7% { opacity: 1; transform: none; } 86% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes ohAct { 0%, 3% { background: linear-gradient(180deg, #fff, #F5F7FB); } 6%, 16% { background: #E3EBF8; } 22%, 100% { background: linear-gradient(180deg, #fff, #F5F7FB); } }
+@keyframes ohSpin { to { transform: rotate(360deg); } }
+@keyframes ohDraw { 0% { stroke-dashoffset: 1; opacity: 1; } 32% { stroke-dashoffset: 0; } 86% { stroke-dashoffset: 0; opacity: 1; } 96%, 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes ohLate { 0%, 34% { opacity: 0; } 42%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes ohLater { 0%, 44% { opacity: 0; transform: translateY(4px); } 52%, 86% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+@keyframes ohDrift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.oh-tile.in .oh-steps li { transition: none; animation: ohStep 9s cubic-bezier(.3,.7,.3,1) infinite, ohAct 9s linear infinite; animation-delay: calc(var(--d) * .55s), calc(.4s + var(--d) * .55s); }
+.oh-tile.in .oh-panel { animation: ohDrift 6s ease-in-out infinite; }
+.oh-tile.in .oh-ln { transition: none; animation: ohDraw 8s cubic-bezier(.45,0,.2,1) infinite; }
+.oh-tile.in .oh-dt, .oh-tile.in .oh-mk { transition: none; animation: ohLate 8s ease infinite; }
+.oh-tile.in .oh-pill, .oh-tile.in .oh-tl { transition: none; animation: ohLater 8s ease infinite; }
+.oh-tile.t4 .oh-tab.on rect { transition: fill .3s; }
+@media (prefers-reduced-motion: reduce) { .oh-tile.in .oh-steps li, .oh-tile.in .oh-panel, .oh-tile.in .oh-ln, .oh-tile.in .oh-dt, .oh-tile.in .oh-mk, .oh-tile.in .oh-pill, .oh-tile.in .oh-tl { animation: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; } }
 /* >>> type */
 
 .ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
