@@ -896,7 +896,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 @keyframes ohSpin { to { transform: rotate(360deg); } }
 @keyframes ohDraw { 0% { stroke-dashoffset: 1; opacity: 1; } 32% { stroke-dashoffset: 0; } 86% { stroke-dashoffset: 0; opacity: 1; } 96%, 100% { stroke-dashoffset: 0; opacity: 0; } }
 @keyframes ohLate { 0%, 34% { opacity: 0; } 42%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
-@keyframes ohLater { 0%, 44% { opacity: 0; transform: translateY(4px); } 52%, 86% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+@keyframes ohLater { 0%, 44% { opacity: 0; } 52%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
 @keyframes ohDrift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 .oh-tile.in .oh-steps li { transition: none; animation: ohStep 9s cubic-bezier(.3,.7,.3,1) infinite, ohAct 9s linear infinite; animation-delay: calc(var(--d) * .55s), calc(.4s + var(--d) * .55s); }
 .oh-tile.in .oh-panel { animation: ohDrift 6s ease-in-out infinite; }
