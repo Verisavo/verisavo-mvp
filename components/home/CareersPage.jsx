@@ -19,26 +19,8 @@ export default function CareersPage() {
           {" "}
         </header>
         {" "}
-        <div className="ca-grid ca-grid1">
-          {" "}
-          <section aria-labelledby="cw-h">
-            {" "}
-            <p className="lab" id="cw-h">{"How we work"}</p>
-            {" "}
-            <ul className="ca-points">
-              {" "}
-              <li><b>{"Evidence over opinion."}</b>{" We say when something is still unknown."}</li>
-              {" "}
-              <li><b>{"Close to the market."}</b>{" We spend time with the people we serve."}</li>
-              {" "}
-              <li><b>{"Real ownership."}</b>{" Everyone shapes the product."}</li>
-              {" "}
-            </ul>
-            {" "}
-          </section>
-          {" "}
-          {" "}
-        </div>
+        <section className="ca2-how" aria-labelledby="cw-h"><div className="ca2-head"><p className="lab">{"How we work"}</p><h2 id="cw-h">{"Three habits we hold "}<span className="acc">{"each other to"}</span></h2></div><div className="ca2-cards"><article className="ca2-card"><span className="ca2-n">{"01"}</span><h3>{"Evidence over opinion"}</h3><p>{"We separate what we know from what we assume, and we say when something is still unknown."}</p></article><article className="ca2-card"><span className="ca2-n">{"02"}</span><h3>{"Close to the market"}</h3><p>{"We spend time with the people we serve, in the places where they buy, sell and decide."}</p></article><article className="ca2-card"><span className="ca2-n">{"03"}</span><h3>{"Real ownership"}</h3><p>{"Everyone shapes the product, from the questions it answers to how it shows its evidence."}</p></article></div></section>
+        {" "}
         <section className="ca-roles" aria-labelledby="roles-h">
           <div className="ca-roles-head"><h2 id="roles-h">{"Open roles"}</h2><span className="ca-count">{"7 roles"}</span></div>
           <div className="ca-list">
@@ -56,6 +38,7 @@ export default function CareersPage() {
         <section className="ca-apply" aria-labelledby="capply-h">
           {" "}
           <h2 id="capply-h">{"Don’t see your role? "}<span className="acc">{"Send a short note."}</span></h2>
+          <p className="ca2-ap">{"Tell us what you would bring to Verisavo and which part of the work interests you most."}</p>
           {" "}
           <div className="ca-mail">
             <span className="ca-addr" id="ca-addr">{"career@verisavo.com"}</span>

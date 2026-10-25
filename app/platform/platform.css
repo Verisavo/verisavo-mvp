@@ -1438,14 +1438,14 @@ footer.foot.foot .logo, .foot .logo { color: #1F273F !important; }
 .foot :is(.foot-bar nav button, .foot-links a, .foot-links button):hover { color: #1F273F !important; }
 
 /* ===== product page layered like the homepage ===== */
-.hero { background: #fff !important; border-bottom: 0 !important; }
+.hero { background: #F5F8FC !important; border-bottom: 0 !important; }
 .hero h1, .hero h1 .l1 { color: #1F273F !important; }
 .hero h1 .tone { color: #4362B2 !important; }
 .hero .hero-title .sub, .hero p { color: #3D4559 !important; }
 .hero #ask-cta.btn { background: #1F273F !important; color: #fff !important; border-color: #1F273F !important; }
 .hero #ask-cta.btn:hover { background: #3A5292 !important; }
-.hero::after { background: linear-gradient(90deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.78) 38%, rgba(255,255,255,.15) 70%, rgba(255,255,255,0) 100%) !important; }
-@media (max-width: 760px) { .hero::after { background: rgba(255,255,255,.82) !important; } }
+.hero::after { background: linear-gradient(90deg, rgba(245,248,252,.94) 0%, rgba(245,248,252,.78) 38%, rgba(245,248,252,.15) 70%, rgba(245,248,252,0) 100%) !important; }
+@media (max-width: 760px) { .hero::after { background: rgba(245,248,252,.82) !important; } }
 .oh-ans { background: #F5F8FC !important; }
 
 /* >>> type */
