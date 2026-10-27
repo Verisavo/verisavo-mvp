@@ -2,7 +2,9 @@
 import { setUserDisabled } from "../actions";
 
 export default function UserToggle({ id, name, disabled }: { id: string; name: string; disabled: boolean }) {
-  const question = disabled ? `Let ${name} sign in again?` : `Disable ${name}? They won't be able to sign in or use Verisavo until you re-enable them.`;
+  const question = disabled
+    ? `Let ${name} sign in again? If their monthly plan stopped renewing when you disabled them, it renews again.`
+    : `Disable ${name}? They won't be able to sign in or use Verisavo until you re-enable them. A monthly plan stops renewing (re-enabling turns it back on).`;
   return (
     <form action={setUserDisabled} onSubmit={e => { if (!window.confirm(question)) e.preventDefault(); }}>
       <input type="hidden" name="id" value={id} />

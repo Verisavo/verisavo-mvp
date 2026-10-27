@@ -1,10 +1,10 @@
 import "server-only";
-import { and, eq, isNull, sql } from "drizzle-orm";
+import { and, eq, inArray, isNull, like, sql } from "drizzle-orm";
 import { db } from "@/lib/server/db";
 import { profiles, stripeEvents, subscriptions, usagePeriods } from "@/db/schema";
 import { PLAN } from "@/lib/plan";
 import { audit } from "@/lib/server/audit";
-import { stripe, type Stripe } from "@/lib/server/stripe";
+import { stripe, stripeConfigured, type Stripe } from "@/lib/server/stripe";
 import { createSupabase } from "@/lib/server/supabase";
 
 // Stripe billing (M3.2–M3.3, see the verisavo-stripe-billing skill): customers, checkout, the billing portal, and the
@@ -83,8 +83,32 @@ export async function createPortal(customerId: string): Promise<string> {
   return session.url;
 }
 
+// An admin disabling a paying user also stops their plan renewing, so Stripe doesn't keep charging someone who can't
+// sign in to cancel (they'd likely dispute it). Re-enabling turns renewal back on, but only where disabling stopped
+// it: a cancellation the customer made themselves stays. The webhook then updates our table and the activity log.
+export async function pauseRenewal(userId: string, pause: boolean): Promise<void> {
+  if (!stripeConfigured()) return;
+  const live = await db.select({ id: subscriptions.id }).from(subscriptions)
+    .where(and(eq(subscriptions.userId, userId), like(subscriptions.id, "sub_%"), inArray(subscriptions.status, LIVE)));
+  for (const { id } of live) {
+    const sub = await stripe().subscriptions.retrieve(id);
+    if (pause && !sub.cancel_at_period_end) {
+      await stripe().subscriptions.update(id, { cancel_at_period_end: true, metadata: { stoppedByAdmin: "1" } });
+    } else if (!pause && sub.cancel_at_period_end && sub.metadata?.stoppedByAdmin === "1") {
+      await stripe().subscriptions.update(id, { cancel_at_period_end: false, metadata: { stoppedByAdmin: "" } });   // "" removes the key
+    }
+  }
+}
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const toDate = (seconds: number) => new Date(seconds * 1000);
+
+// Only Verisavo Monthly gives a plan: a subscription to anything else in this Stripe account (a test price, a plan
+// added later) gives none until the app is set up for it. Compared by product, not price, so a new price for the
+// same product (a price change) keeps working for everyone. Looked up once per server process.
+let ourProduct: Promise<string | null> | null = null;
+const verisavoProduct = () =>
+  (ourProduct ??= stripe().prices.retrieve(process.env.STRIPE_PRICE_MONTHLY ?? "").then(p => idOf(p.product), err => { ourProduct = null; throw err; }));
 const idOf = (v: string | { id: string } | null | undefined) => (typeof v === "string" ? v : v?.id ?? null);
 
 // "Sync, don't patch": fetch the subscription as it is now and upsert the whole row, so events arriving out of order
@@ -121,6 +145,12 @@ export async function syncSubscription(subscriptionId: string): Promise<void> {
     // from API version 2025-03-31 the billing period lives on each subscription item
     const item = sub.items.data[0];
     if (!item) { console.warn("[stripe] subscription without items, ignored:", subscriptionId); return null; }
+    if (idOf(item.price?.product) !== (await verisavoProduct())) {
+      // and if it was Verisavo Monthly before (switched in the portal), it stops counting
+      await tx.delete(subscriptions).where(eq(subscriptions.id, sub.id));
+      console.warn("[stripe] not a Verisavo Monthly subscription, ignored:", subscriptionId);
+      return null;
+    }
     const row = {
       userId, status: sub.status, priceId: item.price?.id ?? null,
       currentPeriodStart: toDate(item.current_period_start), currentPeriodEnd: toDate(item.current_period_end),

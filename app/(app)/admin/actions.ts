@@ -7,6 +7,7 @@ import { db } from "@/lib/server/db";
 import { profiles } from "@/db/schema";
 import { requireAdmin } from "@/lib/server/admin";
 import { audit } from "@/lib/server/audit";
+import { pauseRenewal } from "@/lib/server/billing";
 import { cleanText } from "@/lib/server/http";
 import { COUNTRY_MARKETS, ALL_MARKETS } from "@/lib/markets";
 import { ExtractError, extractText, tidyText } from "@/lib/server/rag/extract";
@@ -33,6 +34,13 @@ export async function setUserDisabled(formData: FormData): Promise<void> {
   if (!UUID.test(id) || id === admin.id) return;   // an admin can't lock themselves out
   await db.update(profiles).set({ disabledAt: disable ? new Date() : null, updatedAt: new Date() }).where(eq(profiles.id, id));
   await audit(disable ? "admin.user_disable" : "admin.user_enable", { actorId: admin.id, targetType: "user", targetId: id });
+  // a paying user's plan stops renewing while they're disabled (and renews again when re-enabled)
+  try {
+    await pauseRenewal(id, disable);
+  } catch (err) {
+    console.error("[admin] couldn't change the user's renewal in Stripe:", err instanceof Error ? err.name : "error");
+    await audit("admin.renewal_change_failed", { actorId: admin.id, targetType: "user", targetId: id, metadata: { disable } });
+  }
   revalidatePath("/admin/users");
 }
 

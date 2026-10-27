@@ -34,6 +34,7 @@ const ACTIONS: Record<string, string> = {
   "billing.payment_failed": "Payment failed",
   "admin.user_disable": "Disabled a user",
   "admin.user_enable": "Re-enabled a user",
+  "admin.renewal_change_failed": "Couldn't change a user's plan renewal in Stripe (do it in the Stripe dashboard)",
   "admin.role_granted": "Was made an admin",
   "admin.role_revoked": "Stopped being an admin",
   "kb.create": "Added a knowledge-base document",
