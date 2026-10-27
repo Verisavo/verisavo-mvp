@@ -26,14 +26,15 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
           <h1 className="font-serif text-[clamp(1.9rem,1.4rem+1.6vw,2.5rem)] leading-tight font-medium tracking-[-0.03em]">{"Users"}</h1>
           <p className="mt-1 text-brand-800">{"Everyone with a Verisavo account."}</p>
         </div>
-        <form className="flex gap-2" role="search">
+        <form className="flex gap-2 max-sm:w-full" role="search">
           <label className="sr-only" htmlFor="u-q">{"Search users"}</label>
-          <input className="input min-h-10 w-64" id="u-q" name="q" defaultValue={q} placeholder="Name, email or organisation" />
+          <input className="input min-h-10 w-64 max-sm:w-auto max-sm:min-w-0 max-sm:flex-1" id="u-q" name="q" defaultValue={q} placeholder="Name, email or organisation" />
           <button className="btn" type="submit">{"Search"}</button>
         </form>
       </div>
 
-      <section className="card overflow-x-auto p-0 sm:p-0" aria-label="Users">
+      {/* relative: the screen-reader labels inside the rows are positioned, and must scroll with the table rather than widen the page */}
+      <section className="card relative overflow-x-auto p-0 sm:p-0" aria-label="Users">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead className="border-b border-brand-200 text-brand-800">
             <tr>
