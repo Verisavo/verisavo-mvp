@@ -22,7 +22,7 @@ Your numbers at a glance:
   - questions asked in total
   - when they joined and last signed in
   - whether WhatsApp is linked
-- **Disable:** stops someone signing in and ends any session they have open. **Re-enable** undoes it. If they pay monthly, also cancel their subscription in Stripe: disabling doesn't stop the payments.
+- **Disable:** stops someone signing in and ends any session they have open. If they pay monthly, their plan also stops renewing, so they aren't charged again. **Re-enable** undoes both (unless they had cancelled their plan themselves). For a refund, use the Stripe dashboard.
 - **Reset allowance:** gives a user their questions back for the current month (or their 5 free questions), for example after a problem on our side.
 - **Unlink WhatsApp:** removes their linked number, for example if it was linked by mistake.
 

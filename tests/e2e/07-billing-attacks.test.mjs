@@ -101,22 +101,36 @@ test("an old 'active' event arriving after cancelling can't bring the plan back"
   assert.equal(await plan(user), "Free");
 });
 
+// Events for one subscription are handled one at a time, so on a slow connection a delivery that waits too long
+// answers 500, which only asks Stripe to send it again later. Like Stripe, send those again (up to 3 times).
+async function deliverAll(events) {
+  const first = await Promise.all(events.map(e => send(e.payload, sign(e.payload))));
+  const final = [];
+  for (const [i, status] of first.entries()) {
+    let s = status;
+    for (let retry = 0; s === 500 && retry < 3; retry++) s = await send(events[i].payload, sign(events[i].payload));
+    final.push(s);
+  }
+  return final;
+}
+
 test("events arriving all at once, or the same event five times, are handled once", { skip }, async () => {
   const { user, sub } = await subscriber();
   const invoice = (await stripe.invoices.list({ subscription: sub.id, limit: 1 })).data[0];
+  const subscribed = async () => (await sql`select count(*)::int n from audit_events where target_id = ${sub.id} and action = 'billing.subscribed'`)[0].n;
   // Stripe sends these within the same second when someone subscribes
-  const statuses = await Promise.all([
-    deliver("customer.subscription.created", sub), deliver("customer.subscription.updated", sub), deliver("invoice.paid", invoice)
-  ]);
-  assert.deepEqual(statuses, [200, 200, 200]);
+  const together = [event("customer.subscription.created", sub), event("customer.subscription.updated", sub), event("invoice.paid", invoice)];
+  assert.deepEqual(await deliverAll(together), [200, 200, 200]);
+  for (const e of together) assert.equal(await recorded(e.id), 1);
   assert.equal(await plan(user), "Monthly");
   assert.equal((await sql`select count(*)::int n from usage_periods where user_id = ${user.id}`)[0].n, 1);
-  assert.equal((await sql`select count(*)::int n from audit_events where target_id = ${sub.id} and action = 'billing.subscribed'`)[0].n, 1, "one 'Subscribed' in the activity log");
-  // Stripe retrying one event while the first delivery is still running
+  assert.equal(await subscribed(), 1, "one 'Subscribed' in the activity log");
+  // the same event five times at once: still recorded once, and nothing logged twice
   const e = event("customer.subscription.updated", sub);
-  const header = sign(e.payload);
-  assert.deepEqual(await Promise.all(Array.from({ length: 5 }, () => send(e.payload, header))), [200, 200, 200, 200, 200]);
+  assert.deepEqual(await deliverAll(Array(5).fill(e)), [200, 200, 200, 200, 200]);
   assert.equal(await recorded(e.id), 1);
+  assert.equal(await subscribed(), 1);
+  assert.equal(await plan(user), "Monthly");
 });
 
 test("Subscribe needs a signed-in user and refuses other websites", { skip }, async () => {
@@ -157,6 +171,47 @@ test("a burst of Subscribe clicks opens one payment page, and the site keeps ans
   customers.push(customer);
   const open = await stripe.checkout.sessions.list({ customer, status: "open", limit: 10 });
   assert.equal(open.data.length, 1, "only one checkout page can be paid");
+});
+
+test("only Verisavo Monthly gives a plan: another product gives none, and switching away from it ends the plan", { skip }, async () => {
+  const other = await stripe.products.create({ name: "Not Verisavo (e2e)", default_price_data: { currency: "usd", unit_amount: 100, recurring: { interval: "month" } } });
+  try {
+    const { user, customer } = await subscriber({ subscribe: false });
+    const pm = await stripe.paymentMethods.attach("pm_card_visa", { customer: customer.id });
+    const foreign = await stripe.subscriptions.create({ customer: customer.id, items: [{ price: other.default_price }], default_payment_method: pm.id, metadata: { userId: user.id } });
+    assert.equal(await deliver("customer.subscription.created", foreign), 200);
+    assert.equal(await plan(user), "Free");
+    await stripe.subscriptions.cancel(foreign.id);
+
+    const { user: switcher, sub } = await subscriber();
+    assert.equal(await deliver("customer.subscription.created", sub), 200);
+    assert.equal(await plan(switcher), "Monthly");
+    const switched = await stripe.subscriptions.update(sub.id, { items: [{ id: sub.items.data[0].id, price: other.default_price }], proration_behavior: "none" });
+    assert.equal(await deliver("customer.subscription.updated", switched), 200);
+    assert.equal(await plan(switcher), "Free");
+  } finally {
+    await stripe.products.update(other.id, { active: false });
+  }
+});
+
+test("disabling a paying user stops their renewal; re-enabling restarts it, but never undoes their own cancellation", { skip }, async () => {
+  const { user, sub } = await subscriber();
+  assert.equal(await deliver("customer.subscription.created", sub), 200);
+  const admin = new Client();
+  await admin.login(await createUser({ admin: true }));
+  const toggle = () => admin.submit(`/admin/users?q=${encodeURIComponent(user.email)}`, 'name="disable"');
+  const renewal = async () => { const s = await stripe.subscriptions.retrieve(sub.id); return { ends: s.cancel_at_period_end, byAdmin: s.metadata.stoppedByAdmin ?? null }; };
+
+  await toggle();   // disable
+  assert.deepEqual(await renewal(), { ends: true, byAdmin: "1" });
+  await toggle();   // re-enable
+  assert.deepEqual(await renewal(), { ends: false, byAdmin: null });
+
+  // the customer cancels themselves; a disable and re-enable leaves that alone
+  await stripe.subscriptions.update(sub.id, { cancel_at_period_end: true });
+  await toggle();
+  await toggle();
+  assert.deepEqual(await renewal(), { ends: true, byAdmin: null });
 });
 
 test("a declined first payment gives no plan, and Subscribe waits instead of opening a second checkout", { skip }, async () => {

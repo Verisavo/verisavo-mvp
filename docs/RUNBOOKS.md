@@ -14,7 +14,7 @@ What to do when something needs attention. The **activity log** in Admin → Act
 
 **A customer wants a refund or a different date.** Use the Stripe dashboard. The app follows Stripe through the webhook. A refund on its own doesn't end the plan: to stop access as well, **cancel the subscription** in Stripe (with or without a refund). The same goes for a disputed payment (chargeback).
 
-**Disabling someone who pays.** Disabling an account stops them signing in, but Stripe keeps charging them, and they can't reach "Manage billing" to cancel. Cancel their subscription in Stripe as well, or they'll likely dispute the charge.
+**Disabling someone who pays.** Disabling an account also stops their plan renewing (Stripe "cancel at period end"), because they can no longer reach "Manage billing" to cancel themselves. Re-enabling turns renewal back on, unless they had cancelled it themselves. If Stripe couldn't be reached, the activity log says "Couldn't change a user's plan renewal in Stripe": make the change in the Stripe dashboard.
 
 **A complimentary account (no Stripe).** Run `npm run plan:grant -- them@… --days 30 --prod`. Remove it with `--revoke`.
 
