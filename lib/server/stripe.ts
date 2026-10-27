@@ -7,8 +7,10 @@ let client: Stripe | null = null;
 
 export const stripeConfigured = (): boolean => Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_PRICE_MONTHLY);
 
+// Some calls run while a database lock is held (lib/server/billing.ts), so a slow Stripe gives up after 10 s with one
+// retry, rather than the SDK's default of 80 s with two
 export function stripe(): Stripe {
-  client ??= new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
+  client ??= new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { timeout: 10_000, maxNetworkRetries: 1 });
   return client;
 }
 

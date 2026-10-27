@@ -6,6 +6,8 @@ import { processEvent } from "@/lib/server/billing";
 export async function POST(request: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!stripeConfigured() || !secret) return new Response("Billing is not configured", { status: 503 });
+  // Stripe's events are a few KB; an unsigned 100 MB body shouldn't be read into memory just to be refused
+  if (Number(request.headers.get("content-length") ?? 0) > 1_000_000) return new Response("Too large", { status: 413 });
   const body = await request.text();
   let event;
   try {

@@ -19,6 +19,7 @@ export async function POST(request: Request) {
   try {
     const result = await createCheckout({ id: user.id, email: user.email, name: user.profile.name });
     if ("pending" in result) return json({ error: "payment_pending", message: "Your payment is still being confirmed. Please wait a minute and refresh the page." }, 409);
+    if ("busy" in result) return json({ error: "checkout_busy", message: "Your payment page is already opening. Please wait a moment." }, 409);
     return json({ url: result.url });
   } catch (err) {
     console.error("[billing/checkout] failed:", err instanceof Error ? err.name : "error");

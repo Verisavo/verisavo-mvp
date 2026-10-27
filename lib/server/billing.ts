@@ -1,5 +1,5 @@
 import "server-only";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { db } from "@/lib/server/db";
 import { profiles, stripeEvents, subscriptions, usagePeriods } from "@/db/schema";
 import { PLAN } from "@/lib/plan";
@@ -20,30 +20,45 @@ export async function sessionConfirmed(userId: string): Promise<boolean> {
 }
 const PAID = ["active", "trialing", "past_due"];   // decision D9, the same list as lib/server/entitlements.ts
 
+// Work done while a lock is held runs on the lock's own transaction: asking the pool for a second connection there could
+// leave every connection waiting on the one that holds the lock
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
 // The user's Stripe customer, created on their first checkout and stored on their profile
-export async function getOrCreateCustomer(user: { id: string; email: string; name: string }): Promise<string> {
-  const [p] = await db.select({ customerId: profiles.stripeCustomerId }).from(profiles).where(eq(profiles.id, user.id)).limit(1);
+export async function getOrCreateCustomer(user: { id: string; email: string; name: string }, q: typeof db | Tx = db): Promise<string> {
+  const [p] = await q.select({ customerId: profiles.stripeCustomerId }).from(profiles).where(eq(profiles.id, user.id)).limit(1);
   if (p?.customerId) return p.customerId;
   // the idempotency key makes two quick clicks create one customer, not two
   const customer = await stripe().customers.create(
     { email: user.email, name: user.name || undefined, metadata: { userId: user.id } },
     { idempotencyKey: `customer-${user.id}` }
   );
-  const [set] = await db.update(profiles).set({ stripeCustomerId: customer.id })
+  const [set] = await q.update(profiles).set({ stripeCustomerId: customer.id })
     .where(and(eq(profiles.id, user.id), isNull(profiles.stripeCustomerId))).returning({ id: profiles.stripeCustomerId });
   if (set?.id) return set.id;
-  const [again] = await db.select({ customerId: profiles.stripeCustomerId }).from(profiles).where(eq(profiles.id, user.id)).limit(1);
+  const [again] = await q.select({ customerId: profiles.stripeCustomerId }).from(profiles).where(eq(profiles.id, user.id)).limit(1);
   return again?.customerId ?? customer.id;
 }
 
 // Never two subscriptions: Stripe itself is asked first, because our table can lag behind it (the webhook may not have
 // arrived yet). A live subscription sends the user to the portal; one whose first payment is still in progress waits;
-// a checkout page left open in another tab is closed before a new one opens.
-export type CheckoutResult = { url: string } | { pending: true };
+// a checkout page left open in another tab is closed before a new one opens. One checkout runs at a time per user (a
+// lock held until this transaction ends), so clicks at the same moment can't each find nothing open and leave several
+// pages that could each be paid; a click while another is opening is told so at once, rather than waiting on a
+// connection.
+export type CheckoutResult = { url: string } | { pending: true } | { busy: true };
 const LIVE = ["active", "trialing", "past_due", "unpaid"];
 
 export async function createCheckout(user: { id: string; email: string; name: string }): Promise<CheckoutResult> {
-  const customer = await getOrCreateCustomer(user);
+  return db.transaction(async tx => {
+    const [lock] = await tx.execute<{ locked: boolean }>(sql`select pg_try_advisory_xact_lock(hashtext(${"checkout:" + user.id})) as locked`);
+    if (!lock?.locked) return { busy: true };
+    return openCheckout(user, tx);
+  });
+}
+
+async function openCheckout(user: { id: string; email: string; name: string }, tx: Tx): Promise<CheckoutResult> {
+  const customer = await getOrCreateCustomer(user, tx);
   const subs = await stripe().subscriptions.list({ customer, status: "all", limit: 20 });
   if (subs.data.some(s => LIVE.includes(s.status))) return { url: await createPortal(customer) };
   if (subs.data.some(s => s.status === "incomplete")) return { pending: true };
@@ -68,44 +83,61 @@ export async function createPortal(customerId: string): Promise<string> {
   return session.url;
 }
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const toDate = (seconds: number) => new Date(seconds * 1000);
 const idOf = (v: string | { id: string } | null | undefined) => (typeof v === "string" ? v : v?.id ?? null);
 
 // "Sync, don't patch": fetch the subscription as it is now and upsert the whole row, so events arriving out of order
 // can't leave an old state behind. A paid period also gets its usage row; a renewal's new period starts at 0.
+// Stripe sends several events within the same second when someone subscribes, so one sync runs at a time per
+// subscription (a lock held until the transaction ends): each sees what the one before it wrote, the activity log gets
+// one "Subscribed", and since Stripe is read inside the lock, the last write is the latest state.
 export async function syncSubscription(subscriptionId: string): Promise<void> {
-  const sub = await stripe().subscriptions.retrieve(subscriptionId);
-  const customerId = idOf(sub.customer);
-  let userId: string | null = sub.metadata?.userId ?? null;
-  if (!userId && customerId) {
-    const [p] = await db.select({ id: profiles.id }).from(profiles).where(eq(profiles.stripeCustomerId, customerId)).limit(1);
-    userId = p?.id ?? null;
-  }
-  if (userId) {   // only trust metadata that points at a real profile
-    const [p] = await db.select({ id: profiles.id }).from(profiles).where(eq(profiles.id, userId)).limit(1);
-    userId = p?.id ?? null;
-  }
-  if (!userId) { console.warn("[stripe] subscription for an unknown customer, ignored:", subscriptionId); return; }
+  const synced = await db.transaction(async tx => {
+    // a waiter gives up after 20 s (the event fails and Stripe retries it) rather than holding a connection for good
+    await tx.execute(sql`set local lock_timeout = '20s'`);
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${"subscription:" + subscriptionId}))`);
+    let sub: Stripe.Subscription;
+    try {
+      sub = await stripe().subscriptions.retrieve(subscriptionId);
+    } catch (err) {
+      // a subscription Stripe doesn't know (deleted, or another account's) would otherwise fail and be retried for days
+      if ((err as { code?: string }).code === "resource_missing") { console.warn("[stripe] no such subscription, ignored:", subscriptionId); return null; }
+      throw err;
+    }
+    const customerId = idOf(sub.customer);
+    let userId: string | null = sub.metadata?.userId ?? null;
+    if (userId && !UUID.test(userId)) userId = null;   // e.g. typed by hand in the Stripe dashboard
+    if (!userId && customerId) {
+      const [p] = await tx.select({ id: profiles.id }).from(profiles).where(eq(profiles.stripeCustomerId, customerId)).limit(1);
+      userId = p?.id ?? null;
+    }
+    if (userId) {   // only trust metadata that points at a real profile
+      const [p] = await tx.select({ id: profiles.id }).from(profiles).where(eq(profiles.id, userId)).limit(1);
+      userId = p?.id ?? null;
+    }
+    if (!userId) { console.warn("[stripe] subscription for an unknown customer, ignored:", subscriptionId); return null; }
 
-  // from API version 2025-03-31 the billing period lives on each subscription item
-  const item = sub.items.data[0];
-  if (!item) { console.warn("[stripe] subscription without items, ignored:", subscriptionId); return; }
-  const row = {
-    userId, status: sub.status, priceId: item.price?.id ?? null,
-    currentPeriodStart: toDate(item.current_period_start), currentPeriodEnd: toDate(item.current_period_end),
-    cancelAtPeriodEnd: sub.cancel_at_period_end, updatedAt: new Date()
-  };
-
-  const [before] = await db.select({ status: subscriptions.status, periodStart: subscriptions.currentPeriodStart, cancel: subscriptions.cancelAtPeriodEnd })
-    .from(subscriptions).where(eq(subscriptions.id, sub.id)).limit(1);
-  await db.transaction(async tx => {
+    // from API version 2025-03-31 the billing period lives on each subscription item
+    const item = sub.items.data[0];
+    if (!item) { console.warn("[stripe] subscription without items, ignored:", subscriptionId); return null; }
+    const row = {
+      userId, status: sub.status, priceId: item.price?.id ?? null,
+      currentPeriodStart: toDate(item.current_period_start), currentPeriodEnd: toDate(item.current_period_end),
+      cancelAtPeriodEnd: sub.cancel_at_period_end, updatedAt: new Date()
+    };
+    const [before] = await tx.select({ status: subscriptions.status, periodStart: subscriptions.currentPeriodStart, cancel: subscriptions.cancelAtPeriodEnd })
+      .from(subscriptions).where(eq(subscriptions.id, sub.id)).limit(1);
     await tx.insert(subscriptions).values({ id: sub.id, ...row }).onConflictDoUpdate({ target: subscriptions.id, set: row });
     if (PAID.includes(sub.status)) {
       await tx.insert(usagePeriods)
         .values({ userId, periodStart: row.currentPeriodStart, periodEnd: row.currentPeriodEnd, allowance: PLAN.PAID_MESSAGES_PER_PERIOD })
         .onConflictDoUpdate({ target: [usagePeriods.userId, usagePeriods.periodStart], set: { periodEnd: row.currentPeriodEnd } });
     }
+    return { sub, userId, row, before };
   });
+  if (!synced) return;
+  const { sub, userId, row, before } = synced;
 
   // subscription changes for the admin activity log (M2.4)
   const wasPaid = Boolean(before && PAID.includes(before.status)), isPaid = PAID.includes(sub.status);
@@ -151,16 +183,14 @@ async function handleEvent(event: Stripe.Event): Promise<void> {
   }
 }
 
-// Each event is handled once: its id is recorded first, and removed again if handling fails, so Stripe's retry runs
-// it again. Handling is idempotent anyway (sync re-fetches), so a crash in between is harmless.
+// Each event is handled once. Its id is recorded only after handling succeeds, so an event cut off half-way (a
+// timeout, a redeploy) runs again when Stripe retries it, instead of being skipped as already seen. Handling is
+// idempotent (sync re-fetches and runs one at a time per subscription), so a copy that slips in while the first is
+// still running does no harm.
 export async function processEvent(event: Stripe.Event): Promise<"handled" | "duplicate"> {
-  const [fresh] = await db.insert(stripeEvents).values({ id: event.id, type: event.type }).onConflictDoNothing().returning({ id: stripeEvents.id });
-  if (!fresh) return "duplicate";
-  try {
-    await handleEvent(event);
-    return "handled";
-  } catch (err) {
-    await db.delete(stripeEvents).where(eq(stripeEvents.id, event.id));
-    throw err;
-  }
+  const [seen] = await db.select({ id: stripeEvents.id }).from(stripeEvents).where(eq(stripeEvents.id, event.id)).limit(1);
+  if (seen) return "duplicate";
+  await handleEvent(event);
+  await db.insert(stripeEvents).values({ id: event.id, type: event.type }).onConflictDoNothing();
+  return "handled";
 }
