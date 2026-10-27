@@ -67,7 +67,7 @@ Sign up, email confirmation, sign in and password reset use Supabase Auth with e
    - **Sign-ups and sign-ins:** 300 per 5 minutes
    - **Token verifications:** 300 per 5 minutes
    - **Token refreshes:** 1800 per 5 minutes
-7. **Access token lifetime.** Set it to about **600 seconds** (Project Settings → JWT Keys). A copied login token then stops working within 10 minutes of sign-out.
+7. **Access token lifetime.** Set it to about **600 seconds** (Authentication → Sessions, "Access token expiry time"; older dashboards had it under Project Settings → JWT Keys). A copied login token then stops working within 10 minutes of sign-out.
 
 Email links open `/auth/confirm`, which only asks the user to press a button. Nothing happens until then, so email scanners can't use links up. A password-reset link allows one password change, only in the browser session it opened, for 15 minutes.
 

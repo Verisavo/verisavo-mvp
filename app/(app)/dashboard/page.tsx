@@ -74,7 +74,7 @@ export default async function DashboardPage() {
             <p className="eyebrow">{"Conversations"}</p>
             <h2 id="conv-h" className="text-[17px] font-semibold">{"Your questions to the Intelligence Assistant"}</h2>
             {convs.length ? (
-              <ul className="grid divide-y divide-brand-100">
+              <ul className="grid grid-cols-1 divide-y divide-brand-100">
                 {convs.map(c => (
                   <li key={c.id} className="flex items-center gap-3 py-3 first:pt-0">
                     <span className="min-w-0 flex-1 truncate font-medium" title={c.title}>{c.title}</span>
