@@ -12,7 +12,9 @@ What to do when something needs attention. The **activity log** in Admin → Act
    - billing not configured (returns 503)
    - a database outage (returns 500, and Stripe retries automatically)
 
-**A customer wants a refund or a different date.** Use the Stripe dashboard. The app follows Stripe through the webhook.
+**A customer wants a refund or a different date.** Use the Stripe dashboard. The app follows Stripe through the webhook. A refund on its own doesn't end the plan: to stop access as well, **cancel the subscription** in Stripe (with or without a refund). The same goes for a disputed payment (chargeback).
+
+**Disabling someone who pays.** Disabling an account stops them signing in, but Stripe keeps charging them, and they can't reach "Manage billing" to cancel. Cancel their subscription in Stripe as well, or they'll likely dispute the charge.
 
 **A complimentary account (no Stripe).** Run `npm run plan:grant -- them@… --days 30 --prod`. Remove it with `--revoke`.
 

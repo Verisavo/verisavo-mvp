@@ -54,6 +54,9 @@ test("a completed checkout makes the user paid (webhook → sync)", { skip }, as
   customer = await stripe.customers.create({ email: user.email, test_clock: clock.id, metadata: { userId: user.id } });
   const pm = await stripe.paymentMethods.attach("pm_card_visa", { customer: customer.id });
   sub = await stripe.subscriptions.create({ customer: customer.id, items: [{ price: env("STRIPE_PRICE_MONTHLY") }], default_payment_method: pm.id, metadata: { userId: user.id } });
+  // A test clock needs a customer created with it, so this isn't the customer the Subscribe test saved. Forget that
+  // one, as if checkout had used this customer before its id was saved: the webhook must save it.
+  await sql`update profiles set stripe_customer_id = null where id = ${user.id}`;
   const ev = await deliver("checkout.session.completed", { id: "cs_test_e2e", object: "checkout.session", mode: "subscription", customer: customer.id, client_reference_id: user.id, subscription: sub.id });
   assert.equal(ev.status, 200);
   assert.equal((await row())?.status, "active");

@@ -35,8 +35,9 @@ The live site runs on **Vercel** with Henry's account, and on the **live Supabas
 2. **Customer portal** (Settings → Billing → Customer portal):
    - Allow cancelling **at the end of the period**, updating the card and invoice history.
    - Turn plan switching **off**.
-3. **Failed payments** (Settings → Billing → Subscriptions): once all retries fail, **cancel the subscription**.
-4. **Webhook endpoint:**
+3. **Failed payments** (Settings → Billing → Subscriptions): retry for **14 days at most**, then **cancel the subscription**. The retries must end well before the next renewal: a customer keeps access while a payment is retried, so a subscription left "past due" for good would get part of every month free.
+4. **One subscription per customer** (Settings → Checkout and Payment Links, "Limit customers to one subscription"): on, if your dashboard offers it. The app already stops a second checkout; this makes Stripe refuse one too.
+5. **Webhook endpoint:**
    - URL: `https://<domain>/api/stripe/webhook`, API version **2026-09-30.endive**
    - Events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`
    - Copy its signing secret into `STRIPE_WEBHOOK_SECRET`.
