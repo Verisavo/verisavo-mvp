@@ -1138,3 +1138,5 @@ html body .ln .v3-hero::after { display: none !important; animation: none !impor
   html body .ln .net-scroll .net-svg:not(.net-svg-m) .net-gap text { font-size: 17px !important; }
   html body .ln .net-scroll::after { display: none !important; }
 }
+/* story scene on phones: the text fade covers only the bottom, so the city stays sharp */
+@media (max-width: 760px) { html body .ln .ms-veil { background: linear-gradient(0deg, rgba(245,248,252,.98) 0%, rgba(245,248,252,.92) 20%, rgba(245,248,252,.5) 32%, rgba(245,248,252,0) 44%) !important; } }
