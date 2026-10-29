@@ -1161,3 +1161,10 @@ html body .ln .v3-hero .v3-ctas { justify-content: flex-start !important; }
 /* hero type: Inter at display size, like the reference */
 html body .ln .v3-hero h1 { font-family: "Inter", var(--sans) !important; font-optical-sizing: auto; font-weight: 500 !important; }
 html body .ln .v3-hero .v3-lede { font-family: "Inter", var(--sans) !important; font-optical-sizing: auto; }
+/* hero sizes as measured on the reference: title ~92px / line 1.0, subtitle 26px / line 1.58, held steady on wide screens */
+html body .ln .v3-hero h1 { line-height: 1 !important; letter-spacing: -.042em !important; }
+@media (min-width: 1200px) {
+  html body .ln .v3-hero h1 { font-size: 5.75rem !important; }
+  html body .ln .v3-hero .v3-lede { font-size: 1.625rem !important; line-height: 1.58 !important; max-width: 42ch !important; }
+  html body .ln .v3-hero h1 + .v3-lede { margin-top: 56px !important; }
+}
