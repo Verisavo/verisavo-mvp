@@ -1278,7 +1278,8 @@ html body .ln .hx-min .mc-ask .mc-b { color: #fff; font-size: .95em; }
 /* how it works, refined: step tabs, calmer panel, cards with icon tiles, curved links that draw in */
 html body .ln .hx-pro .hx-frame { background: #FFFFFF; border-radius: 24px; box-shadow: 0 0 0 1px #E8EDF4, 0 30px 60px -48px rgba(31,39,63,.35); }
 html body .ln .hx-pro .hx-copy { display: grid; align-content: center; gap: 0; padding: clamp(32px, 4.4vw, 64px) clamp(28px, 3.4vw, 52px) clamp(32px, 4.4vw, 64px) clamp(32px, 4.4vw, 64px); }
-html body .ln .hx-pro .hx-count { display: none; }
+html body .ln .hx-pro .hx-rail { gap: 18px; }
+html body .ln .hx-pro .hx-lab { margin-bottom: -4px; }
 
 /* the five steps as a segmented index */
 html body .ln .hx-tabs { list-style: none; margin: 0 0 clamp(28px, 4.2vh, 44px); padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
@@ -1369,3 +1370,4 @@ html body .ln .hx-pro .mc-st i.u { color: #6B7896; background: #FFFFFF; box-shad
 }
 @media (prefers-reduced-motion: reduce) { html body .ln .hx-pro .mc-dot { animation: none; } html body .ln .hx-pro .mc-links path, html body .ln .hx-pro .mc-ok { transition: none !important; } }
 html body .ln .hx-pro .mc-ans .mc-q { width: auto; border: 0 !important; box-shadow: none !important; white-space: normal; }
+@media (max-width: 640px) { html body .ln .hx-pro .hx-lab { display: block; font-size: .68rem; margin-bottom: -2px; } }
