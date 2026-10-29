@@ -1127,3 +1127,14 @@ html body .ln .v3-hero::after { display: none !important; animation: none !impor
 .ln .ln-head.v3-tr2-head { display: flex !important; flex-direction: column; align-items: center; text-align: center; max-width: none !important; width: 100%; grid-template-columns: none !important; }
 .ln .ln-head.v3-tr2-head > * { margin-left: auto !important; margin-right: auto !important; grid-column: auto !important; }
 .ln .ln-head.v3-tr2-head .ln-sub { margin-top: 0 !important; }
+/* network: phones show the same drawing as desktop, scaled to fit */
+@media (max-width: 640px) {
+  html body .ln .net-scroll .net-svg.net-svg-m { display: none !important; }
+  html body .ln .net-scroll .net-svg:not(.net-svg-m) { display: block !important; min-width: 0 !important; width: 100% !important; max-width: 100% !important; height: auto !important; }
+  html body .ln .net-scroll { overflow: visible !important; -webkit-mask-image: none !important; mask-image: none !important; }
+  html body .ln .net-card { padding: 6px !important; }
+  html body .ln .net-scroll .net-svg:not(.net-svg-m) text { font-size: 21px !important; }
+  html body .ln .net-scroll .net-svg:not(.net-svg-m) .net-cols text { font-size: 19px !important; }
+  html body .ln .net-scroll .net-svg:not(.net-svg-m) .net-gap text { font-size: 17px !important; }
+  html body .ln .net-scroll::after { display: none !important; }
+}
