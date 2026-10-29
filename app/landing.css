@@ -1174,3 +1174,6 @@ html body .ln .v3-hero { padding-top: clamp(150px, 16vw, 308px) !important; }
 html body .ln .v3-hero .v3-hero-in { padding-bottom: clamp(80px, 8vw, 128px) !important; }
 @media (min-width: 1200px) { html body .ln .v3-hero h1 + .v3-lede { margin-top: 40px !important; } html body .ln .v3-hero .v3-ctas { margin-top: 44px !important; } }
 @media (max-width: 640px) { html body .ln .v3-hero { padding-top: 132px !important; } }
+/* page titles across the site: the homepage title style, Inter at display size in Royal Indigo */
+html body h1:not(#_a):not(#_b):not(#_c):not(#_d), html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .tone, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .l1, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) span { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; letter-spacing: -.045em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
+html body h1:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.04 !important; }

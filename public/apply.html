@@ -7,7 +7,7 @@
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Geist:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Geist:wght@400;500;600&family=Inter:opsz,wght@14..32,400;14..32,500&display=swap">
 <style>
 :root { --indigo: #1F273F; --accent: #4362B2; --slate: #5B6478; --body: #3D4559; --line: #E3E8F0; --field: #F7F9FC;
   --sans: "Geist", "Helvetica Neue", Arial, sans-serif; --display: "Barlow Condensed", "Arial Narrow", sans-serif; color-scheme: light; }
@@ -49,6 +49,9 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 body.sent form { display: none; } body.sent .done { display: block; }
 @media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } .logo { font-size: 1.3rem; } .back { padding: 8px 12px; font-size: .875rem; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+/* page titles across the site: the homepage title style, Inter at display size in Royal Indigo */
+html body h1:not(#_a):not(#_b):not(#_c):not(#_d), html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .tone, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .l1, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) span { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; letter-spacing: -.045em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
+html body h1:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.04 !important; }
 </style>
 </head>
 <body>
