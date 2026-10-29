@@ -1588,7 +1588,7 @@ html body .stage-sec .chat-body { padding: 14px 14px 4px !important; }
 html body .wrap { max-width: 1620px !important; }
 /* >>> type */
 
-:root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
+:root { --display: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif; --serif: var(--display); }
 h1, h2, .va-hello h2, .faq-intro h2 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; }
 .hero h1 { font-size: clamp(2.9rem, 1.4rem + 4.8vw, 5.4rem) !important; line-height: .96 !important; }
 .sec-head h2, .sample-intro h2, .band-head h2, .cta h2, #trust h2 { font-size: clamp(2.4rem, 1.4rem + 3vw, 4rem) !important; line-height: 1 !important; }
@@ -1628,3 +1628,9 @@ h1, h2, .va-hello h2, .faq-intro h2 { font-family: var(--display) !important; fo
 /* page titles across the site: the homepage title style, Inter at display size in Royal Indigo */
 html body h1:not(#_a):not(#_b):not(#_c):not(#_d), html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .tone, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .l1, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) span { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; letter-spacing: -.045em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
 html body h1:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.04 !important; }
+/* headings across the site follow the homepage title: Inter, tight tracking, one colour */
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d), html body h2:not(#_a):not(#_b):not(#_c):not(#_d) span, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) em { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; font-style: normal; letter-spacing: -.04em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important; }
+html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
+/* headings on dark indigo panels stay white */
+html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF; }

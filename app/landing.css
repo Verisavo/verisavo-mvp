@@ -1035,7 +1035,7 @@ html body .ln .v3-hero::after { content: ""; position: absolute; inset: 0; z-ind
 html body .ln .v3-hero::after { display: none !important; animation: none !important; }
 /* >>> type */
 
-.ln, .lf { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
+.ln, .lf { --display: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif; --serif: var(--display); }
 .ln h1, .ln h2, .ln .ms-l, .ln .v3-big, .ln .ln-big { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; }
 .ln .v3-hero h1 { font-size: clamp(3.3rem, 1.6rem + 5.6vw, 6.6rem) !important; line-height: .94 !important; }
 .ln h2 { line-height: 1 !important; }
@@ -1198,3 +1198,9 @@ html body .ln .net-svg .net-dot { fill: #1F273F !important; }
 html body .ln .v3-net-t { font-family: "Inter", var(--sans) !important; font-optical-sizing: auto; font-weight: 500 !important; letter-spacing: -.04em !important; line-height: 1.05 !important; font-size: clamp(2rem, 1.2rem + 2vw, 3.25rem) !important; color: #1F273F !important; }
 html body .ln .v3-net-head { border-top-color: #E6ECF4 !important; }
 @media (max-width: 640px) { html body .ln .net-card { padding: 4px !important; border-radius: 14px !important; } }
+/* headings across the site follow the homepage title: Inter, tight tracking, one colour */
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d), html body h2:not(#_a):not(#_b):not(#_c):not(#_d) span, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) em { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; font-style: normal; letter-spacing: -.04em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important; }
+html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
+/* headings on dark indigo panels stay white */
+html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF; }

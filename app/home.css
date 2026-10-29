@@ -1476,7 +1476,7 @@ html body:has(#pg-contact.open):not(.menu-open) .pill { background: #1F273F !imp
 /* ===== end contact ===== */
 /* >>> type */
 
-:root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; }
+:root { --display: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif; }
 .pg h1, .pg h2, .hero h1, .ch h2, .split h2, .va h2, .rs-detail h1, .rs-detail h2, .ar-sec h2, .cx-sec h2, .cx-close h2, #pg-research h1, #pg-research h2, .cs-intro h2 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; line-height: 1.02 !important; }
 .pg h1, #pg-research h1, .rs-detail h1 { line-height: .98 !important; }
 .cs-card h3, .rs-card h3, .ar-feat-body h3, .hl-body h3, #pg-research .rs-card h3, #pg-research .cs-card h3, #pg-research .ar-feat-body h3 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; font-size: clamp(1.45rem, 1.2rem + .6vw, 1.75rem) !important; line-height: 1.08 !important; }
@@ -1536,3 +1536,9 @@ header .logo, .top .logo, body > .logo, .hdr .logo { font-size: clamp(1.55rem, 1
 .rs-detail.rd-light .cx-brief h2 { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.9rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 .cx-exn { font-family: var(--sans) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 0.806rem !important; font-weight: 500 !important; line-height: 1.35 !important; }
 /* <<< type */
+/* headings across the site follow the homepage title: Inter, tight tracking, one colour */
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d), html body h2:not(#_a):not(#_b):not(#_c):not(#_d) span, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) em { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; font-style: normal; letter-spacing: -.04em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important; }
+html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
+/* headings on dark indigo panels stay white */
+html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF; }

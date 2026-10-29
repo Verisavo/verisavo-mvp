@@ -16,7 +16,7 @@
 
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Inter:opsz,wght@14..32,400;14..32,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap">
 <style>
 /* Layout: three-column documentation shell. Sidebar of guides, a reading column near 68ch, and an on-this-page rail. */
 :root {
@@ -204,7 +204,7 @@ dl.gloss dd { color: var(--body); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 /* >>> type */
 
-:root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }
+:root { --display: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif; --serif: var(--display); }
 .doc h1 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; font-size: clamp(2.6rem, 1.9rem + 2vw, 3.4rem) !important; line-height: 1 !important; }
 .doc h2 { font-family: var(--display) !important; font-weight: 600 !important; letter-spacing: -.005em !important; font-size: 2rem !important; line-height: 1.05 !important; }
 :root { --container: 1500px; --gutter: clamp(20px, 3vw, 32px); --edge: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))); --measure: 68ch; }
@@ -331,6 +331,10 @@ dl.gloss dd { color: var(--body); }
 /* page titles across the site: the homepage title style, Inter at display size in Royal Indigo */
 html body h1:not(#_a):not(#_b):not(#_c):not(#_d), html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .tone, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) .l1, html body h1:not(#_a):not(#_b):not(#_c):not(#_d) span { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; letter-spacing: -.045em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
 html body h1:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.04 !important; }
+/* headings across the site follow the homepage title: Inter, tight tracking, one colour */
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d), html body h2:not(#_a):not(#_b):not(#_c):not(#_d) span, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) em { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; font-style: normal; letter-spacing: -.04em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
+html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important; }
+html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
 </style>
 
 <header class="top">
