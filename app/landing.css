@@ -1371,3 +1371,26 @@ html body .ln .hx-pro .mc-st i.u { color: #6B7896; background: #FFFFFF; box-shad
 @media (prefers-reduced-motion: reduce) { html body .ln .hx-pro .mc-dot { animation: none; } html body .ln .hx-pro .mc-links path, html body .ln .hx-pro .mc-ok { transition: none !important; } }
 html body .ln .hx-pro .mc-ans .mc-q { width: auto; border: 0 !important; box-shadow: none !important; white-space: normal; }
 @media (max-width: 640px) { html body .ln .hx-pro .hx-lab { display: block; font-size: .68rem; margin-bottom: -2px; } }
+/* the section title lives inside the pinned frame, so it stays in view through the five steps */
+html body .ln #how .ln-head { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; margin: 0 !important; padding: 0 !important; }
+html body .ln #how .hx { margin-top: 0; }
+html body .ln .hx-pro .hx-copy { display: grid; grid-template-rows: auto 1fr; align-content: stretch; gap: 24px; }
+html body .ln .hx-head { display: grid; gap: 10px; }
+html body .ln .hx-eb { margin: 0; font: 500 .82rem/1 var(--sans); letter-spacing: .02em; color: #4D74C3; }
+html body .ln .hx-title { margin: 0; font: 600 clamp(1.15rem, .95rem + .55vw, 1.5rem)/1.2 var(--display); letter-spacing: 0; color: #6B7896; max-width: 24ch; }
+html body .ln .hx-pro .hx-rail { align-self: center; }
+@media (max-width: 1024px) {
+  html body .ln .hx-pro .hx-copy { grid-template-rows: auto auto; gap: 14px; }
+  html body .ln .hx-head { gap: 6px; }
+  html body .ln .hx-title { max-width: none; font-size: 1.1rem; }
+}
+@media (max-width: 640px) {
+  html body .ln .hx-pro .hx-copy { gap: 10px; }
+  html body .ln .hx-eb { font-size: .72rem; }
+  html body .ln .hx-title { font-size: .98rem; }
+}
+html body .ln .hx-pro .hx-copy { align-self: stretch; }
+html body .ln .hx-title { color: #1F273F; }
+html body .ln #how.ln-sec, html body .ln section#how { padding-top: 0 !important; }
+html body .ln #how .hm-doc { margin-top: 24px; }
+@media (max-width: 1024px) { html body .ln .hx-pro .hx-copy { align-self: start; } }
