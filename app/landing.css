@@ -1146,3 +1146,5 @@ html body .ln .v3-hero::after { display: none !important; animation: none !impor
   html body .ln .ms-veil { background: linear-gradient(180deg, rgba(245,248,252,.98) 0%, rgba(245,248,252,.92) 20%, rgba(245,248,252,.5) 32%, rgba(245,248,252,0) 44%) !important; }
   html body .ln .ms-story .ms-cap { top: auto !important; bottom: 12px !important; right: 12px !important; left: auto !important; }
 }
+/* story scene on desktop and tablet: a stronger fade on the left so the city never runs through the text */
+@media (min-width: 761px) { html body .ln .ms-veil { background: linear-gradient(90deg, rgba(245,248,252,.97) 0%, rgba(245,248,252,.93) 34%, rgba(245,248,252,.6) 46%, rgba(245,248,252,0) 60%) !important; } }
