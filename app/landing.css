@@ -1158,3 +1158,6 @@ html body .ln .v3-hero h1 + .v3-lede { margin-top: clamp(26px, 3.4vw, 44px) !imp
 html body .ln .v3-hero .v3-lede { font: 400 clamp(1.15rem, 1rem + .6vw, 1.625rem)/1.55 var(--sans) !important; letter-spacing: -.01em !important; color: #5A6378 !important; max-width: 44ch !important; }
 html body .ln .v3-hero .v3-ctas { justify-content: flex-start !important; }
 @media (max-width: 640px) { html body .ln .v3-hero h1 { letter-spacing: -.045em !important; } }
+/* hero type: Inter at display size, like the reference */
+html body .ln .v3-hero h1 { font-family: "Inter", var(--sans) !important; font-optical-sizing: auto; font-weight: 500 !important; }
+html body .ln .v3-hero .v3-lede { font-family: "Inter", var(--sans) !important; font-optical-sizing: auto; }
