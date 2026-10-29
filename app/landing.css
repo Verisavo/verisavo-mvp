@@ -1140,3 +1140,9 @@ html body .ln .v3-hero::after { display: none !important; animation: none !impor
 }
 /* story scene on phones: the text fade covers only the bottom, so the city stays sharp */
 @media (max-width: 760px) { html body .ln .ms-veil { background: linear-gradient(0deg, rgba(245,248,252,.98) 0%, rgba(245,248,252,.92) 20%, rgba(245,248,252,.5) 32%, rgba(245,248,252,0) 44%) !important; } }
+/* story scene on phones: the story text sits in the top left, the fade follows it, and the tag moves to the bottom right */
+@media (max-width: 760px) {
+  html body .ln .ms-story .ms-copy { top: 22px !important; bottom: auto !important; left: 18px !important; right: 18px !important; }
+  html body .ln .ms-veil { background: linear-gradient(180deg, rgba(245,248,252,.98) 0%, rgba(245,248,252,.92) 20%, rgba(245,248,252,.5) 32%, rgba(245,248,252,0) 44%) !important; }
+  html body .ln .ms-story .ms-cap { top: auto !important; bottom: 12px !important; right: 12px !important; left: auto !important; }
+}
