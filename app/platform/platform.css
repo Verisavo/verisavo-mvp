@@ -1583,6 +1583,9 @@ html body .stage-sec .pcard { max-width: 820px !important; margin-inline: auto !
 html body .stage-sec #ask-input { min-height: 84px !important; height: 84px; font-size: 1.05rem !important; }
 html body .stage-sec .chat-body { padding: 14px 14px 4px !important; }
 @media (max-width: 640px) { html body .stage-sec #ask-input { min-height: 72px !important; height: 72px; } }
+/* page edges match the homepage (1620px container) */
+:root { --container: 1620px !important; }
+html body .wrap { max-width: 1620px !important; }
 /* >>> type */
 
 :root { --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif; --serif: var(--display); }

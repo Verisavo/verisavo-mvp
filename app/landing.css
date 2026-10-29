@@ -1165,6 +1165,12 @@ html body .ln .v3-hero .v3-lede { font-family: "Inter", var(--sans) !important; 
 html body .ln .v3-hero h1 { line-height: 1 !important; letter-spacing: -.042em !important; }
 @media (min-width: 1200px) {
   html body .ln .v3-hero h1 { font-size: 5.75rem !important; }
-  html body .ln .v3-hero .v3-lede { font-size: 1.625rem !important; line-height: 1.58 !important; max-width: 42ch !important; }
+  html body .ln .v3-hero .v3-lede { font-size: 1.625rem !important; line-height: 1.58 !important; max-width: 920px !important; }
   html body .ln .v3-hero h1 + .v3-lede { margin-top: 56px !important; }
 }
+/* screen spacing as on the reference: wider page edges, a deeper hero */
+:root { --container: 1620px !important; }
+html body .ln .v3-hero { padding-top: clamp(150px, 16vw, 308px) !important; }
+html body .ln .v3-hero .v3-hero-in { padding-bottom: clamp(80px, 8vw, 128px) !important; }
+@media (min-width: 1200px) { html body .ln .v3-hero h1 + .v3-lede { margin-top: 40px !important; } html body .ln .v3-hero .v3-ctas { margin-top: 44px !important; } }
+@media (max-width: 640px) { html body .ln .v3-hero { padding-top: 132px !important; } }
