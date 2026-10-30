@@ -1634,3 +1634,29 @@ html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important;
 html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
 /* headings on dark indigo panels stay white */
 html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF; }
+/* >>> whatsapp: a dark indigo panel with an illustrative chat */
+html body .wa-sec { padding: clamp(56px, 7vw, 96px) 0; }
+html body .wa-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 5vw, 72px); align-items: center; padding: clamp(32px, 5vw, 64px); border-radius: 28px; background: #1F273F; color: #FFFFFF; }
+html body .wa-eb { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px; font: 600 .8rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #25D366; }
+html body .wa-eb svg { width: 22px; height: 22px; }
+html body .wa-copy h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) { margin: 0; font-size: clamp(2.2rem, 1.4rem + 2.4vw, 3.6rem) !important; line-height: 1.04 !important; color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF; }
+html body .wa-p { margin: 22px 0 32px; max-width: 46ch; font: 400 clamp(1rem, .95rem + .25vw, 1.15rem)/1.7 var(--sans); color: #CCDDF1 !important; }
+html body .wa-btn { display: inline-flex; align-items: center; gap: 12px; height: 60px; padding: 0 28px 0 22px; border: 0; border-radius: 999px; background: #25D366; color: #0B1F14; font: 600 1.05rem/1 var(--sans); cursor: pointer; transition: transform .2s ease, background-color .2s ease; }
+html body .wa-btn svg { width: 26px; height: 26px; }
+html body .wa-btn:hover { background: #2EE27A; transform: translateY(-1px); }
+html body .wa-btn:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+html body .wa-demo { margin: 0; display: grid; gap: 14px; }
+html body .wa-phone { border-radius: 22px; overflow: hidden; background: #F2F4EF; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+html body .wa-top { display: flex; align-items: center; gap: 14px; padding: 16px 22px; background: #075E54; color: #FFFFFF; }
+html body .wa-av { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.12); }
+html body .wa-av svg { width: 26px; height: 26px; }
+html body .wa-top b { display: block; font: 600 1.1rem/1.2 var(--sans); }
+html body .wa-top small { display: block; margin-top: 3px; font: 400 .9rem/1.2 var(--sans); color: #8BE9B0; }
+html body .wa-chat { display: grid; gap: 14px; padding: 22px 22px 26px; }
+html body .wa-chat p { margin: 0; max-width: 88%; padding: 14px 18px; border-radius: 14px; font: 400 .98rem/1.6 var(--sans); color: #1F273F; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+html body .wa-me { justify-self: end; background: #D9FDD3; border-top-right-radius: 4px !important; }
+html body .wa-it { justify-self: start; background: #FFFFFF; border-top-left-radius: 4px !important; }
+html body .wa-it b { font-weight: 600; }
+html body .wa-demo figcaption { text-align: center; font: 400 .85rem/1.4 var(--sans); color: #A8C6E8; }
+@media (max-width: 900px) { html body .wa-card { grid-template-columns: 1fr; border-radius: 20px; } }
+@media (max-width: 640px) { html body .wa-card { padding: 28px 20px; } html body .wa-btn { height: 54px; width: 100%; justify-content: center; } html body .wa-chat { padding: 16px; } html body .wa-chat p { font-size: .92rem; max-width: 92%; } html body .wa-top { padding: 14px 16px; } }
