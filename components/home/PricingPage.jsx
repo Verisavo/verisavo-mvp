@@ -1,4 +1,6 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+const PRICING = "<div class=\"pc\"><header class=\"pg-head pc-head\"><p class=\"lab\">Early access pricing</p><h1 id=\"pricing-h\">Pricing</h1><p class=\"pc-lead\">Plans for individuals, teams and organisations.</p></header><div class=\"pc-plans\"><article class=\"pc-card\" aria-labelledby=\"pc-c\"><div class=\"pc-top\"><h2 class=\"pc-name\" id=\"pc-c\">Community</h2><p class=\"pc-for\">For individuals getting started</p></div><p class=\"pc-price\">$0</p><p class=\"pc-credit\">$3.99 of credit included</p><button type=\"button\" class=\"pc-btn\" data-signup>Sign up</button><p class=\"pc-inc\">Includes</p><ul class=\"pc-list\"><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Intelligence Assistant on the web</span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Answers that show their evidence</span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Intelligence Gaps named</span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>No card required</span></li></ul></article><article class=\"pc-card pc-main\" aria-labelledby=\"pc-v\"><div class=\"pc-top\"><h2 class=\"pc-name\" id=\"pc-v\">Verisavo</h2><p class=\"pc-for\">For businesses that need answers often</p></div><p class=\"pc-price\">$6.99<span>/ month</span></p><p class=\"pc-credit\">Up to 100 messages a month</p><button type=\"button\" class=\"pc-btn pc-solid\" data-dialog=\"access\">Get early access</button><p class=\"pc-inc\">Everything in Community, plus</p><ul class=\"pc-list\"><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Web and WhatsApp</span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>File and image uploads</span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>PDF reports</span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Saved conversations</span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Verisavo Dashboard</span></li></ul><p class=\"pc-note\">One account. Cancel anytime.</p></article><article class=\"pc-card\" aria-labelledby=\"pc-e\"><div class=\"pc-top\"><h2 class=\"pc-name\" id=\"pc-e\">Enterprise</h2><p class=\"pc-for\">For organisations that need continuous market intelligence</p></div><p class=\"pc-price pc-custom\">Custom</p><p class=\"pc-credit\">Built around your markets</p><button type=\"button\" class=\"pc-btn\" data-page=\"contact\">Contact us</button><p class=\"pc-inc\">Everything in Verisavo, plus</p><ul class=\"pc-list\"><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Market investigations <em>Coming soon</em></span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Company Knowledge Base <em>Coming soon</em></span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Team workflows <em>Coming soon</em></span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Advanced market analysis <em>Coming soon</em></span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Targeted Ground-Level Intelligence through SavoScouts <em>Coming soon</em></span></li><li><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3.5 8.5l3 3 6-7\"/></svg><span>Your company data stays private and under your control</span></li></ul></article></div><p class=\"pc-fine\">Prices in US dollars. Early access prices may change before general release, and features marked coming soon are in development.</p></div>";
+
 export default function PricingPage() {
   return (
     <section className="pg" id="pg-pricing" aria-labelledby="pricing-h" aria-hidden="true">
@@ -7,57 +9,7 @@ export default function PricingPage() {
         {" "}
         <button type="button" className="pg-link pg-back" data-back=""><span aria-hidden="true">{"←"}</span>{" Back"}</button>
         {" "}
-        <header className="pg-head pr-head">
-          <p className="lab">{"Early access pricing"}</p>
-          <h1 id="pricing-h">{"Start free. "}<span className="acc">{"Go further when you need to."}</span></h1>
-          <p className="pr-lead">{"Ask your first market questions free. Upgrade when you need more intelligence, context and continuity."}</p>
-        </header>
-        {" "}
-        <div className="pr-plans">
-          <article className="pr-card glass" aria-labelledby="pr-free">
-            <p className="lab" id="pr-free">{"Free"}</p>
-            <p className="pr-price">{"$0"}</p>
-            <p className="pr-name">{"Explore Verisavo."}</p>
-            <p className="pr-line">{"Ask your first 5 market questions free."}</p>
-            <ul className="pr-list">
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"5 questions"}</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Web access"}</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"No card required"}</span></li>
-            </ul>
-            <button type="button" className="obtn pr-cta" data-signup="">{"Start free "}<span aria-hidden="true">{"→"}</span></button>
-          </article>
-          {" "}
-          <article className="pr-card pr-main" aria-labelledby="pr-monthly">
-            <p className="pr-tier"><span className="lab" id="pr-monthly">{"Verisavo"}</span><span className="pr-tag">{"Monthly"}</span></p>
-            <p className="pr-price">{"$6.99 "}<span>{"/ month"}</span></p>
-            <p className="pr-line">{"For businesses that need answers more often."}</p>
-            <ul className="pr-list">
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Up to 100 messages per month"}</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Web + WhatsApp"}</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"File & image uploads"}</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"PDF reports"}</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Saved conversations"}</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg><span>{"Verisavo Dashboard"}</span></li>
-            </ul>
-            <p className="pr-one">{"One account. One subscription. Cancel anytime."}</p>
-            <button type="button" className="obtn solid pr-cta" data-dialog="access">{"Get early access "}<span aria-hidden="true">{"→"}</span></button>
-          </article>
-          {" "}
-          <article className="pr-card glass pr-next" aria-labelledby="pr-pro">
-            <p className="pr-tier"><span className="lab" id="pr-pro">{"Verisavo Pro"}</span><span className="pr-tag pr-tag-soon">{"Coming soon"}</span></p>
-            <p className="pr-soon">{"Always on."}</p>
-            <p className="pr-line">{"For businesses that need continuous market intelligence, not just individual answers."}</p>
-            <p className="pr-with">{"Coming with:"}</p>
-            <ul className="pr-list pr-list-soon">
-              <li><i aria-hidden="true"></i><span>{"Market investigations"}</span></li>
-              <li><i aria-hidden="true"></i><span>{"Company Knowledge Base"}</span></li>
-              <li><i aria-hidden="true"></i><span>{"Team workflows"}</span></li>
-              <li><i aria-hidden="true"></i><span>{"Advanced market analysis"}</span></li>
-              <li><i aria-hidden="true"></i><span>{"Targeted Ground-Level Intelligence"}</span></li>
-            </ul>
-            <button type="button" className="obtn pr-cta" data-dialog="access">{"Join the waitlist "}<span aria-hidden="true">{"→"}</span></button>
-          </article>
-        </div>
+        <div className="pc-mount" dangerouslySetInnerHTML={{ __html: PRICING }} />
         {" "}
         <footer className="pg-foot">
           {" "}

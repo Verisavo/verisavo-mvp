@@ -1204,3 +1204,33 @@ html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important;
 html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
 /* headings on dark indigo panels stay white */
 html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF; }
+/* >>> pricing (community / verisavo / enterprise): clean cards, credit line, plan-to-plan lists */
+html body #pg-pricing .pc { --pcw: min(1120px, calc(100vw - 48px)); width: var(--pcw) !important; max-width: none !important; margin-inline: calc((100% - var(--pcw)) / 2) !important; }
+html body #pg-pricing .pc-head { justify-items: center; text-align: center; margin: 0 auto clamp(36px, 5vw, 56px); display: grid; gap: 14px; }
+html body #pg-pricing .pc-head .lab { margin: 0; color: #4362B2 !important; }
+html body #pg-pricing .pc-head h1 { margin: 0; font-size: clamp(2.8rem, 1.6rem + 3.6vw, 4.5rem) !important; }
+html body #pg-pricing .pc-lead { margin: 0; font: 400 clamp(1.05rem, .98rem + .3vw, 1.25rem)/1.5 "Inter", var(--sans); letter-spacing: -.01em; color: #5A6378 !important; }
+html body #pg-pricing .pc-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+html body #pg-pricing .pc-card { display: flex; flex-direction: column; padding: 28px 26px 26px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E8F0; box-shadow: 0 1px 2px rgba(31,39,63,.04); color: #1F273F; text-align: left; }
+html body #pg-pricing .pc-card > * { margin: 0; }
+html body #pg-pricing .pc-main { border: 1.5px solid #1F273F; box-shadow: 0 24px 48px -32px rgba(31,39,63,.45); }
+html body #pg-pricing .pc-top { display: grid; gap: 6px; min-height: 4.6em; }
+html body #pg-pricing .pc-card h2.pc-name { font-size: 1.375rem !important; line-height: 1.2 !important; letter-spacing: -.02em !important; }
+html body #pg-pricing .pc-for { font: 400 .95rem/1.45 var(--sans); color: #5A6378; }
+html body #pg-pricing .pc-price { margin-top: 18px; display: flex; align-items: baseline; gap: 8px; font: 500 2.75rem/1 "Inter", var(--sans); letter-spacing: -.045em; color: #1F273F; }
+html body #pg-pricing .pc-price span { font: 400 .95rem/1 var(--sans); letter-spacing: 0; color: #8A93A6; }
+html body #pg-pricing .pc-credit { align-self: flex-start; margin-top: 14px; padding: 7px 12px; border-radius: 999px; background: #EEF3FB; font: 600 .86rem/1 var(--sans); color: #3A5292; white-space: nowrap; }
+html body #pg-pricing .pc-btn { margin-top: 22px; width: 100%; height: 46px; border-radius: 10px; border: 1px solid #CCDDF1; background: #FFFFFF; font: 600 .95rem/1 var(--sans); color: #1F273F; cursor: pointer; transition: background-color .2s, border-color .2s; }
+html body #pg-pricing .pc-btn:hover { background: #F4F7FB; border-color: #A8C6E8; }
+html body #pg-pricing .pc-btn.pc-solid { background: #1F273F; border-color: #1F273F; color: #FFFFFF; }
+html body #pg-pricing .pc-btn.pc-solid:hover { background: #3A5292; border-color: #3A5292; }
+html body #pg-pricing .pc-btn:focus-visible { outline: 2px solid #4362B2; outline-offset: 3px; }
+html body #pg-pricing .pc-inc { margin-top: 26px; padding-top: 22px; border-top: 1px solid #EEF1F6; font: 500 .82rem/1.3 var(--sans); color: #8A93A6; }
+html body #pg-pricing .pc-list { list-style: none; padding: 0; margin-top: 14px; display: grid; gap: 11px; }
+html body #pg-pricing .pc-list li { display: flex; gap: 10px; align-items: flex-start; font: 400 .95rem/1.4 var(--sans); color: #1F273F; }
+html body #pg-pricing .pc-list svg { width: 16px; height: 16px; flex: none; margin-top: 2px; color: #4D74C3; }
+html body #pg-pricing .pc-list em { display: inline-block; margin-left: 6px; padding: 3px 7px; border-radius: 999px; font: 500 .72rem/1 var(--sans); font-style: normal; color: #6B7896; background: #F2F5FA; vertical-align: 1px; }
+html body #pg-pricing .pc-note { margin-top: auto !important; padding-top: 18px; font: 400 .86rem/1.4 var(--sans); color: #8A93A6; }
+html body #pg-pricing .pc-fine { margin: 28px auto 0; max-width: 64ch; text-align: center; font: 400 .85rem/1.5 var(--sans); color: #8A93A6; }
+@media (max-width: 960px) { html body #pg-pricing .pc-plans { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; } html body #pg-pricing .pc-top { min-height: 0; } }
+@media (max-width: 640px) { html body #pg-pricing .pc { --pcw: calc(100vw - 32px); } }
