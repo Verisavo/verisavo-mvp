@@ -1235,3 +1235,29 @@ html body #pg-pricing .pc-fine { margin: 28px auto 0; max-width: 64ch; text-alig
 @media (max-width: 960px) { html body #pg-pricing .pc-plans { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; } html body #pg-pricing .pc-top { min-height: 0; } }
 @media (max-width: 640px) { html body #pg-pricing .pc { --pcw: calc(100vw - 32px); } }
 html body #pg-pricing .pc-price .pc-soon { align-self: center; margin-left: 4px; padding: 6px 10px; border-radius: 999px; font: 600 .78rem/1 var(--sans); letter-spacing: 0; color: #3A5292; background: #FFFFFF; box-shadow: inset 0 0 0 1px #CCDDF1; white-space: nowrap; }
+/* >>> whatsapp: a dark indigo panel with an illustrative chat */
+html body .ln .wa-sec { padding: clamp(56px, 7vw, 96px) 0; }
+html body .ln .wa-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 5vw, 72px); align-items: center; padding: clamp(32px, 5vw, 64px); border-radius: 28px; background: #1F273F; color: #FFFFFF; }
+html body .ln .wa-eb { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px; font: 600 .8rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #25D366; }
+html body .ln .wa-eb svg { width: 22px; height: 22px; }
+html body .ln .wa-copy h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) { margin: 0; font-size: clamp(2.2rem, 1.4rem + 2.4vw, 3.6rem) !important; line-height: 1.04 !important; color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF; }
+html body .ln .wa-p { margin: 22px 0 32px; max-width: 46ch; font: 400 clamp(1rem, .95rem + .25vw, 1.15rem)/1.7 var(--sans); color: #CCDDF1 !important; }
+html body .ln .wa-btn { display: inline-flex; align-items: center; gap: 12px; height: 60px; padding: 0 28px 0 22px; border: 0; border-radius: 999px; background: #25D366; color: #0B1F14; font: 600 1.05rem/1 var(--sans); cursor: pointer; transition: transform .2s ease, background-color .2s ease; }
+html body .ln .wa-btn svg { width: 26px; height: 26px; }
+html body .ln .wa-btn:hover { background: #2EE27A; transform: translateY(-1px); }
+html body .ln .wa-btn:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+html body .ln .wa-demo { margin: 0; display: grid; gap: 14px; }
+html body .ln .wa-phone { border-radius: 22px; overflow: hidden; background: #F2F4EF; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+html body .ln .wa-top { display: flex; align-items: center; gap: 14px; padding: 16px 22px; background: #075E54; color: #FFFFFF; }
+html body .ln .wa-av { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.12); }
+html body .ln .wa-av svg { width: 26px; height: 26px; }
+html body .ln .wa-top b { display: block; font: 600 1.1rem/1.2 var(--sans); }
+html body .ln .wa-top small { display: block; margin-top: 3px; font: 400 .9rem/1.2 var(--sans); color: #8BE9B0; }
+html body .ln .wa-chat { display: grid; gap: 14px; padding: 22px 22px 26px; }
+html body .ln .wa-chat p { margin: 0; max-width: 88%; padding: 14px 18px; border-radius: 14px; font: 400 .98rem/1.6 var(--sans); color: #1F273F; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+html body .ln .wa-me { justify-self: end; background: #D9FDD3; border-top-right-radius: 4px !important; }
+html body .ln .wa-it { justify-self: start; background: #FFFFFF; border-top-left-radius: 4px !important; }
+html body .ln .wa-it b { font-weight: 600; }
+html body .ln .wa-demo figcaption { text-align: center; font: 400 .85rem/1.4 var(--sans); color: #A8C6E8; }
+@media (max-width: 900px) { html body .ln .wa-card { grid-template-columns: 1fr; border-radius: 20px; } }
+@media (max-width: 640px) { html body .ln .wa-card { padding: 28px 20px; } html body .ln .wa-btn { height: 54px; width: 100%; justify-content: center; } html body .ln .wa-chat { padding: 16px; } html body .ln .wa-chat p { font-size: .92rem; max-width: 92%; } html body .ln .wa-top { padding: 14px 16px; } }
