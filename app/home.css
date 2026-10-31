@@ -1747,3 +1747,17 @@ html body #pg-community-tasks.pg .cmt-notify p { font-size: 1rem; line-height: 1
 #pg-community-tasks .cmt-list button { grid-template-columns: minmax(0, 1fr) auto 170px auto 24px !important; }
 @media (max-width: 900px) { #pg-community-tasks .cmt-list button { grid-template-columns: minmax(0, 1fr) 24px !important; } #pg-community-tasks .cmt-pts { grid-column: 1; justify-self: start; } }
 @media (prefers-reduced-motion: reduce) { #pg-community .cm-acts li { transition: none; } #pg-community .cm-acts li:hover { transform: none; } }
+
+/* >>> community colour swap: standards light, closing call to action indigo */
+#pg-community .cm-safe-in { background: #F4F7FB; }
+html body #pg-community.pg .cm-safe .cm-head h2:not(#_a):not(#_b):not(#_c):not(#_d) { color: #1F273F !important; -webkit-text-fill-color: #1F273F; }
+html body #pg-community.pg .cm-safe .cm-eb { color: #4362B2 !important; }
+#pg-community .cm-safe li { color: #3D4559; border-bottom-color: rgba(31,39,63,.1); }
+#pg-community .cm-safe li::before { border-color: #4362B2; }
+#pg-community .cm-close { background: #1F273F; }
+html body #pg-community.pg .cm-close h2:not(#_a):not(#_b):not(#_c):not(#_d) { color: #fff !important; -webkit-text-fill-color: #fff; }
+html body #pg-community.pg .cm-close p:not(#_a):not(#_b) { color: #CCDDF1 !important; }
+#pg-community .cm-close .cm-wa { background: #fff; color: #1F273F; }
+#pg-community .cm-close .cm-wa:hover { background: #E3EBF8; }
+#pg-community .cm-close .cm-wa:focus-visible { outline: 2px solid #80AADC; outline-offset: 3px; }
+/* <<< community colour swap */
