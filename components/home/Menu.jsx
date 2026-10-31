@@ -8,6 +8,7 @@ export default function Menu() {
           <li style={{ "--i": "1" }}><button type="button" data-page="research">{"Insights"}</button></li>
           <li style={{ "--i": "2" }}><a href="/docs.html">{"Docs"}</a></li>
           <li style={{ "--i": "3" }}><button type="button" data-page="pricing">{"Pricing"}</button></li>
+          <li style={{ "--i": "4" }}><button type="button" data-page="community">{"Community"}</button></li>
         </ul>
         <ul className="mnav-small">
           <li style={{ "--i": "6" }}><button type="button" data-page="about-us">{"About us"}</button></li>
