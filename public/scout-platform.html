@@ -969,8 +969,11 @@ function waSync() {
 }
 function sampleJob() {
   const sc = myScout() || {country: 'Ghana', city: 'Tamale'}, id = 'svj' + Date.now().toString(36), now = Date.now();
-  const ai = 'Cooking oil shelf prices and availability in ' + sc.city + ' shops.';
-  const doc = {title: 'Cooking oil price check in ' + sc.city, industry: 'Consumer goods', country: sc.country, regions: [sc.city], location: sc.city + ' central market', brief: 'Visit one shop or market stall. Record the cooking oil brands on the shelf and their prices, and take a clear photo of the shelf.', questions: templateQs(ai), request: ai, rewardPts: 12, costTotal: 0, gpsRadius: 100, status: 'active', target: 20, timeframe: '7d', createdAt: now, publishedAt: now, deadline: now + 7 * 86400000, sample: true};
+  const P = [['Cooking oil', 'cooking oil'], ['Rice', 'rice'], ['Sugar', 'sugar'], ['Flour', 'flour'], ['Detergent', 'detergent'], ['Soap', 'soap']];
+  const used = new Set(Object.values(S.surveys).map(x => x.title));
+  const pick = P.find(p => !used.has(p[0] + ' price check in ' + sc.city)) || P[Object.keys(S.surveys).length % P.length];
+  const ai = pick[0] + ' shelf prices and availability in ' + sc.city + ' shops.';
+  const doc = {title: pick[0] + ' price check in ' + sc.city, industry: 'Consumer goods', country: sc.country, regions: [sc.city], location: sc.city + ' central market', brief: 'Visit one shop or market stall. Record the ' + pick[1] + ' brands on the shelf and their prices, and take a clear photo of the shelf.', questions: templateQs(ai), request: ai, rewardPts: 12, costTotal: 0, gpsRadius: 100, status: 'active', target: 20, timeframe: '7d', createdAt: now, publishedAt: now, deadline: now + 7 * 86400000, sample: true};
   if (DB) put('surveys', id, doc); else { S.surveys[id] = doc; saveLocal(); }
   if (W && W.seen) W.seen.surveys[id] = 1;
   return id;
@@ -1293,11 +1296,25 @@ function seed() {
   saveLocal();
 }
 
+/* older previews could create two sample jobs with the same name: give the later one a different product */
+function dedupe() {
+  const P = ['Rice', 'Sugar', 'Flour', 'Detergent', 'Soap', 'Bread'], seen = new Set(); let changed = false;
+  Object.entries(S.surveys).sort((a, b) => (a[1].createdAt || 0) - (b[1].createdAt || 0)).forEach(([id, sv]) => {
+    if (!seen.has(sv.title)) { seen.add(sv.title); return; }
+    if (!sv.sample) return;
+    const m = sv.title.match(/ price check in (.+)$/), city = m ? m[1] : (sv.regions || [])[0] || '';
+    const name = (P.find(x => !seen.has(x + ' price check in ' + city)) || 'Market') + ' price check in ' + city;
+    sv.title = name; seen.add(name); changed = true;
+    Object.values(S.submissions).forEach(x => { if (x.surveyId === id) x.surveyTitle = name; });
+  });
+  if (changed) saveLocal();
+}
+
 /* ---------------- boot ---------------- */
 async function boot() {
   loadLocal();
   const use = window.claude && window.claude.use ? window.claude.use.bind(window.claude) : null;
-  if (!use) seed();
+  if (!use) { seed(); dedupe(); }
   if (QS.get('gap') && SIDE !== 'scout') { newBuilder(); B.gap = QS.get('gap'); B.ai = QS.get('gap'); }
   render();
   if (!use) { S.loaded = true; render(); return; }
