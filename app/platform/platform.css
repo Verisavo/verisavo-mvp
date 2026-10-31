@@ -1799,3 +1799,12 @@ html body .wa-demo figcaption { text-align: center; font: 400 .85rem/1.4 var(--s
 .va-dark .va-brief .vb-head h2, .va-dark .vb-l { color: #fff; }
 .va-dark .vb-head p:not(.vb-eb) { color: #CCDDF1; }
 .va-dark .vb-card, .va-dark .vb-done { background: #fff; }
+
+/* >>> whatsapp cta: a plain call to action, no illustrative chat (31 Oct) */
+html body .wa-card { grid-template-columns: minmax(0, 1fr) !important; justify-items: center; text-align: center; padding: clamp(48px, 7vw, 88px) clamp(24px, 5vw, 64px) !important; }
+html body .wa-copy { display: grid; justify-items: center; }
+html body .wa-eb { color: #A8C6E8 !important; }
+html body .wa-p { margin: 20px auto 30px !important; max-width: 52ch; }
+html body .wa-btn { height: 54px !important; padding: 0 26px 0 20px !important; border-radius: 10px !important; background: #FFFFFF !important; color: #1F273F !important; }
+html body .wa-btn:hover { background: #E3EBF8 !important; }
+html body .wa-btn svg { width: 22px !important; height: 22px !important; }
