@@ -274,7 +274,7 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .refs button{border:1px solid var(--line);background:var(--paper);border-radius:6px;font-size:11px;padding:0 6px;height:20px;color:var(--primary)}
 .conf{font-size:11px;border-radius:6px;padding:1px 6px;margin-left:6px;background:var(--field);color:var(--ink-2);white-space:nowrap}
 .conf.High{background:var(--ok-bg);color:var(--ok)} .conf.Medium{background:var(--warn-bg);color:var(--warn)} .conf.Low{background:var(--err-bg);color:var(--err)}
-.menu svg{width:22px;height:22px;display:block}
+.menu svg{width:22px;height:22px;display:block} .chip-loc svg{width:15px;height:15px;flex:none}
 @media (max-width:640px){.exitb span{display:none}}
 .hidden-sm{} @media (max-width:640px){.hidden-sm{display:none}}
 </style>
@@ -934,6 +934,14 @@ function waSync() {
   if (changed) wSave();
   return changed;
 }
+function sampleJob() {
+  const sc = myScout() || {country: 'Ghana', city: 'Tamale'}, id = 'svj' + Date.now().toString(36), now = Date.now();
+  const ai = 'Cooking oil shelf prices and availability in ' + sc.city + ' shops.';
+  const doc = {title: 'Cooking oil price check in ' + sc.city, industry: 'Consumer goods', country: sc.country, regions: [sc.city], location: sc.city + ' central market', brief: 'Visit one shop or market stall. Record the cooking oil brands on the shelf and their prices, and take a clear photo of the shelf.', questions: templateQs(ai), request: ai, rewardPts: 12, costTotal: 0, gpsRadius: 100, status: 'active', target: 20, timeframe: '7d', createdAt: now, publishedAt: now, deadline: now + 7 * 86400000, sample: true};
+  if (DB) put('surveys', id, doc); else { S.surveys[id] = doc; saveLocal(); }
+  if (W && W.seen) W.seen.surveys[id] = 1;
+  return id;
+}
 function jobAlert(s) { say(`*New job available near you*\n${s.title}\nLocation: ${loc(s)}\nTime: about ${dur(s)} min\nReward: *${fmt(s.rewardPts, 2)} VeriPoints* after verification`, [{l: 'View details', a: 'job', v: s.id}, {l: 'Accept job', a: 'accept', v: s.id}]); }
 
 function curQ() { const c = W.cs; const s = S.surveys[c.sid]; return s && (s.questions || [])[c.qi]; }
@@ -991,8 +999,10 @@ function waAct(a, v) {
   if (a === 'menu') return reply(() => say('What would you like to do?', MENU()));
   if (a === 'jobs') {
     if (c.mode === 'job') return reply(() => say(`You have a job in progress: *${S.surveys[c.sid]?.title || ''}*. Finish or cancel it first.`, [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
-    const list = recSurveys().slice(0, 5);
-    return reply(() => list.length ? say(`*Jobs near you*\n\n${list.map((s, i) => `${i + 1}. *${s.title}*\n${loc(s)} · ${fmt(s.rewardPts, 2)} pts · ~${dur(s)} min`).join('\n\n')}\n\nChoose a job to see the details.`, list.map((s, i) => ({l: `${i + 1}. ${s.title}`, a: 'job', v: s.id}))) : say('There are no open jobs near you right now. I will message you when a new one is published.', MENU()));
+    const me = myScout() || {};
+    let job = recSurveys().find(s => s.country === me.country);
+    if (!job) { const id = sampleJob(); job = {id, ...S.surveys[id]}; }
+    return reply(() => say(`*A job near you*\n\n*${job.title}*\n${loc(job)} · ${fmt(job.rewardPts, 2)} VeriPoints · ~${dur(job)} min${job.sample ? '\n_Sample job for this preview._' : ''}\n\nView the details or accept it now.`, [{l: 'View details', a: 'job', v: job.id}, {l: 'Accept job', a: 'accept', v: job.id}]));
   }
   if (a === 'job') {
     const s = S.surveys[v]; if (!s) return;
@@ -1076,7 +1086,7 @@ function waPhoto(f) {
 const fmtMsg = (t) => esc(t).replace(/\*([^*\n]+)\*/g, '<b>$1</b>').replace(/(^|\s)_([^_\n]+)_/g, '$1<i>$2</i>').replace(/\n/g, '<br>');
 const hm = (t) => new Date(t).toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
 function waView(r) {
-  waSync();
+  wLoad(); waSync();
   const sc = myScout(), w = wallet(), c = W.cs;
   const last = W.msgs.length - 1 - [...W.msgs].reverse().findIndex(m => m.from === 'agent');
   const bubbles = W.msgs.map((m, i) => {
