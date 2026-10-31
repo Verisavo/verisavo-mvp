@@ -276,6 +276,26 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .conf.High{background:var(--ok-bg);color:var(--ok)} .conf.Medium{background:var(--warn-bg);color:var(--warn)} .conf.Low{background:var(--err-bg);color:var(--err)}
 .menu svg{width:22px;height:22px;display:block} .chip-loc svg{width:15px;height:15px;flex:none}
 @media (max-width:640px){.exitb span{display:none}}
+/* horizontal navigation (client view) */
+.happ{min-height:100%;display:flex;flex-direction:column}
+.htop{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;min-height:64px;padding:10px max(24px,env(safe-area-inset-right,0px)) 10px max(24px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--line)}
+.htitle{display:flex;align-items:center;gap:14px;min-width:0;flex:0 1 auto}
+.htitle img{height:22px;width:auto;flex:none}
+.hsep{width:1px;height:22px;background:var(--line);flex:none}
+.htitle h1{font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hnav{display:flex;gap:2px;padding:3px;border-radius:12px;background:var(--field);margin-left:auto;flex:none}
+.hnav button{display:flex;align-items:center;gap:7px;height:34px;padding:0 14px;border:0;border-radius:9px;background:none;color:var(--ink-2);font-weight:500;font-size:13px;white-space:nowrap;transition:background .15s,color .15s}
+.hnav button:hover{color:var(--ink)}
+.hnav button.on{background:var(--card);color:var(--primary);box-shadow:0 1px 2px rgba(30,40,46,.08),0 3px 10px rgba(30,40,46,.06)}
+.hnav svg{width:16px;height:16px;flex:none}
+.happ .content{width:100%;max-width:1320px;margin:0 auto}
+.happ.inline .htop{min-height:56px;padding:8px 20px}
+.happ.inline .htitle h1{font-size:16px;font-weight:600}
+.happ.inline .content{padding:18px 20px 32px;gap:14px}
+.happ .card{border-radius:14px;padding:16px}.happ .kpi .val{font-size:22px}.happ .kpi .ico{width:32px;height:32px}
+@media (max-width:640px){.happ .g4,.happ .g2:has(>.kpi){grid-template-columns:repeat(2,minmax(0,1fr))}.happ .kpi .val{font-size:20px}.happ .kpi .lab{font-size:12px;padding-right:34px}}
+@media (max-width:760px){.htop{flex-wrap:wrap;gap:10px;padding:10px 16px}.htitle{flex:1 1 100%}.hnav{order:3;flex:1 1 100%;margin:0;overflow-x:auto}.hnav button{flex:1;justify-content:center;padding:0 10px}.happ .exitb{position:absolute;top:10px;right:16px}.happ.inline .htop{padding:8px 12px}.happ.inline .content{padding:14px 12px 28px}}
+@media (max-width:420px){.hnav button{font-size:12px;gap:5px;padding:0 6px}.hnav svg{display:none}}
 .hidden-sm{} @media (max-width:640px){.hidden-sm{display:none}}
 </style>
 
@@ -385,7 +405,8 @@ let DB = null, SAMPLER = null;
 const QS = new URLSearchParams(location.search), SIDE = ['client', 'scout'].includes(QS.get('side')) ? QS.get('side') : QS.get('side') === 'admin' ? null : 'client';
 const EMBED = (() => { try { return window.parent !== window; } catch (e) { return true; } })();
 const MODE = QS.get('side'), ADMIN = MODE === 'admin';
-const EXIT = EMBED && MODE ? (ADMIN ? 'Close admin' : SIDE === 'scout' ? 'Back to Community' : 'Back to Assistant') : '';
+const EXIT = QS.get('inline') === '1' ? '' : EMBED && MODE ? (ADMIN ? 'Close admin' : SIDE === 'scout' ? 'Back to Community' : 'Back to Assistant') : '';
+const HNAV = SIDE === 'client', INLINE = QS.get('inline') === '1';
 const SITEUSER = (() => { try { return JSON.parse(sessionStorage.getItem('verisavo-user') || 'null'); } catch (e) { return null; } })();
 const COLLS = ['surveys', 'submissions', 'scouts', 'transactions'];
 function saveLocal() { try { localStorage.setItem('vs-mvp', JSON.stringify({surveys: S.surveys, submissions: S.submissions, scouts: S.scouts, transactions: S.transactions})); } catch (e) {} }
@@ -441,7 +462,18 @@ function scheduleRender(force) {
 }
 
 /* ---------------- shell ---------------- */
+function hshell(r, title, body, extraTop) {
+  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview'], ['c-surveys', 'Investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder']];
+  return `<div class="happ ${INLINE ? 'inline' : ''}">
+  <header class="htop">
+    <div class="htitle">${INLINE ? '' : `<img class="logo-light" src="${LOGO}" alt="Verisavo"><img class="logo-dark" src="${LOGOW}" alt="Verisavo"><span class="hsep" aria-hidden="true"></span>`}<h1>${title}</h1></div>
+    <nav class="hnav" aria-label="Market investigations">${tabs.map(t => `<button class="${t[3] ? 'on' : ''}" data-go="${t[0]}"${t[3] ? ' aria-current="page"' : ''}>${ic[t[2]]}<span>${t[1]}</span></button>`).join('')}</nav>
+    ${extraTop}${EXIT && !INLINE ? `<button class="btn ghost sm exitb" data-act="exit">${ic.back}<span>${EXIT}</span></button>` : ''}
+  </header>
+  <main class="content">${S.loaded ? '' : `<div class="note">${S.slow ? ic.info + '<span>The workspace data is taking longer than usual to load. What you see may be out of date.</span>' : '<span class="spin"></span><span>Loading workspace data…</span>'}</div>`}${body}</main></div>`;
+}
 function shell(r, title, body, extraTop = '') {
+  if (HNAV) return hshell(r, title, body, extraTop);
   const client = r.role === 'client';
   const nav = client ? [
     ['CORE DASHBOARDS'], ['c-overview', 'Overview', 'grid', r.page === 'overview'],
