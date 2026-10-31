@@ -1506,3 +1506,51 @@ html body .ln .fx-loop svg { width: 15px; height: 15px; flex: none; }
   #ln .sim-in { font-size: .88rem; }
 }
 @media (prefers-reduced-motion: reduce) { #ln .sim-scr, #ln .sim-ev div { animation: none; } #ln .sim-think i { animation: none; } }
+/* >>> pricing investigations */
+html body #pg-pricing .pc-mount { display: contents; }
+html body #pg-pricing .pc-list em { display: inline-block; margin: 4px 0 0; padding: 3px 8px; border-radius: 999px; font: 500 .72rem/1 var(--sans); font-style: normal; color: #3A5292; background: #EEF3FB; }
+html body #pg-pricing .pc-list li span { display: flex; flex-direction: column; align-items: flex-start; }
+html body #pg-pricing .pi { margin-top: clamp(56px, 8vw, 104px); padding: clamp(28px, 4vw, 56px); border-radius: 22px; background: #FFFFFF; border: 1px solid #E3E8F0; color: #1F273F; display: grid; gap: clamp(28px, 4vw, 44px); }
+html body #pg-pricing .pi-head { display: grid; gap: 12px; max-width: 64ch; }
+html body #pg-pricing .pi-head .lab { margin: 0; color: #4362B2 !important; }
+html body #pg-pricing .pi-head h2 { margin: 0; font: 500 clamp(1.8rem, 1.2rem + 1.8vw, 2.6rem)/1.08 "Inter", var(--sans) !important; letter-spacing: -.035em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; }
+html body #pg-pricing .pi-head p:not(.lab) { margin: 0; font: 400 1.02rem/1.6 var(--sans); color: #5A6378 !important; }
+html body #pg-pricing .pi-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: start; }
+html body #pg-pricing .pi-rates { margin: 0; display: grid; }
+html body #pg-pricing .pi-rates > div { display: flex; justify-content: space-between; gap: 20px; padding: 20px 0; border-bottom: 1px solid #EEF1F6; }
+html body #pg-pricing .pi-rates > div:first-child { padding-top: 4px; }
+html body #pg-pricing .pi-rates dt { display: grid; gap: 4px; font: 600 1rem/1.3 var(--sans); color: #1F273F; }
+html body #pg-pricing .pi-rates dt span { font: 400 .9rem/1.5 var(--sans); color: #5A6378; max-width: 42ch; }
+html body #pg-pricing .pi-rates dd { margin: 0; text-align: right; font: 500 1.35rem/1.1 "Inter", var(--sans); letter-spacing: -.02em; color: #1F273F; white-space: nowrap; display: grid; gap: 4px; align-content: start; }
+html body #pg-pricing .pi-rates dd small { font: 400 .8rem/1 var(--sans); letter-spacing: 0; color: #8A93A6; }
+html body #pg-pricing .pi-est { display: grid; gap: 12px; padding: 24px; border-radius: 16px; background: #F4F7FB; border: 1px solid #E3EBF8; }
+html body #pg-pricing .pi-est h3 { margin: 0 0 4px; font: 600 1.05rem/1.3 var(--sans) !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; }
+html body #pg-pricing .pi-l { margin: 4px 0 0; display: flex; justify-content: space-between; align-items: baseline; font: 500 .88rem/1.2 var(--sans); color: #3D4559; }
+html body #pg-pricing .pi-l output { font: 600 1rem/1 var(--sans); color: #1F273F; }
+html body #pg-pricing #pi-n { --pi-fill: 6%; width: 100%; height: 6px; -webkit-appearance: none; appearance: none; border-radius: 99px; background: linear-gradient(to right, #1F273F var(--pi-fill), #CCDDF1 var(--pi-fill)); outline: none; margin: 4px 0; }
+html body #pg-pricing #pi-n::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 2px solid #1F273F; box-shadow: 0 2px 6px rgba(31,39,63,.2); cursor: pointer; }
+html body #pg-pricing #pi-n::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid #1F273F; cursor: pointer; }
+html body #pg-pricing #pi-n:focus-visible { box-shadow: 0 0 0 3px #CCDDF1; }
+html body #pg-pricing .pi-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+html body #pg-pricing .pi-chip { height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid #CCDDF1; background: #fff; font: 500 .85rem/1 var(--sans); color: #1F273F; cursor: pointer; }
+html body #pg-pricing .pi-chip:hover { border-color: #80AADC; }
+html body #pg-pricing .pi-chip[aria-pressed="true"] { background: #1F273F; border-color: #1F273F; color: #fff; }
+html body #pg-pricing .pi-chip:focus-visible { outline: 2px solid #4362B2; outline-offset: 2px; }
+html body #pg-pricing .pi-sum { margin-top: 6px; display: grid; gap: 8px; padding-top: 14px; border-top: 1px solid #DCE6F4; font: 400 .92rem/1.3 var(--sans); color: #3D4559; }
+html body #pg-pricing .pi-sum div { display: flex; justify-content: space-between; gap: 12px; }
+html body #pg-pricing .pi-sum b { font-weight: 600; color: #1F273F; }
+html body #pg-pricing .pi-sum .pi-tot { margin-top: 4px; padding-top: 10px; border-top: 1px solid #DCE6F4; font-size: 1rem; color: #1F273F; }
+html body #pg-pricing .pi-sum .pi-tot b { font: 600 1.4rem/1 "Inter", var(--sans); letter-spacing: -.02em; }
+html body #pg-pricing .pi-est .pc-btn { margin-top: 8px; }
+html body #pg-pricing .pi-note { margin: 0; font: 400 .8rem/1.5 var(--sans); color: #8A93A6; }
+html body #pg-pricing .pi-faq { display: grid; border-top: 1px solid #EEF1F6; }
+html body #pg-pricing .pi-faq details { border-bottom: 1px solid #EEF1F6; }
+html body #pg-pricing .pi-faq summary { list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; cursor: pointer; font: 500 1rem/1.4 var(--sans); color: #1F273F; }
+html body #pg-pricing .pi-faq summary::-webkit-details-marker { display: none; }
+html body #pg-pricing .pi-faq summary i { font-style: normal; color: #4362B2; font-size: 1.2rem; line-height: 1; transition: transform .2s; }
+html body #pg-pricing .pi-faq details[open] summary i { transform: rotate(45deg); }
+html body #pg-pricing .pi-faq p { margin: 0 0 18px; max-width: 68ch; font: 400 .95rem/1.6 var(--sans); color: #5A6378 !important; }
+html body #pg-pricing .pi-link { border: 0; background: none; padding: 0; font: inherit; color: #3A5292; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+@media (max-width: 900px) { html body #pg-pricing .pi-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) { html body #pg-pricing .pi { padding: 22px 18px; border-radius: 18px; } html body #pg-pricing .pi-est { padding: 18px; } html body #pg-pricing .pi-rates > div { flex-direction: column; gap: 8px; } html body #pg-pricing .pi-rates dd { text-align: left; } }
+/* <<< pricing investigations */
