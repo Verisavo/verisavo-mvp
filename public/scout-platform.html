@@ -1,0 +1,1277 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Verisavo Scout Platform</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: app shell from the Figma files. Fixed sidebar + sticky header, content in white cards on a pale paper ground. */
+:root{
+  --primary:#3B5292; --primary-2:#4362B2; --primary-3:#618DD0; --primary-100:#E2EBF7; --primary-200:#CCDDF1;
+  --ink:#1E282E; --ink-2:#55606B; --ink-3:#8A949C;
+  --bg:#FFFFFF; --paper:#F3F7F8; --card:#FFFFFF; --line:#E3E9EC; --field:#EEF3F5;
+  --ok:#0E8968; --ok-bg:#D9F7E6; --warn:#B76305; --warn-bg:#FFF2D6; --err:#C80836; --err-bg:#FFE1E6; --info:#0156B3; --info-bg:#DDF2FE;
+  --overlay:rgba(20,28,40,.45); --shadow:0 1px 2px rgba(30,40,46,.06),0 8px 24px rgba(30,40,46,.06);
+  --f:"Google Sans Flex","Google Sans","Manrope",ui-sans-serif,system-ui,sans-serif;
+  --r:12px; --r-lg:16px;
+  --wa-bg:#EFEAE2; --wa-in:#FFFFFF; --wa-out:#D9FDD3; --wa-head:#1F273F; --wa-bar:#F0F2F5; --wa-link:#0B7AC5;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --primary:#8FB0E8; --primary-2:#7FA2E2; --primary-3:#618DD0; --primary-100:#1E2B47; --primary-200:#2A3A5E;
+  --ink:#E8EEF4; --ink-2:#A9B4C0; --ink-3:#7A8592;
+  --bg:#12171F; --paper:#0D1218; --card:#161D27; --line:#26303C; --field:#1C2531;
+  --ok:#4FD1A5; --ok-bg:#12352B; --warn:#F2B35A; --warn-bg:#3A2A12; --err:#FF8097; --err-bg:#3E1520; --info:#7FC3FF; --info-bg:#132C44;
+  --overlay:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); --wa-bg:#0B141A; --wa-in:#202C33; --wa-out:#005C4B; --wa-head:#1F273F; --wa-bar:#1F2C34; --wa-link:#53BDEB; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --primary:#8FB0E8; --primary-2:#7FA2E2; --primary-3:#618DD0; --primary-100:#1E2B47; --primary-200:#2A3A5E;
+  --ink:#E8EEF4; --ink-2:#A9B4C0; --ink-3:#7A8592;
+  --bg:#12171F; --paper:#0D1218; --card:#161D27; --line:#26303C; --field:#1C2531;
+  --ok:#4FD1A5; --ok-bg:#12352B; --warn:#F2B35A; --warn-bg:#3A2A12; --err:#FF8097; --err-bg:#3E1520; --info:#7FC3FF; --info-bg:#132C44;
+  --overlay:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); --wa-bg:#0B141A; --wa-in:#202C33; --wa-out:#005C4B; --wa-head:#1F273F; --wa-bar:#1F2C34; --wa-link:#53BDEB; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font:14px/1.55 var(--f);letter-spacing:.005em}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--primary-3);outline-offset:2px}
+h1,h2,h3,h4{margin:0;font-weight:600;text-wrap:balance}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--ink-2)} .faint{color:var(--ink-3)}
+.logo-dark{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo-light{display:none} :root:not([data-theme="light"]) .logo-dark{display:block}}
+:root[data-theme="dark"] .logo-light{display:none} :root[data-theme="dark"] .logo-dark{display:block}
+
+/* shell */
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100%}
+.side{position:sticky;top:0;height:100vh;background:var(--bg);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:16px 12px;gap:4px;overflow-y:auto}
+.side .brand{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 18px}
+.side .brand img{height:24px;width:auto}
+.navlabel{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:14px 8px 6px}
+.nav{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;color:var(--ink-2);text-decoration:none;border:1px solid transparent;background:none;width:100%;text-align:left}
+.nav:hover{background:var(--field)}
+.nav.on{background:var(--primary-100);color:var(--primary);border-color:var(--primary-200);font-weight:500}
+.nav svg{width:18px;height:18px;flex:none}
+.side .grow{flex:1}
+.role{display:grid;grid-template-columns:1fr 1fr;background:var(--field);border-radius:10px;padding:3px;margin:8px 4px}
+.role button{border:0;background:none;padding:7px 0;border-radius:8px;color:var(--ink-2);font-weight:500}
+.role button.on{background:var(--card);color:var(--primary);box-shadow:var(--shadow)}
+.ptsbox{background:var(--paper);border-radius:12px;padding:12px;margin:8px 4px;display:grid;gap:8px}
+.me{display:flex;gap:10px;align-items:center;padding:12px 6px 4px;border-top:1px solid var(--line);margin-top:8px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-200);color:var(--primary);display:grid;place-items:center;font-weight:600;font-size:13px;flex:none}
+.main{min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;height:64px;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top h1{font-size:20px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.menu{display:none;border:0;background:none;padding:6px}
+.content{padding-block:20px 48px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+.chip-loc{display:flex;align-items:center;gap:6px;background:var(--field);border-radius:10px;padding:7px 12px;font-size:13px;font-weight:500;white-space:nowrap}
+.syncnote{font-size:12px;color:var(--ink-3)}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;inset:0 auto 0 0;width:260px;z-index:30;transform:translateX(-100%);transition:transform .2s;padding-top:calc(16px + env(safe-area-inset-top,0px));padding-left:max(12px,env(safe-area-inset-left,0px))}
+  .side.open{transform:none;box-shadow:var(--shadow)}
+  .menu{display:block}
+  .top{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .content{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .chip-loc span.l{display:none}
+}
+.scrim{position:fixed;inset:0;background:var(--overlay);z-index:25}
+
+/* blocks */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;min-width:0}
+.card h2{font-size:18px}
+.card .head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g-main{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr)}
+@media (max-width:1100px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))} .g-main,.g3{grid-template-columns:1fr}}
+@media (max-width:640px){.g4,.g2{grid-template-columns:1fr}}
+.kpi{display:grid;gap:4px;position:relative}
+.kpi .lab{color:var(--ink-2);font-size:13px}
+.kpi .val{font-size:26px;font-weight:600}
+.kpi .ico{position:absolute;right:0;top:0;width:36px;height:36px;border-radius:10px;background:var(--field);display:grid;place-items:center;color:var(--ink-2)}
+.kpi .ico svg{width:18px;height:18px}
+.delta{font-size:12px;color:var(--ink-2)} .delta b{color:var(--ok);font-weight:500}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:12px;border:1px solid transparent;background:var(--primary-2);color:#fff;font-weight:500;font-size:13.5px;white-space:nowrap}
+.btn:hover{filter:brightness(1.06)}
+.btn.ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+.btn.soft{background:var(--primary-100);color:var(--primary);border-color:var(--primary-200)}
+.btn.danger{background:var(--err-bg);color:var(--err);border-color:transparent}
+.btn.okb{background:var(--ok);color:#fff}
+.btn.sm{height:32px;padding:0 12px;font-size:12.5px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:16px;height:16px}
+.link{border:0;background:none;color:var(--primary-3);font-weight:500;padding:0;display:inline-flex;gap:4px;align-items:center}
+.link svg{width:16px;height:16px}
+.pill{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;background:var(--field);color:var(--ink-2)}
+.pill svg{width:13px;height:13px}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.err{background:var(--err-bg);color:var(--err)} .pill.info{background:var(--info-bg);color:var(--info)} .pill.pri{background:var(--primary-100);color:var(--primary)}
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;white-space:nowrap;background:var(--card)}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{border:0;background:none;padding:10px 12px;color:var(--ink-2);border-bottom:2px solid transparent;display:flex;gap:8px;align-items:center;white-space:nowrap;font-weight:500}
+.tabs button.on{color:var(--primary);border-bottom-color:var(--primary)}
+.tabs button[disabled]{opacity:.5;cursor:not-allowed}
+.tabs .cnt{font-size:11px;background:var(--field);border-radius:6px;padding:1px 6px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:500;color:var(--ink-2);background:var(--paper);padding:10px 12px;white-space:nowrap}
+td{padding:11px 12px;border-top:1px solid var(--line);vertical-align:middle}
+tr.click{cursor:pointer} tr.click:hover td{background:var(--paper)}
+.bar{height:5px;border-radius:9px;background:var(--primary-100);overflow:hidden;min-width:60px}
+.bar i{display:block;height:100%;background:var(--primary-3);border-radius:9px}
+.field{display:grid;gap:6px}
+.field label,.flabel{font-size:13px;font-weight:500}
+.in{height:42px;border-radius:12px;border:1px solid transparent;background:var(--field);padding:0 14px;width:100%}
+textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
+.in:focus{border-color:var(--primary-3);background:var(--card);outline:none}
+.search{display:flex;align-items:center;gap:8px;background:var(--field);border-radius:12px;padding:0 12px;height:38px;min-width:0}
+.search input{border:0;background:none;outline:none;width:100%}
+.search svg{width:16px;height:16px;color:var(--ink-3);flex:none}
+.note{display:flex;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px}
+.note.blue{background:var(--info-bg);border-color:transparent;color:var(--info)}
+.note svg{width:18px;height:18px;flex:none;margin-top:1px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.between{justify-content:space-between}
+.stack{display:grid;gap:12px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.kv:last-child{border-bottom:0}
+.kv span:first-child{color:var(--ink-2)}
+.empty{text-align:center;padding:36px 16px;color:var(--ink-2);display:grid;gap:10px;justify-items:center}
+.empty svg{width:28px;height:28px;color:var(--ink-3)}
+.feed{display:grid;gap:4px;max-height:410px;overflow-y:auto}
+.feed .it{display:flex;gap:12px;padding:10px 4px}
+.feed .it .avatar{width:28px;height:28px;font-size:12px}
+.stepper{display:flex;justify-content:center;gap:0;padding:4px 0 8px;overflow-x:auto}
+.step{display:grid;justify-items:center;gap:6px;min-width:120px;position:relative;font-size:13px;color:var(--ink-3)}
+.step .dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--field);color:var(--ink-3);font-weight:600;font-size:13px;z-index:1}
+.step.on{color:var(--ink)} .step.on .dot{background:var(--primary-2);color:#fff}
+.step.done{color:var(--ink)} .step.done .dot{background:var(--primary-100);color:var(--primary)}
+.step:not(:last-child)::after{content:"";position:absolute;top:14px;left:calc(50% + 18px);right:calc(-50% + 18px);height:1px;background:var(--line)}
+.step .dot svg{width:14px;height:14px}
+.narrow{max-width:760px;margin:0 auto;width:100%;display:grid;gap:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chipbtn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 12px;font-size:13px}
+.chipbtn.on{background:var(--primary-100);color:var(--primary);border-color:var(--primary-200);font-weight:500}
+.qcard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.qcard .tools{display:flex;gap:6px;justify-content:flex-end}
+.iconbtn{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--ink-2)}
+.iconbtn svg{width:16px;height:16px}
+.iconbtn.del{color:var(--err)}
+.opt{display:flex;gap:8px;align-items:center}
+.opt .in{height:36px}
+.choice{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);cursor:pointer}
+.choice input{accent-color:var(--primary-2)}
+.choice.on{border-color:var(--primary-3);background:var(--primary-100)}
+.drop{border:1.5px dashed var(--line);border-radius:14px;background:var(--paper);padding:22px;text-align:center;display:grid;gap:6px;justify-items:center;color:var(--ink-2);cursor:pointer;position:relative}
+.drop svg{width:26px;height:26px}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.file{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:13px}
+.file svg{width:18px;height:18px;color:var(--primary-3)}
+.center-card{max-width:440px;margin:40px auto;width:100%;text-align:center;display:grid;gap:14px;justify-items:center}
+.ring{width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.ring svg{width:22px;height:22px}
+.ring.ok{background:var(--ok-bg);color:var(--ok)} .ring.pri{background:var(--primary-100);color:var(--primary)} .ring.err{background:var(--err-bg);color:var(--err)}
+.pulse{width:22px;height:22px;border-radius:50%;background:var(--primary-3);animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(.8);opacity:.7}50%{transform:scale(1.15);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{width:16px;height:16px;border:2px solid var(--primary-200);border-top-color:var(--primary-2);border-radius:50%;animation:spin .8s linear infinite}
+@media (prefers-reduced-motion:reduce){.pulse,.spin{animation:none}}
+.checklist{display:grid;gap:6px;text-align:left;background:var(--paper);border-radius:12px;padding:12px 14px;width:100%}
+.checklist div{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--ink-3)}
+.checklist div.done{color:var(--ink)} .checklist div.now{color:var(--ink);font-weight:500}
+.checklist .ck{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:none}
+.checklist .done .ck{background:var(--ok);border-color:var(--ok);color:#fff}
+.checklist .ck svg{width:11px;height:11px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start}
+@media (max-width:1100px){.split{grid-template-columns:1fr}}
+.panel{position:sticky;top:84px}
+.task{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px;background:var(--card);cursor:pointer;text-align:left;width:100%}
+.task.on{border-color:var(--primary-3);box-shadow:0 0 0 3px var(--primary-100)}
+.task h3{font-size:15px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink-2)}
+.meta span{display:inline-flex;gap:4px;align-items:center}
+.meta svg{width:13px;height:13px}
+.stat3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat3>div{border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:2px;font-size:12px;color:var(--ink-2)}
+.stat3 b{font-size:14px;color:var(--ink)}
+.req{display:grid;gap:6px;font-size:13px}
+.req div{display:flex;gap:8px;align-items:center}
+.req svg{width:15px;height:15px;color:var(--ok)}
+.modal-bg{position:fixed;inset:0;background:var(--overlay);z-index:40;display:grid;place-items:center;padding:16px}
+.modal{background:var(--card);border-radius:18px;width:min(560px,100%);max-height:calc(100vh - 32px);overflow-y:auto;padding:22px;display:grid;gap:14px;box-shadow:var(--shadow)}
+.drawer-bg{position:fixed;inset:0;background:var(--overlay);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);background:var(--card);z-index:41;overflow-y:auto;padding:22px;padding-top:calc(22px + env(safe-area-inset-top,0px));padding-right:max(22px,env(safe-area-inset-right,0px));display:grid;gap:14px;align-content:start;box-shadow:var(--shadow)}
+.ans{display:grid;gap:2px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.ans .q{color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;z-index:60;font-size:13px;box-shadow:var(--shadow)}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{fill:var(--ink-3);font-size:11px}
+.chart .grid line{stroke:var(--line)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--ink-2);flex-wrap:wrap}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.hbar{display:grid;grid-template-columns:minmax(90px,160px) minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:13px;padding:4px 0}
+.hbar .t{height:10px;border-radius:9px;background:var(--primary-100);overflow:hidden}
+.hbar .t i{display:block;height:100%;background:var(--primary-3);border-radius:9px}
+.onb{min-height:100%;display:grid;place-items:center;padding-block:40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--bg)}
+.onb .box{width:min(460px,100%);display:grid;gap:16px}
+.prog{display:flex;gap:6px;align-items:center}
+.prog i{flex:1;height:3px;border-radius:3px;background:var(--line)}
+.prog i.on{background:var(--primary-3)}
+.perks{background:var(--paper);border-radius:14px;padding:14px;display:grid;gap:10px;text-align:left;font-size:13px}
+.perks div{display:flex;gap:10px;align-items:center}
+.perks svg{width:17px;height:17px;color:var(--primary-3)}
+.sample{font-size:11px;color:var(--warn);background:var(--warn-bg);border-radius:6px;padding:1px 6px;margin-left:6px;white-space:nowrap}
+.waw{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.waw{grid-template-columns:1fr}}
+.wa{display:flex;flex-direction:column;height:min(760px,calc(100vh - 140px));min-height:520px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--wa-bg);box-shadow:var(--shadow)}
+.wa-head{display:flex;gap:10px;align-items:center;padding:12px 14px;background:var(--wa-head);color:#fff}
+.wa-av{width:36px;height:36px;border-radius:50%;background:#FFFFFF;display:grid;place-items:center;flex:none;overflow:hidden}
+.wa-body{flex:1;overflow-y:auto;padding:14px 10px;display:flex;flex-direction:column;gap:6px}
+.wa-row{display:flex} .wa-row.me{justify-content:flex-end}
+.wa-b{max-width:84%;background:var(--wa-in);color:var(--ink);border-radius:12px 12px 12px 4px;padding:8px 10px 6px;font-size:13.5px;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.08);overflow-wrap:anywhere}
+.wa-b.me{background:var(--wa-out);border-radius:12px 12px 4px 12px}
+.wa-t{display:block;text-align:right;font-size:10.5px;color:var(--ink-3);margin-top:2px}
+.wa-ticks{color:#34B7F1}
+.wa-btns{display:grid;gap:1px;margin:8px -10px -6px;border-top:1px solid var(--line)}
+.wa-btn{border:0;background:none;color:var(--wa-link);padding:9px 10px;font-weight:500;font-size:13.5px;border-top:1px solid var(--line)}
+.wa-btn:first-child{border-top:0}
+.wa-btn:hover:not([disabled]){background:var(--field)}
+.wa-btn[disabled]{color:var(--ink-3);cursor:default}
+.wa-btn.sel{background:var(--primary-100)}
+.wa-loc,.wa-img{display:flex;gap:10px;align-items:center;min-width:180px}
+.wa-loc svg,.wa-img svg{width:22px;height:22px;flex:none}
+.wa-img{background:var(--field);border-radius:8px;padding:18px 12px;font-size:12px}
+.wa-typing{display:flex;gap:4px;padding:12px}
+.wa-typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-3);animation:pulse 1s infinite}
+.wa-typing i:nth-child(2){animation-delay:.15s} .wa-typing i:nth-child(3){animation-delay:.3s}
+.wa-comp{display:flex;gap:8px;align-items:center;padding:8px;background:var(--wa-bar)}
+.wa-comp input#wa-in{flex:1;min-width:0;height:40px;border-radius:20px;border:0;background:var(--card);padding:0 14px;outline:none}
+.wa-cam,.wa-send{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;border:0;cursor:pointer;position:relative}
+.wa-cam{color:var(--ink-2);background:none}
+.wa-cam input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.wa-send{background:var(--wa-head);color:#fff}
+.wa-cam svg,.wa-send svg{width:20px;height:20px}
+/* investigations */
+.gapc{display:grid;gap:8px}
+.gap{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;text-align:left;display:grid;gap:2px;font-size:13px;width:100%}
+.gap:hover{border-color:var(--primary-200)} .gap.on{border-color:var(--primary-3);background:var(--primary-100)}
+.gap small{color:var(--ink-2);font-size:12px}
+.funnel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.funnel>div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:2px;font-size:12px;color:var(--ink-2);background:var(--card)}
+.funnel b{font-size:20px;color:var(--ink);font-weight:600}
+.step{text-align:center;min-width:140px;padding:0 4px}
+@media (max-width:640px){.funnel{grid-template-columns:repeat(2,minmax(0,1fr))} .step{min-width:0;flex:1;font-size:11px;line-height:1.3} .stepper{justify-content:stretch}}
+.life{justify-content:flex-start}
+.wa-prev{background:var(--wa-bg);border-radius:14px;padding:12px}
+.wa-prev .wa-b{max-width:100%}
+.brief{display:grid;gap:14px}
+.brief h3{font-size:15px;margin-bottom:6px}
+.brief ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:13.5px}
+.refs{display:inline-flex;gap:4px;flex-wrap:wrap;margin-left:6px;vertical-align:middle}
+.refs button{border:1px solid var(--line);background:var(--paper);border-radius:6px;font-size:11px;padding:0 6px;height:20px;color:var(--primary)}
+.conf{font-size:11px;border-radius:6px;padding:1px 6px;margin-left:6px;background:var(--field);color:var(--ink-2);white-space:nowrap}
+.conf.High{background:var(--ok-bg);color:var(--ok)} .conf.Medium{background:var(--warn-bg);color:var(--warn)} .conf.Low{background:var(--err-bg);color:var(--err)}
+.menu svg{width:22px;height:22px;display:block}
+@media (max-width:640px){.exitb span{display:none}}
+.hidden-sm{} @media (max-width:640px){.hidden-sm{display:none}}
+</style>
+
+<div id="app"></div>
+<div id="layer"></div>
+
+<script>
+/* ---------------- icons ---------------- */
+const I = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const ic = {
+  grid: I('<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>'),
+  clip: I('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 11h6M9 15h4"/>'),
+  build: I('<path d="M14 6l4 4M4 20l4-1 11-11-3-3L5 16z"/>'),
+  home: I('<path d="M4 10l8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>'),
+  check: I('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+  checkc: I('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 10"/>'),
+  clock: I('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  xc: I('<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>'),
+  x: I('<path d="M6 6l12 12M18 6L6 18"/>'),
+  wallet: I('<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/><path d="M6 6V5a1 1 0 0 1 1-1h10"/>'),
+  card: I('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/>'),
+  pin: I('<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'),
+  search: I('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'),
+  plus: I('<path d="M12 5v14M5 12h14"/>'),
+  eye: I('<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+  arrow: I('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+  back: I('<path d="M19 12H5M11 18l-6-6 6-6"/>'),
+  upload: I('<path d="M7 18a4 4 0 0 1-.6-8 6 6 0 0 1 11.6 1.5A3.5 3.5 0 0 1 17.5 18"/><path d="M12 12v8M9 15l3-3 3 3"/>'),
+  camera: I('<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>'),
+  video: I('<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/>'),
+  mic: I('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>'),
+  file: I('<path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M9 13h6M9 17h4"/>'),
+  shield: I('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>'),
+  spark: I('<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>'),
+  trash: I('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'),
+  copy: I('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>'),
+  menu: I('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+  send: I('<path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/>'),
+  hour: I('<path d="M6 3h12M6 21h12M7 3c0 5 10 6 10 9s-10 4-10 9M17 3c0 5-10 6-10 9"/>'),
+  route: I('<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/>'),
+  gift: I('<rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M3 9h18M12 9v11M12 9S10.5 4 8 4.5 7 9 12 9zM12 9s1.5-5 4-4.5S17 9 12 9z"/>'),
+  people: I('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3.3-6 6.5-6s6 2 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14c2.6.2 4.4 1.9 4.8 5"/>'),
+  store: I('<path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M10 20v-5h4v5"/>'),
+  medal: I('<circle cx="12" cy="15" r="5"/><path d="M8.5 11L6 3h4l2 5 2-5h4l-2.5 8"/>'),
+  info: I('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>'),
+  logout: I('<path d="M14 4h5v16h-5M10 12h10M7 8l-4 4 4 4"/>'),
+  chart: I('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+  sliders: I('<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'),
+  star: I('<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'),
+  cal: I('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'),
+  globe: I('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'),
+};
+const LOGO = 'data:image/png;base64,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', LOGOW = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAA8CAYAAABmfw86AAALRUlEQVR42u2dfdBWRRXAf6+9IW+SQCJCMYojxUckaIQRhZrER0iCWkZYQ0WlaCMZESQjlkhBpTCjOWgZFBgEkRaVBKMoRoiofKvxMXwIIkJCaKCh2x93n+GZy+7e3fvc+7z35T2/mTsM95497+7de889e/bsPjVKKQRBaLycIrdAEMQICIIgRkAQBDECgiCIERAEQYyAIAhiBARBECMgCIIYAUEQGge1HjLTgDMc118FfgOsyamOdcA1QHuHzEFdT0EQcjACnYD+CTLfAT4NPJZx/foAc4HWHoZKEIQU1HisHfgwsMFT37uBYxnV7QxgM3B6gpwCzgVeku4UhHxiAhuB3Z76vp9h3W7xMAAAC8UAVIUxwGpgOzDbwzsTTiJPAGC47ngvnRnUqwmwD2jmIfsJYFXG92UyMMpw/ihwNvBWCp23AaMN56cDEwv+nKwBuhnOdwT+Ja/Rye8JAMwJ0Nk3g3p9ydMArMzBAJT0NjccZ+m6pWGiRec/C/6MXGUxAAAPyivUeIwAwBRPuZ9lUK+xnnLTcrovf3Jcuz6Fvl6Oa48U/Bnp6bj2UXmFGpcRmOQp1027zGnpB3zIQ2438Icc7808x0vRJFDXty3nZzWAZ2S749o+eYUalxF4HfiLp+wdFdTpZk+5u4hmBvLCZfSGB+oalqPXlDczHddGySvU8KkJ3F6sA9G0nQ+nEgXQbgDO9CxTC4zzNEjt9L95Yrs5q4CLPHVcCjxqOP8GfnGPItBaD5FKbT6kDdvf5BVq+NQGym8hmo5r5yE7GpgK7NHucIcM6/3LKhgAiCL3NzmGBD6zBDdVOZ6RB/uAj8vrIp5AiS84xssn6C/7dwjwA+CCDL7O1UoOagfsslwbCfyqAm/iTGC/o9xpwOeAzwBdiOIs/9Zj9GXaEB70bEdXoum8crYBzxn6azBRlmgL3V+28gAPAW8neBCDiQKIXfSHYD+wiSj/ZAnpZndqgSuJpoc7a92HgRe03hUOL6UWuMJw/k1gkeffHwQ0jZ3bldCWWt2XnwU+ApxHNOW8DXgG+DP1NVOklEpz+DLQUHaAUmq5UupYymNeyjqnPfZa2rbao+xAS9nNjjItlFKzPO/vcqXUuR71mG8ou6zs+mlKqTsNMq7ySilV52jDGs82bFdK9Qroj2sDnr9LAp/f7h5/v7ul7BSLfK1SalJAnUdU+flObQRu92zQJoeOS5RSS1IYgZ5VvknjHO1rklD2r5Zy11vke6l0jK/ACAxz6E1jBHqnbMN8j764O4XekQY90yyyMz3q8IClbCuLMXwlRZ2XKqVqim4EmgU06OwEXT2UUg97GoAnq20ldUeGPGCloybQePRUlTHBUZd5BvlHlVLfTdAZagTaVtiGeSmNcRI9Yro+4NHmEC94i+W5OVpBnR+v1jOedj+B13En1JQzNeH6aj1G66jHuUcdsvURTDsIrE0xRXal5fzjhoBiHfCURX438CPgWqKsQ1tdbida7GXC1M+fymGK8h5HG+4DvqrjDKsc8aZLDec7Az+2lHkZ+CPwD0e9njDUZ4dF1pXYZbv2c8P4f72eIUtLH+CBIscEUEp1CrBqLj1tY/9vqZS6RSm1J+YF7KimixQ7RqQYEiyzyF9ukLXFAO636L414Ivk+pKrjD0BEyssdbINQ0ze3pMW2d6G8fcST9kbLHKzHc/BbM9n4LaE+zpNKXWVPhYnyOY+/K1UwbYMXNUXysa1tWXnm+iXb602AqPryQCUHq6QIUFtgEFsZ5Hbk1CnzZZy56c0AmN0XUpl2mdkBMY42rDA4x7ZhlXXWXQ28QzcNUnx0TKxJEDvBqVUG4Pe85VS/7OUebboRmBohd5AB4PcT3S0ulyur1Lq9Ho0Ajgs9hqD7PCAr8wEi+zVKb2TBwONwEyl1LtSBBZ9jcAah96+SqmDhqNVzBiZcNX5aUuwLS631KK7jyWQbaJfgNdY66hze0e5lkU2AiHThUMMZRc65H+Rd+MDj34BQ4IVFrmuBr1rAqffXAZU6SlN35d4l2fbKzECJVbqqbJQ97adHi6VH1MSyszyHCr1CwhQLvD8uC23yH3do60PWcrm6gWnSRaKcyvwQ89sww/GkmF8sv7m6KBYEbDdrG/pwBc6k/BNg8wxop2XfHUe8qhP84QkrRLzgasNctcAv/f4O7by7wGOlP1/BvDNgOzThVr36hR90VsnoLWO3cvtwEBOXP24Ezgn4P7XeMjdp/u+nHcw76nhs+vWEB3kjLNIJ10VLjBYOuoCvIEOZeUme5bZXyBvYJaHyzsyMJkkD3y/5G0y9gRaVFDnyR6B3wscLnwSOyw6Z1jkL4sluJk4L6A/fe5zK0csoXBThOUcwX9J79QyKzves8yYAqVZ/9RyvhvHlxffGFi2Pjmcw3TqWcArKcqOB/6j05XjNAUeBp4FLsu4zrYp7PLl36Y+PQBszbgutjTyFnk+BFn97sA4T7mhek48ZClukdbcb8C+aOhreohj2oVnZ8I6AdtwIM0Rst3XOznco31AG+2+bgws20wPD+I8otdR+NyvULZi3hfhirIP1iCP3IAsaGU5/1JDMAJbAh6+cQFJP9PJd8+ANNxlOX8dMCKwTOmLYrP+aY6OBblPi4gWHtVo72CYTiZK2rm6r04OKtEDuNjy0g/Vz3BNWftr8FvY5eOlDdDjdBP3OoyKiTYe9bBtzfdinh2VRWCwxCD8V2GFWMYDBTMCrR3u7lai1WFJAbRy5uoAXZwLOXGVX5xewPsNL8fSlIG9SgKD/YD3xq6v1R8IE52JVhOauLnMcP7WEhhuiX0V5WyDt2kLDKK90/9aDFmdYQjyjDZOJiZbhrpTPDzmpy16+wN/L3JgMK8g17ICBQTjx46AdqxI0HW5pdzClGsanqogsFdJYPCQ4frylHkmM8pkVhqur03QuykgMJiUlWjiiynn+12rFEdWGFSs18BgORMy1DWG4jItQPZOD7fZFj+xbeRZowNlVGms6oMpd/+TMdc+zl7L+c0xzyaO62fx2ib8TRsh6yhc+2lsx74O5Dmi6ct4X94O3G8pc0fuPZexVanLyAs4WGAvILSdPusdxjrKT9JTY3U62ehGpdSrFtnDFU7xVeIJDHC0Ybwhw6+2LGU8TvkeCVM8Vwaip+wOBk4RhnqyPkueu3roWaKn/pJoWvS0YdMxNwMjMLLgRgDtdmfxwJSO9Rnct671aARQ0QYhPgb+sOP6Zs/MSKWUWqRzNxbr7Mc0eQI+eSBJxidkgVQInarxLOfx0+RjM9Dxa4qPz5BgSoC+no4gmg+D8f/NyLzo5SHTHPcGqwMNM08zHMHor+igZLsM6p+07P1t/LMbf4d9q3kfLiLaLi138jACO1PMD5dzD+5964rCXA+ZkHTYI0Rp1fcG1uMY0R57iwpwT14G3ke6nyZ7Q7dji2X6dXGArs+nrP9GooQlMoq33E14yvtbRLkmq6rVaafkpPd7FZSdSMNA4d5YZXpKvaOINlJN2s57K9EGHXXA8wW6L68R5Sr4fgWPAN/Q3oGrHQOALyfo2k2Um7Cggvq7XvQ0WZ9z9FTqdNw/1rKRaB3CqcC6anZYlnkCcWwLKVw8gTkxpLFSy/Hdf88hyk9YR/QjMEcbSBvaEu141JHjC8he1K7uesIzKWuA7kR5FB/T5TcSzaMfaCB9erE2anuJdlxeV58VytMIhPxQSQlXAoggCA1oOIAe2/UPkO8iBkAQTi4jgHbROiS4aY8RRYyfl+4QhJNrOBCntR4HXajjBRuJNpV4TbpBEBqHERAEoREOBwRBECMgCIIYAUEQxAgIgiBGQBAEMQKCIIgREARBjIAgCGIEBEEQIyAIghgBQRDqnf8DlC42VroaRCMAAAAASUVORK5CYII=';
+
+/* ---------------- helpers ---------------- */
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = (s, r = document) => r.querySelector(s);
+const uid = (p) => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const fmt = (n, d = 0) => Number(n || 0).toLocaleString('en-GB', {minimumFractionDigits: d, maximumFractionDigits: d});
+const money = (n) => '$' + fmt(n, 2);
+const pts = (n) => fmt(n, 2) + ' VeriPoints';
+const pct = (a, b) => b ? Math.round(a / b * 1000) / 10 : 0;
+const dt = (t) => t ? new Date(t).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'}) : '—';
+const dtt = (t) => t ? new Date(t).toLocaleString('en-GB', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'}) : '—';
+const ago = (t) => { const s = (Date.now() - t) / 1000; if (s < 60) return 'just now'; if (s < 3600) return Math.floor(s / 60) + 'm ago'; if (s < 86400) return Math.floor(s / 3600) + 'h ago'; return Math.floor(s / 86400) + 'd ago'; };
+const left = (t) => { if (!t) return '—'; const d = (t - Date.now()) / 86400000; if (d < 0) return 'Ended'; if (d < 1) return Math.max(1, Math.round(d * 24)) + ' hours left'; if (d < 14) return Math.round(d) + ' days left'; if (d < 60) return Math.round(d / 7) + ' weeks left'; return Math.round(d / 30) + ' months left'; };
+const initials = (n) => String(n || '?').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+const hashN = (s) => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+const STATUS = {
+  active: ['info', 'Active', 'clock'], draft: ['', 'Draft', 'build'], paused: ['warn', 'Paused', 'clock'], completed: ['ok', 'Completed', 'checkc'],
+  pending: ['warn', 'Awaiting review', 'clock'], approved: ['ok', 'Verified', 'checkc'], rejected: ['err', 'Not verified', 'xc'],
+  deployed: ['pri', 'Deployed', 'send'], gathering: ['info', 'Gathering evidence', 'clock'], review: ['warn', 'Under review', 'eye'],
+  completedTx: ['ok', 'Completed', 'checkc'], failed: ['err', 'Failed', 'xc'],
+};
+const pill = (k) => { const [c, t, i] = STATUS[k] || ['', k, 'info']; return `<span class="pill ${c}">${ic[i]}${t}</span>`; };
+function life(s) {
+  if (s.status !== 'active') return s.status;
+  const l = subsOf(s.id); if (!l.length) return 'deployed';
+  if (l.some(x => x.status === 'pending') && (l.length >= s.target || (s.deadline && s.deadline < Date.now()))) return 'review';
+  return 'gathering';
+}
+const LIFE = ['draft', 'deployed', 'gathering', 'review', 'completed'];
+const GAPS = [
+  {gap: 'Is cooking oil consistently stocked in Kumasi retail shops, and which brands run out first?', title: 'Cooking oil availability in Kumasi', industry: 'Consumer goods', country: 'Ghana', regions: ['Kumasi'], location: 'Kejetia Market and nearby retail shops', ai: 'Cooking oil availability, shelf prices and stockouts by brand in Kumasi retail shops.', brief: 'Visit retail shops around the market. Record which cooking oil brands are on the shelf, their prices, and any that have run out. Take a clear photo of the shelf.'},
+  {gap: 'What are competitor shelf prices for detergent in Lagos, and is any brand discounting?', title: 'Detergent shelf prices in Lagos', industry: 'Retail', country: 'Nigeria', regions: ['Lagos'], location: 'Supermarkets and kiosks in Ikeja', ai: 'Detergent shelf prices, promotions and availability by brand in Lagos shops.', brief: 'Record the shelf price of each detergent brand, note any promotion or discount, and photograph the display with prices visible.'},
+  {gap: 'Are solar lanterns sold in Gulu markets, at what price, and who supplies the sellers?', title: 'Solar lantern availability in Gulu', industry: 'Energy', country: 'Uganda', regions: ['Gulu'], location: 'Gulu Main Market', ai: 'Solar lantern availability, prices and supplier sources in Gulu markets.', brief: 'Find sellers of solar lanterns. Record models, prices and where the seller buys stock. Photograph the products on display.'},
+];
+const SAMPLE = (o) => o && o.sample ? '<span class="sample">Sample</span>' : '';
+
+/* pricing model (client $, scout points; 1 pt = $0.10) */
+const TIMEFRAMES = [['24h', '24 hours', 1, 1.6], ['3d', '3 days', 3, 1.4], ['7d', '7 days', 7, 1.2], ['14d', '14 days', 14, 1.1], ['30d', '30 days', 30, 1.0]];
+const tf = (k) => TIMEFRAMES.find(t => t[0] === k) || TIMEFRAMES[2];
+const PLATFORM_FEE = 200, VERIFY_FEE = .5, PT_USD = .1;
+const pricing = (n, k) => { const r = tf(k)[3]; const rewards = n * r, verify = n * VERIFY_FEE; return {rate: r, rewards, verify, collection: rewards + verify, total: rewards + verify + PLATFORM_FEE, rewardPts: Math.round(r / PT_USD * 100) / 100}; };
+
+const COUNTRIES = {Ghana: ['Tamale', 'Savelugu', 'Yendi', 'Bolgatanga', 'Kumasi', 'Accra', 'Takoradi'], Nigeria: ['Kano', 'Kaduna', 'Makurdi', 'Abuja', 'Lagos', 'Ibadan'], Kenya: ['Nairobi', 'Nakuru', 'Eldoret', 'Kisumu', 'Mombasa'], Zambia: ['Lusaka', 'Kabwe', 'Ndola', 'Kitwe'], 'South Africa': ['Johannesburg', 'Durban', 'Cape Town'], Uganda: ['Kampala', 'Gulu', 'Mbarara']};
+const INDUSTRIES = ['Agriculture', 'Consumer goods', 'Energy', 'Retail', 'Healthcare', 'Financial services', 'Logistics'];
+const QTYPES = [['short', 'Short answer'], ['paragraph', 'Paragraph'], ['single', 'Single choice'], ['multi', 'Checkboxes'], ['number', 'Number'], ['scale', 'Scale (1–5)'], ['rating', 'Star rating'], ['date', 'Date'], ['photo', 'Photo upload']];
+
+/* ---------------- state + data ---------------- */
+const S = {
+  surveys: {}, submissions: {}, scouts: {}, transactions: {},
+  loaded: false, slow: false, dbOk: false, me: 'local-scout', canWrite: true,
+  ui: {sidebar: false, surveyTab: 'all', surveySearch: '', subSearch: '', contribTab: 'all', txTab: 'all', scoutSel: null, scoutFilter: {}},
+};
+let DB = null, SAMPLER = null;
+const QS = new URLSearchParams(location.search), SIDE = ['client', 'scout'].includes(QS.get('side')) ? QS.get('side') : null;
+const EMBED = (() => { try { return window.parent !== window; } catch (e) { return true; } })();
+const EXIT = EMBED && SIDE ? (SIDE === 'scout' ? 'Back to Community' : 'Back to Assistant') : '';
+const SITEUSER = (() => { try { return JSON.parse(sessionStorage.getItem('verisavo-user') || 'null'); } catch (e) { return null; } })();
+const COLLS = ['surveys', 'submissions', 'scouts', 'transactions'];
+function saveLocal() { try { localStorage.setItem('vs-mvp', JSON.stringify({surveys: S.surveys, submissions: S.submissions, scouts: S.scouts, transactions: S.transactions})); } catch (e) {} }
+function loadLocal() { try { const o = JSON.parse(localStorage.getItem('vs-mvp') || '{}'); COLLS.forEach(c => S[c] = o[c] || {}); } catch (e) {} }
+async function put(coll, id, data) {
+  S[coll] = {...S[coll], [id]: data}; scheduleRender(true);
+  if (DB) { try { await DB.collection(coll).doc(id).set(data); } catch (e) { onWriteError(e); } } else saveLocal();
+}
+async function patch(coll, id, data) {
+  S[coll] = {...S[coll], [id]: {...S[coll][id], ...data}}; scheduleRender(true);
+  if (DB) { try { await DB.collection(coll).doc(id).update(data); } catch (e) { onWriteError(e); } } else saveLocal();
+}
+function onWriteError(e) {
+  if (e && e.code === 'invalid_argument') { S.canWrite = false; toast('You can view this workspace but not change it.'); }
+  else if (e && e.code === 'quota_exceeded') toast('Storage is full. Remove old records before adding more.');
+  else toast('That change did not save. Check your connection and try again.');
+}
+
+const arr = (c) => Object.entries(S[c]).map(([id, d]) => ({id, ...d}));
+const surveys = () => arr('surveys').sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+const subs = () => arr('submissions').sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+const subsOf = (sid) => subs().filter(s => s.surveyId === sid);
+const myScout = () => S.scouts[S.me] ? {id: S.me, ...S.scouts[S.me]} : null;
+const mySubs = () => subs().filter(s => s.scoutId === S.me);
+const myTx = () => arr('transactions').filter(t => t.scoutId === S.me).sort((a, b) => b.createdAt - a.createdAt);
+function wallet() {
+  const ms = mySubs();
+  const earned = ms.filter(s => s.status === 'approved').reduce((a, s) => a + (s.reward || 0), 0);
+  const pending = ms.filter(s => s.status === 'pending').reduce((a, s) => a + (s.reward || 0), 0);
+  const out = myTx().filter(t => t.kind === 'withdrawal' && t.status !== 'failed').reduce((a, t) => a + t.amountPts, 0);
+  return {earned, pending, available: Math.max(0, earned - out), withdrawn: out};
+}
+
+/* ---------------- routing ---------------- */
+function route() {
+  const h = (location.hash || '').slice(1);
+  const home = {role: SIDE === 'scout' ? 'scout' : 'client', page: SIDE === 'scout' ? 'chat' : 'overview', id: null};
+  if (!h) return home;
+  const [r, page, ...rest] = h.split('-');
+  if (SIDE && (r === 's') !== (SIDE === 'scout')) return home;
+  return {role: r === 's' ? 'scout' : 'client', page: page || 'overview', id: rest.join('-') || null};
+}
+function go(h) { if (location.hash.slice(1) === h) render(); else location.hash = h; S.ui.sidebar = false; }
+window.addEventListener('hashchange', () => { closeLayer(); render(); window.scrollTo(0, 0); });
+
+/* render scheduling: forms are not re-rendered by live data */
+let rq = null;
+function scheduleRender(force) {
+  const r = route();
+  const formPage = (r.role === 'client' && r.page === 'builder') || (r.role === 'scout' && !myScout());
+  if (formPage) return;
+  if (rq) return; rq = requestAnimationFrame(() => { rq = null; render(); });
+}
+
+/* ---------------- shell ---------------- */
+function shell(r, title, body, extraTop = '') {
+  const client = r.role === 'client';
+  const nav = client ? [
+    ['CORE DASHBOARDS'], ['c-overview', 'Overview', 'grid', r.page === 'overview'],
+    ['MARKET INVESTIGATIONS'], ['c-surveys', 'Investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder'],
+  ] : [
+    ['SCOUT CHANNEL'], ['s-chat', 'WhatsApp chat', 'send', true],
+  ];
+  const sc = myScout(), w = wallet();
+  const who = client ? {name: (SITEUSER && SITEUSER.name) || 'Client workspace', sub: (SITEUSER && SITEUSER.email) || 'Verisavo client'} : {name: sc ? sc.name : 'New scout', sub: sc ? (sc.city + ', ' + sc.country) : 'Not registered'};
+  return `<div class="app">
+  <aside class="side ${S.ui.sidebar ? 'open' : ''}" aria-label="Navigation">
+    <div class="brand"><img class="logo-light" src="${LOGO}" alt="Verisavo"><img class="logo-dark" src="${LOGOW}" alt="Verisavo"></div>
+    ${SIDE ? '' : `<div class="role" role="tablist" aria-label="View as">`}${SIDE ? '' : `
+      <button class="${client ? 'on' : ''}" data-go="c-overview">Client</button><button class="${!client ? 'on' : ''}" data-go="s-chat">Scout</button>
+    </div>`}
+    ${nav.map(n => n.length === 1 ? (n[0] ? `<div class="navlabel">${n[0]}</div>` : '<div style="height:8px"></div>') : `<button class="nav ${n[3] ? 'on' : ''}" data-go="${n[0]}">${ic[n[2]]}${n[1]}</button>`).join('')}
+    <div class="grow"></div>
+    ${!client && sc ? `<div class="ptsbox"><span class="muted" style="font-size:12px">Available VeriPoints</span><b style="font-size:20px" class="num">${fmt(w.available, 2)}</b><span class="faint" style="font-size:11.5px">Reply WITHDRAW in the chat to cash out</span></div>` : ''}
+    <div class="me"><div class="avatar">${initials(client ? 'Client' : who.name)}</div><div style="min-width:0"><div style="font-weight:500;font-size:13px">${esc(who.name)}</div><div class="faint" style="font-size:11.5px">${esc(who.sub)}</div></div></div>
+  </aside>
+  ${S.ui.sidebar ? '<div class="scrim" data-act="closeside"></div>' : ''}
+  <div class="main">
+    <header class="top"><button class="menu" data-act="openside" aria-label="Open menu">${ic.menu}</button><h1>${title}</h1>${extraTop}${EXIT ? `<button class="btn ghost sm exitb" data-act="exit">${ic.back}<span>${EXIT}</span></button>` : ''}
+      ${!client && sc ? `<span class="chip-loc">${ic.pin}<span class="l">${esc(sc.city)}, ${esc(sc.country)}</span></span>` : ''}</header>
+    <main class="content">${S.loaded ? '' : `<div class="note">${S.slow ? ic.info + '<span>The workspace data is taking longer than usual to load. What you see may be out of date.</span>' : '<span class="spin"></span><span>Loading workspace data…</span>'}</div>`}${body}</main>
+  </div></div>`;
+}
+
+/* ---------------- charts ---------------- */
+function bars(vals, labels, {h = 180, hi = -1, fmtv = (v) => fmt(v)} = {}) {
+  const W = 1000, pad = 30, max = Math.max(1, ...vals) * 1.15, bw = (W - pad) / vals.length;
+  const ticks = [0, .25, .5, .75, 1].map(f => max * f);
+  return `<svg class="chart" viewBox="0 0 ${W} ${h + 22}" role="img">
+  <g class="grid">${ticks.map(t => { const y = h - t / max * h; return `<line x1="${pad}" x2="${W}" y1="${y}" y2="${y}"/><text x="0" y="${y + 3}">${fmt(t)}</text>`; }).join('')}</g>
+  ${vals.map((v, i) => { const bh = v / max * h, x = pad + i * bw + bw * .14; return `<rect x="${x}" y="${h - bh}" width="${bw * .72}" height="${bh}" rx="4" fill="${i === hi ? 'var(--primary-2)' : 'var(--primary-200)'}"><title>${esc(labels[i])}: ${fmtv(v)}</title></rect>`; }).join('')}
+  ${labels.map((l, i) => (vals.length > 14 && i % 2) ? '' : `<text x="${pad + i * bw + bw / 2}" y="${h + 15}" text-anchor="middle">${esc(l)}</text>`).join('')}</svg>`;
+}
+function area(vals, labels, {h = 170} = {}) {
+  const W = 1000, pad = 30, max = Math.max(1, ...vals) * 1.2, n = Math.max(1, vals.length - 1);
+  const xs = vals.map((_, i) => pad + i / n * (W - pad)), ys = vals.map(v => h - v / max * h);
+  const d = xs.map((x, i) => (i ? 'L' : 'M') + x.toFixed(1) + ',' + ys[i].toFixed(1)).join(' ');
+  const ticks = [0, .5, 1].map(f => max * f);
+  return `<svg class="chart" viewBox="0 0 ${W} ${h + 22}" role="img"><g class="grid">${ticks.map(t => { const y = h - t / max * h; return `<line x1="${pad}" x2="${W}" y1="${y}" y2="${y}"/><text x="0" y="${y + 3}">${fmt(t)}</text>`; }).join('')}</g>
+  <path d="${d} L${xs[xs.length - 1]},${h} L${pad},${h} Z" fill="var(--primary-3)" fill-opacity=".14"/><path d="${d}" fill="none" stroke="var(--primary-3)" stroke-width="2.2"/>
+  ${vals.length ? `<circle cx="${xs[xs.length - 1]}" cy="${ys[ys.length - 1]}" r="4.5" fill="var(--card)" stroke="var(--primary-2)" stroke-width="2.5"/>` : ''}
+  ${labels.map((l, i) => (labels.length > 8 && i % Math.ceil(labels.length / 8)) ? '' : `<text x="${xs[i]}" y="${h + 15}" text-anchor="middle">${esc(l)}</text>`).join('')}</svg>`;
+}
+function donut(segs, center, sub) {
+  const tot = segs.reduce((a, s) => a + s[1], 0) || 1, R = 52, C = 2 * Math.PI * R; let off = 0;
+  return `<svg class="chart" viewBox="0 0 140 140" style="max-width:150px" role="img"><circle cx="70" cy="70" r="${R}" fill="none" stroke="var(--field)" stroke-width="16"/>
+  ${segs.map(([, v, c]) => { const L = v / tot * C; const s = `<circle cx="70" cy="70" r="${R}" fill="none" stroke="${c}" stroke-width="16" stroke-dasharray="${L} ${C - L}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"/>`; off += L; return s; }).join('')}
+  <text x="70" y="66" text-anchor="middle" style="font-size:11px">${esc(sub)}</text><text x="70" y="86" text-anchor="middle" style="font-size:20px;fill:var(--ink);font-weight:600">${esc(center)}</text></svg>`;
+}
+
+/* ================= CLIENT ================= */
+function kpi(lab, val, icon, delta = '') { return `<div class="card kpi"><span class="ico">${ic[icon]}</span><span class="lab">${lab}</span><span class="val num">${val}</span>${delta ? `<span class="delta">${delta}</span>` : ''}</div>`; }
+function emptyState(icon, title, text, action = '') { return `<div class="empty">${ic[icon]}<b style="color:var(--ink)">${title}</b><span>${text}</span>${action}</div>`; }
+
+function cOverview(r) {
+  const all = subs(), sv = surveys(), ok = all.filter(s => s.status === 'approved').length, rej = all.filter(s => s.status === 'rejected').length;
+  const week = Date.now() - 7 * 86400000, wk = all.filter(s => s.createdAt > week).length;
+  const countries = {};
+  arr('scouts').forEach(s => { (countries[s.country] ||= {sc: 0, done: 0, ok: 0, rej: 0, on: 0}).sc++; if (Date.now() - (s.lastActive || 0) < 86400000) countries[s.country].on++; });
+  all.forEach(s => { const c = (countries[s.country] ||= {sc: 0, done: 0, ok: 0, rej: 0, on: 0}); c.done++; if (s.status === 'approved') c.ok++; if (s.status === 'rejected') c.rej++; });
+  const act = sv.filter(s => s.status === 'active');
+  const body = `
+  <div class="grid g-main">
+    <div class="stack">
+      <div class="grid g2">
+        ${kpi('Verification rate', (ok + rej ? pct(ok, ok + rej) : 0) + '%', 'shield', ok + rej ? `<span class="pill ${pct(ok, ok + rej) >= 90 ? 'ok' : 'warn'}">${pct(ok, ok + rej) >= 90 ? 'Excellent' : 'Needs attention'}</span>` : 'No reviewed responses yet')}
+        ${kpi('Investigations', fmt(sv.length), 'clip', `<b>${act.length}</b> live now`)}
+        ${kpi('Scout responses', fmt(all.length), 'file', `<b>${fmt(wk)}</b> in the last 7 days`)}
+        ${kpi('Verified responses', fmt(ok), 'checkc', `<b>${pct(ok, all.length)}%</b> of all responses`)}
+      </div>
+      <div class="card"><div class="head"><h2>Scout network coverage</h2></div>
+        ${Object.keys(countries).length ? `<div class="tbl-wrap"><table><thead><tr><th>Country</th><th>Active scouts</th><th>Online today</th><th>Tasks completed</th><th>Verification</th></tr></thead><tbody>
+        ${Object.entries(countries).sort((a, b) => b[1].done - a[1].done).map(([c, v]) => `<tr><td>${esc(c)}</td><td class="num">${v.sc}</td><td><span class="pill ok num">${v.on}</span></td><td class="num">${fmt(v.done)}</td><td class="num" style="color:${pct(v.ok, v.ok + v.rej) >= 90 ? 'var(--ok)' : 'var(--warn)'}">${v.ok + v.rej ? pct(v.ok, v.ok + v.rej) + '%' : '—'}</td></tr>`).join('')}
+        </tbody></table></div>` : emptyState('people', 'No scouts yet', 'Scouts appear here once they register and submit work.')}
+      </div>
+    </div>
+    <div class="card"><div class="head"><h2>Live feed</h2><button class="link" data-go="c-surveys">All investigations ${ic.arrow}</button></div>
+      ${all.length ? `<div class="feed">${all.slice(0, 12).map(s => `<div class="it"><div class="avatar">${initials(s.scoutName)}</div><div style="min-width:0"><div>${esc(s.scoutName)} responded to <b>${esc(s.surveyTitle)}</b> in <b>${esc(s.region)}, ${esc(s.country)}</b></div><div class="faint row" style="font-size:12px;gap:6px">${ago(s.createdAt)} · ${pill(s.status)}</div></div></div>`).join('')}</div>`
+        : emptyState('send', 'No responses yet', 'SavoScout responses appear here as they arrive.')}
+    </div>
+  </div>
+  <div class="card"><div class="head"><h2>Live investigations</h2><button class="btn sm" data-go="c-builder">${ic.search}Investigate market</button></div>
+    ${act.length ? `<div class="grid g2">${act.slice(0, 6).map(s => { const n = subsOf(s.id).length, scouts = new Set(subsOf(s.id).map(x => x.scoutId)).size; return `<div class="qcard" role="button" tabindex="0" data-go="c-survey-${s.id}" style="cursor:pointer">
+      <div class="row between"><b>${esc(s.title)}</b>${pill(life(s))}</div><div class="row between" style="font-size:12px"><span class="faint row" style="gap:4px;font-size:12px">${ic.pin.replace('<svg', '<svg width="13" height="13"')}${esc(s.country)}</span></div>
+      <div class="row between" style="font-size:12px"><span class="muted">Responses</span><span class="num">${n} / ${s.target}</span></div><div class="bar"><i style="width:${Math.min(100, pct(n, s.target))}%"></i></div>
+      <div class="row between" style="font-size:12px"><div class="tags">${(s.regions || []).map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div><span class="muted">${scouts} scout${scouts === 1 ? '' : 's'} contributing</span></div></div>`; }).join('')}</div>`
+      : emptyState('clip', 'No live investigations', 'When existing evidence cannot answer a question, investigate it with SavoScouts.', `<button class="btn" data-go="c-builder">${ic.search}Investigate market</button>`)}
+  </div>`;
+  return shell(r, 'Executive Overview', body);
+}
+
+function cSurveys(r) {
+  const sv = surveys(), all = subs();
+  const counts = {all: sv.length}; ['active', 'paused', 'draft', 'completed'].forEach(k => counts[k] = sv.filter(s => s.status === k).length);
+  const tab = S.ui.surveyTab, q = S.ui.surveySearch.toLowerCase();
+  const list = sv.filter(s => (tab === 'all' || s.status === tab) && (!q || (s.title + ' ' + s.country + ' ' + (s.regions || []).join(' ')).toLowerCase().includes(q)));
+  const ok = all.filter(s => s.status === 'approved').length, rev = all.filter(s => s.status !== 'pending').length;
+  const body = `
+  <div class="grid g4">${kpi('Live investigations', counts.active, 'clip')}${kpi('Scout responses', fmt(all.length), 'send')}${kpi('Verified responses', fmt(ok), 'checkc')}${kpi('Verification rate', (rev ? pct(ok, rev) : 0) + '%', 'shield')}</div>
+  <div class="card"><div class="head"><h2>Market investigations</h2><button class="btn" data-go="c-builder">${ic.search}Investigate market</button></div>
+    <div class="tabs" role="tablist">${['all', 'active', 'paused', 'draft', 'completed'].map(k => `<button class="${tab === k ? 'on' : ''}" data-tab="surveyTab" data-v="${k}">${{all: 'All', active: 'Live', paused: 'Paused', draft: 'Draft', completed: 'Completed'}[k]} <span class="cnt num">${counts[k]}</span></button>`).join('')}</div>
+    <div class="row" style="margin:14px 0"><label class="search" style="flex:1;max-width:360px">${ic.search}<input id="surveySearch" placeholder="Search investigations, countries or regions" value="${esc(S.ui.surveySearch)}"></label></div>
+    ${list.length ? `<div class="tbl-wrap"><table><thead><tr><th>Investigation</th><th>Responses</th><th>Country</th><th>Regions</th><th>Status</th><th>Time left</th><th></th></tr></thead><tbody>
+    ${list.map(s => { const n = subsOf(s.id).length; return `<tr class="click" data-go="${s.status === 'draft' ? 'c-builder-' + s.id : 'c-survey-' + s.id}"><td style="max-width:260px"><b style="font-weight:500">${esc(s.title)}</b>${SAMPLE(s)}</td>
+      <td><div class="row" style="gap:8px;flex-wrap:nowrap"><div class="bar" style="width:70px"><i style="width:${Math.min(100, pct(n, s.target))}%"></i></div><span class="num">${n}/${s.target}</span></div></td>
+      <td class="muted">${esc(s.country)}</td><td><div class="tags" style="flex-wrap:nowrap">${(s.regions || []).slice(0, 3).map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div></td>
+      <td>${pill(life(s))}</td><td class="muted" style="white-space:nowrap">${s.status === 'draft' ? '—' : left(s.deadline)}</td><td><span class="iconbtn" aria-hidden="true">${s.status === 'draft' ? ic.build : ic.eye}</span></td></tr>`; }).join('')}
+    </tbody></table></div>` : emptyState('search', sv.length ? 'No investigations match' : 'No investigations yet', sv.length ? 'Try another tab or search term.' : 'Start from an Intelligence Gap or describe what you need to understand.', sv.length ? '' : `<button class="btn" data-go="c-builder">${ic.search}Investigate market</button>`)}
+  </div>`;
+  return shell(r, 'Market investigations', body);
+}
+
+function cSurvey(r) {
+  const [id, tab = 'raw'] = (r.id || '').split('~');
+  const s = S.surveys[id] ? {id, ...S.surveys[id]} : null;
+  if (!s) return shell(r, 'Investigation', `<div class="card">${S.loaded ? emptyState('search', 'Investigation not found', 'It may have been removed.', `<button class="btn ghost" data-go="c-surveys">Back to investigations</button>`) : ''}</div>`);
+  const list = subsOf(id);
+  const tabs = `<div class="row" style="gap:6px;font-size:13px"><button class="link" data-go="c-surveys">${ic.back}</button><span class="muted">Investigations</span><span class="faint">/</span><b style="font-weight:500">${esc(s.title)}</b>${SAMPLE(s)}<span style="margin-left:auto">${pill(life(s))}</span></div>
+  ${track(s, list)}
+  <div class="tabs"><button class="${tab === 'raw' ? 'on' : ''}" data-go="c-survey-${id}~raw">${ic.file}Responses <span class="cnt num">${list.length}</span></button><button class="${tab === 'processed' ? 'on' : ''}" data-go="c-survey-${id}~processed">${ic.chart}Evidence overview</button><button class="${tab === 'brief' ? 'on' : ''}" data-go="c-survey-${id}~brief">${ic.spark}AI briefing</button>
+  <button disabled title="Planned after the MVP">${ic.route}Scenario simulator</button></div>`;
+  const statusBtns = `<div class="row">${s.status === 'active' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="paused">Pause</button>` : ''}${s.status === 'paused' ? `<button class="btn soft sm" data-act="setstatus" data-id="${id}" data-v="active">Resume</button>` : ''}${s.status !== 'completed' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="completed">Mark completed</button>` : ''}</div>`;
+  let body = tabs;
+  if (tab === 'processed') body += processed(s, list); else if (tab === 'brief') body += briefView(s, list); else body += rawData(s, list, statusBtns);
+  return shell(r, esc(s.title), body);
+}
+
+function track(s, list) {
+  const cur = LIFE.indexOf(life(s) === 'paused' ? 'gathering' : life(s)), names = ['Draft', 'Deployed', 'Gathering evidence', 'Under review', 'Completed'];
+  const eligible = Math.max(new Set(list.map(x => x.scoutId)).size, arr('scouts').filter(c => c.country === s.country && (!(s.regions || []).length || s.regions.includes(c.city))).length);
+  const ok = list.filter(x => x.status === 'approved').length, pend = list.filter(x => x.status === 'pending').length;
+  return `<div class="card stack">
+    <div class="stepper life">${names.map((t, i) => `<div class="step ${i < cur || (cur === 4 && i === 4) ? 'done' : i === cur ? 'on' : ''}"><span class="dot">${i < cur || cur === 4 ? ic.check : i + 1}</span>${t}</div>`).join('')}</div>
+    <div class="funnel"><div>Sent to SavoScouts<b class="num">${s.status === 'draft' ? '—' : eligible}</b>via the Verisavo agent</div><div>Responses submitted<b class="num">${list.length}<span class="faint" style="font-size:13px"> / ${s.target}</span></b>${pct(list.length, s.target)}% of coverage</div><div>Awaiting review<b class="num">${pend}</b>${pend ? 'needs your team' : 'nothing waiting'}</div><div>Verified<b class="num">${ok}</b>VeriPoints released</div></div>
+    ${s.gap ? `<div class="note">${ic.info}<span><b>Intelligence Gap.</b> ${esc(s.gap)}</span></div>` : ''}
+    ${life(s) === 'deployed' && s.publishedAt && Date.now() - s.publishedAt > 86400000 ? `<div class="note">${ic.clock}<span>No responses yet after a day. The Verisavo agent will re-send the task to SavoScouts nearby. You can also widen the regions or extend the timeline.</span></div>` : ''}
+  </div>`;
+}
+
+function rawData(s, list, statusBtns) {
+  const hours = Array(24).fill(0); list.forEach(x => hours[new Date(x.createdAt).getHours()]++);
+  const peak = hours.indexOf(Math.max(...hours));
+  const ok = list.filter(x => x.status === 'approved').length, rej = list.filter(x => x.status === 'rejected').length, pend = list.filter(x => x.status === 'pending').length;
+  const q = S.ui.subSearch.toLowerCase();
+  const rows = list.filter(x => !q || (x.scoutName + ' ' + x.region + ' ' + x.id + ' ' + x.status).toLowerCase().includes(q));
+  return `
+  <div class="card"><div class="head"><h2>Response activity</h2>${statusBtns}</div>
+    <div class="grid g4" style="margin-bottom:12px">
+      <div class="kpi"><span class="lab">Responses</span><span class="val num" style="font-size:20px">${fmt(list.length)} <span class="faint" style="font-size:13px">of ${s.target}</span></span></div>
+      <div class="kpi"><span class="lab">Peak hour</span><span class="val num" style="font-size:20px">${list.length ? String(peak).padStart(2, '0') + ':00' : '—'}</span></div>
+      <div class="kpi"><span class="lab">Verification rate</span><span class="val num" style="font-size:20px">${ok + rej ? pct(ok, ok + rej) + '%' : '—'}</span></div>
+      <div class="kpi"><span class="lab">Awaiting review</span><span class="val num" style="font-size:20px">${pend}</span></div>
+    </div>
+    ${list.length ? bars(hours, hours.map((_, i) => String(i).padStart(2, '0') + ':00'), {hi: peak}) : emptyState('send', 'No responses yet', 'SavoScouts respond on WhatsApp once they accept the task.')}
+  </div>
+  <div class="card"><div class="head"><h2>Scout responses</h2><label class="search" style="width:min(280px,100%)">${ic.search}<input id="subSearch" placeholder="Search scout, region or status" value="${esc(S.ui.subSearch)}"></label></div>
+    ${rows.length ? `<div class="tbl-wrap"><table><thead><tr><th>Response</th><th>Scout</th><th>Region</th><th>Status</th><th>Submitted</th><th></th></tr></thead><tbody>
+    ${rows.map(x => `<tr class="click" data-act="opensub" data-id="${x.id}"><td class="num" style="font-weight:500">SUB-${x.id.slice(-6).toUpperCase()}</td><td>${esc(x.scoutName)}${SAMPLE(x)}</td><td class="muted"><span class="row" style="gap:4px;flex-wrap:nowrap">${ic.pin.replace('<svg', '<svg width="13" height="13"')}${esc(x.region)}, ${esc(x.country)}</span></td><td>${pill(x.status)}</td><td class="muted" style="white-space:nowrap">${dtt(x.createdAt)}</td><td>${x.status === 'pending' ? '<span class="pill pri">Review</span>' : `<span class="iconbtn">${ic.eye}</span>`}</td></tr>`).join('')}
+    </tbody></table></div>` : (list.length ? emptyState('search', 'No responses match', 'Try another search term.') : '')}
+  </div>`;
+}
+
+function processed(s, list) {
+  const okList = list.filter(x => x.status !== 'rejected');
+  const regions = [...new Set([...(s.regions || []), ...okList.map(x => x.region)])];
+  const ok = list.filter(x => x.status === 'approved').length, rej = list.filter(x => x.status === 'rejected').length, pend = list.filter(x => x.status === 'pending').length;
+  const qs = s.questions || [];
+  const numQ = qs.filter(q => q.type === 'number' || q.type === 'scale' || q.type === 'rating');
+  const choiceQ = qs.filter(q => q.type === 'single' || q.type === 'multi');
+  const numBlock = numQ.map(q => {
+    const per = regions.map(rg => { const v = okList.filter(x => x.region === rg).map(x => Number(x.answers?.[q.id])).filter(v => !isNaN(v) && v !== null && v !== ''); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0; });
+    const allv = okList.map(x => Number(x.answers?.[q.id])).filter(v => !isNaN(v));
+    if (!allv.length) return '';
+    const avg = allv.reduce((a, b) => a + b, 0) / allv.length, mx = Math.max(...per), lo = Math.min(...per.filter(v => v > 0));
+    const unit = q.unit ? ' ' + q.unit : '';
+    return `<div class="card"><div class="head"><h2 style="font-size:16px">${esc(q.text)}</h2></div>
+      <div class="grid g3" style="margin-bottom:10px;font-size:12px"><div><span class="muted">Average</span><div class="num" style="font-size:18px;font-weight:600">${fmt(avg, 1)}${esc(unit)}</div></div>
+      <div><span class="muted">Lowest region</span><div class="num" style="font-size:18px;font-weight:600">${fmt(lo, 1)}</div><span class="faint">${esc(regions[per.indexOf(lo)] || '')}</span></div>
+      <div><span class="muted">Highest region</span><div class="num" style="font-size:18px;font-weight:600">${fmt(mx, 1)}</div><span class="faint">${esc(regions[per.indexOf(mx)] || '')}</span></div></div>
+      ${bars(per.map(v => Math.round(v * 10) / 10), regions, {h: 150, hi: per.indexOf(mx), fmtv: v => fmt(v, 1) + unit})}</div>`;
+  }).join('');
+  const choiceBlock = choiceQ.map(q => {
+    const c = {}; (q.options || []).forEach(o => c[o] = 0);
+    okList.forEach(x => { const a = x.answers?.[q.id]; (Array.isArray(a) ? a : [a]).forEach(v => { if (v) c[v] = (c[v] || 0) + 1; }); });
+    const tot = Object.values(c).reduce((a, b) => a + b, 0); if (!tot) return '';
+    return `<div class="card"><div class="head"><h2 style="font-size:16px">${esc(q.text)}</h2><span class="faint" style="font-size:12px">${tot} answers</span></div>
+      ${Object.entries(c).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="hbar"><span>${esc(k)}</span><span class="t"><i style="width:${pct(v, tot)}%"></i></span><span class="num muted">${pct(v, tot)}%</span></div>`).join('')}</div>`;
+  }).join('');
+  const firstNum = numQ[0];
+  const matrix = regions.map(rg => { const rs = list.filter(x => x.region === rg), ro = rs.filter(x => x.status === 'approved').length, rr = rs.filter(x => x.status === 'rejected').length; const v = firstNum ? okList.filter(x => x.region === rg).map(x => Number(x.answers?.[firstNum.id])).filter(v => !isNaN(v)) : []; return {rg, n: rs.length, rate: ro + rr ? pct(ro, ro + rr) : null, avg: v.length ? v.reduce((a, b) => a + b, 0) / v.length : null}; });
+  if (!list.length) return `<div class="card">${emptyState('chart', 'No evidence yet', 'The overview builds as soon as the first responses arrive.')}</div>`;
+  return `
+  <div class="grid g-main">
+    <div class="stack">${numBlock || ''}${choiceBlock || (numBlock ? '' : `<div class="card">${emptyState('chart', 'No chartable questions', 'Number, scale and choice questions are summarised here.')}</div>`)}</div>
+    <div class="stack">
+      <div class="card"><div class="head"><h2>Evidence verification</h2></div>
+        <div class="row" style="flex-wrap:nowrap;align-items:center">${donut([['Verified', ok, 'var(--primary-3)'], ['Not verified', rej, 'var(--err)'], ['Awaiting', pend, 'var(--warn)']], fmt(list.length), 'Total')}
+        <div class="stack" style="gap:6px;font-size:13px"><div class="legend" style="display:grid;gap:6px"><span><i style="background:var(--primary-3)"></i>Verified ${ok}</span><span><i style="background:var(--err)"></i>Not verified ${rej}</span><span><i style="background:var(--warn)"></i>Awaiting review ${pend}</span></div>
+        <span class="muted">Verification rate <b class="num" style="color:var(--ink)">${ok + rej ? pct(ok, ok + rej) + '%' : '—'}</b></span></div></div></div>
+      <div class="card"><div class="head"><h2>Regional summary</h2></div><div class="tbl-wrap"><table><thead><tr><th>Region</th><th>Responses</th>${firstNum ? `<th>Avg. ${esc(firstNum.short || 'value')}</th>` : ''}<th>Verified</th></tr></thead><tbody>
+        ${matrix.map(m => `<tr><td>${esc(m.rg)}</td><td class="num">${m.n}</td>${firstNum ? `<td class="num">${m.avg === null ? '—' : fmt(m.avg, 1)}</td>` : ''}<td>${m.rate === null ? '<span class="faint">—</span>' : `<span class="pill ${m.rate >= 90 ? 'ok' : m.rate >= 70 ? 'warn' : 'err'} num">${m.rate}%</span>`}</td></tr>`).join('')}</tbody></table></div></div>
+    </div>
+  </div>`;
+}
+
+function openSub(id) {
+  const x = S.submissions[id] ? {id, ...S.submissions[id]} : null; if (!x) return;
+  const s = S.surveys[x.surveyId] || {questions: []};
+  const ansHtml = (s.questions || []).map(q => { let a = x.answers?.[q.id]; if (Array.isArray(a)) a = a.join(', '); if (q.type === 'rating' && a) a = '★'.repeat(a) + ' (' + a + '/5)'; return `<div class="ans"><span class="q">${esc(q.text)}</span><span>${a === undefined || a === '' || a === null ? '<span class="faint">No answer</span>' : esc(a) + (q.unit && q.type === 'number' ? ' ' + esc(q.unit) : '')}</span></div>`; }).join('');
+  const checks = [['GPS within ' + (s.gpsRadius || 100) + ' m of the investigation location', x.checks?.gps !== false], ['Media attached', (x.media || []).length > 0], ['No duplicate submission from this scout', x.checks?.duplicate !== true], ['Answers consistent with nearby submissions', x.checks?.consistency !== false]];
+  layer(`<div class="drawer-bg" data-act="close"></div><aside class="drawer" role="dialog" aria-label="Submission">
+    <div class="row between"><div><div class="faint" style="font-size:12px">SUB-${x.id.slice(-6).toUpperCase()}</div><h2 style="font-size:18px">${esc(x.surveyTitle)}</h2></div><button class="iconbtn" data-act="close" aria-label="Close">${ic.x}</button></div>
+    <div class="row">${pill(x.status)}<span class="muted" style="font-size:12px">${dtt(x.createdAt)}</span>${SAMPLE(x)}</div>
+    <div class="stat3"><div>Scout<b>${esc(x.scoutName)}</b></div><div>Region<b>${esc(x.region)}</b></div><div>Reward<b class="num">${pts(x.reward)}</b></div></div>
+    <div><div class="flabel" style="margin-bottom:6px">Automatic checks</div><div class="checklist">${checks.map(([t, okk]) => `<div class="${okk ? 'done' : 'now'}"><span class="ck" style="${okk ? '' : 'border-color:var(--err);color:var(--err)'}">${okk ? ic.check : ic.x}</span>${esc(t)}</div>`).join('')}</div></div>
+    <div><div class="flabel">Answers</div>${ansHtml || '<p class="muted">No answers recorded.</p>'}</div>
+    <div><div class="flabel" style="margin-bottom:6px">Media</div>${(x.media || []).length ? (x.media || []).map(m => `<div class="file" style="margin-bottom:6px">${ic[m.kind === 'video' ? 'video' : m.kind === 'audio' ? 'mic' : m.kind === 'document' ? 'file' : 'camera']}<span style="flex:1;min-width:0;overflow-wrap:anywhere">${esc(m.name)}</span><span class="faint">${m.size ? fmt(m.size / 1024) + ' KB' : ''}</span></div>`).join('') : '<p class="muted">No media attached.</p>'}<p class="faint" style="font-size:12px">The MVP records file names and sizes; files are not uploaded.</p></div>
+    ${x.status === 'rejected' && x.reason ? `<div class="note">${ic.info}<span>Not verified: ${esc(x.reason)}</span></div>` : ''}
+    ${x.status === 'pending' ? `<div class="field"><label for="rejReason">Reason, if not verified</label><select class="in" id="rejReason"><option>Location mismatch</option><option>Photo does not show the product</option><option>Contradicted by other responses</option><option>Could not confirm from the evidence</option><option>Duplicate submission</option></select></div>
+    <div class="row"><button class="btn okb" data-act="review" data-id="${x.id}" data-v="approved">${ic.check}Verify and release ${pts(x.reward)}</button><button class="btn danger" data-act="review" data-id="${x.id}" data-v="rejected">Not verified</button></div>` : ''}
+  </aside>`);
+}
+
+/* ---------- AI briefing ---------- */
+const sid6 = (id) => 'SUB-' + id.slice(-6).toUpperCase();
+const refBtns = (ids) => (ids || []).length ? `<span class="refs">${ids.slice(0, 4).map(i => S.submissions[i] ? `<button data-act="ref" data-id="${i}" title="Open response">${sid6(i)}</button>` : '').join('')}</span>` : '';
+function localBrief(s, list) {
+  const okL = list.filter(x => x.status === 'approved'), use = okL.length ? okL : list.filter(x => x.status === 'pending'), rej = list.filter(x => x.status === 'rejected');
+  const qs = s.questions || [], F = [], AG = [], CO = [], UN = [], NX = [];
+  qs.filter(q => ['number', 'scale', 'rating'].includes(q.type)).forEach(q => {
+    const v = use.map(x => [x.id, Number(x.answers?.[q.id]), x.region]).filter(a => !isNaN(a[1]) && a[1] !== 0); if (!v.length) return;
+    const nums = v.map(a => a[1]), avg = nums.reduce((a, b) => a + b, 0) / nums.length, lo = Math.min(...nums), hi = Math.max(...nums), u = q.unit ? ' ' + q.unit : '';
+    F.push({text: `${q.text.replace(/\?$/, '')}: average ${fmt(avg, 1)}${u}, ranging from ${fmt(lo, 1)} to ${fmt(hi, 1)} across ${v.length} responses.`, confidence: v.length >= 5 && okL.length ? 'High' : v.length >= 3 ? 'Medium' : 'Low', refs: v.map(a => a[0])});
+    if (avg && (hi - lo) / avg > .3) CO.push({text: `Responses on “${q.text}” differ by more than 30%. This may reflect real differences between locations rather than error.`, refs: [v.find(a => a[1] === lo)[0], v.find(a => a[1] === hi)[0]]});
+  });
+  qs.filter(q => q.type === 'single' || q.type === 'multi').forEach(q => {
+    const c = {}; use.forEach(x => { const a = x.answers?.[q.id]; (Array.isArray(a) ? a : [a]).forEach(o => { if (o) (c[o] ||= []).push(x.id); }); });
+    const top = Object.entries(c).sort((a, b) => b[1].length - a[1].length)[0]; if (!top) return;
+    const share = pct(top[1].length, use.length);
+    (share >= 70 ? AG : F).push({text: `${q.text.replace(/\?$/, '')}: “${top[0]}” in ${share}% of responses.`, confidence: share >= 70 && top[1].length >= 3 ? 'High' : 'Medium', refs: top[1]});
+  });
+  if (rej.length) CO.push({text: `${rej.length} response${rej.length === 1 ? ' was' : 's were'} not verified and ${rej.length === 1 ? 'is' : 'are'} excluded from these findings.`, refs: rej.map(x => x.id)});
+  (s.regions || []).filter(rg => !list.some(x => x.region === rg)).forEach(rg => UN.push({text: `No responses from ${rg} yet, so findings may not represent it.`}));
+  if (list.length < s.target) UN.push({text: `Coverage is ${list.length} of ${s.target} planned responses. Findings may change as more evidence arrives.`});
+  if (!okL.length && use.length) UN.push({text: 'No response has been verified yet. Findings are drawn from responses awaiting review.'});
+  if (list.some(x => x.status === 'pending')) NX.push({text: 'Review the responses awaiting verification, then update this briefing.'});
+  if (UN.length) NX.push({text: 'Extend coverage to the regions and outlets still missing before making a decision that depends on them.'});
+  NX.push({text: 'Return to the Intelligence Assistant to connect these findings with what Verisavo already knows about this market.'});
+  return {summary: `Based on ${use.length} ${okL.length ? 'verified' : 'unverified'} SavoScout response${use.length === 1 ? '' : 's'} from ${[...new Set(use.map(x => x.region))].join(', ') || s.country}.`, findings: F, agreements: AG, contradictions: CO, implications: [], unknowns: UN, next: NX, n: list.length, at: Date.now(), by: 'rules'};
+}
+async function genBrief(id) {
+  const s = S.surveys[id]; if (!s) return;
+  const list = subsOf(id), btn = $('#genbrief'); if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Analysing evidence…'; }
+  let b = localBrief({id, ...s}, list);
+  if (SAMPLER && list.length) {
+    try {
+      const qmap = Object.fromEntries((s.questions || []).map(q => [q.id, q.text]));
+      const rows = list.filter(x => x.status !== 'rejected').slice(0, 40).map(x => ({id: x.id, region: x.region, status: x.status === 'approved' ? 'verified' : 'awaiting review', answers: Object.fromEntries(Object.entries(x.answers || {}).map(([k, v]) => [qmap[k] || k, v]))}));
+      const out = await SAMPLER.json(`You are the Verisavo Intelligence Assistant writing an investigation briefing for a business. Use only the evidence below. Separate what is supported from what is inferred, and never claim certainty the evidence does not give. British English, plain language, no hype.
+Investigation: ${s.title}. Objective: ${s.request || s.title}. Place: ${(s.regions || []).join(', ')}, ${s.country}. Planned responses: ${s.target}; received: ${list.length}; not verified: ${list.filter(x => x.status === 'rejected').length}.
+Responses (JSON): ${JSON.stringify(rows)}
+Return JSON only: {"summary": one or two sentences, "findings": [{"text","confidence":"High"|"Medium"|"Low","refs":[response ids]}], "agreements": [{"text","refs"}], "contradictions": [{"text","refs"}], "implications": [{"text"}], "unknowns": [{"text"}], "next": [{"text"}]}. 2 to 5 findings; each list may be empty.`, {modelTier: 'quick'});
+      if (out && Array.isArray(out.findings)) { const ok = new Set(list.map(x => x.id)), clean = (a) => (Array.isArray(a) ? a : []).filter(o => o && o.text).map(o => ({text: String(o.text), confidence: ['High', 'Medium', 'Low'].includes(o.confidence) ? o.confidence : undefined, refs: (o.refs || []).filter(r => ok.has(r))}));
+        b = {summary: String(out.summary || b.summary), findings: clean(out.findings), agreements: clean(out.agreements), contradictions: clean(out.contradictions), implications: clean(out.implications), unknowns: clean(out.unknowns), next: clean(out.next), n: list.length, at: Date.now(), by: 'assistant'}; }
+    } catch (e) { if (e && e.code === 'rate_limited') toast('Too many requests. Showing a summary built from the responses instead.'); }
+  }
+  await patch('surveys', id, {briefing: b}); toast('Briefing ready.');
+}
+function briefView(s, list) {
+  const b = s.briefing;
+  if (!list.length) return `<div class="card">${emptyState('spark', 'No evidence to brief on yet', 'The AI briefing becomes available once SavoScouts start responding.')}</div>`;
+  if (!b) return `<div class="card">${emptyState('spark', 'Turn responses into a briefing', `The Verisavo Intelligence Assistant reads the ${list.length} response${list.length === 1 ? '' : 's'}, separates verified evidence from what is still awaiting review, and points to the responses behind each finding.`, `<button class="btn" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}Generate AI briefing</button>`)}</div>`;
+  const sec = (t, a, empty) => `<div><h3>${t}</h3>${(a || []).length ? `<ul>${a.map(o => `<li>${esc(o.text)}${o.confidence ? `<span class="conf ${o.confidence}">${o.confidence} confidence</span>` : ''}${refBtns(o.refs)}</li>`).join('')}</ul>` : `<p class="faint" style="margin:0;font-size:13px">${empty}</p>`}</div>`;
+  const stale = list.length !== b.n;
+  return `<div class="grid g-main"><div class="card brief">
+    <div class="head" style="margin-bottom:0"><div><h2>Investigation briefing</h2><span class="faint" style="font-size:12px">Generated ${dtt(b.at)} from ${b.n} response${b.n === 1 ? '' : 's'}${b.by === 'rules' ? ' · summary built from the responses' : ''}</span></div><button class="btn ${stale ? '' : 'ghost'} sm" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}${stale ? 'Update with new evidence' : 'Regenerate'}</button></div>
+    ${stale ? `<div class="note blue">${ic.info}<span>${list.length - b.n > 0 ? list.length - b.n + ' new response' + (list.length - b.n === 1 ? '' : 's') : 'Responses have changed'} since this briefing. Update it to include them.</span></div>` : ''}
+    <div><h3>Objective</h3><p style="margin:0;font-size:13.5px">${esc(s.request || s.title)}</p></div>
+    <p style="margin:0;font-size:13.5px">${esc(b.summary)}</p>
+    ${sec('Key findings', b.findings, 'No finding is supported strongly enough yet.')}
+    ${sec('Where SavoScouts agree', b.agreements, 'No clear agreement yet.')}
+    ${sec('Differences and contradictions', b.contradictions, 'No contradictions found in the responses.')}
+    ${(b.implications || []).length ? sec('What it could mean', b.implications, '') : ''}
+    ${sec('Still unknown', b.unknowns, 'No open gaps identified.')}
+    ${sec('Recommended next steps', b.next, '')}
+  </div>
+  <div class="stack" style="align-self:start">
+    <div class="card stack"><h2 style="font-size:16px">Evidence behind this briefing</h2>
+      <div class="kv"><span>Verified</span><b class="num">${list.filter(x => x.status === 'approved').length}</b></div><div class="kv"><span>Awaiting review</span><b class="num">${list.filter(x => x.status === 'pending').length}</b></div><div class="kv"><span>Not verified (excluded)</span><b class="num">${list.filter(x => x.status === 'rejected').length}</b></div>
+      <button class="btn ghost sm" data-go="c-survey-${s.id}~raw">Review responses</button></div>
+    <div class="note">${ic.info}<span>Each finding links to the responses behind it. Verified findings are designed to feed Verisavo's Market Memory, so the Assistant can draw on them in later conversations.</span></div>
+  </div></div>`;
+}
+
+/* ---------- survey builder ---------- */
+let B = null;
+function newBuilder(from) {
+  B = from ? JSON.parse(JSON.stringify(from)) : {id: null, gap: '', title: '', industry: '', country: '', regions: [], brief: '', location: '', questions: [], ai: '', responses: 250, timeframe: '7d', step: 0};
+  B.step = B.step || 0;
+}
+function cBuilder(r) {
+  if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
+  const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Review and deploy'];
+  const stepper = `<div class="stepper">${steps.map((t, i) => `<div class="step ${i < B.step ? 'done' : i === B.step ? 'on' : ''}"><span class="dot">${i < B.step ? ic.check : i + 1}</span>${t}</div>`).join('')}</div>`;
+  const P = pricing(B.responses, B.timeframe);
+  let inner = '';
+  if (B.step === 0) {
+    const regs = COUNTRIES[B.country] || [];
+    inner = `<div class="grid g-main"><div class="stack">
+      <div><h2 style="font-size:22px">What do you need to understand?</h2><p class="muted" style="margin:2px 0 0">Start from an Intelligence Gap in your Assistant conversations, or describe a new investigation.</p></div>
+      <div class="field"><span class="flabel">Investigate an Intelligence Gap <span class="sample">Sample</span></span><div class="gapc">${GAPS.map((g, i) => `<button class="gap ${B.gap === g.gap ? 'on' : ''}" data-act="usegap" data-v="${i}"><b style="font-weight:500">${esc(g.gap)}</b><small>${esc(g.regions.join(', '))}, ${esc(g.country)} · from your Assistant chat</small></button>`).join('')}</div></div>
+      <div class="field"><label for="b-ai">Investigation objective</label><textarea class="in" id="b-ai" data-b="ai" placeholder="For example: is cooking oil consistently stocked in Kumasi shops, and at what price?">${esc(B.ai)}</textarea></div>
+      <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
+      <div class="field"><label for="b-industry">Industry</label><select class="in" id="b-industry" data-b="industry"><option value="">Select your industry</option>${INDUSTRIES.map(x => `<option ${B.industry === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
+      <div class="field"><label for="b-country">Target country</label><select class="in" id="b-country" data-b="country" data-rerender="1"><option value="">Select your target country</option>${Object.keys(COUNTRIES).map(x => `<option ${B.country === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
+      <div class="field"><span class="flabel">Target regions or cities</span>${B.country ? `<div class="chips">${regs.map(x => `<button class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div>` : '<span class="faint" style="font-size:13px">Choose a country to see its regions.</span>'}</div>
+      <div class="field"><label for="b-location">Main collection point</label><input class="in" id="b-location" data-b="location" placeholder="For example, Tamale Central Market" value="${esc(B.location)}"></div>
+      <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea></div>
+      <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>
+    </div>
+    <div class="card" style="align-self:start"><div class="head"><h2 style="font-size:16px">Coverage summary</h2></div>
+      <div class="kv"><span>Target country</span><b>${esc(B.country || '—')}</b></div><div class="kv"><span>Selected regions</span><b class="num">${B.regions.length}</b></div>
+      <div class="kv"><span>Registered SavoScouts in country</span><b class="num">${arr('scouts').filter(s => s.country === B.country).length}</b></div>
+      <div class="kv"><span>SavoScouts in selected regions</span><b class="num">${arr('scouts').filter(s => s.country === B.country && B.regions.includes(s.city)).length}</b></div>
+      <div class="kv"><span>GPS radius</span><b>100 m</b></div></div></div>`;
+  } else if (B.step === 1) {
+    inner = `<div class="narrow" style="max-width:820px">
+      <div class="row between"><div><h2 style="font-size:22px">Evidence questions</h2><p class="muted" style="margin:2px 0 0">What SavoScouts answer and photograph on the ground. The Verisavo agent asks these one by one on WhatsApp.</p></div><button class="btn ghost sm" data-act="saveDraft">Save draft</button></div>
+      <div class="card stack"><label class="flabel" for="b-ai">Prepare with Verisavo</label><textarea class="in" id="b-ai" data-b="ai" placeholder="Describe what you want to understand about the market. For example: onion prices, availability and supplier sources in Tamale markets.">${esc(B.ai)}</textarea>
+        <div class="row between"><span class="faint" style="font-size:12px">${SAMPLER ? 'Turns your objective into clear questions. Review every question before deploying.' : 'Builds a starter set from your description.'}</span><button class="btn sm" data-act="genq" id="genq">${ic.spark}Prepare questions</button></div></div>
+      <div class="row between"><h3 style="font-size:16px">Questions (${B.questions.length} / 20)</h3></div>
+      ${B.questions.map((q, i) => qEditor(q, i)).join('') || `<div class="card">${emptyState('clip', 'No questions yet', 'Generate a starter set above or add questions one by one.')}</div>`}
+      <div class="row"><button class="btn soft" data-act="addq" ${B.questions.length >= 20 ? 'disabled' : ''}>${ic.plus}Add question</button></div>
+    </div>`;
+  } else if (B.step === 2) {
+    inner = `<div class="grid g-main"><div class="stack">
+      <div><h2 style="font-size:22px">Coverage and timeline</h2><p class="muted" style="margin:2px 0 0">How many independent SavoScout responses you need, and by when. More responses make it easier to spot agreement and contradiction.</p></div>
+      <div class="field"><label for="b-resp">Independent SavoScout responses</label><input class="in num" id="b-resp" type="number" min="10" max="5000" step="10" data-b="responses" data-rerender="1" value="${B.responses}"></div>
+      <div class="field"><span class="flabel">Timeframe</span><div class="chips">${TIMEFRAMES.map(t => `<button class="chipbtn ${B.timeframe === t[0] ? 'on' : ''}" data-act="settf" data-v="${t[0]}">${t[1]}</button>`).join('')}</div></div>
+      <div class="note">${ic.info}<span><b>Timeline urgency.</b> Faster timeframes raise the VeriPoints reward so more SavoScouts take the task quickly.</span></div>
+    </div>
+    <div class="card" style="align-self:start;background:var(--paper)"><h2 style="font-size:16px;margin-bottom:8px">Estimated cost</h2>
+      <div class="kv"><span>SavoScout rewards (${fmt(B.responses)} × ${money(P.rate)})</span><b class="num">${money(P.rewards)}</b></div>
+      <div class="kv"><span>Verification (${money(VERIFY_FEE)} each)</span><b class="num">${money(P.verify)}</b></div>
+      <div class="kv"><span>Platform fee</span><b class="num">${money(PLATFORM_FEE)}</b></div>
+      <div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Estimated total</span><b class="num">${money(P.total)}</b></div>
+      <div class="kv"><span>Estimated completion</span><b>${dt(Date.now() + tf(B.timeframe)[2] * 86400000)}</b></div>
+      <div class="kv"><span>Reward shown to each SavoScout</span><b class="num">${pts(P.rewardPts)}</b></div>
+      <p class="faint" style="font-size:12px;margin:8px 0 0">Payment is taken when the investigation is deployed and held until responses are verified. Rates are placeholders for the MVP.</p></div></div>`;
+  } else {
+    inner = `<div class="grid g-main"><div class="stack">
+      <div><h2 style="font-size:22px">Review and deploy</h2><p class="muted" style="margin:2px 0 0">Check the investigation before the Verisavo agent sends it to SavoScouts.</p></div>
+      <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Investigation summary</h2>
+        ${B.gap ? `<div class="kv"><span>Intelligence Gap</span><b style="text-align:right">${esc(B.gap)}</b></div>` : ''}<div class="kv"><span>Objective</span><b style="text-align:right">${esc(B.ai || '—')}</b></div>
+        <div class="kv"><span>Investigation name</span><b>${esc(B.title)}</b></div><div class="kv"><span>Industry</span><b>${esc(B.industry || '—')}</b></div><div class="kv"><span>Target country</span><b>${esc(B.country)}</b></div>
+        <div class="kv"><span>Target regions</span><div class="tags">${B.regions.map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div></div><div class="kv"><span>Collection point</span><b>${esc(B.location || '—')}</b></div>
+        <div class="kv"><span>Evidence questions</span><b class="num">${B.questions.length}</b></div><div class="kv"><span>Expected responses</span><b class="num">${fmt(B.responses)}</b></div>
+        <div class="kv"><span>Timeframe</span><b>${tf(B.timeframe)[1]}</b></div><div class="kv"><span>GPS verification radius</span><b>100 metres</b></div></div>
+      <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Pricing summary</h2><div class="kv"><span>Platform fee</span><b class="num">${money(PLATFORM_FEE)}</b></div><div class="kv"><span>Evidence collection cost</span><b class="num">${money(P.collection)}</b></div><div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Estimated total</span><b class="num">${money(P.total)}</b></div></div>
+      <div class="note">${ic.card}<span>Payment is not taken in this MVP. Deploying sends the task to SavoScouts straight away.</span></div>
+    </div>
+    <div class="stack" style="align-self:start">
+    <div class="card stack"><h2 style="font-size:16px">What SavoScouts receive</h2>
+      <div class="wa-prev"><div class="wa-b">${fmtMsg(`*New job available near you*\n${B.title || 'Your investigation'}\nLocation: ${B.location || B.regions[0] || B.country || '—'}\nTime: about ${Math.max(5, Math.round(B.questions.length * 1.5 + 4))} min\nReward: *${fmt(P.rewardPts, 2)} VeriPoints* after verification`)}<div class="wa-btns"><span class="wa-btn" style="text-align:center">View details</span><span class="wa-btn" style="text-align:center">Accept job</span></div></div></div>
+      <div class="req"><div>${ic.send}The Verisavo agent sends it on WhatsApp to ${arr('scouts').filter(c => c.country === B.country && B.regions.includes(c.city)).length || 'registered'} SavoScouts in ${esc(B.regions.join(', ') || 'your regions')}</div><div>${ic.pin}They accept, confirm their location and answer each question</div><div>${ic.shield}Automatic checks run, then your team verifies each response</div><div>${ic.gift}VeriPoints are released only for verified responses</div></div></div>
+    <div class="card" style="background:var(--paper)"><h2 style="font-size:16px;margin-bottom:8px">Verification layers</h2>
+      <div class="req">${['GPS validation within 100 m', 'Duplicate detection', 'Submission consistency analysis', 'Media validation', 'Scout reputation check', 'Review by your team before VeriPoints are released'].map(t => `<div>${ic.checkc}${t}</div>`).join('')}</div></div></div></div>`;
+  }
+  const can = [B.title.trim() && B.country && B.regions.length, B.questions.length && B.questions.every(q => q.text.trim()), B.responses >= 10, true][B.step];
+  const foot = `<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px">
+    ${B.step ? `<button class="btn ghost" data-act="bstep" data-v="${B.step - 1}">Back</button>` : `<button class="btn ghost" data-go="c-surveys">Cancel</button>`}
+    ${B.step < 3 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · ${money(P.total)}</button>`}</div>
+    ${!can && B.step === 0 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add an investigation name, a country and at least one region to continue.</p>' : ''}
+    ${!can && B.step === 1 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add at least one question, and give every question a statement.</p>' : ''}`;
+  return shell(r, B.id ? 'Edit investigation' : 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${inner}${foot}</div>`);
+}
+function qEditor(q, i) {
+  const opts = (q.type === 'single' || q.type === 'multi') ? `<div class="stack" style="gap:6px">${(q.options || []).map((o, j) => `<div class="opt"><span class="faint" style="width:18px">${q.type === 'single' ? '○' : '☐'}</span><input class="in" id="qo-${q.id}-${j}" aria-label="Option ${j + 1}" data-qo="${i}:${j}" value="${esc(o)}"><button class="iconbtn" data-act="delopt" data-v="${i}:${j}" aria-label="Remove option">${ic.x}</button></div>`).join('')}<button class="link" data-act="addopt" data-v="${i}" style="justify-self:start">${ic.plus}Add option</button></div>` : '';
+  const prev = {short: 'Short answer text', paragraph: 'Long answer text', number: 'Number' + (q.unit ? ' (' + q.unit + ')' : ''), scale: 'Scale from 1 (low) to 5 (high)', rating: '★★★★★', date: 'DD/MM/YYYY', photo: 'Photo upload (max 50 MB)'}[q.type] || '';
+  return `<div class="qcard"><div class="row between"><span class="faint" style="font-size:12px">Question ${i + 1}</span><div class="tools"><button class="iconbtn" data-act="dupq" data-v="${i}" aria-label="Duplicate">${ic.copy}</button><button class="iconbtn del" data-act="delq" data-v="${i}" aria-label="Delete">${ic.trash}</button></div></div>
+    <div class="grid" style="grid-template-columns:minmax(0,1fr) 170px;gap:8px"><input class="in" id="qt-${q.id}" aria-label="Question statement" data-q="${i}:text" placeholder="Question statement" value="${esc(q.text)}"><select class="in" id="qy-${q.id}" aria-label="Answer type" data-q="${i}:type" data-rerender="1">${QTYPES.map(t => `<option value="${t[0]}" ${q.type === t[0] ? 'selected' : ''}>${t[1]}</option>`).join('')}</select></div>
+    ${q.type === 'number' ? `<input class="in" id="qu-${q.id}" style="max-width:220px" aria-label="Unit" data-q="${i}:unit" placeholder="Unit, for example GHS per kg" value="${esc(q.unit || '')}">` : ''}
+    ${opts || `<span class="faint" style="font-size:13px">${prev}</span>`}</div>`;
+}
+const newQ = (type = 'short', text = '', options) => ({id: uid('q'), type, text, options: options || (type === 'single' || type === 'multi' ? ['Option 1', 'Option 2'] : undefined)});
+function templateQs(desc) {
+  const d = desc.toLowerCase(), m = (desc.match(/\b(onion|maize|rice|fertili[sz]er|seed|tomato|cement|solar|soap|oil|sugar|flour|beans|yam|cassava|lantern|battery|detergent|product)\w*/i) || ['product'])[0];
+  const out = [newQ('single', 'What type of location are you collecting data from?', ['Open market', 'Retail shop', 'Wholesale store', 'Supermarket'])];
+  out.push(newQ('short', 'What is the name of the market or business?'));
+  { const q = newQ('number', `What is the current selling price of ${m}?`); q.unit = 'per kg'; q.short = 'price'; out.push(q); }
+  out.push(newQ('single', `Is ${m} available at this location today?`, ['Yes', 'No', 'Limited availability']));
+  out.push(newQ('single', 'How has the price changed in the last month?', ['Increased', 'Decreased', 'Stayed the same', 'Not sure']));
+  out.push(newQ('scale', 'How strong is customer demand for this product?'));
+  if (/supplier|supply|source/.test(d)) out.push(newQ('single', 'Where does the seller usually buy from?', ['Local farmers', 'Distributors', 'Imported', 'Not sure']));
+  out.push(newQ('photo', 'Take a photo of the shelf or display showing the product and price.'));
+  return out;
+}
+
+/* ================= SCOUT · WHATSAPP ONLY ================= */
+const AGENT_NO = '+233 20 555 0142';
+const loc = (s) => s.location || (s.regions || [])[0] || s.country;
+const dur = (s) => Math.max(5, Math.round((s.questions || []).length * 1.5 + 4));
+function recSurveys() {
+  const sc = myScout() || {}; const done = new Set(mySubs().map(x => x.surveyId));
+  return surveys().filter(s => s.status === 'active' && !done.has(s.id)).sort((a, b) => (b.country === sc.country) - (a.country === sc.country) || ((b.regions || []).includes(sc.city)) - ((a.regions || []).includes(sc.city)) || b.createdAt - a.createdAt);
+}
+
+/* ---------- registration and WhatsApp linking (web, from the Figma flow) ---------- */
+let J = null;
+const JSTEPS = 7;
+function jFresh() { J = {step: -1, name: '', email: '', phone: '', dob: '', country: 'Ghana', city: 'Tamale', idType: 'National ID card', idNo: '', idFile: '', ref: 'VS-' + Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + Math.floor(10 + Math.random() * 89), link: 'idle'}; }
+const jChecks = [() => J.name.trim().length > 2 && /.+@.+\..+/.test(J.email), () => J.phone.replace(/\D/g, '').length >= 9, () => J.dob && (Date.now() - new Date(J.dob)) / 31557600000 >= 18, () => J.country && J.city, () => J.idType, () => J.idNo.trim().length >= 5, () => !!J.idFile];
+const jValid = () => J.step >= 0 && J.step < JSTEPS ? jChecks[J.step]() : true;
+function joinView() {
+  if (!J) jFresh();
+  let inner;
+  if (J.step === -1) {
+    inner = `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><img class="logo-light" src="${LOGO}" alt="Verisavo" style="height:28px"><img class="logo-dark" src="${LOGOW}" alt="Verisavo" style="height:28px">
+      <h2 style="font-size:28px">Welcome to the Verisavo Scout Network</h2><p class="muted" style="margin:0">You have been invited to contribute verified market evidence in your area. Once you register, all your jobs come to you on WhatsApp.</p>
+      <div class="perks" style="width:100%"><div>${ic.gift}Earn rewards for verified work</div><div>${ic.pin}Contribute local knowledge</div><div>${ic.store}Support businesses in your market</div><div>${ic.medal}Build your contributor reputation</div></div>
+      <button class="btn" style="width:100%" data-act="jstep" data-v="0">Accept invitation</button>
+      ${SIDE ? (EXIT ? `<button class="link" data-act="exit">${EXIT}</button>` : '') : '<button class="link" data-go="c-overview">Back to the client view</button>'}</div>`;
+  } else if (J.step < JSTEPS) {
+    const qs = [
+      ['What is your full name?', 'Use the name on your ID.', `<input class="in" id="j-name" data-j="name" placeholder="Full name" value="${esc(J.name)}" autocomplete="name"><input class="in" id="j-email" data-j="email" placeholder="Email address" value="${esc(J.email)}" autocomplete="email">`],
+      ['What is your WhatsApp number?', 'Jobs, questions and payments all happen in WhatsApp. Include your country code.', `<input class="in" id="j-phone" data-j="phone" type="tel" placeholder="+233 24 123 4567" value="${esc(J.phone)}" autocomplete="tel">`],
+      ['When were you born?', 'Scouts must be 18 or older.', `<input class="in" type="date" id="j-dob" data-j="dob" value="${esc(J.dob)}">`],
+      ['Where do you live?', 'We use this to send you jobs nearby.', `<select class="in" id="j-country" data-j="country">${Object.keys(COUNTRIES).map(c => `<option ${J.country === c ? 'selected' : ''}>${c}</option>`).join('')}</select><select class="in" id="j-city" data-j="city">${(COUNTRIES[J.country] || []).map(c => `<option ${J.city === c ? 'selected' : ''}>${c}</option>`).join('')}</select>`],
+      ['Which ID will you use?', 'Identity verification keeps the network trustworthy.', `<div class="stack" style="gap:8px">${['National ID card', 'Passport', "Driver's licence", "Voter's card"].map(t => `<label class="choice ${J.idType === t ? 'on' : ''}"><input type="radio" name="idt" data-j="idType" value="${t}" ${J.idType === t ? 'checked' : ''}>${t}</label>`).join('')}</div>`],
+      ['What is your ID number?', 'Only used for identity verification.', `<input class="in" id="j-idno" data-j="idNo" placeholder="ID number" value="${esc(J.idNo)}">`],
+      ['Can you upload a clear photo of your ID?', 'Make sure all details are visible and easy to read.', J.idFile ? `<div class="file">${ic.camera}<span style="flex:1;min-width:0;overflow-wrap:anywhere">${esc(J.idFile)}</span><button class="iconbtn" data-act="jclearfile" aria-label="Remove">${ic.x}</button></div>` : `<label class="drop">${ic.upload}<span>Upload file</span><span class="faint" style="font-size:12px">JPG or PNG. The MVP keeps only the file name.</span><input type="file" accept="image/*" id="j-file"></label>`],
+    ];
+    const [t, sub, f] = qs[J.step];
+    inner = `<div class="prog">${Array.from({length: JSTEPS}, (_, i) => `<i class="${i <= J.step ? 'on' : ''}"></i>`).join('')}<span class="faint num" style="font-size:12px;margin-left:6px">${J.step + 1}/${JSTEPS}</span></div>
+      <div style="display:grid;gap:4px;margin-top:20px"><h2 style="font-size:24px">${t}</h2><span class="muted" style="font-size:13px">${sub}</span></div>
+      <div class="stack">${f}</div>
+      <div class="row"><button class="btn ghost" data-act="jstep" data-v="${J.step - 1}">Previous</button><button class="btn" id="jnext" data-act="jstep" data-v="${J.step + 1}" ${jValid() ? '' : 'disabled'}>${J.step === JSTEPS - 1 ? 'Continue to WhatsApp' : 'Continue'}</button></div>`;
+  } else {
+    inner = J.link === 'idle' ? `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><span class="ring pri">${ic.send}</span><h2 style="font-size:24px">Connect your WhatsApp</h2>
+        <p class="muted" style="margin:0">Send this reference ID from <b>${esc(J.phone)}</b> to the Verisavo agent on WhatsApp. It links your number to your scout account.</p>
+        <div class="card" style="width:100%;display:grid;gap:8px"><span class="faint" style="font-size:12px">Your reference ID</span><b class="num" style="font-size:26px;letter-spacing:.08em">${J.ref}</b><span class="faint" style="font-size:12px">Send to ${AGENT_NO}</span></div>
+        <button class="btn" style="width:100%" data-act="jlink">${ic.send}Open WhatsApp and send ID</button><span class="faint" style="font-size:12px">In this MVP the WhatsApp step is simulated inside the page.</span></div>`
+      : J.link === 'linking' ? `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><span class="pulse"></span><h2 style="font-size:22px">Connecting WhatsApp</h2><p class="muted" style="margin:0">Waiting for your reference ID to arrive…</p></div>`
+      : `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><span class="ring ok">${ic.check}</span><h2 style="font-size:24px">WhatsApp connected</h2><p class="muted" style="margin:0">${esc(J.phone)} is linked to your scout account. Your jobs, answers and payouts now happen in WhatsApp.</p>
+        <button class="btn" style="width:100%" data-act="jfinish">Open WhatsApp chat</button></div>`;
+  }
+  return `<div class="onb"><div class="box">${inner}</div></div>`;
+}
+
+/* ---------- WhatsApp conversation engine ---------- */
+let W = null, typing = false;
+const wKey = () => 'vs-wa-' + S.me;
+function wLoad() {
+  if (W && W.me === S.me) return;
+  let o = null; try { o = JSON.parse(localStorage.getItem(wKey()) || 'null'); } catch (e) {}
+  W = o && o.msgs ? o : {msgs: [], cs: {mode: 'idle'}, seen: null}; W.me = S.me;
+}
+function wSave() { try { localStorage.setItem(wKey(), JSON.stringify({msgs: W.msgs.slice(-150), cs: W.cs, seen: W.seen})); } catch (e) {} }
+const say = (text, buttons, extra = {}) => W.msgs.push({from: 'agent', text, buttons: buttons || null, t: Date.now(), ...extra});
+const mine = (text, extra = {}) => W.msgs.push({from: 'me', text, t: Date.now(), ...extra});
+function reply(fn, delay = 500) { typing = true; render(); setTimeout(() => { typing = false; fn(); wSave(); render(); }, delay); }
+const MENU = () => [{l: 'Find jobs', a: 'jobs'}, {l: 'My balance', a: 'balance'}, {l: 'My jobs', a: 'myjobs'}, {l: 'Withdraw', a: 'withdraw'}, {l: 'Help', a: 'help'}];
+const first = () => (myScout() || {name: 'there'}).name.split(' ')[0];
+
+function waSync() {
+  if (!myScout() || !S.loaded) return false;
+  wLoad();
+  const ms = mySubs(), act = surveys().filter(s => s.status === 'active'), sc = myScout();
+  if (!W.seen) {
+    W.seen = {subs: {}, surveys: {}};
+    ms.forEach(s => W.seen.subs[s.id] = s.status);
+    say(`Hi ${first()}, welcome to *Verisavo SavoScouts*.\nI'm your Verisavo agent. I'll send you paid jobs near *${sc.city}*, guide you through each one, and tell you as soon as your work is verified.\n\nReply *MENU* at any time.`, MENU());
+    const near = recSurveys().filter(s => s.country === sc.country).slice(0, 1);
+    act.forEach(s => W.seen.surveys[s.id] = 1);
+    near.forEach(s => jobAlert(s));
+    wSave(); return true;
+  }
+  let changed = false;
+  ms.forEach(s => {
+    const prev = W.seen.subs[s.id];
+    if (prev === s.status) return;
+    W.seen.subs[s.id] = s.status;
+    if (prev && s.status === 'approved') { say(`*Job verified* ✓\n${s.surveyTitle}\n+${fmt(s.reward, 2)} VeriPoints added to your balance.\nAvailable now: *${fmt(wallet().available, 2)} pts*`, [{l: 'Find another job', a: 'jobs'}, {l: 'My balance', a: 'balance'}]); changed = true; }
+    else if (prev && s.status === 'rejected') { say(`*Job not approved*\n${s.surveyTitle}\nReason: ${s.reason || 'did not meet the brief'}. No points were added.`, [{l: 'Find jobs', a: 'jobs'}]); changed = true; }
+  });
+  act.forEach(s => { if (!W.seen.surveys[s.id]) { W.seen.surveys[s.id] = 1; if (s.country === sc.country && !ms.some(x => x.surveyId === s.id)) { jobAlert(s); changed = true; } } });
+  if (changed) wSave();
+  return changed;
+}
+function jobAlert(s) { say(`*New job available near you*\n${s.title}\nLocation: ${loc(s)}\nTime: about ${dur(s)} min\nReward: *${fmt(s.rewardPts, 2)} VeriPoints* after verification`, [{l: 'View details', a: 'job', v: s.id}, {l: 'Accept job', a: 'accept', v: s.id}]); }
+
+function curQ() { const c = W.cs; const s = S.surveys[c.sid]; return s && (s.questions || [])[c.qi]; }
+function askNext() {
+  const c = W.cs, s = S.surveys[c.sid]; if (!s) { c.mode = 'idle'; return say('That job has closed. Reply *JOBS* to see others.', MENU()); }
+  const qs = s.questions || [];
+  c.qi++;
+  if (c.qi < qs.length) return ask(qs[c.qi], c.qi, qs.length);
+  if (!c.media.length) { c.needPhoto = true; return say('Almost done. Please send *at least one photo* of the product on display. Tap the camera button below.'); }
+  review();
+}
+function ask(q, i, n) {
+  const h = `*Question ${i + 1} of ${n}*\n${q.text}`;
+  if (q.type === 'single') return say(h, q.options.map(o => ({l: o, a: 'ans', v: o})));
+  if (q.type === 'multi') { W.cs.multi = []; return say(h + '\n_Tap all that apply, then Done._', [...q.options.map(o => ({l: o, a: 'tog', v: o})), {l: 'Done', a: 'multidone'}], {multi: true}); }
+  if (q.type === 'scale') return say(h + '\n_1 = low, 5 = high_', [1, 2, 3, 4, 5].map(v => ({l: String(v), a: 'ans', v})));
+  if (q.type === 'rating') return say(h, [1, 2, 3, 4, 5].map(v => ({l: '★'.repeat(v), a: 'ans', v})));
+  if (q.type === 'number') return say(h + `\n_Reply with a number${q.unit ? ' (' + q.unit + ')' : ''}._`);
+  if (q.type === 'date') return say(h + '\n_Reply with a date, for example 14/07/2026._');
+  if (q.type === 'photo') return say(h + '\n_Send a photo using the camera button below._');
+  return say(h + '\n_Type your answer._');
+}
+function record(val, shown) {
+  const q = curQ(); if (!q) return;
+  W.cs.answers[q.id] = val; mine(String(shown ?? val));
+  reply(askNext);
+}
+function review() {
+  const c = W.cs, s = S.surveys[c.sid];
+  c.stage = 'review';
+  const lines = (s.questions || []).map((q, i) => { let a = c.answers[q.id]; if (Array.isArray(a)) a = a.join(', '); return `${i + 1}. ${q.text}\n→ *${a ?? '—'}*`; }).join('\n');
+  say(`*Review your answers*\n${s.title}\n\n${lines}\n\nPhotos: ${c.media.length}\nLocation: confirmed at ${loc(s)}`, [{l: 'Submit', a: 'submit'}, {l: 'Start again', a: 'restart'}, {l: 'Cancel job', a: 'cancel'}]);
+}
+async function waSubmit() {
+  const c = W.cs, s = S.surveys[c.sid], sc = myScout(); if (!s || !sc) return;
+  mine('Submit');
+  typing = true; render();
+  await new Promise(r => setTimeout(r, 700));
+  say('Checking your submission…\nGPS location ✓\nDuplicate check ✓\nAnswer consistency ✓');
+  render(); await new Promise(r => setTimeout(r, 900));
+  const id = uid('sb');
+  const doc = {surveyId: c.sid, surveyTitle: s.title, scoutId: S.me, scoutName: sc.name, region: (s.regions || []).includes(sc.city) ? sc.city : (s.regions || [])[0] || sc.city, country: s.country,
+    answers: c.answers, media: c.media, reward: s.rewardPts, status: 'pending', createdAt: Date.now(), channel: 'whatsapp', checks: {gps: true, duplicate: mySubs().some(x => x.surveyId === c.sid), consistency: true}};
+  W.seen.subs[id] = 'pending';
+  W.cs = {mode: 'idle'};
+  typing = false;
+  say(`*Job submitted* ✓\nYour contribution is under review.\n*${fmt(s.rewardPts, 2)} VeriPoints* pending. I'll message you here as soon as it is verified, usually within 24 to 48 hours.`, [{l: 'Find another job', a: 'jobs'}, {l: 'My jobs', a: 'myjobs'}]);
+  wSave(); render();
+  await put('submissions', id, doc);
+  patch('scouts', S.me, {lastActive: Date.now()});
+}
+
+function waAct(a, v) {
+  const c = W.cs, w = wallet();
+  if (a === 'menu') return reply(() => say('What would you like to do?', MENU()));
+  if (a === 'jobs') {
+    if (c.mode === 'job') return reply(() => say(`You have a job in progress: *${S.surveys[c.sid]?.title || ''}*. Finish or cancel it first.`, [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
+    const list = recSurveys().slice(0, 5);
+    return reply(() => list.length ? say(`*Jobs near you*\n\n${list.map((s, i) => `${i + 1}. *${s.title}*\n${loc(s)} · ${fmt(s.rewardPts, 2)} pts · ~${dur(s)} min`).join('\n\n')}\n\nChoose a job to see the details.`, list.map((s, i) => ({l: `${i + 1}. ${s.title}`, a: 'job', v: s.id}))) : say('There are no open jobs near you right now. I will message you when a new one is published.', MENU()));
+  }
+  if (a === 'job') {
+    const s = S.surveys[v]; if (!s) return;
+    return reply(() => say(`*${s.title}*\n${s.request || ''}\n\n*What to do*\n${s.brief || 'Answer the questions in order.'}\n\nLocation: ${loc(s)}${s.regions?.length ? ' (' + s.regions.join(', ') + ')' : ''}\nQuestions: ${(s.questions || []).length}\nTime: about ${dur(s)} min\nReward: *${fmt(s.rewardPts, 2)} VeriPoints* after verification\nDeadline: ${dt(s.deadline)}\n\nYou must be within 100 m of the location and send at least one photo.`, [{l: 'Accept job', a: 'accept', v: s.id}, {l: 'Back to jobs', a: 'jobs'}]));
+  }
+  if (a === 'accept') {
+    const s = S.surveys[v]; if (!s || s.status !== 'active') return reply(() => say('Sorry, that job is no longer open.', MENU()));
+    if (c.mode === 'job' && c.sid !== v) return reply(() => say('Finish or cancel your current job first.', [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
+    mine('Accept job');
+    W.cs = {mode: 'job', sid: v, qi: -1, answers: {}, media: [], located: false};
+    return reply(() => say(`*Job accepted* ✓\nLet's get started. Are you at *${loc(s)}*? Share your location so I can confirm you are within 100 m.`, [{l: 'Share location', a: 'loc'}]));
+  }
+  if (a === 'loc') {
+    const s = S.surveys[c.sid]; if (!s) return;
+    mine('Location shared', {kind: 'location', place: loc(s)}); c.located = true;
+    return reply(() => { say(`Location confirmed ✓\nYou are within 100 m of ${loc(s)}.\n_Simulated in this MVP._`); askNext(); }, 900);
+  }
+  if (a === 'resume') { const q = curQ(); return reply(() => q ? ask(q, c.qi, (S.surveys[c.sid].questions || []).length) : c.located ? review() : say('Share your location to begin.', [{l: 'Share location', a: 'loc'}])); }
+  if (a === 'ans') { const q = curQ(); if (!q) return; return record(q.type === 'scale' || q.type === 'rating' ? Number(v) : v, q.type === 'rating' ? '★'.repeat(v) : v); }
+  if (a === 'tog') { const m = new Set(c.multi || []); m.has(v) ? m.delete(v) : m.add(v); c.multi = [...m]; wSave(); return render(); }
+  if (a === 'multidone') { if (!(c.multi || []).length) return toast('Choose at least one option.'); const val = c.multi; c.multi = null; return record(val, val.join(', ')); }
+  if (a === 'submit') return waSubmit();
+  if (a === 'restart') { mine('Start again'); W.cs = {mode: 'job', sid: c.sid, qi: -1, answers: {}, media: [], located: true}; return reply(askNext); }
+  if (a === 'cancel') { mine('Cancel job'); W.cs = {mode: 'idle'}; return reply(() => say('Job cancelled. Nothing was submitted.', MENU())); }
+  if (a === 'balance') return reply(() => say(`*Your balance*\nAvailable: *${fmt(w.available, 2)} pts* (about ${money(w.available * PT_USD)})\nPending verification: ${fmt(w.pending, 2)} pts\nTotal earned: ${fmt(w.earned, 2)} pts\nWithdrawn: ${fmt(w.withdrawn, 2)} pts`, [{l: 'Withdraw', a: 'withdraw'}, {l: 'Find jobs', a: 'jobs'}]));
+  if (a === 'myjobs') {
+    const ms = mySubs().slice(0, 6), lab = {pending: 'Under review', approved: 'Verified ✓', rejected: 'Not approved'};
+    return reply(() => ms.length ? say(`*Your recent jobs*\n\n${ms.map(s => `*${s.surveyTitle}*\n${lab[s.status]} · ${fmt(s.reward, 2)} pts · ${dt(s.createdAt)}`).join('\n\n')}`, [{l: 'Find jobs', a: 'jobs'}, {l: 'My balance', a: 'balance'}]) : say('You have not submitted any jobs yet.', [{l: 'Find jobs', a: 'jobs'}]));
+  }
+  if (a === 'withdraw') {
+    if (c.mode === 'job') return reply(() => say('Finish or cancel your current job first.', [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
+    if (w.available < 10) return reply(() => say(`Withdrawals start at *10 points*. You have ${fmt(w.available, 2)} available.`, [{l: 'Find jobs', a: 'jobs'}]));
+    W.cs = {mode: 'wd', stage: 'amount'};
+    return reply(() => say(`How many points would you like to withdraw?\nAvailable: *${fmt(w.available, 2)} pts*\n_Reply with a number._`));
+  }
+  if (a === 'wdm') { mine(v); c.method = v; c.stage = 'acct'; return reply(() => say(v === 'Bank transfer' ? 'Reply with your bank name and account number.' : 'Reply with the phone number to pay.')); }
+  if (a === 'wdok') {
+    mine('Confirm'); const amt = c.amount, method = c.method + ' · ••' + String(c.acct).replace(/\D/g, '').slice(-4);
+    W.cs = {mode: 'idle'};
+    put('transactions', uid('tx'), {scoutId: S.me, kind: 'withdrawal', amountPts: amt, method, status: 'pending', createdAt: Date.now(), channel: 'whatsapp'});
+    return reply(() => say(`*Payout requested* ✓\n${fmt(amt, 2)} pts to ${method}.\nWe will message you when it has been sent.`, MENU()));
+  }
+  if (a === 'help') return reply(() => say('*How it works*\n1. I send you jobs near you.\n2. Accept a job and share your location at the market.\n3. Answer the questions and send photos.\n4. The client verifies your work and I credit your points.\n\n*Commands*\nMENU · JOBS · BALANCE · MY JOBS · WITHDRAW · HELP', MENU()));
+}
+function waText(txt) {
+  const t = txt.trim(); if (!t) return;
+  const c = W.cs, low = t.toLowerCase();
+  const cmd = {menu: 'menu', hi: 'menu', hello: 'menu', start: 'menu', jobs: 'jobs', job: 'jobs', 'find jobs': 'jobs', balance: 'balance', 'my balance': 'balance', 'my jobs': 'myjobs', withdraw: 'withdraw', help: 'help', cancel: 'cancel'}[low];
+  if (c.mode === 'job' && c.located && !cmd) {
+    const q = curQ();
+    if (c.needPhoto || (q && q.type === 'photo')) { mine(t); return reply(() => say('Please send a *photo* using the camera button below.')); }
+    if (c.stage === 'review') { mine(t); return reply(() => say('Choose an option below.', [{l: 'Submit', a: 'submit'}, {l: 'Start again', a: 'restart'}, {l: 'Cancel job', a: 'cancel'}])); }
+    if (q && ['single', 'multi', 'scale', 'rating'].includes(q.type)) {
+      const hit = (q.options || ['1', '2', '3', '4', '5']).find(o => String(o).toLowerCase() === low);
+      if (hit && q.type !== 'multi') return record(q.type === 'single' ? hit : Number(hit));
+      mine(t); return reply(() => say('Please tap one of the options above.'));
+    }
+    if (q && q.type === 'number') { const n = parseFloat(t.replace(/[^0-9.\-]/g, '')); if (isNaN(n)) { mine(t); return reply(() => say('That does not look like a number. Please reply with digits only, for example 18.50.')); } return record(n, t); }
+    if (q) return record(t);
+  }
+  if (c.mode === 'wd' && !cmd) {
+    if (c.stage === 'amount') { const n = parseFloat(t.replace(/[^0-9.]/g, '')), w = wallet(); mine(t); if (isNaN(n) || n < 10 || n > w.available) return reply(() => say(`Please reply with a number between 10 and ${fmt(w.available, 2)}.`)); c.amount = Math.round(n * 100) / 100; c.stage = 'method'; return reply(() => say('Where should we send it?', [{l: 'Mobile money', a: 'wdm', v: 'Mobile money'}, {l: 'Bank transfer', a: 'wdm', v: 'Bank transfer'}, {l: 'Airtime', a: 'wdm', v: 'Airtime'}])); }
+    if (c.stage === 'acct') { mine(t); if (t.replace(/\D/g, '').length < 6) return reply(() => say('Please send a full phone or account number.')); c.acct = t; c.stage = 'confirm'; return reply(() => say(`Withdraw *${fmt(c.amount, 2)} pts* (about ${money(c.amount * PT_USD)}) to ${c.method} ending ${t.replace(/\D/g, '').slice(-4)}?`, [{l: 'Confirm', a: 'wdok'}, {l: 'Cancel', a: 'cancel'}])); }
+  }
+  mine(t);
+  if (cmd) { if (cmd === 'cancel') { W.cs = {mode: 'idle'}; return reply(() => say('Cancelled.', MENU())); } W.msgs.pop(); mine(t); return waAct(cmd); }
+  reply(() => say("Sorry, I didn't understand that. Choose an option:", MENU()));
+}
+function waPhoto(f) {
+  const c = W.cs;
+  if (c.mode !== 'job' || !c.located) { mine('Photo', {kind: 'image', name: f.name}); return reply(() => say('Thanks. Photos are only needed during a job. Accept a job first.', [{l: 'Find jobs', a: 'jobs'}])); }
+  c.media.push({name: f.name, size: f.size, kind: 'photo'});
+  mine('', {kind: 'image', name: f.name});
+  const q = curQ();
+  if (q && q.type === 'photo') { c.answers[q.id] = f.name; return reply(askNext); }
+  if (c.needPhoto) { c.needPhoto = false; return reply(review); }
+  reply(() => say('Photo received ✓'));
+}
+
+/* ---------- WhatsApp view ---------- */
+const fmtMsg = (t) => esc(t).replace(/\*([^*\n]+)\*/g, '<b>$1</b>').replace(/(^|\s)_([^_\n]+)_/g, '$1<i>$2</i>').replace(/\n/g, '<br>');
+const hm = (t) => new Date(t).toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
+function waView(r) {
+  waSync();
+  const sc = myScout(), w = wallet(), c = W.cs;
+  const last = W.msgs.length - 1 - [...W.msgs].reverse().findIndex(m => m.from === 'agent');
+  const bubbles = W.msgs.map((m, i) => {
+    if (m.from === 'me') {
+      const inner = m.kind === 'location' ? `<div class="wa-loc">${ic.pin}<div><b>Location shared</b><div style="font-size:12px;opacity:.8">${esc(m.place)}</div></div></div>` : m.kind === 'image' ? `<div class="wa-img">${ic.camera}<span>${esc(m.name)}</span></div>` : fmtMsg(m.text);
+      return `<div class="wa-row me"><div class="wa-b me">${inner}<span class="wa-t">${hm(m.t)} <span class="wa-ticks">✓✓</span></span></div></div>`;
+    }
+    const live = i === last && !typing;
+    const btns = m.buttons ? `<div class="wa-btns">${m.buttons.map((b, j) => { const sel = m.multi && live && (c.multi || []).includes(b.v); return `<button class="wa-btn ${sel ? 'sel' : ''}" ${live ? `data-act="wa" data-m="${i}" data-v="${j}"` : 'disabled'}>${sel ? '✓ ' : ''}${esc(b.l)}</button>`; }).join('')}</div>` : '';
+    return `<div class="wa-row"><div class="wa-b">${fmtMsg(m.text)}<span class="wa-t">${hm(m.t)}</span>${btns}</div></div>`;
+  }).join('');
+  const body = `<div class="waw">
+    <div class="wa" aria-label="WhatsApp chat with the Verisavo agent">
+      <div class="wa-head"><span class="wa-av"><img src="data:image/png;base64,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" alt="" style="height:20px;width:auto"></span><div style="min-width:0"><b>Verisavo Agent</b><div style="font-size:12px;opacity:.8">SavoScout jobs · WhatsApp</div></div></div>
+      <div class="wa-body" id="wa-body">${bubbles}${typing ? '<div class="wa-row"><div class="wa-b wa-typing"><i></i><i></i><i></i></div></div>' : ''}</div>
+      <form class="wa-comp" id="waform"><label class="wa-cam" title="Send a photo" aria-label="Send a photo">${ic.camera}<input type="file" accept="image/*" id="wa-file"></label><input id="wa-in" placeholder="Message" autocomplete="off" ${S.canWrite ? '' : 'disabled'}><button class="wa-send" aria-label="Send">${ic.send}</button></form>
+    </div>
+    <div class="stack">
+      <div class="card stack"><div class="row" style="flex-wrap:nowrap"><div class="avatar">${initials(sc.name)}</div><div style="min-width:0"><b>${esc(sc.name)}</b><div class="faint" style="font-size:12px">${esc(sc.city)}, ${esc(sc.country)}</div></div><span class="pill ok" style="margin-left:auto">${ic.check}WhatsApp linked</span></div>
+        <div class="kv"><span>WhatsApp number</span><b class="num">${esc(sc.phone || '—')}</b></div><div class="kv"><span>Available points</span><b class="num">${fmt(w.available, 2)}</b></div><div class="kv"><span>Pending verification</span><b class="num">${fmt(w.pending, 2)}</b></div><div class="kv"><span>Jobs submitted</span><b class="num">${mySubs().length}</b></div></div>
+      <div class="note">${ic.info}<span>Scouts work only through WhatsApp in this MVP. This panel simulates the chat; in production the same messages go through the WhatsApp Business API. Try typing <b>JOBS</b>, <b>BALANCE</b> or <b>WITHDRAW</b>.</span></div>
+      <div class="row"><button class="btn ghost sm" data-act="wareset">Clear chat history</button></div>
+    </div></div>`;
+  return shell(r, 'SavoScout on WhatsApp', body);
+}
+
+/* ---------------- render ---------------- */
+function render() {
+  const r = route(), app = $('#app');
+  let html;
+  if (r.role === 'client') {
+    html = r.page === 'surveys' ? cSurveys(r) : r.page === 'survey' ? cSurvey(r) : r.page === 'builder' ? cBuilder(r) : cOverview(r);
+  } else {
+    if (!S.loaded && DB) html = shell(r, 'SavoScout on WhatsApp', '');
+    else if (!myScout()) html = joinView();
+    else html = waView(r);
+  }
+  const ae = document.activeElement, aid = ae && ae.id, sel = ae && 'selectionStart' in ae ? [ae.selectionStart, ae.selectionEnd] : null;
+  const wb0 = $('#wa-body'), nearBottom = !wb0 || wb0.scrollHeight - wb0.scrollTop - wb0.clientHeight < 80, prevTop = wb0 ? wb0.scrollTop : 0;
+  app.innerHTML = html;
+  const wb = $('#wa-body'); if (wb) { const n = W ? W.msgs.length + (typing ? 1 : 0) : 0; if (nearBottom || n !== render.n) wb.scrollTop = wb.scrollHeight; else wb.scrollTop = prevTop; render.n = n; }
+  if (aid) { const el = document.getElementById(aid); if (el) { el.focus(); if (sel && el.setSelectionRange) try { el.setSelectionRange(...sel); } catch (e) {} } }
+}
+function layer(html) { $('#layer').innerHTML = html; const f = $('#layer [data-act="close"].iconbtn, #layer input, #layer button'); f && f.focus(); }
+function closeLayer() { $('#layer').innerHTML = ''; }
+let tt = null;
+function toast(t) { let el = $('.toast'); if (!el) { el = document.createElement('div'); el.className = 'toast'; el.setAttribute('role', 'status'); document.body.appendChild(el); } el.textContent = t; clearTimeout(tt); tt = setTimeout(() => el.remove(), 3200); }
+
+/* ---------------- events ---------------- */
+document.addEventListener('click', async (e) => {
+  const stop = e.target.closest('[data-stop]'), t = e.target.closest('[data-go],[data-act],[data-tab]');
+  if (!t) return;
+  if (stop && t.classList.contains('modal-bg')) return;
+  if (t.dataset.go) { e.preventDefault(); return go(t.dataset.go); }
+  if (t.dataset.tab) { S.ui[t.dataset.tab] = t.dataset.v; return render(); }
+  const a = t.dataset.act, v = t.dataset.v, id = t.dataset.id;
+  if (a === 'exit') { try { window.parent.postMessage({vs: 'close-platform'}, '*'); } catch (e) {} }
+  else if (a === 'openside') { S.ui.sidebar = true; render(); }
+  else if (a === 'closeside') { S.ui.sidebar = false; render(); }
+  else if (a === 'close') { if (t.classList.contains('modal-bg') && e.target !== t) return; closeLayer(); }
+  else if (a === 'opensub') openSub(id);
+  else if (a === 'review') {
+    const x = S.submissions[id]; if (!x) return;
+    const data = {status: v, reviewedAt: Date.now()}; if (v === 'rejected') data.reason = ($('#rejReason') || {}).value || 'Did not meet the brief';
+    closeLayer(); await patch('submissions', id, data); toast(v === 'approved' ? `Verified. ${pts(x.reward)} released to ${x.scoutName}.` : 'Marked as not verified.');
+  }
+  else if (a === 'setstatus') { await patch('surveys', id, {status: v}); toast('Investigation ' + (v === 'active' ? 'resumed' : v) + '.'); }
+  /* builder */
+  else if (a === 'usegap') { const g = GAPS[Number(v)]; Object.assign(B, JSON.parse(JSON.stringify(g))); render(); toast('Prepared from the Intelligence Gap. Review and edit before deploying.'); }
+  else if (a === 'genbrief') genBrief(id);
+  else if (a === 'ref') openSub(id);
+  else if (a === 'toggleregion') { B.regions = B.regions.includes(v) ? B.regions.filter(x => x !== v) : [...B.regions, v]; render(); }
+  else if (a === 'bstep') { B.step = Number(v); render(); window.scrollTo(0, 0); }
+  else if (a === 'settf') { B.timeframe = v; render(); }
+  else if (a === 'addq') { B.questions.push(newQ()); render(); const ins = document.querySelectorAll('[data-q$=":text"]'); ins[ins.length - 1]?.focus(); }
+  else if (a === 'delq') { B.questions.splice(Number(v), 1); render(); }
+  else if (a === 'dupq') { const q = JSON.parse(JSON.stringify(B.questions[v])); q.id = uid('q'); B.questions.splice(Number(v) + 1, 0, q); render(); }
+  else if (a === 'addopt') { const q = B.questions[v]; q.options = [...(q.options || []), 'Option ' + ((q.options || []).length + 1)]; render(); }
+  else if (a === 'delopt') { const [i, j] = v.split(':').map(Number); B.questions[i].options.splice(j, 1); render(); }
+  else if (a === 'genq') genQuestions();
+  else if (a === 'saveDraft') saveSurvey('draft');
+  else if (a === 'publish') saveSurvey('active');
+  /* scout */
+  else if (a === 'jstep') { J.step = Number(v); render(); }
+  else if (a === 'jclearfile') { J.idFile = ''; render(); }
+  else if (a === 'jlink') { J.link = 'linking'; render(); setTimeout(() => { if (J) { J.link = 'done'; render(); } }, 1800); }
+  else if (a === 'jfinish') {
+    const doc = {name: J.name.trim(), email: J.email.trim(), phone: J.phone.trim(), dob: J.dob, country: J.country, city: J.city, idType: J.idType, idLast4: J.idNo.slice(-4), idFile: J.idFile, waRef: J.ref, waLinked: true, status: 'verified', joinedAt: Date.now(), lastActive: Date.now()};
+    J = null; W = null; try { localStorage.removeItem('vs-wa-' + S.me); } catch (e) {}
+    await put('scouts', S.me, doc); go('s-chat'); render();
+  }
+  else if (a === 'wa') { const m = W && W.msgs[Number(t.dataset.m)], b = m && m.buttons && m.buttons[Number(v)]; if (!b) return; if (b.a !== 'tog' && b.a !== 'multidone' && b.a !== 'accept' && b.a !== 'loc' && b.a !== 'submit' && b.a !== 'restart' && b.a !== 'cancel' && b.a !== 'wdok' && b.a !== 'wdm' && b.a !== 'ans') mine(b.l); waAct(b.a, b.v); }
+  else if (a === 'wareset') { W = null; try { localStorage.removeItem('vs-wa-' + S.me); } catch (e) {} render(); }
+});
+document.addEventListener('submit', (e) => {
+  if (e.target.id !== 'waform') return; e.preventDefault();
+  const inp = $('#wa-in'); if (!inp || !inp.value.trim() || typing) return;
+  const v = inp.value; inp.value = ''; waText(v);
+});
+document.addEventListener('input', (e) => {
+  const t = e.target, d = t.dataset;
+  if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
+  if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
+  if (d.b) { B[d.b] = d.b === 'responses' ? Math.max(0, Math.round(Number(t.value) || 0)) : t.value; if (d.rerender || B.step === 0) softRender(); return; }
+  if (d.q) { const [i, k] = d.q.split(':'); B.questions[i][k] = t.value; if (k === 'type') { const q = B.questions[i]; if ((t.value === 'single' || t.value === 'multi') && !(q.options || []).length) q.options = ['Option 1', 'Option 2']; render(); } else softRender(); return; }
+  if (d.qo) { const [i, j] = d.qo.split(':').map(Number); B.questions[i].options[j] = t.value; return; }
+  if (d.j) { J[d.j] = t.value; if (d.j === 'country') J.city = (COUNTRIES[t.value] || [])[0] || ''; if (t.tagName === 'SELECT' || t.type === 'radio') render(); else { const b = $('#jnext'); if (b) b.disabled = !jValid(); } return; }
+});
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.dataset.b || t.dataset.q) { if (t.tagName === 'SELECT') render(); }
+  if (t.id === 'j-file' && t.files[0]) { J.idFile = t.files[0].name; render(); }
+  if (t.id === 'wa-file' && t.files[0]) { if (!typing) waPhoto(t.files[0]); t.value = ''; }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && $('#layer').innerHTML) closeLayer();
+  if (e.key === 'Enter' && e.target.matches('[role="button"][data-go]')) go(e.target.dataset.go);
+});
+/* soft render: update only footer/summary state without replacing focused input text */
+let sr = null;
+function softRender() { clearTimeout(sr); sr = setTimeout(render, 250); }
+
+/* ---------------- actions ---------------- */
+async function genQuestions() {
+  const desc = (B.ai || '').trim() || B.title || 'market prices and availability';
+  const btn = $('#genq'); if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Generating…'; }
+  let qs = null;
+  if (SAMPLER) {
+    try {
+      const prompt = `You write field-survey questions for market scouts in ${B.country || 'an African market'} (${(B.regions || []).join(', ') || 'local markets'}). Industry: ${B.industry || 'general'}. The client wants to understand: ${desc}.
+Return JSON only: an array of 6 to 8 objects {"type": one of "short","paragraph","single","multi","number","scale","photo", "text": the question as a scout would read it, "options": array of 3-5 short options for single/multi only, "unit": unit text for number only}. Questions must be observable by a person standing in a market. Include exactly one photo question and at least one number question about price.`;
+      const out = await SAMPLER.json(prompt, {modelTier: 'quick'});
+      if (Array.isArray(out)) qs = out.filter(q => q && q.text && QTYPES.some(t => t[0] === q.type)).slice(0, 12).map(q => ({id: uid('q'), type: q.type, text: String(q.text), options: (q.type === 'single' || q.type === 'multi') ? (q.options || []).map(String).slice(0, 6) : undefined, unit: q.type === 'number' ? (q.unit || '') : undefined}));
+    } catch (e) { if (e && e.code === 'rate_limited') toast('Too many requests. Using the starter set instead.'); }
+  }
+  if (!qs || !qs.length) qs = templateQs(desc);
+  B.questions = [...B.questions, ...qs].slice(0, 20);
+  render(); toast(`${qs.length} questions added. Review and edit them before publishing.`);
+}
+async function saveSurvey(status) {
+  if (!B.title.trim()) { B.step = 0; render(); return toast('Add an investigation name first.'); }
+  const P = pricing(B.responses, B.timeframe), id = B.id || uid('sv'), prev = S.surveys[id] || {};
+  const doc = {title: B.title.trim(), industry: B.industry, country: B.country, regions: B.regions, location: B.location, brief: B.brief, questions: B.questions, target: B.responses, timeframe: B.timeframe,
+    rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), publishedAt: status === 'active' ? Date.now() : null,
+    deadline: status === 'active' ? Date.now() + tf(B.timeframe)[2] * 86400000 : null, request: B.ai || '', gap: B.gap || ''};
+  B.id = id;
+  await put('surveys', id, doc);
+  if (status === 'active') { B = null; go('c-survey-' + id); toast('Investigation deployed. The Verisavo agent is sending it to SavoScouts on WhatsApp.'); }
+  else { if (route().id !== id) go('c-builder-' + id); toast('Draft saved.'); }
+}
+/* ---------------- sample workspace (website preview, no shared database) ---------------- */
+function seed() {
+  if (Object.keys(S.surveys).length) return;
+  const H = 3600000, now = Date.now();
+  const names = ['Ama Mensah', 'Kwesi Boateng', 'Abena Owusu', 'Yaw Asante', 'Efua Darko', 'Kojo Appiah', 'Chidi Okeke', 'Ngozi Eze', 'Tunde Bello', 'Aisha Musa'];
+  names.forEach((n, i) => S.scouts['sc-' + i] = {name: n, country: i < 6 ? 'Ghana' : 'Nigeria', city: i < 6 ? (i % 2 ? 'Kumasi' : 'Tamale') : 'Lagos', status: 'verified', waLinked: true, joinedAt: now - (40 + i) * 86400000, lastActive: now - i * 5 * H, sample: true});
+  const mk = (id, g, extra) => {
+    const qs = templateQs(g.ai);
+    S.surveys[id] = {title: g.title, industry: g.industry, country: g.country, regions: g.regions, location: g.location, brief: g.brief, questions: qs, request: g.ai, gap: g.gap, rewardPts: 12, costTotal: 0, gpsRadius: 100, sample: true, ...extra};
+    return qs;
+  };
+  const sub = (sid, qs, i, scout, status, price, region) => {
+    const a = {};
+    qs.forEach(q => { if (q.type === 'number') a[q.id] = price; else if (q.type === 'single') a[q.id] = q.options[i % 5 === 4 ? 1 : 0]; else if (q.type === 'scale') a[q.id] = 3 + (i % 3 === 0 ? 1 : 0); else if (q.type === 'photo') a[q.id] = 'shelf-' + (i + 1) + '.jpg'; else a[q.id] = ['Kejetia stall ' + (i + 1), 'Adum shop ' + (i + 1), 'Bantama kiosk ' + (i + 1)][i % 3]; });
+    S.submissions['sbx' + sid + i] = {surveyId: sid, surveyTitle: S.surveys[sid].title, scoutId: 'sc-' + scout, scoutName: names[scout], region, country: S.surveys[sid].country, answers: a, media: [{name: 'shelf-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 12, status, reason: status === 'rejected' ? 'Location mismatch' : undefined, createdAt: now - (i * 7 + 2) * H, channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
+  };
+  const q1 = mk('svx1', GAPS[0], {status: 'active', target: 40, timeframe: '7d', createdAt: now - 3 * 86400000, publishedAt: now - 3 * 86400000, deadline: now + 4 * 86400000});
+  [41, 43, 40, 44, 42, 58, 41, 43, 45, 42, 44, 41, 43, 46].forEach((p, i) => sub('svx1', q1, i, i % 6, i === 5 ? 'rejected' : i > 10 ? 'pending' : 'approved', p, 'Kumasi'));
+  const q2 = mk('svx2', GAPS[1], {status: 'completed', target: 12, timeframe: '3d', createdAt: now - 12 * 86400000, publishedAt: now - 12 * 86400000, deadline: now - 9 * 86400000});
+  [1850, 1900, 1800, 2100, 1875, 1950, 1820, 1900, 1990, 1880, 1860, 1920].forEach((p, i) => sub('svx2', q2, i, 6 + i % 4, 'approved', p, 'Lagos'));
+  saveLocal();
+}
+
+/* ---------------- boot ---------------- */
+async function boot() {
+  loadLocal();
+  const use = window.claude && window.claude.use ? window.claude.use.bind(window.claude) : null;
+  if (!use) seed();
+  if (QS.get('gap') && SIDE !== 'scout') { newBuilder(); B.gap = QS.get('gap'); B.ai = QS.get('gap'); }
+  render();
+  if (!use) { S.loaded = true; render(); return; }
+  const timer = setTimeout(() => { S.slow = true; render(); }, 10000);
+  const [db, user, sample] = await Promise.all([use('db').catch(() => null), use('user').catch(() => null), use('sample').catch(() => null)]);
+  SAMPLER = sample || null;
+  if (user) { try { const id = await user.id(); if (id) S.me = id; } catch (e) {} try { const c = await user.can('data.write'); if (c === false) S.canWrite = false; } catch (e) {} }
+  if (!db) { clearTimeout(timer); S.loaded = true; render(); return; }
+  DB = db; COLLS.forEach(c => S[c] = {});
+  let got = 0;
+  COLLS.forEach(c => db.collection(c).onSnapshot(snap => {
+    const o = {}; snap.docs.forEach(d => { if (d.exists) o[d.id] = d.data(); }); S[c] = o;
+    if (!snap.metadata.fromCache && !S['_l' + c]) { S['_l' + c] = 1; got++; if (got === COLLS.length) { clearTimeout(timer); S.loaded = true; S.slow = false; return render(); } }
+    scheduleRender();
+  }, err => { clearTimeout(timer); if (!S.loaded) { S.loaded = true; render(); } }));
+}
+boot();
+</script>
+
+</body></html>
