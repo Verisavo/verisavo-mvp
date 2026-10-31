@@ -403,7 +403,7 @@ const SAMPLE = (o) => o && o.sample ? '<span class="sample">Sample</span>' : '';
 /* pricing model (client $, scout points; 1 pt = $0.10) */
 const TIMEFRAMES = [['24h', '24 hours', 1, 1], ['3d', '3 days', 3, 1], ['7d', '7 days', 7, 1], ['14d', '14 days', 14, 1], ['30d', '30 days', 30, 1]];
 const tf = (k) => TIMEFRAMES.find(t => t[0] === k) || TIMEFRAMES[2];
-const PLATFORM_FEE = 0, VERIFY_FEE = .14, PT_USD = .1, PER_RESPONSE = 1.14;
+const PLATFORM_FEE = 0, VERIFY_FEE = .15, PT_USD = .1, PER_RESPONSE = 1.15;
 const pricing = (n, k) => { const r = tf(k)[3]; const rewards = n * r, verify = n * VERIFY_FEE; return {rate: r, rewards, verify, collection: rewards + verify, total: rewards + verify + PLATFORM_FEE, rewardPts: Math.round(r / PT_USD * 100) / 100}; };
 
 const COUNTRIES = {Ghana: ['Tamale', 'Savelugu', 'Yendi', 'Bolgatanga', 'Kumasi', 'Accra', 'Takoradi'], Nigeria: ['Kano', 'Kaduna', 'Makurdi', 'Abuja', 'Lagos', 'Ibadan'], Kenya: ['Nairobi', 'Nakuru', 'Eldoret', 'Kisumu', 'Mombasa'], Zambia: ['Lusaka', 'Kabwe', 'Ndola', 'Kitwe'], 'South Africa': ['Johannesburg', 'Durban', 'Cape Town'], Uganda: ['Kampala', 'Gulu', 'Mbarara']};
@@ -1351,7 +1351,7 @@ function seed() {
   names.forEach((n, i) => S.scouts['sc-' + i] = {name: n, country: i < 6 ? 'Ghana' : 'Nigeria', city: i < 6 ? (i % 2 ? 'Kumasi' : 'Tamale') : 'Lagos', status: 'verified', waLinked: true, joinedAt: now - (40 + i) * 86400000, lastActive: now - i * 5 * H, sample: true});
   const mk = (id, g, extra) => {
     const qs = templateQs(g.ai);
-    S.surveys[id] = {title: g.title, industry: g.industry, country: g.country, regions: g.regions, location: g.location, brief: g.brief, questions: qs, request: g.ai, gap: g.gap, rewardPts: 10, costTotal: 0, gpsRadius: 100, sample: true, billing: {method: 'invoice', company: 'Sample Foods Ltd', email: 'finance@example.com', rate: 1.14, authorised: extra.target * 1.14}, ...extra};
+    S.surveys[id] = {title: g.title, industry: g.industry, country: g.country, regions: g.regions, location: g.location, brief: g.brief, questions: qs, request: g.ai, gap: g.gap, rewardPts: 10, costTotal: 0, gpsRadius: 100, sample: true, billing: {method: 'invoice', company: 'Sample Foods Ltd', email: 'finance@example.com', rate: 1.15, authorised: extra.target * 1.15}, ...extra};
     return qs;
   };
   const sub = (sid, qs, i, scout, status, price, region) => {
