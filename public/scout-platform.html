@@ -391,9 +391,9 @@ const GAPS = [
 const SAMPLE = (o) => o && o.sample ? '<span class="sample">Sample</span>' : '';
 
 /* pricing model (client $, scout points; 1 pt = $0.10) */
-const TIMEFRAMES = [['24h', '24 hours', 1, 1.6], ['3d', '3 days', 3, 1.4], ['7d', '7 days', 7, 1.2], ['14d', '14 days', 14, 1.1], ['30d', '30 days', 30, 1.0]];
+const TIMEFRAMES = [['24h', '24 hours', 1, 1], ['3d', '3 days', 3, 1], ['7d', '7 days', 7, 1], ['14d', '14 days', 14, 1], ['30d', '30 days', 30, 1]];
 const tf = (k) => TIMEFRAMES.find(t => t[0] === k) || TIMEFRAMES[2];
-const PLATFORM_FEE = 200, VERIFY_FEE = .5, PT_USD = .1;
+const PLATFORM_FEE = 0, VERIFY_FEE = .5, PT_USD = .1, PER_RESPONSE = 1.5;
 const pricing = (n, k) => { const r = tf(k)[3]; const rewards = n * r, verify = n * VERIFY_FEE; return {rate: r, rewards, verify, collection: rewards + verify, total: rewards + verify + PLATFORM_FEE, rewardPts: Math.round(r / PT_USD * 100) / 100}; };
 
 const COUNTRIES = {Ghana: ['Tamale', 'Savelugu', 'Yendi', 'Bolgatanga', 'Kumasi', 'Accra', 'Takoradi'], Nigeria: ['Kano', 'Kaduna', 'Makurdi', 'Abuja', 'Lagos', 'Ibadan'], Kenya: ['Nairobi', 'Nakuru', 'Eldoret', 'Kisumu', 'Mombasa'], Zambia: ['Lusaka', 'Kabwe', 'Ndola', 'Kitwe'], 'South Africa': ['Johannesburg', 'Durban', 'Cape Town'], Uganda: ['Kampala', 'Gulu', 'Mbarara']};
@@ -821,17 +821,17 @@ function cBuilder(r) {
     inner = `<div class="grid g-main"><div class="stack">
       <div><h2 style="font-size:22px">Coverage and timeline</h2><p class="muted" style="margin:2px 0 0">How many independent SavoScout responses you need, and by when. More responses make it easier to spot agreement and contradiction.</p></div>
       <div class="field"><label for="b-resp">Independent SavoScout responses</label><input class="in num" id="b-resp" type="number" min="10" max="5000" step="10" data-b="responses" data-rerender="1" value="${B.responses}"></div>
-      <div class="field"><span class="flabel">Timeframe</span><div class="chips">${TIMEFRAMES.map(t => `<button class="chipbtn ${B.timeframe === t[0] ? 'on' : ''}" data-act="settf" data-v="${t[0]}">${t[1]}</button>`).join('')}</div></div>
-      <div class="note">${ic.info}<span><b>Timeline urgency.</b> Faster timeframes raise the VeriPoints reward so more SavoScouts take the task quickly.</span></div>
+      <div class="field"><span class="flabel">Deadline</span><div class="chips">${TIMEFRAMES.map(t => `<button class="chipbtn ${B.timeframe === t[0] ? 'on' : ''}" data-act="settf" data-v="${t[0]}">${t[1]}</button>`).join('')}</div></div>
+      <div class="note">${ic.info}<span>You pay ${money(PER_RESPONSE)} for each accepted, verified response. The deadline does not change the rate, and there is no set-up fee.</span></div>
     </div>
     <div class="card" style="align-self:start;background:var(--paper)"><h2 style="font-size:16px;margin-bottom:8px">Estimated cost</h2>
-      <div class="kv"><span>SavoScout rewards (${fmt(B.responses)} × ${money(P.rate)})</span><b class="num">${money(P.rewards)}</b></div>
-      <div class="kv"><span>Verification (${money(VERIFY_FEE)} each)</span><b class="num">${money(P.verify)}</b></div>
-      <div class="kv"><span>Platform fee</span><b class="num">${money(PLATFORM_FEE)}</b></div>
-      <div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Estimated total</span><b class="num">${money(P.total)}</b></div>
+      <div class="kv"><span>Rate per accepted, verified response</span><b class="num">${money(PER_RESPONSE)}</b></div>
+      <div class="kv"><span>Set-up fee</span><b class="num">${money(0)}</b></div>
+      <div class="kv"><span>AI briefing</span><b>Included</b></div>
+      <div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Maximum planned cost (${fmt(B.responses)} × ${money(PER_RESPONSE)})</span><b class="num">${money(P.total)}</b></div>
       <div class="kv"><span>Estimated completion</span><b>${dt(Date.now() + tf(B.timeframe)[2] * 86400000)}</b></div>
       <div class="kv"><span>Reward shown to each SavoScout</span><b class="num">${pts(P.rewardPts)}</b></div>
-      <p class="faint" style="font-size:12px;margin:8px 0 0">Payment is taken when the investigation is deployed and held until responses are verified. Rates are placeholders for the MVP.</p></div></div>`;
+      <p class="faint" style="font-size:12px;margin:8px 0 0">Rejected or unverified responses are not charged. Investigations are charged separately from your subscription.</p></div></div>`;
   } else {
     inner = `<div class="grid g-main"><div class="stack">
       <div><h2 style="font-size:22px">Review and deploy</h2><p class="muted" style="margin:2px 0 0">Check the investigation before the Verisavo agent sends it to SavoScouts.</p></div>
@@ -841,8 +841,8 @@ function cBuilder(r) {
         <div class="kv"><span>Target regions</span><div class="tags">${B.regions.map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div></div><div class="kv"><span>Collection point</span><b>${esc(B.location || '—')}</b></div>
         <div class="kv"><span>Evidence questions</span><b class="num">${B.questions.length}</b></div><div class="kv"><span>Expected responses</span><b class="num">${fmt(B.responses)}</b></div>
         <div class="kv"><span>Timeframe</span><b>${tf(B.timeframe)[1]}</b></div><div class="kv"><span>GPS verification radius</span><b>100 metres</b></div></div>
-      <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Pricing summary</h2><div class="kv"><span>Platform fee</span><b class="num">${money(PLATFORM_FEE)}</b></div><div class="kv"><span>Evidence collection cost</span><b class="num">${money(P.collection)}</b></div><div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Estimated total</span><b class="num">${money(P.total)}</b></div></div>
-      <div class="note">${ic.card}<span>Payment is not taken in this MVP. Deploying sends the task to SavoScouts straight away.</span></div>
+      <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Pricing summary</h2><div class="kv"><span>Rate per accepted, verified response</span><b class="num">${money(PER_RESPONSE)}</b></div><div class="kv"><span>Set-up fee</span><b class="num">${money(0)}</b></div><div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Maximum planned cost</span><b class="num">${money(P.total)}</b></div></div>
+      <div class="note">${ic.card}<span>You are charged only for accepted, verified responses, up to this amount. Payment is not taken in this preview.</span></div>
     </div>
     <div class="stack" style="align-self:start">
     <div class="card stack"><h2 style="font-size:16px">What SavoScouts receive</h2>
@@ -854,7 +854,7 @@ function cBuilder(r) {
   const can = [B.title.trim() && B.country && B.regions.length, B.questions.length && B.questions.every(q => q.text.trim()), B.responses >= 10, true][B.step];
   const foot = `<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px">
     ${B.step ? `<button class="btn ghost" data-act="bstep" data-v="${B.step - 1}">Back</button>` : `<button class="btn ghost" data-go="c-surveys">Cancel</button>`}
-    ${B.step < 3 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · ${money(P.total)}</button>`}</div>
+    ${B.step < 3 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
     ${!can && B.step === 0 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add an investigation name, a country and at least one region to continue.</p>' : ''}
     ${!can && B.step === 1 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add at least one question, and give every question a statement.</p>' : ''}`;
   return shell(r, B.id ? 'Edit investigation' : 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${inner}${foot}</div>`);
@@ -978,7 +978,7 @@ function sampleJob() {
   const used = new Set(Object.values(S.surveys).map(x => x.title));
   const pick = P.find(p => !used.has(p[0] + ' price check in ' + sc.city)) || P[Object.keys(S.surveys).length % P.length];
   const ai = pick[0] + ' shelf prices and availability in ' + sc.city + ' shops.';
-  const doc = {title: pick[0] + ' price check in ' + sc.city, industry: 'Consumer goods', country: sc.country, regions: [sc.city], location: sc.city + ' central market', brief: 'Visit one shop or market stall. Record the ' + pick[1] + ' brands on the shelf and their prices, and take a clear photo of the shelf.', questions: templateQs(ai), request: ai, rewardPts: 12, costTotal: 0, gpsRadius: 100, status: 'active', target: 20, timeframe: '7d', createdAt: now, publishedAt: now, deadline: now + 7 * 86400000, sample: true};
+  const doc = {title: pick[0] + ' price check in ' + sc.city, industry: 'Consumer goods', country: sc.country, regions: [sc.city], location: sc.city + ' central market', brief: 'Visit one shop or market stall. Record the ' + pick[1] + ' brands on the shelf and their prices, and take a clear photo of the shelf.', questions: templateQs(ai), request: ai, rewardPts: 10, costTotal: 0, gpsRadius: 100, status: 'active', target: 20, timeframe: '7d', createdAt: now, publishedAt: now, deadline: now + 7 * 86400000, sample: true};
   if (DB) put('surveys', id, doc); else { S.surveys[id] = doc; saveLocal(); }
   if (W && W.seen) W.seen.surveys[id] = 1;
   return id;
@@ -1288,13 +1288,13 @@ function seed() {
   names.forEach((n, i) => S.scouts['sc-' + i] = {name: n, country: i < 6 ? 'Ghana' : 'Nigeria', city: i < 6 ? (i % 2 ? 'Kumasi' : 'Tamale') : 'Lagos', status: 'verified', waLinked: true, joinedAt: now - (40 + i) * 86400000, lastActive: now - i * 5 * H, sample: true});
   const mk = (id, g, extra) => {
     const qs = templateQs(g.ai);
-    S.surveys[id] = {title: g.title, industry: g.industry, country: g.country, regions: g.regions, location: g.location, brief: g.brief, questions: qs, request: g.ai, gap: g.gap, rewardPts: 12, costTotal: 0, gpsRadius: 100, sample: true, ...extra};
+    S.surveys[id] = {title: g.title, industry: g.industry, country: g.country, regions: g.regions, location: g.location, brief: g.brief, questions: qs, request: g.ai, gap: g.gap, rewardPts: 10, costTotal: 0, gpsRadius: 100, sample: true, ...extra};
     return qs;
   };
   const sub = (sid, qs, i, scout, status, price, region) => {
     const a = {};
     qs.forEach(q => { if (q.type === 'number') a[q.id] = price; else if (q.type === 'single') a[q.id] = q.options[i % 5 === 4 ? 1 : 0]; else if (q.type === 'scale') a[q.id] = 3 + (i % 3 === 0 ? 1 : 0); else if (q.type === 'photo') a[q.id] = 'shelf-' + (i + 1) + '.jpg'; else a[q.id] = ['Kejetia stall ' + (i + 1), 'Adum shop ' + (i + 1), 'Bantama kiosk ' + (i + 1)][i % 3]; });
-    S.submissions['sbx' + sid + i] = {surveyId: sid, surveyTitle: S.surveys[sid].title, scoutId: 'sc-' + scout, scoutName: names[scout], region, country: S.surveys[sid].country, answers: a, media: [{name: 'shelf-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 12, status, reason: status === 'rejected' ? 'Location mismatch' : undefined, createdAt: now - (i * 7 + 2) * H, channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
+    S.submissions['sbx' + sid + i] = {surveyId: sid, surveyTitle: S.surveys[sid].title, scoutId: 'sc-' + scout, scoutName: names[scout], region, country: S.surveys[sid].country, answers: a, media: [{name: 'shelf-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 10, status, reason: status === 'rejected' ? 'Location mismatch' : undefined, createdAt: now - (i * 7 + 2) * H, channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
   };
   const q1 = mk('svx1', GAPS[0], {status: 'active', target: 40, timeframe: '7d', createdAt: now - 3 * 86400000, publishedAt: now - 3 * 86400000, deadline: now + 4 * 86400000});
   [41, 43, 40, 44, 42, 58, 41, 43, 45, 42, 44, 41, 43, 46].forEach((p, i) => sub('svx1', q1, i, i % 6, i === 5 ? 'rejected' : i > 10 ? 'pending' : 'approved', p, 'Kumasi'));
