@@ -301,6 +301,16 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .wa-bd{position:fixed;inset:0;background:var(--overlay);z-index:49}
 .wa.full{position:fixed;z-index:50;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));height:calc(100vh - 32px);height:calc(100dvh - 32px);max-height:none;min-height:0}
 @media (max-width:640px){.wa.full{left:0;top:0;transform:none;width:100vw;height:100vh;height:100dvh;border-radius:0;border:0}}
+.paym{display:grid;gap:8px}
+.paym-o{display:grid !important;grid-template-columns:18px minmax(0,1fr);gap:12px;align-items:start;text-align:left;width:100%;padding:12px 14px;font:inherit;color:inherit}
+.paym-o b{display:block;font-weight:600;font-size:14px}.paym-o small{display:block;color:var(--ink-2);font-size:12.5px;margin-top:2px;line-height:1.45}
+.paym-r{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--primary-200);margin-top:1px;display:grid;place-items:center}
+.paym-o.on .paym-r{border-color:var(--primary-2)}.paym-o.on .paym-r::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--primary-2)}
+.paym-ok{align-items:flex-start;padding:12px 14px;font-size:13.5px;line-height:1.5}.paym-ok input{margin-top:3px}
+@media (max-width:520px){.hnav{display:grid;grid-template-columns:1fr 1fr;gap:3px}.hnav button{justify-content:center}}
+.costrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:8px;align-items:center;border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
+.costrow>div{display:grid;gap:1px;font-size:12px;color:var(--ink-2)}.costrow b{font-size:16px;color:var(--ink);font-weight:600}.costrow small{font-size:11.5px;color:var(--ink-3)}
+@media (max-width:640px){.costrow{grid-template-columns:repeat(2,minmax(0,1fr))}.costrow .link{grid-column:1/-1}}
 .hidden-sm{} @media (max-width:640px){.hidden-sm{display:none}}
 </style>
 
@@ -468,7 +478,7 @@ function scheduleRender(force) {
 
 /* ---------------- shell ---------------- */
 function hshell(r, title, body, extraTop) {
-  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview'], ['c-surveys', 'Manage investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder']];
+  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview'], ['c-surveys', 'Manage investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder'], ['c-billing', 'Billing', 'card', r.page === 'billing']];
   return `<div class="happ ${INLINE ? 'inline' : ''}">
   <header class="htop">
     <div class="htitle">${INLINE ? '' : `<img class="logo-light" src="${LOGO}" alt="Verisavo"><img class="logo-dark" src="${LOGOW}" alt="Verisavo"><span class="hsep" aria-hidden="true"></span>`}<h1>${title}</h1></div>
@@ -482,7 +492,7 @@ function shell(r, title, body, extraTop = '') {
   const client = r.role === 'client';
   const nav = client ? [
     ['CORE DASHBOARDS'], ['c-overview', 'Overview', 'grid', r.page === 'overview'],
-    ['MARKET INVESTIGATIONS'], ['c-surveys', 'Investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder'],
+    ['MARKET INVESTIGATIONS'], ['c-surveys', 'Investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder'], ['c-billing', 'Billing', 'card', r.page === 'billing'],
   ] : [
     ['SCOUT CHANNEL'], ['s-chat', 'WhatsApp chat', 'send', true],
   ];
@@ -617,6 +627,7 @@ function track(s, list) {
   return `<div class="card stack">
     <div class="stepper life">${names.map((t, i) => `<div class="step ${i < cur || (cur === 4 && i === 4) ? 'done' : i === cur ? 'on' : ''}"><span class="dot">${i < cur || cur === 4 ? ic.check : i + 1}</span>${t}</div>`).join('')}</div>
     <div class="funnel"><div>Sent to SavoScouts<b class="num">${s.status === 'draft' ? '—' : eligible}</b>via the Verisavo agent</div><div>Responses submitted<b class="num">${list.length}<span class="faint" style="font-size:13px"> / ${s.target}</span></b>${pct(list.length, s.target)}% of coverage</div><div>Awaiting review<b class="num">${pend}</b>${pend ? 'needs your team' : 'nothing waiting'}</div><div>Verified<b class="num">${ok}</b>VeriPoints released</div></div>
+    ${s.status !== 'draft' ? (() => { const c = costOf(s, list); return `<div class="costrow"><div><span>Charged so far</span><b class="num">${money(c.charged)}</b><small>${c.ok} verified × ${money(c.rate)}</small></div><div><span>Awaiting review</span><b class="num">${money(c.pending)}</b><small>Charged only if verified</small></div><div><span>Authorised up to</span><b class="num">${money(c.cap)}</b><small>${esc(payName(s.billing && s.billing.method))}</small></div><button class="link" data-go="c-billing">Billing ${ic.arrow}</button></div>`; })() : ''}
     ${s.gap ? `<div class="note">${ic.info}<span><b>Intelligence Gap.</b> ${esc(s.gap)}</span></div>` : ''}
     ${life(s) === 'deployed' && s.publishedAt && Date.now() - s.publishedAt > 86400000 ? `<div class="note">${ic.clock}<span>No responses yet after a day. The Verisavo agent will re-send the task to SavoScouts nearby. You can also widen the regions or extend the timeline.</span></div>` : ''}
   </div>`;
@@ -782,10 +793,53 @@ let B = null;
 function newBuilder(from) {
   B = from ? JSON.parse(JSON.stringify(from)) : {id: null, gap: '', title: '', industry: '', country: '', regions: [], brief: '', location: '', questions: [], ai: '', responses: 250, timeframe: '7d', step: 0};
   B.step = B.step || 0;
+  B.pay = Object.assign({method: '', company: '', email: (SITEUSER && SITEUSER.email) || '', po: ''}, B.pay || B.billing || {}, {ok: false});
 }
+const PAYM = [['card', 'Card', 'Pay on our payment provider\'s secure page. Card details are not entered in Verisavo.'], ['momo', 'Mobile money', 'Approve the payment on your phone, for example MTN MoMo, M-Pesa or Airtel Money.'], ['invoice', 'Bank transfer or invoice', 'We invoice accepted, verified responses when the investigation closes.']];
+const payName = (m) => (PAYM.find(p => p[0] === m) || [0, '—'])[1];
+function costOf(s, list) { const rate = (s.billing && s.billing.rate) || PER_RESPONSE, ok = list.filter(x => x.status === 'approved').length, pend = list.filter(x => x.status === 'pending').length, cap = (s.billing && s.billing.authorised) || s.target * rate; return {rate, ok, pend, charged: ok * rate, pending: pend * rate, cap, left: Math.max(0, cap - ok * rate)}; }
+function payStep(P) {
+  const p = B.pay;
+  return `<div class="grid g-main"><div class="stack">
+    <div><h2 style="font-size:22px">Payment</h2><p class="muted" style="margin:2px 0 0">Choose how to pay and authorise the maximum planned cost. You are charged only for accepted, verified responses. Anything unused is released when the investigation closes.</p></div>
+    <div class="field"><span class="flabel">Payment method</span><div class="paym">${PAYM.map(m => `<button class="choice paym-o ${p.method === m[0] ? 'on' : ''}" data-act="paymethod" data-v="${m[0]}" aria-pressed="${p.method === m[0]}"><span class="paym-r" aria-hidden="true"></span><span><b>${m[1]}</b><small>${m[2]}</small></span></button>`).join('')}</div></div>
+    <div class="grid g2"><div class="field"><label for="pay-co">Company name</label><input class="in" id="pay-co" data-pay="company" autocomplete="organization" value="${esc(p.company)}" placeholder="Registered company name"></div>
+    <div class="field"><label for="pay-em">Billing email</label><input class="in" id="pay-em" type="email" data-pay="email" autocomplete="email" value="${esc(p.email)}" placeholder="finance@company.com"></div></div>
+    <div class="field"><label for="pay-po">Purchase order or reference <span class="faint" style="font-weight:400">(optional)</span></label><input class="in" id="pay-po" data-pay="po" value="${esc(p.po)}" placeholder="For example, PO-2026-118"></div>
+    <label class="choice paym-ok ${p.ok ? 'on' : ''}"><input type="checkbox" id="pay-ok" data-pay="ok" ${p.ok ? 'checked' : ''}><span>I authorise Verisavo to charge up to <b>${money(P.total)}</b> for accepted, verified responses to this investigation.</span></label>
+  </div>
+  <div class="card" style="align-self:start;background:var(--paper)"><h2 style="font-size:16px;margin-bottom:8px">What you authorise</h2>
+    <div class="kv"><span>Rate per accepted, verified response</span><b class="num">${money(PER_RESPONSE)}</b></div>
+    <div class="kv"><span>Responses requested</span><b class="num">${fmt(B.responses)}</b></div>
+    <div class="kv"><span>Set-up fee</span><b class="num">${money(0)}</b></div>
+    <div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Maximum you can be charged</span><b class="num">${money(P.total)}</b></div>
+    <div class="req" style="margin-top:10px"><div>${ic.checkc}Rejected or unverified responses are not charged</div><div>${ic.checkc}Unused authorisation is released at close</div><div>${ic.checkc}A receipt is sent to your billing email</div></div>
+    <p class="faint" style="font-size:12px;margin:10px 0 0">Charged separately from your subscription. No payment is taken in this preview.</p></div></div>`;
+}
+function cBilling(r) {
+  const sv = surveys().filter(s => s.status !== 'draft');
+  const rows = sv.map(s => ({s, c: costOf(s, subsOf(s.id))}));
+  const charged = rows.reduce((a, x) => a + x.c.charged, 0), pending = rows.reduce((a, x) => a + x.c.pending, 0), open = rows.filter(x => x.s.status !== 'completed').reduce((a, x) => a + x.c.left, 0);
+  const last = sv.find(s => s.billing && s.billing.method);
+  const body = `<div class="grid g3">${kpi('Charged to date', money(charged), 'card', 'Accepted, verified responses')}${kpi('Awaiting review', money(pending), 'clock', 'Charged only if verified')}${kpi('Authorised, not yet used', money(open), 'shield', 'Released when investigations close')}</div>
+  <div class="grid g-main">
+    <div class="card"><div class="head"><h2>Investigation charges</h2></div>
+      ${rows.length ? `<div class="tbl-wrap"><table><thead><tr><th>Investigation</th><th>Payment</th><th>Verified</th><th>Charged</th><th>Authorised</th></tr></thead><tbody>
+      ${rows.map(({s, c}) => `<tr class="click" data-go="c-survey-${s.id}"><td style="max-width:240px"><b style="font-weight:500">${esc(s.title)}</b>${SAMPLE(s)}</td><td class="muted">${esc(payName(s.billing && s.billing.method))}</td><td class="num">${c.ok}</td><td class="num">${money(c.charged)}</td><td class="num muted">${money(c.cap)}</td></tr>`).join('')}
+      </tbody></table></div>` : emptyState('card', 'No charges yet', 'Charges appear here once you deploy an investigation.', `<button class="btn" data-go="c-builder">${ic.search}Investigate market</button>`)}
+    </div>
+    <div class="stack" style="align-self:start">
+      <div class="card stack"><h2 style="font-size:16px">Payment details</h2>
+        ${last ? `<div class="kv"><span>Last used</span><b>${esc(payName(last.billing.method))}</b></div><div class="kv"><span>Company</span><b>${esc(last.billing.company || '—')}</b></div><div class="kv"><span>Billing email</span><b>${esc(last.billing.email || '—')}</b></div>` : '<p class="muted" style="margin:0;font-size:13px">You choose a payment method when you deploy your first investigation.</p>'}
+        <p class="faint" style="font-size:12px;margin:0">You can choose a different method for each investigation.</p></div>
+      <div class="note">${ic.info}<span>You pay ${money(PER_RESPONSE)} for each accepted, verified response, with no set-up fee. Investigations are charged separately from your subscription.</span></div>
+    </div></div>`;
+  return shell(r, 'Billing', body);
+}
+function newBuilderPay() {}
 function cBuilder(r) {
   if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
-  const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Review and deploy'];
+  const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Payment', 'Review and deploy'];
   const stepper = `<div class="stepper">${steps.map((t, i) => `<div class="step ${i < B.step ? 'done' : i === B.step ? 'on' : ''}"><span class="dot">${i < B.step ? ic.check : i + 1}</span>${t}</div>`).join('')}</div>`;
   const P = pricing(B.responses, B.timeframe);
   let inner = '';
@@ -832,6 +886,8 @@ function cBuilder(r) {
       <div class="kv"><span>Estimated completion</span><b>${dt(Date.now() + tf(B.timeframe)[2] * 86400000)}</b></div>
       <div class="kv"><span>Reward shown to each SavoScout</span><b class="num">${pts(P.rewardPts)}</b></div>
       <p class="faint" style="font-size:12px;margin:8px 0 0">Rejected or unverified responses are not charged. Investigations are charged separately from your subscription.</p></div></div>`;
+  } else if (B.step === 3) {
+    inner = payStep(P);
   } else {
     inner = `<div class="grid g-main"><div class="stack">
       <div><h2 style="font-size:22px">Review and deploy</h2><p class="muted" style="margin:2px 0 0">Check the investigation before the Verisavo agent sends it to SavoScouts.</p></div>
@@ -841,6 +897,7 @@ function cBuilder(r) {
         <div class="kv"><span>Target regions</span><div class="tags">${B.regions.map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div></div><div class="kv"><span>Collection point</span><b>${esc(B.location || '—')}</b></div>
         <div class="kv"><span>Evidence questions</span><b class="num">${B.questions.length}</b></div><div class="kv"><span>Expected responses</span><b class="num">${fmt(B.responses)}</b></div>
         <div class="kv"><span>Timeframe</span><b>${tf(B.timeframe)[1]}</b></div><div class="kv"><span>GPS verification radius</span><b>100 metres</b></div></div>
+      <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Payment</h2><div class="kv"><span>Method</span><b>${esc(payName(B.pay.method))}</b></div><div class="kv"><span>Billing email</span><b>${esc(B.pay.email || '—')}</b></div>${B.pay.po ? `<div class="kv"><span>Reference</span><b>${esc(B.pay.po)}</b></div>` : ''}<div class="kv"><span>Authorised up to</span><b class="num">${money(P.total)}</b></div><button class="link" data-act="bstep" data-v="3" style="margin-top:6px">Change payment</button></div>
       <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Pricing summary</h2><div class="kv"><span>Rate per accepted, verified response</span><b class="num">${money(PER_RESPONSE)}</b></div><div class="kv"><span>Set-up fee</span><b class="num">${money(0)}</b></div><div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Maximum planned cost</span><b class="num">${money(P.total)}</b></div></div>
       <div class="note">${ic.card}<span>You are charged only for accepted, verified responses, up to this amount. Payment is not taken in this preview.</span></div>
     </div>
@@ -851,12 +908,13 @@ function cBuilder(r) {
     <div class="card" style="background:var(--paper)"><h2 style="font-size:16px;margin-bottom:8px">Verification layers</h2>
       <div class="req">${['GPS validation within 100 m', 'Duplicate detection', 'Submission consistency analysis', 'Media validation', 'Scout reputation check', 'Review by your team before VeriPoints are released'].map(t => `<div>${ic.checkc}${t}</div>`).join('')}</div></div></div></div>`;
   }
-  const can = [B.title.trim() && B.country && B.regions.length, B.questions.length && B.questions.every(q => q.text.trim()), B.responses >= 10, true][B.step];
+  const can = [B.title.trim() && B.country && B.regions.length, B.questions.length && B.questions.every(q => q.text.trim()), B.responses >= 10, !!(B.pay.method && B.pay.ok && /.+@.+\..+/.test(B.pay.email || '')), true][B.step];
   const foot = `<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px">
     ${B.step ? `<button class="btn ghost" data-act="bstep" data-v="${B.step - 1}">Back</button>` : `<button class="btn ghost" data-go="c-surveys">Cancel</button>`}
-    ${B.step < 3 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
+    ${B.step < 4 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
     ${!can && B.step === 0 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add an investigation name, a country and at least one region to continue.</p>' : ''}
-    ${!can && B.step === 1 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add at least one question, and give every question a statement.</p>' : ''}`;
+    ${!can && B.step === 1 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add at least one question, and give every question a statement.</p>' : ''}
+    ${!can && B.step === 3 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a payment method, add a billing email and authorise the maximum cost to continue.</p>' : ''}`;
   return shell(r, B.id ? 'Edit investigation' : 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${inner}${foot}</div>`);
 }
 function qEditor(q, i) {
@@ -1159,7 +1217,7 @@ function render() {
   const r = route(), app = $('#app');
   let html;
   if (r.role === 'client') {
-    html = r.page === 'surveys' ? cSurveys(r) : r.page === 'survey' ? cSurvey(r) : r.page === 'builder' ? cBuilder(r) : cOverview(r);
+    html = r.page === 'surveys' ? cSurveys(r) : r.page === 'survey' ? cSurvey(r) : r.page === 'builder' ? cBuilder(r) : r.page === 'billing' ? cBilling(r) : cOverview(r);
   } else {
     if (!S.loaded && DB) html = shell(r, 'SavoScout on WhatsApp', '');
     else if (!myScout()) html = joinView();
@@ -1197,6 +1255,7 @@ document.addEventListener('click', async (e) => {
   }
   else if (a === 'setstatus') { await patch('surveys', id, {status: v}); toast('Investigation ' + (v === 'active' ? 'resumed' : v) + '.'); }
   /* builder */
+  else if (a === 'paymethod') { B.pay.method = v; render(); }
   else if (a === 'usegap') { const g = GAPS[Number(v)]; Object.assign(B, JSON.parse(JSON.stringify(g))); render(); toast('Prepared from the Intelligence Gap. Review and edit before deploying.'); }
   else if (a === 'genbrief') genBrief(id);
   else if (a === 'ref') openSub(id);
@@ -1232,6 +1291,7 @@ document.addEventListener('input', (e) => {
   const t = e.target, d = t.dataset;
   if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
+  if (d.pay) { B.pay[d.pay] = t.type === 'checkbox' ? t.checked : t.value; if (t.type === 'checkbox') render(); else softRender(); return; }
   if (d.b) { B[d.b] = d.b === 'responses' ? Math.max(0, Math.round(Number(t.value) || 0)) : t.value; if (d.rerender || B.step === 0) softRender(); return; }
   if (d.q) { const [i, k] = d.q.split(':'); B.questions[i][k] = t.value; if (k === 'type') { const q = B.questions[i]; if ((t.value === 'single' || t.value === 'multi') && !(q.options || []).length) q.options = ['Option 1', 'Option 2']; render(); } else softRender(); return; }
   if (d.qo) { const [i, j] = d.qo.split(':').map(Number); B.questions[i].options[j] = t.value; return; }
@@ -1274,7 +1334,7 @@ async function saveSurvey(status) {
   const P = pricing(B.responses, B.timeframe), id = B.id || uid('sv'), prev = S.surveys[id] || {};
   const doc = {title: B.title.trim(), industry: B.industry, country: B.country, regions: B.regions, location: B.location, brief: B.brief, questions: B.questions, target: B.responses, timeframe: B.timeframe,
     rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), publishedAt: status === 'active' ? Date.now() : null,
-    deadline: status === 'active' ? Date.now() + tf(B.timeframe)[2] * 86400000 : null, request: B.ai || '', gap: B.gap || ''};
+    deadline: status === 'active' ? Date.now() + tf(B.timeframe)[2] * 86400000 : null, request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: PER_RESPONSE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
   B.id = id;
   await put('surveys', id, doc);
   if (status === 'active') { B = null; go('c-survey-' + id); toast('Investigation deployed. The Verisavo agent is sending it to SavoScouts on WhatsApp.'); }
@@ -1288,7 +1348,7 @@ function seed() {
   names.forEach((n, i) => S.scouts['sc-' + i] = {name: n, country: i < 6 ? 'Ghana' : 'Nigeria', city: i < 6 ? (i % 2 ? 'Kumasi' : 'Tamale') : 'Lagos', status: 'verified', waLinked: true, joinedAt: now - (40 + i) * 86400000, lastActive: now - i * 5 * H, sample: true});
   const mk = (id, g, extra) => {
     const qs = templateQs(g.ai);
-    S.surveys[id] = {title: g.title, industry: g.industry, country: g.country, regions: g.regions, location: g.location, brief: g.brief, questions: qs, request: g.ai, gap: g.gap, rewardPts: 10, costTotal: 0, gpsRadius: 100, sample: true, ...extra};
+    S.surveys[id] = {title: g.title, industry: g.industry, country: g.country, regions: g.regions, location: g.location, brief: g.brief, questions: qs, request: g.ai, gap: g.gap, rewardPts: 10, costTotal: 0, gpsRadius: 100, sample: true, billing: {method: 'invoice', company: 'Sample Foods Ltd', email: 'finance@example.com', rate: 1.5, authorised: extra.target * 1.5}, ...extra};
     return qs;
   };
   const sub = (sid, qs, i, scout, status, price, region) => {
