@@ -1733,25 +1733,4 @@ html body #pg-community-tasks.pg .pg-foot .logo { color: #1F273F !important; }
   #pg-community-tasks .cmt-list button { padding: 18px 0; }
   #pg-community-tasks .cmt-gate .cm-btn { width: 100%; }
 }
-/* hero chat: the task workflow plays as a short loop (task arrives, accept, submit, check, reward) */
-html body #pg-community.pg .cm-me .cm-att { display: inline-flex; align-items: center; gap: 6px; justify-self: start; margin-top: 2px; padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,.1); font-size: .8rem; color: #CCDDF1; }
-#pg-community .cm-att svg { width: 14px; height: 14px; }
-html body #pg-community.pg .cm-ok p { display: block; }
-html body #pg-community.pg .cm-ok p b { color: var(--cm-i); font-weight: 600; }
-#pg-community .cm-ok svg { width: 16px; height: 16px; color: #3A5292; vertical-align: -3px; margin-right: 6px; }
-#pg-community .cm-typing { display: none; justify-self: start; gap: 5px; padding: 15px 16px; border-radius: 4px 16px 16px 16px; background: #fff; box-shadow: 0 1px 2px rgba(31,39,63,.06); }
-#pg-community .cm-typing.cm-me-t { justify-self: end; border-radius: 16px 4px 16px 16px; background: #1F273F; }
-#pg-community .cm-typing i { width: 7px; height: 7px; border-radius: 50%; background: #A8C6E8; animation: cmDot 1.1s infinite ease-in-out; }
-#pg-community .cm-typing i:nth-child(2) { animation-delay: .15s; } #pg-community .cm-typing i:nth-child(3) { animation-delay: .3s; }
-@keyframes cmDot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
-#pg-community .cm-chat { align-content: start; }
-#pg-community .cm-chat.cm-run > .cm-a { display: none; }
-#pg-community .cm-chat.cm-run > .cm-a.on { display: grid; animation: cmIn .45s cubic-bezier(.2,.7,.2,1) both; }
-#pg-community .cm-chat.cm-run > .cm-typing.on { display: flex; animation: cmIn .3s ease both; }
-@keyframes cmIn { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
-#pg-community .cm-reply span { transition: background-color .25s, color .25s, transform .15s, opacity .3s; }
-#pg-community .cm-reply span.tap { background: #1F273F; color: #fff; transform: scale(.96); }
-#pg-community .cm-reply.done span:not(.tap) { opacity: .4; }
-#pg-community .cm-chat.cm-out > * { opacity: 0; transition: opacity .5s; }
-@media (prefers-reduced-motion: reduce) { #pg-community .cm-typing i { animation: none; } }
 @media (prefers-reduced-motion: reduce) { #pg-community .cm-acts li { transition: none; } #pg-community .cm-acts li:hover { transform: none; } }
