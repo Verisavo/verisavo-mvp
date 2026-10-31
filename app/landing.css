@@ -1399,3 +1399,80 @@ html body .ln .fx-loop svg { width: 15px; height: 15px; flex: none; }
   #ln .hp2-src li { font-size: .9rem; }
   #ln .hp2-list li, #ln .hp2-trust .v3-tr2 article { grid-template-columns: 40px minmax(0, 1fr); }
 }
+/* >>> homepage sim: a short product walkthrough under How intelligence moves (homepage only) */
+#ln .sim { --s-i: #1F273F; --s-b: #3D4559; --s-m: #5B6478; --s-s: #8A93A6; --s-l: #E3E9F2; --s-a: #4362B2; --s-t: #F4F7FB; display: grid; gap: 14px; justify-items: center; margin-top: clamp(36px, 5vw, 64px); }
+#ln .sim-win { width: min(880px, 100%); border-radius: 20px; background: #fff; box-shadow: 0 0 0 1px #E1E8F2, 0 40px 80px -48px rgba(31,39,63,.45); overflow: hidden; font-family: "Inter", var(--sans); text-align: left; }
+#ln .sim-bar { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--s-l); font-size: .88rem; color: var(--s-i); }
+#ln .sim-bar b { font-weight: 600; }
+#ln .sim-dots { display: flex; gap: 6px; } #ln .sim-dots i { width: 9px; height: 9px; border-radius: 50%; background: #DCE4F0; }
+#ln .sim-ctx { margin-left: auto; padding: 5px 10px; border-radius: 999px; background: var(--s-t); font-size: .78rem; color: var(--s-m); white-space: nowrap; }
+#ln .sim-rail { list-style: none; margin: 0; padding: 10px 18px; display: flex; gap: 6px; border-bottom: 1px solid var(--s-l); background: #FAFBFD; overflow: hidden; }
+#ln .sim-rail li { flex: 1; text-align: center; padding: 7px 4px; border-radius: 8px; font-size: .74rem; font-weight: 500; color: var(--s-s); white-space: nowrap; transition: background-color .3s, color .3s; }
+#ln .sim-rail li.done { color: var(--s-a); }
+#ln .sim-rail li.now { background: var(--s-i); color: #fff; }
+#ln .sim-feed { height: 430px; padding: 18px 20px 6px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; overflow: hidden; -webkit-mask-image: linear-gradient(transparent 0, #000 64px); mask-image: linear-gradient(transparent 0, #000 64px); background: #fff; }
+#ln .sim-feed > * { flex: none; animation: simIn .45s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes simIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+#ln .sim-q { align-self: flex-end; max-width: 78%; padding: 12px 16px; border-radius: 16px 16px 4px 16px; background: var(--s-i); color: #fff; font-size: .95rem; line-height: 1.45; }
+#ln .sim-card { align-self: flex-start; width: min(620px, 92%); padding: 14px 16px; border-radius: 4px 16px 16px 16px; background: var(--s-t); color: var(--s-b); font-size: .92rem; line-height: 1.5; display: grid; gap: 8px; }
+#ln .sim-card p { margin: 0; }
+#ln .sim-h { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--s-a); }
+#ln .sim-src { display: flex; flex-wrap: wrap; gap: 6px; }
+#ln .sim-src span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px #E1E8F2; font-size: .78rem; color: var(--s-i); opacity: .35; transition: opacity .3s; }
+#ln .sim-src span.on { opacity: 1; }
+#ln .sim-src span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #CCDDF1; }
+#ln .sim-src span.on::before { background: var(--s-a); }
+#ln .sim-ev { display: grid; gap: 6px; margin-top: 2px; }
+#ln .sim-ev div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 10px; border-radius: 10px; background: #fff; font-size: .84rem; animation: simIn .4s ease both; }
+#ln .sim-ev div span { color: var(--s-i); }
+#ln .sim-ev div em { font-style: normal; color: var(--s-s); white-space: nowrap; }
+#ln .sim-gap { background: #fff; box-shadow: inset 0 0 0 1px #CCDDF1; }
+#ln .sim-gap .sim-h { color: #3A5292; }
+#ln .sim-btn { justify-self: start; display: inline-flex; align-items: center; gap: 8px; margin-top: 2px; padding: 9px 14px; border-radius: 9px; background: var(--s-i); color: #fff; font-size: .84rem; font-weight: 600; transition: transform .15s, background-color .2s; }
+#ln .sim-btn.tap { transform: scale(.95); background: #3A5292; }
+#ln .sim-btn.sent { background: #E3EBF8; color: var(--s-a); }
+#ln .sim-map { position: relative; height: 112px; border-radius: 12px; overflow: hidden; background: #EEF2F8 repeating-linear-gradient(45deg, rgba(31,39,63,.04) 0 1px, transparent 1px 8px); box-shadow: inset 0 0 0 1px #E1E8F2; }
+#ln .sim-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+#ln .sim-map path { fill: none; stroke: #fff; stroke-width: 6; }
+#ln .sim-area { position: absolute; padding: 3px 8px; border-radius: 999px; background: rgba(255,255,255,.85); font-size: .72rem; font-weight: 500; color: var(--s-m); }
+#ln .sim-pin { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--s-a); box-shadow: 0 0 0 3px rgba(67,98,178,.18); animation: simPin .4s cubic-bezier(.2,.7,.2,1.4) both; }
+@keyframes simPin { from { transform: translateY(-10px) scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+#ln .sim-ver { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+#ln .sim-ver li { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px; border-radius: 999px; background: #fff; font-size: .76rem; color: var(--s-s); box-shadow: inset 0 0 0 1px #E1E8F2; transition: color .25s; }
+#ln .sim-ver li::before { content: ""; width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px #CCDDF1; }
+#ln .sim-ver li.ok { color: var(--s-i); }
+#ln .sim-ver li.ok::before { box-shadow: none; background: var(--s-a) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3.2 6.2l1.8 1.8 3.8-4' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat; }
+#ln .sim-meta { display: flex; justify-content: space-between; gap: 10px; font-size: .8rem; color: var(--s-m); }
+#ln .sim-res { background: var(--s-i); color: #E3EBF8; }
+#ln .sim-res .sim-h { color: #A8C6E8; }
+#ln .sim-res b { color: #fff; font-weight: 600; }
+#ln .sim-mem { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.1); font-size: .78rem; color: #CCDDF1; }
+#ln .sim-think { display: inline-flex; gap: 5px; padding: 14px 16px; border-radius: 4px 16px 16px 16px; background: var(--s-t); align-self: flex-start; }
+#ln .sim-think i { width: 7px; height: 7px; border-radius: 50%; background: #A8C6E8; animation: simDot 1s infinite ease-in-out; }
+#ln .sim-think i:nth-child(2) { animation-delay: .15s; } #ln .sim-think i:nth-child(3) { animation-delay: .3s; }
+@keyframes simDot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+#ln .sim-comp { display: flex; align-items: center; gap: 10px; margin: 8px 16px 16px; padding: 8px 8px 8px 16px; border-radius: 14px; box-shadow: inset 0 0 0 1px #DCE4F0; background: #fff; }
+#ln .sim-in { flex: 1; min-width: 0; display: flex; align-items: center; height: 24px; font-size: .95rem; color: var(--s-i); white-space: nowrap; overflow: hidden; }
+#ln .sim-ph { color: var(--s-s); }
+#ln .sim-in.has .sim-ph { display: none; }
+#ln .sim-caret { width: 1.5px; height: 18px; margin-left: 1px; background: var(--s-a); opacity: 0; }
+#ln .sim-in.typing .sim-caret { opacity: 1; animation: simBlink 1s steps(1) infinite; }
+@keyframes simBlink { 50% { opacity: 0; } }
+#ln .sim-send { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: #E3EBF8; color: var(--s-a); transition: background-color .2s, color .2s, transform .15s; }
+#ln .sim-send.ready { background: var(--s-i); color: #fff; }
+#ln .sim-send.tap { transform: scale(.9); }
+#ln .sim-send svg { width: 16px; height: 16px; }
+#ln .sim-win.fade .sim-feed > * { opacity: 0; transition: opacity .5s; }
+#ln .sim-cap { margin: 0; font-size: .8rem; color: #8A93A6; text-align: center; }
+@media (max-width: 640px) {
+  #ln .sim-win { border-radius: 16px; }
+  #ln .sim-bar { padding: 12px 14px; } #ln .sim-dots, #ln .sim-ctx { display: none; }
+  #ln .sim-rail { padding: 8px 10px; gap: 4px; flex-wrap: wrap; } #ln .sim-rail li { flex: 0 0 calc((100% - 8px) / 3); font-size: .72rem; padding: 6px 2px; }
+  #ln .sim-meta span:last-child { display: none; }
+  #ln .sim-feed { height: 470px; padding: 14px 12px 4px; }
+  #ln .sim-card { width: 96%; font-size: .88rem; } #ln .sim-q { max-width: 88%; font-size: .9rem; }
+  #ln .sim-ev div { flex-direction: column; gap: 2px; }
+  #ln .sim-comp { margin: 6px 10px 12px; }
+  #ln .sim-in { font-size: .88rem; }
+}
+@media (prefers-reduced-motion: reduce) { #ln .sim-feed > *, #ln .sim-ev div { animation: none; } #ln .sim-think i { animation: none; } }
