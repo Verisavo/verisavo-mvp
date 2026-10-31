@@ -463,7 +463,7 @@ function scheduleRender(force) {
 
 /* ---------------- shell ---------------- */
 function hshell(r, title, body, extraTop) {
-  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview'], ['c-surveys', 'Investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder']];
+  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview'], ['c-surveys', 'Manage investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder']];
   return `<div class="happ ${INLINE ? 'inline' : ''}">
   <header class="htop">
     <div class="htitle">${INLINE ? '' : `<img class="logo-light" src="${LOGO}" alt="Verisavo"><img class="logo-dark" src="${LOGOW}" alt="Verisavo"><span class="hsep" aria-hidden="true"></span>`}<h1>${title}</h1></div>
