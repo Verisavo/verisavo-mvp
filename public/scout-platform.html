@@ -382,7 +382,7 @@ const S = {
   ui: {sidebar: false, surveyTab: 'all', surveySearch: '', subSearch: '', contribTab: 'all', txTab: 'all', scoutSel: null, scoutFilter: {}},
 };
 let DB = null, SAMPLER = null;
-const QS = new URLSearchParams(location.search), SIDE = ['client', 'scout'].includes(QS.get('side')) ? QS.get('side') : null;
+const QS = new URLSearchParams(location.search), SIDE = ['client', 'scout'].includes(QS.get('side')) ? QS.get('side') : QS.get('side') === 'admin' ? null : 'client';
 const EMBED = (() => { try { return window.parent !== window; } catch (e) { return true; } })();
 const MODE = QS.get('side'), ADMIN = MODE === 'admin';
 const EXIT = EMBED && MODE ? (ADMIN ? 'Close admin' : SIDE === 'scout' ? 'Back to Community' : 'Back to Assistant') : '';
