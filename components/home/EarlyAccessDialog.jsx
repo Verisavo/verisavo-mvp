@@ -15,9 +15,9 @@ export default function EarlyAccessDialog() {
         {" "}
         <form className="stp" id="step1" noValidate>
           {" "}
-          <h2 id="access-h">{"Get early access"}</h2>
+          <h2 id="access-h">{"Join SavoScouts"}</h2>
           {" "}
-          <p>{"Enter your number. We'll send a one-time code to confirm it's yours."}</p>
+          <p>{"Enter your WhatsApp number. We'll send a one-time code to confirm it's yours."}</p>
           {" "}
           <div style={{ display: "grid", gap: "8px" }}>
             {" "}

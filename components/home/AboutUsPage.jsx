@@ -125,7 +125,7 @@ export default function AboutUsPage() {
                   {"Join us for a live session on separating what the evidence supports from what is still unknown, and on knowing when a question is worth investigating on the ground."}
                 </p>
                 {" "}
-                <button type="button" className="pg-link" data-dialog="access">{"Register interest "}<span aria-hidden="true">{"→"}</span></button>
+                <button type="button" className="pg-link" data-dialog="access">{"Contact us "}<span aria-hidden="true">{"→"}</span></button>
                 {" "}
               </div>
               {" "}
@@ -455,7 +455,7 @@ export default function AboutUsPage() {
           {" "}
           <div className="acts">
             <button type="button" className="obtn solid" data-page="contact">{"Talk to our team "}<span aria-hidden="true">{"→"}</span></button>
-            <button type="button" className="obtn" data-dialog="access">{"Get early access"}</button>
+            <button type="button" className="obtn" data-dialog="access">{"Contact us"}</button>
           </div>
           {" "}
         </section>
