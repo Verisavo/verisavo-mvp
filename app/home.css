@@ -1742,4 +1742,8 @@ html body #pg-community-tasks.pg .cmt-notify p { font-size: 1rem; line-height: 1
 #pg-community-tasks .cmt-notify .cm-btn:hover { background: #E3EBF8; }
 #pg-community-tasks .cmt-notify .cm-btn svg { width: 20px; height: 20px; }
 @media (max-width: 640px) { #pg-community-tasks .cmt-notify { border-radius: 16px; padding: 24px 20px; } #pg-community-tasks .cmt-notify .cm-btn { width: 100%; } }
+/* task board: VeriPoints per task */
+#pg-community-tasks .cmt-pts { padding: 6px 10px; border-radius: 999px; background: #1F273F; font: 600 .78rem/1 var(--sans); color: #fff; white-space: nowrap; }
+#pg-community-tasks .cmt-list button { grid-template-columns: minmax(0, 1fr) auto 170px auto 24px !important; }
+@media (max-width: 900px) { #pg-community-tasks .cmt-list button { grid-template-columns: minmax(0, 1fr) 24px !important; } #pg-community-tasks .cmt-pts { grid-column: 1; justify-self: start; } }
 @media (prefers-reduced-motion: reduce) { #pg-community .cm-acts li { transition: none; } #pg-community .cm-acts li:hover { transform: none; } }
