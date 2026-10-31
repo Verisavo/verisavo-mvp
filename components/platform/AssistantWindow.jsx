@@ -32,13 +32,12 @@ export default function AssistantWindow() {
             </li>
             {" "}
             <li>
-              <button type="button" className="va-nav va-soon" id="va-scouts" aria-disabled="true" aria-describedby="va-soon-tag">
+              <button type="button" className="va-nav" id="va-scouts">
                 <svg className="vi" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M10 17s-5-4.6-5-8.4a5 5 0 0 1 10 0C15 12.4 10 17 10 17z"></path>
                   <circle cx="10" cy="8.6" r="1.8"></circle>
                 </svg>
                 <span>{"SavoScouts"}</span>
-                <em className="va-soon-tag" id="va-soon-tag">{"Coming soon"}</em>
               </button>
             </li>
             {" "}
