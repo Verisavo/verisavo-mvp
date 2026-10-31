@@ -1660,3 +1660,6 @@ html body .wa-it b { font-weight: 600; }
 html body .wa-demo figcaption { text-align: center; font: 400 .85rem/1.4 var(--sans); color: #A8C6E8; }
 @media (max-width: 900px) { html body .wa-card { grid-template-columns: 1fr; border-radius: 20px; } }
 @media (max-width: 640px) { html body .wa-card { padding: 28px 20px; } html body .wa-btn { height: 54px; width: 100%; justify-content: center; } html body .wa-chat { padding: 16px; } html body .wa-chat p { font-size: .92rem; max-width: 92%; } html body .wa-top { padding: 14px 16px; } }
+
+/* the question box and the Built from strip are taken off this page (31 Oct) */
+.stage-sec, #sample { display: none !important; }
