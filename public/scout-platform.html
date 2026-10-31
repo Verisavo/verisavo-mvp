@@ -301,7 +301,7 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .wa-bd{position:fixed;inset:0;background:var(--overlay);z-index:49}
 .wa.full{position:fixed;z-index:50;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));height:calc(100vh - 32px);height:calc(100dvh - 32px);max-height:none;min-height:0}
 @media (max-width:640px){.wa.full{left:0;top:0;transform:none;width:100vw;height:100vh;height:100dvh;border-radius:0;border:0}}
-.paym{display:grid;gap:8px}
+.paym{display:grid;gap:8px}.paym-off{opacity:.55;cursor:not-allowed}
 .paym-o{display:grid !important;grid-template-columns:18px minmax(0,1fr);gap:12px;align-items:start;text-align:left;width:100%;padding:12px 14px;font:inherit;color:inherit}
 .paym-o b{display:block;font-weight:600;font-size:14px}.paym-o small{display:block;color:var(--ink-2);font-size:12.5px;margin-top:2px;line-height:1.45}
 .paym-r{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--primary-200);margin-top:1px;display:grid;place-items:center}
@@ -796,13 +796,14 @@ function newBuilder(from) {
   B.pay = Object.assign({method: '', company: '', email: (SITEUSER && SITEUSER.email) || '', po: ''}, B.pay || B.billing || {}, {ok: false});
 }
 const PAYM = [['card', 'Card', 'Pay on our payment provider\'s secure page. Card details are not entered in Verisavo.'], ['momo', 'Mobile money', 'Approve the payment on your phone, for example MTN MoMo, M-Pesa or Airtel Money.'], ['invoice', 'Bank transfer or invoice', 'We invoice accepted, verified responses when the investigation closes.']];
-const payName = (m) => (PAYM.find(p => p[0] === m) || [0, '—'])[1];
+const credits = () => { try { return Math.max(0, +localStorage.getItem('vs-credits') || 0); } catch (e) { return 0; } };
+const payName = (m) => m === 'credits' ? 'Response credits' : (PAYM.find(p => p[0] === m) || [0, '—'])[1];
 function costOf(s, list) { const rate = (s.billing && s.billing.rate) || PER_RESPONSE, ok = list.filter(x => x.status === 'approved').length, pend = list.filter(x => x.status === 'pending').length, cap = (s.billing && s.billing.authorised) || s.target * rate; return {rate, ok, pend, charged: ok * rate, pending: pend * rate, cap, left: Math.max(0, cap - ok * rate)}; }
 function payStep(P) {
   const p = B.pay;
   return `<div class="grid g-main"><div class="stack">
     <div><h2 style="font-size:22px">Payment</h2><p class="muted" style="margin:2px 0 0">Choose how to pay and authorise the maximum planned cost. You are charged only for accepted, verified responses. Anything unused is released when the investigation closes.</p></div>
-    <div class="field"><span class="flabel">Payment method</span><div class="paym">${PAYM.map(m => `<button class="choice paym-o ${p.method === m[0] ? 'on' : ''}" data-act="paymethod" data-v="${m[0]}" aria-pressed="${p.method === m[0]}"><span class="paym-r" aria-hidden="true"></span><span><b>${m[1]}</b><small>${m[2]}</small></span></button>`).join('')}</div></div>
+    <div class="field"><span class="flabel">Payment method</span><div class="paym">${(credits() ? [['credits', 'Response credits', credits() >= B.responses ? credits() + ' responses available. This investigation uses up to ' + fmt(B.responses) + '.' : 'You have ' + credits() + ' responses, not enough for ' + fmt(B.responses) + '. Lower the responses or choose another method.']] : []).concat(PAYM).map(m => `<button class="choice paym-o${m[0] === 'credits' && credits() < B.responses ? ' paym-off' : ''} ${p.method === m[0] ? 'on' : ''}" data-act="paymethod" data-v="${m[0]}" aria-pressed="${p.method === m[0]}" ${m[0] === 'credits' && credits() < B.responses ? 'disabled' : ''}><span class="paym-r" aria-hidden="true"></span><span><b>${m[1]}</b><small>${m[2]}</small></span></button>`).join('')}</div></div>
     <div class="grid g2"><div class="field"><label for="pay-co">Company name</label><input class="in" id="pay-co" data-pay="company" autocomplete="organization" value="${esc(p.company)}" placeholder="Registered company name"></div>
     <div class="field"><label for="pay-em">Billing email</label><input class="in" id="pay-em" type="email" data-pay="email" autocomplete="email" value="${esc(p.email)}" placeholder="finance@company.com"></div></div>
     <div class="field"><label for="pay-po">Purchase order or reference <span class="faint" style="font-weight:400">(optional)</span></label><input class="in" id="pay-po" data-pay="po" value="${esc(p.po)}" placeholder="For example, PO-2026-118"></div>
@@ -832,6 +833,7 @@ function cBilling(r) {
       <div class="card stack"><h2 style="font-size:16px">Payment details</h2>
         ${last ? `<div class="kv"><span>Last used</span><b>${esc(payName(last.billing.method))}</b></div><div class="kv"><span>Company</span><b>${esc(last.billing.company || '—')}</b></div><div class="kv"><span>Billing email</span><b>${esc(last.billing.email || '—')}</b></div>` : '<p class="muted" style="margin:0;font-size:13px">You choose a payment method when you deploy your first investigation.</p>'}
         <p class="faint" style="font-size:12px;margin:0">You can choose a different method for each investigation.</p></div>
+      <div class="card stack"><h2 style="font-size:16px">Response credits</h2><div class="kv"><span>Available</span><b class="num">${fmt(credits())} responses</b></div><p class="faint" style="font-size:12px;margin:0">Buy responses on the Pricing page, then choose Response credits when you deploy.</p></div>
       <div class="note">${ic.info}<span>You pay ${money(PER_RESPONSE)} for each accepted, verified response, with no set-up fee. Investigations are charged separately from your subscription.</span></div>
     </div></div>`;
   return shell(r, 'Billing', body);
@@ -1255,7 +1257,7 @@ document.addEventListener('click', async (e) => {
   }
   else if (a === 'setstatus') { await patch('surveys', id, {status: v}); toast('Investigation ' + (v === 'active' ? 'resumed' : v) + '.'); }
   /* builder */
-  else if (a === 'paymethod') { B.pay.method = v; render(); }
+  else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
   else if (a === 'usegap') { const g = GAPS[Number(v)]; Object.assign(B, JSON.parse(JSON.stringify(g))); render(); toast('Prepared from the Intelligence Gap. Review and edit before deploying.'); }
   else if (a === 'genbrief') genBrief(id);
   else if (a === 'ref') openSub(id);
@@ -1336,6 +1338,7 @@ async function saveSurvey(status) {
     rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), publishedAt: status === 'active' ? Date.now() : null,
     deadline: status === 'active' ? Date.now() + tf(B.timeframe)[2] * 86400000 : null, request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: PER_RESPONSE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
   B.id = id;
+  if (status === 'active' && B.pay.method === 'credits') { try { localStorage.setItem('vs-credits', String(Math.max(0, credits() - B.responses))); } catch (e) {} }
   await put('surveys', id, doc);
   if (status === 'active') { B = null; go('c-survey-' + id); toast('Investigation deployed. The Verisavo agent is sending it to SavoScouts on WhatsApp.'); }
   else { if (route().id !== id) go('c-builder-' + id); toast('Draft saved.'); }
