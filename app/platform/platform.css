@@ -1808,3 +1808,12 @@ html body .wa-p { margin: 20px auto 30px !important; max-width: 52ch; }
 html body .wa-btn { height: 54px !important; padding: 0 26px 0 20px !important; border-radius: 10px !important; background: #FFFFFF !important; color: #1F273F !important; }
 html body .wa-btn:hover { background: #E3EBF8 !important; }
 html body .wa-btn svg { width: 22px !important; height: 22px !important; }
+
+/* >>> get started cta (replaces the WhatsApp panel, 31 Oct) */
+html body .wa-eb { gap: 0 !important; }
+html body .wa-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+html body a.wa-btn { text-decoration: none; }
+html body .wa-btn2 { background: transparent !important; color: #FFFFFF !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
+html body .wa-btn2:hover { background: rgba(255,255,255,.08) !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
+html body .wa-btn { padding: 0 24px !important; }
+@media (max-width: 640px) { html body .wa-ctas { display: grid; width: 100%; max-width: 360px; justify-self: center; } html body .wa-copy { width: 100%; } html body .wa-ctas .wa-btn { width: 100%; justify-content: center; } }
