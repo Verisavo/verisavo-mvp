@@ -1672,4 +1672,18 @@ html body #pg-community.pg .pg-foot .foot-bar { border-top-color: rgba(31,39,63,
   #pg-community .cm-close { border-radius: 20px; }
   #pg-community .cm-safe-in { border-radius: 20px; padding: 28px 20px; }
 }
+/* activities: category tiles, and the task list locked until sign-up */
+#pg-community .cm-cats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+#pg-community .cm-cats li { display: grid; gap: 6px; padding: 20px; border-radius: 16px; background: var(--cm-t); }
+html body #pg-community.pg .cm-cats h3 { margin: 0; font: 500 1.08rem/1.25 var(--sans); letter-spacing: -.015em; color: var(--cm-i); }
+html body #pg-community.pg .cm-cats p { font-size: .92rem; line-height: 1.45; }
+#pg-community .cm-gate { position: relative; }
+#pg-community .cm-gate .cm-acts { max-height: 440px; overflow: hidden; filter: blur(5px); opacity: .7; pointer-events: none; user-select: none; -webkit-mask-image: linear-gradient(#000 35%, transparent 95%); mask-image: linear-gradient(#000 35%, transparent 95%); }
+#pg-community .cm-lock { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(440px, calc(100% - 24px)); display: grid; justify-items: center; gap: 12px; padding: 30px 26px; border-radius: 20px; background: #fff; box-shadow: 0 0 0 1px #E1E8F2, 0 30px 60px -30px rgba(31,39,63,.45); text-align: center; }
+#pg-community .cm-lock svg { width: 30px; height: 30px; color: var(--cm-a); }
+html body #pg-community.pg .cm-lock h3 { margin: 0; font: 500 1.3rem/1.25 var(--sans); letter-spacing: -.02em; color: var(--cm-i); }
+html body #pg-community.pg .cm-lock p { font-size: .95rem; line-height: 1.55; max-width: 34ch; }
+#pg-community .cm-lock .cm-btn { margin-top: 6px; }
+@media (max-width: 1080px) { #pg-community .cm-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { #pg-community .cm-cats { gap: 10px; } #pg-community .cm-cats li { padding: 16px; } #pg-community .cm-gate .cm-acts { max-height: 520px; } #pg-community .cm-lock .cm-btn { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { #pg-community .cm-acts li { transition: none; } #pg-community .cm-acts li:hover { transform: none; } }
