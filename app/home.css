@@ -1623,7 +1623,7 @@ html body #pg-community.pg .cm-grid p { font-size: 1rem; line-height: 1.6; max-w
 html body #pg-community.pg .cm-rows p { font-size: .98rem; line-height: 1.6; }
 /* standards */
 #pg-community .cm-safe-in { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 7vw, 120px); padding: clamp(32px, 5vw, 64px); border-radius: 24px; background: #1F273F; }
-html body #pg-community.pg .cm-safe .cm-head h2 { color: #fff; }
+html body #pg-community.pg .cm-safe .cm-head h2:not(#_a):not(#_b):not(#_c):not(#_d) { color: #fff !important; -webkit-text-fill-color: #fff; }
 html body #pg-community.pg .cm-safe .cm-eb { color: #A8C6E8 !important; }
 #pg-community .cm-safe ul { list-style: none; margin: 0; padding: 0; display: grid; }
 #pg-community .cm-safe li { position: relative; padding: 18px 0 18px 30px; border-bottom: 1px solid rgba(168,198,232,.18); font: 400 1rem/1.55 var(--sans); color: #E3EBF8; }
@@ -1733,4 +1733,13 @@ html body #pg-community-tasks.pg .pg-foot .logo { color: #1F273F !important; }
   #pg-community-tasks .cmt-list button { padding: 18px 0; }
   #pg-community-tasks .cmt-gate .cm-btn { width: 100%; }
 }
+/* task board: register for task alerts */
+#pg-community-tasks .cmt-notify { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; margin-top: 18px; padding: clamp(26px, 4vw, 40px); border-radius: 20px; background: #1F273F; }
+#pg-community-tasks .cmt-notify > div { display: grid; gap: 8px; max-width: 56ch; }
+html body #pg-community-tasks.pg .cmt-notify h2:not(#_a):not(#_b):not(#_c):not(#_d) { margin: 0; font: 500 clamp(1.4rem, 1.1rem + 1vw, 1.9rem)/1.2 var(--sans); letter-spacing: -.03em; color: #fff !important; -webkit-text-fill-color: #fff; }
+html body #pg-community-tasks.pg .cmt-notify p { font-size: 1rem; line-height: 1.6; color: #CCDDF1; }
+#pg-community-tasks .cmt-notify .cm-btn { background: #fff; color: #1F273F; }
+#pg-community-tasks .cmt-notify .cm-btn:hover { background: #E3EBF8; }
+#pg-community-tasks .cmt-notify .cm-btn svg { width: 20px; height: 20px; }
+@media (max-width: 640px) { #pg-community-tasks .cmt-notify { border-radius: 16px; padding: 24px 20px; } #pg-community-tasks .cmt-notify .cm-btn { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { #pg-community .cm-acts li { transition: none; } #pg-community .cm-acts li:hover { transform: none; } }
