@@ -200,34 +200,6 @@ export default function Main() {
       {" "}
 
       {" "}
-      <div className="cta-wrap">
-        {" "}
-        <div className="wrap">
-          {" "}
-          <div className="cta">
-            {" "}
-            <p className="eyebrow">{"Ask. Understand. Act."}</p>
-            {" "}
-            <h2>{"Make your next move"}<br />{"with confidence."}</h2>
-            {" "}
-            <p>
-              {"Understand your market, see what the evidence supports and uncover what’s missing before you act."}
-            </p>
-            {" "}
-            <div className="ctas">
-              {" "}
-              <button type="button" className="btn btn-blue" data-access="">{"Get early access"}</button>
-              {" "}
-              <a className="btn btn-outline-w" href="/docs.html">{"Read the Docs"}</a>
-              {" "}
-            </div>
-            {" "}
-          </div>
-          {" "}
-        </div>
-        {" "}
-      </div>
-      {" "}
     </main>
   );
 }
