@@ -8,6 +8,7 @@ import ResearchDetail from "@/components/home/ResearchDetail";
 import PricingPage from "@/components/home/PricingPage";
 import CareersPage from "@/components/home/CareersPage";
 import CommunityPage from "@/components/home/CommunityPage";
+import CommunityTasksPage from "@/components/home/CommunityTasksPage";
 import ContactPage from "@/components/home/ContactPage";
 import Main from "@/components/home/Main";
 import Footer from "@/components/home/Footer";
@@ -30,6 +31,7 @@ export default function HomeShell({ start = "" }) {
       <PricingPage />
       <CareersPage />
       <CommunityPage />
+      <CommunityTasksPage />
       <ContactPage />
       <Main />
       <Footer />
