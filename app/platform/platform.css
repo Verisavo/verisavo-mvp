@@ -1935,3 +1935,20 @@ html body .wa-btn { padding: 0 24px !important; }
 .va-dark .va-brief .vb-head h2, .va-dark .vb-l { color: #fff; }
 .va-dark .vb-head p:not(.vb-eb) { color: #CCDDF1; }
 .va-dark .vb-card, .va-dark .vb-done { background: #fff; }
+
+/* >>> market scope multi-select */
+html body #va-scope-menu [data-market] { display: flex !important; align-items: center; gap: 10px; }
+html body #va-scope-menu [aria-checked="true"], html body #va-scope-menu [aria-checked="mixed"] { background: transparent; font-weight: 500; }
+html body #va-scope-menu [data-market]:hover { background: #F3F7FC; }
+html body #va-scope-menu .mk-box { width: 16px; height: 16px; flex: none; border: 1.5px solid #A8C6E8; border-radius: 4px; background: #fff; display: grid; place-items: center; }
+html body #va-scope-menu [aria-checked="true"] .mk-box { background: #1F273F; border-color: #1F273F; }
+html body #va-scope-menu [aria-checked="true"] .mk-box::after { content: ""; width: 8px; height: 4px; border: solid #fff; border-width: 0 0 2px 2px; transform: translateY(-1px) rotate(-45deg); }
+html body #va-scope-menu [aria-checked="mixed"] .mk-box { background: #1F273F; border-color: #1F273F; }
+html body #va-scope-menu [aria-checked="mixed"] .mk-box::after { content: ""; width: 8px; height: 2px; background: #fff; border-radius: 1px; }
+html body #va-scope-menu .mk-all { font-weight: 600 !important; }
+html body #va-scope-menu .mk-foot { position: sticky; bottom: -6px; z-index: 1; display: flex; justify-content: space-between; gap: 8px; margin: 6px -6px -6px !important; padding: 8px 10px; background: #fff; border-top: 1px solid #E3EBF8; }
+html body #va-scope-menu .mk-foot button { width: auto; flex: none; border: 0; border-radius: 8px; padding: 8px 14px; font: 500 .8125rem/1 var(--sans, sans-serif); cursor: pointer; }
+html body #va-scope-menu .mk-clear { background: none; color: #3A5292; }
+html body #va-scope-menu .mk-clear:disabled { color: #A8B0C2; cursor: default; }
+html body #va-scope-menu .mk-done { background: #1F273F; color: #fff; }
+/* <<< market scope multi-select */
