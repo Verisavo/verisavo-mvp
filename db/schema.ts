@@ -76,6 +76,7 @@ export const kbDocuments = pgTable("kb_documents", {
   title: text("title").notNull(),
   status: text("status").notNull().default("draft"),
   markets: text("markets").array().notNull().default(sql`'{}'::text[]`),   // empty = applies to all markets
+  genres: text("genres").array().notNull().default(sql`'{}'::text[]`),     // industry sectors (lib/markets.ts): an admin label
   sourceName: text("source_name"),                                            // original file name, if uploaded
   currentVersionId: uuid("current_version_id"),
   chunkCount: integer("chunk_count").notNull().default(0),

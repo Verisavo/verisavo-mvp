@@ -5,12 +5,12 @@ import { profiles, stripeEvents, subscriptions, usagePeriods } from "@/db/schema
 import { PLAN } from "@/lib/plan";
 import { audit } from "@/lib/server/audit";
 import { stripe, stripeConfigured, type Stripe } from "@/lib/server/stripe";
+import { appUrl } from "@/lib/server/http";
 import { createSupabase } from "@/lib/server/supabase";
 
 // Stripe billing (M3.2–M3.3, see the verisavo-stripe-billing skill): customers, checkout, the billing portal, and the
 // webhook handler that keeps the subscriptions table in sync. Entitlements read that table; nothing here counts usage.
 
-const appUrl = () => (process.env.APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
 
 // Billing pages act on money and personal data, so the session is confirmed with Supabase (getUser), not only from
 // the signed token: a token copied before sign-out stops working here at once (the same check as requireAdmin)
@@ -184,7 +184,7 @@ async function handleEvent(event: Stripe.Event): Promise<void> {
     case "checkout.session.completed": {
       const s = event.data.object;
       const customerId = idOf(s.customer), userId = s.client_reference_id;
-      if (customerId && userId) {
+      if (customerId && userId && UUID.test(userId)) {
         await db.update(profiles).set({ stripeCustomerId: customerId }).where(and(eq(profiles.id, userId), isNull(profiles.stripeCustomerId)));
       }
       const subId = idOf(s.subscription);

@@ -56,12 +56,14 @@ Sign up, email confirmation, sign in and password reset use Supabase Auth with e
 3. **Authentication → URL Configuration:**
    - **Site URL** is the site's address (`http://localhost:3000` for dev)
    - Add `<site>/**` to **Redirect URLs**
+   - On the live project, this must be the address the site actually runs on: every email link is built from it.
 4. **Authentication → Emails → Templates.** In each template below, replace `{{ .ConfirmationURL }}` with:
    - **Confirm sign up:** `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/dashboard`
    - **Reset password:** `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery`
    - **Change email address:** `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email_change&next=/dashboard`
 
    These links work on any device, because the server checks them; the default links only work in the same browser.
+   **Continue with Google** (optional): in Google Cloud, create an OAuth client (Web application) with the redirect URI `https://<project-ref>.supabase.co/auth/v1/callback`, then paste its client ID and secret into Authentication → Sign In / Providers → Google. The button appears on the site within 5 minutes.
 5. **Email sender.** Until Verisavo's domain is set up, Supabase's built-in sender is used. It's rate-limited and only delivers to the project's team members. After that, set Resend as the custom SMTP sender (Authentication → Emails → SMTP Settings).
 6. **Authentication → Rate Limits.** Only our server talks to Supabase, so Supabase sees one address for every visitor. Its per-IP limits must therefore be site-wide, and the per-visitor limits live in the app (`lib/server/rate-limit.ts`). Raise these to about:
    - **Sign-ups and sign-ins:** 300 per 5 minutes

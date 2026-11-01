@@ -1,7 +1,7 @@
 import { connection } from "next/server";
 import { requireAdmin } from "@/lib/server/admin";
 import { getAiSettings } from "@/lib/server/ai/settings";
-import { EMBEDDINGS, keySet, PROVIDER_IDS, PROVIDERS, type EmbeddingId } from "@/lib/server/ai/providers";
+import { EMBEDDINGS, keySet, MODEL_NOTES, PROVIDER_IDS, PROVIDERS, type EmbeddingId } from "@/lib/server/ai/providers";
 import { staleDocumentIds } from "@/lib/server/rag/knowledge";
 import { AnswerForm, SearchForm } from "./forms";
 
@@ -47,7 +47,7 @@ export default async function AdminAi() {
           <p className="eyebrow">{"Answers"}</p>
           <h2 id="answers-h" className="text-[17px] font-semibold">{"Who answers questions"}</h2>
           <p className="-mt-1.5 text-sm text-brand-800">{"Used for every Intelligence Assistant answer, on the web and on WhatsApp."}</p>
-          <AnswerForm services={services} current={{ provider: settings.answerProvider, model: settings.answerModel }} />
+          <AnswerForm services={services} notes={MODEL_NOTES} current={{ provider: settings.answerProvider, model: settings.answerModel }} />
         </section>
         <section className="card" aria-labelledby="search-h">
           <p className="eyebrow">{"Knowledge search"}</p>

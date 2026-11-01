@@ -19,6 +19,7 @@ export function fromOurSite(request: Request): boolean {
 }
 
 export async function readJson(request: Request): Promise<Record<string, unknown> | null> {
+  if (Number(request.headers.get("content-length") ?? 0) > 1_000_000) return null;   // no JSON body here is anywhere near 1 MB
   try {
     const value: unknown = await request.json();
     return value && typeof value === "object" ? (value as Record<string, unknown>) : null;
@@ -45,8 +46,15 @@ export function passwordProblem(password: unknown): string {
 }
 
 // Only redirect inside this site: "/dashboard" is allowed, "//evil.com" and "https://..." are not
+// The site's public address, for links that leave and come back (Stripe, Google). A live site never falls back to localhost.
+export const appUrl = (): string => {
+  const live = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  return (process.env.APP_URL || (live ? `https://${live}` : "http://localhost:3000")).replace(/\/$/, "");
+};
+
+// A path on this site. The second check catches paths like /.//evil.com, which normalise to //evil.com: another site.
 export const safePath = (value: unknown, fallback: string): string =>
-  typeof value === "string" && /^\/(?!\/)[\w\-/?=&#.%]*$/.test(value) ? value : fallback;
+  typeof value === "string" && /^\/(?!\/)[\w\-/?=&#.%]*$/.test(value) && !new URL(value, "http://n").pathname.startsWith("//") ? value : fallback;
 
 // Supabase Auth answers 429 (or a *_rate_limit code) when someone retries too often
 export const isRateLimited = (error: { status?: number; code?: string } | null | undefined): boolean =>

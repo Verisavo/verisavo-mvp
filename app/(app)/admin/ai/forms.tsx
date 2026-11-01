@@ -21,12 +21,15 @@ function TestButton({ action, label }: { action: typeof testAnswers; label: stri
   );
 }
 
-export function AnswerForm({ services, current }: { services: ServiceView[]; current: { provider: string; model: string } }) {
+const OTHER = "__other";
+
+export function AnswerForm({ services, notes, current }: { services: ServiceView[]; notes: Record<string, string>; current: { provider: string; model: string } }) {
   const [state, action, pending] = useActionState(saveAnswerSettings, null);
   const [provider, setProvider] = useState(current.provider);
   const [model, setModel] = useState(current.model);
   const models = services.find(s => s.id === provider)?.models ?? [];
-  const pick = (s: ServiceView) => { if (s.id !== provider) { setProvider(s.id); setModel(s.models[0] ?? ""); } };
+  const [other, setOther] = useState(!models.includes(current.model));
+  const pick = (s: ServiceView) => { if (s.id !== provider) { setProvider(s.id); setModel(s.models[0] ?? ""); setOther(false); } };
   return (
     <div className="grid gap-4">
       <form action={action} className="grid gap-4">
@@ -42,11 +45,17 @@ export function AnswerForm({ services, current }: { services: ServiceView[]; cur
         </fieldset>
         <div className="grid gap-1.5">
           <label className="label" htmlFor="ai-model">{"Model"}</label>
-          <input className="input" id="ai-model" name="model" list="ai-models" value={model} onChange={e => setModel(e.target.value)} maxLength={80} required autoComplete="off" />
-          <datalist id="ai-models">{models.map(m => <option key={m} value={m} />)}</datalist>
-          <p className="hint">{"Pick a suggestion or type any model ID the service offers. Bigger models answer better but cost more per question."}</p>
+          <select className="input" id="ai-model" value={other ? OTHER : model}
+            onChange={e => { const v = e.target.value; setOther(v === OTHER); setModel(v === OTHER ? "" : v); }}>
+            {models.map(m => <option key={m} value={m}>{notes[m] ? `${m} (${notes[m]})` : m}</option>)}
+            <option value={OTHER}>{"Other model…"}</option>
+          </select>
+          {other
+            ? <input className="input" name="model" aria-label="Model ID" value={model} onChange={e => setModel(e.target.value)} maxLength={80} required autoComplete="off" placeholder="Model ID from the service" />
+            : <input type="hidden" name="model" value={model} />}
+          <p className="hint">{"Saving tries the model first, so a model that doesn't work is never saved."}</p>
         </div>
-        <div><button className="btn" type="submit" disabled={pending}>{pending ? "Saving…" : "Save"}</button></div>
+        <div><button className="btn" type="submit" disabled={pending}>{pending ? "Trying it and saving…" : "Save"}</button></div>
         <Note state={state} />
       </form>
       <TestButton action={testAnswers} label="Test answers" />
@@ -74,7 +83,7 @@ export function SearchForm({ options, current, stale }: { options: SearchOption[
             </label>
           ))}
         </fieldset>
-        <p className="hint">{"Claude has no search model of its own, so search runs on OpenAI or Gemini, whichever service answers."}</p>
+        <p className="hint">{"Claude has no search model of its own, so search always runs on the OpenAI or Gemini model chosen here, whichever service answers."}</p>
         <div><button className="btn" type="submit" disabled={pending}>{pending ? "Saving and re-indexing…" : "Save"}</button></div>
         <Note state={state} />
       </form>

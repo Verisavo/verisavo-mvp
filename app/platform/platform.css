@@ -66,6 +66,8 @@ a.logo { text-decoration: none; }
 .a-google { background: var(--white); color: var(--indigo); border: 1px solid var(--b200); border-radius: 10px; min-height: 48px; text-decoration: none; }
 .a-google:hover { border-color: var(--b500); }
 .a-google svg { width: 18px; height: 18px; }
+.a-google { cursor: pointer; }
+.a-google-wrap:not([hidden]) { display: grid; gap: 14px; }
 .a-or { display: flex; align-items: center; gap: 12px; color: var(--b600); font-size: 0.8125rem; }
 .a-or::before, .a-or::after { content: ""; flex: 1; height: 1px; background: var(--b200); }
 .a-form { display: grid; gap: 12px; }
