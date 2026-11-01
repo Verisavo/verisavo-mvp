@@ -1817,6 +1817,11 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
   #ln .wf-main { min-height: 340px; }
 }
 @media (max-width: 600px) { #ln .wf-main { padding: 18px 14px; border-radius: 18px; min-height: 380px; } }
+#ln .wf-fl { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+#ln .wf-fl li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: .9rem; line-height: 1.4; color: #1F273F; font-weight: 500; }
+#ln .wf-tag { justify-self: start; padding: 3px 8px; border-radius: 6px; background: #E3EBF8; color: #3A5292; font-size: .68rem; font-weight: 600; letter-spacing: .02em; }
+#ln .wf-tag-i { background: #F3F4F7; color: #5B6478; }
+#ln .wf-tt + .wf-cols { margin-top: 0; }
 /* <<< workflow explainer */
 /* >>> homepage problem text */
 #ln .why { padding-block: clamp(64px, 8vw, 112px); background: #fff; font-family: "Inter", var(--sans); }
