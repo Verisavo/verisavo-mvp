@@ -1976,7 +1976,7 @@ html body #va-scope-menu .mk-done { background: #1F273F; color: #fff; }
 #platform .vsx-g .vsx-i { stroke: #80AADC; }
 #platform .vsx-v .vsx-i { stroke: #fff; background: #4362B2; border-radius: 50%; padding: 3px; }
 #platform .vsx-k { display: none; }
-#platform .vsx-src { max-width: 1120px; margin: 14px auto 0; padding: 0 8px; font: 400 .78rem/1.5 var(--sans) !important; color: #86868B !important; }
+#platform .vsx-src { max-width: 1120px; margin: 14px auto 0; padding: 0 8px; text-align: center; font: 400 .78rem/1.5 var(--sans) !important; color: #86868B !important; }
 @media (max-width: 820px) {
   #platform .vsx { padding: 4px 14px 0; border-radius: 22px; }
   #platform .vsx-r:nth-child(2) { padding-top: 14px !important; }
@@ -1992,6 +1992,7 @@ html body #va-scope-menu .mk-done { background: #1F273F; color: #fff; }
   #platform .vsx-g .vsx-i, #platform .vsx-v .vsx-i { grid-row: 1 / span 2; }
 }
 /* <<< beyond the answer */
+
 
 /* >>> product page v2 */
 /* section labels, same as the homepage */
