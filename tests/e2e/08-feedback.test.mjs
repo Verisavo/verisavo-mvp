@@ -105,6 +105,34 @@ test("admin filters are for admins only", async () => {
   for (const path of ["/admin/users?plan=paid", "/admin/activity?type=auth.", "/admin/knowledge?genre=Energy"]) assert.equal((await web.req("GET", path)).status, 404, path);
 });
 
+test("a chat can be renamed by its owner only; titles are checked, and another person's chat can't be touched", async () => {
+  const owner = await createUser({ name: "Chat Owner" }), other = await createUser({ name: "Chat Other" });
+  const [conv] = await sql`insert into conversations (user_id, title) values (${owner.id}, 'Before') returning id`;
+  const web = new Client(), stranger = new Client();
+  await web.login(owner);
+  await stranger.login(other);
+  const path = `/api/assistant/conversations/${conv.id}`;
+  const title = async () => (await sql`select title from conversations where id = ${conv.id}`)[0]?.title;
+  const renamed = await web.json("PATCH", path, { title: "  New name  " });
+  assert.equal(renamed.status, 200);
+  assert.equal(await title(), "New name");
+  assert.equal((await web.json("PATCH", path, { title: "   " })).status, 400);
+  assert.equal((await web.json("PATCH", path, {})).status, 400);
+  await web.json("PATCH", path, { title: "x".repeat(500) });
+  assert.equal((await title()).length, 120, "long titles are cut");
+  const script = "<img src=x onerror=alert(1)>";
+  await web.json("PATCH", path, { title: script });
+  assert.ok(!(await web.page("/dashboard")).html.includes(script), "a title is shown as text, never as HTML");
+  assert.equal((await stranger.json("PATCH", path, { title: "Hijacked" })).status, 404);
+  assert.equal((await stranger.json("DELETE", path, {})).status, 404);
+  assert.notEqual(await title(), "Hijacked");
+  assert.equal((await new Client().json("PATCH", path, { title: "Anon" })).status, 401);
+  assert.equal((await web.req("PATCH", path, { body: { title: "Cross" }, headers: { origin: "https://evil.example" } })).status, 403);
+  assert.equal((await web.json("PATCH", "/api/assistant/conversations/not-a-uuid", { title: "x" })).status, 404);
+  assert.equal((await web.json("DELETE", path, {})).status, 200);
+  assert.equal(await title(), undefined);
+});
+
 test("a model that doesn't work is never saved", async () => {
   const [before] = await sql`select answer_provider, answer_model from ai_settings where id = 1`;
   const r = await admin.submit("/admin/ai", 'name="provider"', { provider: before.answer_provider, model: "no-such-model-e2e" }, "/admin/ai");
