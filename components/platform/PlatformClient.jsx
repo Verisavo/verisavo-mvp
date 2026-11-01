@@ -17,6 +17,8 @@ export default function PlatformClient() {
       (await import("@/lib/platform/brief")).default();
       (await import("@/lib/scoutplatform")).default();
       (await import("@/lib/platform/context")).default();
+      (await import("@/lib/platform/company")).default();
+      (await import("@/lib/platform/model")).default();
       (await import("@/lib/platform/soon")).default();
       (await import("@/lib/platform/mnavbg")).default();
       (await import("@/lib/platform/herobg")).default();
