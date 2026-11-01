@@ -1616,4 +1616,9 @@ html body #pg-pricing .pi-note { margin: 0; font: 400 .8rem/1.5 var(--sans); col
   #ln .pb-dots, #ln .pb-ctx { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { #ln .pb-dot, #ln .pb-hub::before { display: none; } }
+/* layout with the network diagram */
+#ln .pb-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: end; margin-bottom: clamp(32px, 4vw, 52px); }
+#ln .pb-head .pb-lead { margin: 0; }
+#ln .pb .net-card { background-color: #fff; }
+@media (max-width: 860px) { #ln .pb-head { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
 /* <<< problem sim */
