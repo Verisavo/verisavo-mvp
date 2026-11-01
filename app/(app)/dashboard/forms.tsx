@@ -173,9 +173,13 @@ export function WhatsAppLink({ waUrl }: { waUrl: string | null }) {
 }
 
 export function UnlinkWhatsApp() {
+  const { guard, dialog } = useConfirm();
   return (
-    <form action={unlinkWhatsApp} onSubmit={e => { if (!window.confirm("Unlink this number? Messages from it will no longer be answered.")) e.preventDefault(); }}>
+    <>
+    {dialog}
+    <form action={unlinkWhatsApp} onSubmit={guard({ title: "Unlink this number?", body: "Messages from it will no longer be answered.", action: "Unlink", danger: true })}>
       <button className="btn btn-ghost" type="submit">{"Unlink"}</button>
     </form>
+    </>
   );
 }
