@@ -21,7 +21,7 @@ export default async function AdminLayout({ children }: Readonly<{ children: Rea
       <div className="border-b border-brand-200 bg-white">
         <div className="mx-auto max-w-6xl px-5 py-2"><AdminNav /></div>
       </div>
-      <main className="mx-auto grid max-w-6xl gap-6 px-5 pt-8 pb-20">{children}</main>
+      <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-5 pt-8 pb-20">{children}</main>
     </>
   );
 }
