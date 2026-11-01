@@ -1999,4 +1999,6 @@ html body #pg-contact#pg-contact.pg.pg .t2::before, html body #pg-contact#pg-con
   html body #pg-contact#pg-contact.pg.pg .t2-form { padding: 20px 18px !important; border-radius: 18px !important; }
   #pg-contact .t2-ways li { padding: 14px 2px; }
 }
+/* the header Contact us button is not needed on the Contact page itself */
+html body:has(#pg-contact.open) .pa[data-dialog="access"] { display: none !important; }
 /* <<< contact v2 */
