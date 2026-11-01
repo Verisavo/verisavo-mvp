@@ -31,7 +31,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .from(conversations)
     .where(eq(conversations.userId, user.id))
     .orderBy(desc(conversations.updatedAt))
-    .limit(50);
+    .limit(5);
   const firstName = user.profile.name.split(" ")[0];
   // someone who only signs in with Google has no password to change
   const [login] = await db.execute<{ has_password: boolean }>(sql`select coalesce(encrypted_password, '') <> '' as has_password from auth.users where id = ${user.id}`);
@@ -104,7 +104,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               <ul className="grid grid-cols-1 divide-y divide-brand-100">
                 {convs.map(c => (
                   <li key={c.id} className="flex items-center gap-3 py-3 first:pt-0">
-                    <span className="min-w-0 flex-1 truncate font-medium" title={c.title}>{c.title}</span>
+                    {released(3)
+                      ? <a className="min-w-0 flex-1 truncate font-medium text-ink no-underline hover:underline" title={c.title} href={`/dashboard/conversations/${c.id}`}>{c.title}</a>
+                      : <span className="min-w-0 flex-1 truncate font-medium" title={c.title}>{c.title}</span>}
                     <time className="text-[13px] whitespace-nowrap text-brand-800" dateTime={c.updatedAt.toISOString()}>{day.format(c.updatedAt)}</time>
                     <DeleteConversation id={c.id} title={c.title} />
                   </li>
@@ -116,6 +118,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 <a className="font-semibold text-ink" href="/assistant">{"Ask your first question"}</a>
               </p>
             )}
+            {released(3) && convs.length > 0 && <a className="text-sm font-semibold text-ink" href="/dashboard/conversations">{"See all conversations →"}</a>}
           </section>
 
           <section className="card" aria-labelledby="email-h">

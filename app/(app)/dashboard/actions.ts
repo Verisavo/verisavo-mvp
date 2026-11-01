@@ -84,6 +84,7 @@ export async function deleteConversation(formData: FormData): Promise<void> {
     .returning({ id: conversations.id });
   if (removed.length) await audit("conversation.delete", { actorId: user.id, targetType: "conversation", targetId: id });
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/conversations");
 }
 
 export async function signOutAction(): Promise<void> {

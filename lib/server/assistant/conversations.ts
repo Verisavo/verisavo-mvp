@@ -18,6 +18,44 @@ export async function listConversations(userId: string, limit = 50): Promise<Con
     .from(conversations).where(eq(conversations.userId, userId)).orderBy(desc(conversations.updatedAt)).limit(limit);
 }
 
+export const CONVERSATIONS_PER_PAGE = 20;
+export type ConversationFilters = { q?: string; who?: string; from?: string; to?: string };
+export type ConversationRow = { id: string; title: string; created_at: string; updated_at: string; questions: number; name: string | null; email: string | null };
+const like = (s: string) => `%${s.replace(/[\\%_]/g, c => "\\" + c)}%`;
+
+// The conversation tables. ownerId limits it to one user: their own list always passes it. Only the admin list leaves it
+// out (requireAdmin runs on those pages). Dates arrive already checked as YYYY-MM-DD (ConversationViews.tsx).
+export async function searchConversations({ q = "", who = "", from = "", to = "" }: ConversationFilters, page: number, ownerId?: string) {
+  const conditions = [sql`true`];
+  if (ownerId) conditions.push(sql`c.user_id = ${ownerId}`);
+  if (q) conditions.push(sql`c.title ilike ${like(q)}`);
+  if (who && !ownerId) conditions.push(sql`(u.email ilike ${like(who)} or p.name ilike ${like(who)})`);
+  if (from) conditions.push(sql`c.updated_at >= ${from}::date`);
+  if (to) conditions.push(sql`c.updated_at < ${to}::date + 1`);
+  const where = sql.join(conditions, sql` and `);
+  const joins = sql`from conversations c join auth.users u on u.id = c.user_id left join profiles p on p.id = c.user_id`;
+  const [{ total }] = await db.execute<{ total: number }>(sql`select count(*)::int as total ${joins} where ${where}`);
+  const current = Math.min(page, Math.max(1, Math.ceil(total / CONVERSATIONS_PER_PAGE)));
+  const rows = await db.execute<ConversationRow>(sql`
+    select c.id, c.title, c.created_at, c.updated_at, p.name, u.email,
+           (select count(*) from messages m where m.conversation_id = c.id and m.role = 'user')::int as questions
+    ${joins} where ${where}
+    order by c.updated_at desc
+    limit ${CONVERSATIONS_PER_PAGE} offset ${(current - 1) * CONVERSATIONS_PER_PAGE}`);
+  return { rows: [...rows], total, page: current };
+}
+
+// An admin reading someone's chat. Each opening goes in the activity log, naming the person whose chat it was.
+export async function readConversationAsAdmin(id: string, adminId: string) {
+  const [owner] = await db.execute<{ id: string; name: string | null; email: string | null }>(sql`
+    select c.user_id as id, p.name, u.email from conversations c join auth.users u on u.id = c.user_id left join profiles p on p.id = c.user_id where c.id = ${id}`);
+  if (!owner) return null;
+  const conv = await getConversation(owner.id, id);
+  if (!conv) return null;
+  await audit("admin.conversation_view", { actorId: adminId, targetType: "user", targetId: owner.id, metadata: { conversationId: id } });
+  return { ...conv, owner };
+}
+
 export async function ownsConversation(userId: string, id: string): Promise<boolean> {
   const [row] = await db.select({ id: conversations.id }).from(conversations).where(and(eq(conversations.id, id), eq(conversations.userId, userId))).limit(1);
   return Boolean(row);

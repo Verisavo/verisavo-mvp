@@ -68,6 +68,7 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
                   <b className="font-semibold">{u.name || "—"}</b>
                   {u.role === "admin" && <span className="ml-2 rounded bg-ink px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase">{"Admin"}</span>}
                   {u.organisation && <span className="block text-[13px] text-brand-800">{u.organisation}</span>}
+                  {u.questions > 0 && <a className="block text-[13px] font-semibold text-ink" href={`/admin/conversations?who=${encodeURIComponent(u.email)}`}>{"View conversations"}</a>}
                 </td>
                 <td className="px-3 py-3">{u.email}{!u.email_confirmed_at && <span className="block text-[12px] text-brand-600">{"Email not confirmed"}</span>}</td>
                 <td className="px-3 py-3">
