@@ -1,6 +1,7 @@
 "use client";
 import { useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import { GENRES, MARKETS, COUNTRY_MARKETS } from "@/lib/markets";
+import { useConfirm } from "../../Confirm";
 import { changeKbStatus, createKbDocument, saveKbDocument, testKbSearch, type ActionState, type SearchState } from "../actions";
 
 const KB_ACCEPT = ".pdf,.docx,.txt,.md";   // same as lib/server/rag/extract.ts
@@ -124,11 +125,12 @@ export function EditDocumentForm({ id, title, body, markets, genres }: { id: str
 
 export function StatusButtons({ id, status }: { id: string; status: string }) {
   const [state, action, pending] = useActionState(changeKbStatus, null);
-  const confirmArchive = (e: FormEvent<HTMLFormElement>) => {
-    const op = (e.nativeEvent as SubmitEvent).submitter?.getAttribute("value");
-    if (op === "archive" && !window.confirm("Archive this document? It will stop appearing in answers straight away.")) e.preventDefault();
-  };
+  const { guard, dialog } = useConfirm();
+  const confirmArchive = guard(e => (e.nativeEvent as SubmitEvent).submitter?.getAttribute("value") === "archive"
+    ? { title: "Archive this document?", body: "It will stop appearing in answers straight away. You can restore it later.", action: "Archive", danger: true } : null);
   return (
+    <>
+    {dialog}
     <form action={action} onSubmit={confirmArchive} className="grid gap-3">
       <input type="hidden" name="id" value={id} />
       <div className="flex flex-wrap gap-2">
@@ -139,6 +141,7 @@ export function StatusButtons({ id, status }: { id: string; status: string }) {
       </div>
       <Note state={state} />
     </form>
+    </>
   );
 }
 

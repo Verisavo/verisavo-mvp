@@ -16,6 +16,7 @@ export const Chevron = (p: P) => <Icon {...p}><path d="M6 8l4 4 4-4" /></Icon>;
 export const Sun = (p: P) => <Icon {...p}><circle cx="10" cy="10" r="3.2" /><path d="M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7l1.3 1.3M14 14l1.3 1.3M4.7 15.3L6 14M14 6l1.3-1.3" /></Icon>;
 export const Moon = (p: P) => <Icon {...p}><path d="M15.5 12.3A6 6 0 0 1 7.7 4.5a6 6 0 1 0 7.8 7.8z" /></Icon>;
 export const Shield = (p: P) => <Icon {...p}><path d="M10 3l5.5 2v4.6c0 3.4-2.3 5.9-5.5 7.4-3.2-1.5-5.5-4-5.5-7.4V5z" /><path d="M7.6 10.1l1.7 1.7 3.2-3.4" /></Icon>;
+export const Trash = (p: P) => <Icon {...p}><path d="M4.5 6h11M8 6V4.5h4V6M6 6l.7 9.5h6.6L14 6M8.7 9v3.8M11.3 9v3.8" /></Icon>;
 export const Pencil = (p: P) => <Icon {...p}><path d="M4 16h3l8.2-8.2a1.8 1.8 0 0 0-3-3L4 13z" /><path d="M11 6l3 3" /></Icon>;
 export const Dots = ({ className = "", ...p }: P) => <Icon className={`fill-current stroke-none ${className}`} {...p}><circle cx="5" cy="10" r="1.1" /><circle cx="10" cy="10" r="1.1" /><circle cx="15" cy="10" r="1.1" /></Icon>;
 export const Close = (p: P) => <Icon {...p}><path d="M5 5l10 10M15 5L5 15" /></Icon>;

@@ -5,6 +5,7 @@
 // limits are enforced there. Before M3 is released, questions are kept for this browser session and not answered.
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
 import { PLAN, type UsageView } from "@/lib/plan";
+import { useConfirm } from "../Confirm";
 import DotFloor, { type FloorApi } from "./DotFloor";
 import { ACCEPT, CHIPS, HANDOFF_KEY, MARKETS, MAX_FILES, MAX_MB, MORE_CHIPS } from "./data";
 import * as I from "./icons";
@@ -295,10 +296,31 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
     if (curId) { removeOnServer(`/api/assistant/conversations/${curId}`); setConvs(prev => prev.filter(c => c.id !== curId)); }
     newConv();
   };
-  const clearAll = () => {
-    if (live && convs.length && !window.confirm("Delete all your conversations? This can’t be undone.")) { setPop(null); return; }
+  const { confirm, dialog } = useConfirm();
+  const clearAll = async () => {
+    setPop(null);
+    if (live && convs.length && !(await confirm({ title: "Delete all your conversations?", body: "This can’t be undone.", action: "Delete all", danger: true }))) return;
     removeOnServer("/api/assistant/conversations");
     setConvs([]); newConv();
+  };
+  const deleteOne = async (c: Conv) => {
+    if (live && !(await confirm({ title: "Delete this conversation?", body: `“${c.title}” will be deleted. This can’t be undone.`, action: "Delete", danger: true }))) return;
+    removeOnServer(`/api/assistant/conversations/${c.id}`);
+    setConvs(prev => prev.filter(x => x.id !== c.id));
+    if (c.id === curId) newConv();
+  };
+  const [renaming, setRenaming] = useState<string | null>(null);
+  const saveRename = async (c: Conv, value: string) => {
+    setRenaming(null);
+    const title = value.trim().slice(0, 120);
+    if (!title || title === c.title) return;
+    const setTitle = (t: string) => setConvs(prev => prev.map(x => (x.id === c.id ? { ...x, title: t } : x)));
+    setTitle(title);
+    if (!live) return;
+    try {
+      const r = await fetch(`/api/assistant/conversations/${c.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title }) });
+      if (!r.ok) setTitle(c.title);
+    } catch { setTitle(c.title); }
   };
   const prefill = (q: string) => {
     setText(q);
@@ -378,6 +400,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
   return (
     <div className="grid h-dvh place-items-center overflow-hidden bg-[radial-gradient(1100px_520px_at_50%_-8%,#FFFFFF,transparent),linear-gradient(180deg,#E3EBF8,#CCDDF1)]">
     <div className={`relative grid h-dvh w-full overflow-hidden bg-white transition-[width,height,border-radius,grid-template-columns] duration-[350ms] ease-[cubic-bezier(.16,1,.3,1)] ${collapsed ? "md:grid-cols-[0px_minmax(0,1fr)]" : "md:grid-cols-[252px_minmax(0,1fr)]"} ${full ? "" : "md:h-[min(760px,calc(100dvh-32px))] md:w-[min(1120px,calc(100%-32px))] md:rounded-2xl md:border md:border-brand-200 md:shadow-[0_40px_90px_-40px_#1F273F]"}`}>
+      {dialog}
       {/* ---------- Sidebar ---------- */}
       <aside
         id="va-side"
@@ -420,11 +443,24 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
           // only the list scrolls, with its scrollbar hidden: the buttons above and the account row below stay put
           <ul className="m-0 grid min-h-0 min-w-0 flex-1 list-none content-start gap-0.5 overflow-x-hidden overflow-y-auto p-0 [scrollbar-width:none] [&_button:focus-visible]:outline-offset-[-2px] [&::-webkit-scrollbar]:hidden">
             {recent.map(c => (
-              <li key={c.id} className="min-w-0">
-                <button type="button" title={c.title} aria-current={c.id === curId ? "true" : undefined} onClick={() => { void openConv(c.id); afterNav(); focusInput(); }}
-                  className={`${navBtn} ${c.id === curId ? "bg-brand-200" : ""}`}>
-                  <I.Clock /><span className="min-w-0 truncate">{c.title}</span>
-                </button>
+              <li key={c.id} className="group relative min-w-0">
+                {renaming === c.id ? (
+                  <input autoFocus defaultValue={c.title} maxLength={120} aria-label="Conversation title" onFocus={e => e.currentTarget.select()}
+                    onBlur={e => void saveRename(c, e.currentTarget.value)}
+                    onKeyDown={e => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") { e.currentTarget.value = c.title; e.currentTarget.blur(); } }}
+                    className="w-full rounded-lg border border-brand-500 bg-white px-3 py-[8px] text-[14.4px] leading-[1.2] font-medium text-ink focus:outline-none" />
+                ) : (
+                  <>
+                    <button type="button" title={c.title} aria-current={c.id === curId ? "true" : undefined} onClick={() => { void openConv(c.id); afterNav(); focusInput(); }}
+                      className={`${navBtn} group-focus-within:pr-[3.75rem] group-hover:bg-brand-200 group-hover:pr-[3.75rem] max-md:pr-[3.75rem] ${c.id === curId ? "bg-brand-200" : ""}`}>
+                      <I.Clock /><span className="min-w-0 truncate">{c.title}</span>
+                    </button>
+                    <span className="absolute inset-y-0 right-1 flex items-center gap-0.5 opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 max-md:opacity-100">
+                      <button type="button" className="grid size-6 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-brand-800 hover:bg-brand-300 hover:text-ink" aria-label={`Rename “${c.title}”`} title="Rename" onClick={() => setRenaming(c.id)}><I.Pencil className="size-3.5" /></button>
+                      <button type="button" className="grid size-6 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-brand-800 hover:bg-[#FEE4E2] hover:text-danger" aria-label={`Delete “${c.title}”`} title="Delete" onClick={() => void deleteOne(c)}><I.Trash className="size-3.5" /></button>
+                    </span>
+                  </>
+                )}
               </li>
             ))}
           </ul>
