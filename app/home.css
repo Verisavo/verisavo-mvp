@@ -1926,8 +1926,8 @@ html body #pg-careers#pg-careers.pg.pg .pg-in { width: min(1160px, calc(100% - 4
 html body #pg-careers#pg-careers.pg.pg .k2-eb { margin: 0 0 14px !important; font: 500 .76rem/1 "Inter", var(--sans) !important; letter-spacing: .12em !important; text-transform: uppercase; color: #4362B2 !important; }
 /* hero */
 #pg-careers .k2-hero { display: grid; justify-items: center; text-align: center; padding-top: clamp(8px, 2vw, 32px); }
-html body #pg-careers#pg-careers.pg.pg .k2-hero h1:not(#_a):not(#_b):not(#_c) { margin: 0; max-width: 15ch; font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.4rem) !important; line-height: 1.02 !important; letter-spacing: -.045em !important; color: #1F273F !important; text-wrap: balance; }
-html body #pg-careers#pg-careers.pg.pg .k2-hero h1 span { color: #4362B2 !important; }
+html body #pg-careers#pg-careers.pg.pg .k2-hero h1:not(#_a):not(#_b):not(#_c) { margin: 0; max-width: none; font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.4rem) !important; line-height: 1.02 !important; letter-spacing: -.045em !important; color: #1F273F !important; text-wrap: balance; }
+html body #pg-careers#pg-careers.pg.pg .k2-hero h1 span { display: block; color: #4362B2 !important; -webkit-text-fill-color: #4362B2; }
 html body #pg-careers#pg-careers.pg.pg .k2-lead { margin: 24px 0 0 !important; max-width: 52ch; font: 400 clamp(1.02rem, .98rem + .25vw, 1.15rem)/1.6 "Inter", var(--sans) !important; color: #4A5368 !important; }
 #pg-careers .k2-facts { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; margin: 24px 0 0; padding: 0; }
 html body #pg-careers#pg-careers.pg.pg .k2-facts li { position: relative; padding-left: 20px; font-size: .88rem !important; line-height: 1.4 !important; color: #5B6478 !important; }
