@@ -335,6 +335,22 @@ html body h1:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.04 !important;
 html body h2:not(#_a):not(#_b):not(#_c):not(#_d), html body h2:not(#_a):not(#_b):not(#_c):not(#_d) span, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h2:not(#_a):not(#_b):not(#_c):not(#_d) em { font-family: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif !important; font-optical-sizing: auto; font-weight: 500 !important; font-style: normal; letter-spacing: -.04em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; background: none !important; }
 html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important; }
 html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
+/* >>> docs alignment v2 */
+/* section label above the title, same as the site's eyebrows */
+.doc .crumb { margin: 0 0 14px !important; font: 500 .76rem/1 "Inter", var(--sans, sans-serif) !important; letter-spacing: .12em !important; text-transform: uppercase !important; color: #4362B2 !important; }
+.doc h1 { font-family: "Inter", sans-serif !important; font-weight: 500 !important; letter-spacing: -.045em !important; line-height: 1.04 !important; color: #1F273F !important; }
+.doc h2 { font-family: "Inter", sans-serif !important; font-weight: 500 !important; letter-spacing: -.035em !important; color: #1F273F !important; }
+.doc .intro { color: #4A5368 !important; }
+/* link cards, same card as the rest of the site */
+.doc .cardx { border: 0 !important; border-radius: 18px !important; background: #fff !important; box-shadow: 0 0 0 1px #E6ECF4, 0 18px 40px -32px rgba(31,39,63,.35) !important; transition: box-shadow .25s, transform .25s !important; font-family: "Inter", sans-serif !important; }
+.doc .cardx:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px #CCDDF1, 0 26px 50px -34px rgba(31,39,63,.45) !important; }
+.doc .cardx .ic { border-radius: 10px !important; background: #EEF3FB !important; color: #3A5292 !important; }
+.doc .callout { border-radius: 14px !important; }
+.doc .figure, .doc .tbl { border-radius: 14px; }
+/* the closed menu panel on phones no longer casts a shadow onto the page */
+.side { box-shadow: none !important; }
+body.nav-open .side { box-shadow: 20px 0 50px -30px rgba(0,0,0,.5) !important; }
+/* <<< docs alignment v2 */
 </style>
 
 <header class="top">
