@@ -1636,4 +1636,9 @@ html body .ln .pb .net-card.in .net-svg .net-e:nth-of-type(2n) { animation-durat
 html body .ln .pb .net-card.in .net-svg .net-e:nth-of-type(3n) { animation-duration: 13s; }
 @keyframes netTrace { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1; } }
 @media (prefers-reduced-motion: reduce) { html body .ln .pb .net-card.in .net-svg .net-e { animation: none; } }
+/* the network circle and the link down to Market Memory move the same way */
+html body .ln .pb .net-card.in .net-svg .net-mem { stroke: #A8C6E8 !important; stroke-dasharray: 3 6 !important; animation: netRing 3s linear 1.2s infinite; }
+html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; stroke-dasharray: .1 .1 !important; animation: netTrace 6s linear 1.2s infinite; }
+@keyframes netRing { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -18; } }
+@media (prefers-reduced-motion: reduce) { html body .ln .pb .net-card.in .net-svg :is(.net-mem, .net-pm) { animation: none; } }
 /* <<< problem sim */
