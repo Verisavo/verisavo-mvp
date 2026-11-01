@@ -1,4 +1,5 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+const CA = "<header class=\"k2-hero\">\n  <p class=\"k2-eb\">Careers</p>\n  <h1 id=\"careers-h\">Build market understanding <span>for Africa.</span></h1>\n  <p class=\"k2-lead\">A small team connecting fragmented market evidence. We look for curious, careful people who care about getting things right.</p>\n  <ul class=\"k2-facts\"><li>7 open roles</li><li>Remote</li><li>Full-time</li></ul>\n</header>\n<section class=\"k2-sec k2-band\" aria-labelledby=\"cw-h\">\n  <div class=\"k2-head\">\n    <p class=\"k2-eb\">How we work</p>\n    <h2 id=\"cw-h\">Three habits we hold each other to</h2>\n  </div>\n  <ol class=\"k2-habits\">\n    <li><span>01</span><h3>Evidence over opinion</h3><p>We separate what we know from what we assume, and we say when something is still unknown.</p></li>\n    <li><span>02</span><h3>Close to the market</h3><p>We spend time with the people we serve, in the places where they buy, sell and decide.</p></li>\n    <li><span>03</span><h3>Real ownership</h3><p>Everyone shapes the product, from the questions it answers to how it shows its evidence.</p></li>\n  </ol>\n</section>";
 export default function CareersPage() {
   return (
     <section className="pg" id="pg-careers" aria-labelledby="careers-h" aria-hidden="true">
@@ -7,19 +8,7 @@ export default function CareersPage() {
         {" "}
         <button type="button" className="pg-link pg-back" data-back=""><span aria-hidden="true">{"←"}</span>{" Back"}</button>
         {" "}
-        <header className="pg-head">
-          {" "}
-          <p className="lab">{"Careers"}</p>
-          {" "}
-          <h1 id="careers-h">{"Build market understanding "}<span className="acc">{"for Africa."}</span></h1>
-          {" "}
-          <p className="lead">
-            {"A small team connecting fragmented market evidence. We look for curious, careful people who care about getting things right."}
-          </p>
-          {" "}
-        </header>
-        {" "}
-        <section className="ca2-how" aria-labelledby="cw-h"><div className="ca2-head"><p className="lab">{"How we work"}</p><h2 id="cw-h">{"Three habits we hold "}<span className="acc">{"each other to"}</span></h2></div><div className="ca2-cards"><article className="ca2-card"><span className="ca2-n">{"01"}</span><h3>{"Evidence over opinion"}</h3><p>{"We separate what we know from what we assume, and we say when something is still unknown."}</p></article><article className="ca2-card"><span className="ca2-n">{"02"}</span><h3>{"Close to the market"}</h3><p>{"We spend time with the people we serve, in the places where they buy, sell and decide."}</p></article><article className="ca2-card"><span className="ca2-n">{"03"}</span><h3>{"Real ownership"}</h3><p>{"Everyone shapes the product, from the questions it answers to how it shows its evidence."}</p></article></div></section>
+        <div className="k2-mount" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: CA }} />
         {" "}
         <section className="ca-roles" aria-labelledby="roles-h">
           <div className="ca-roles-head"><h2 id="roles-h">{"Open roles"}</h2><span className="ca-count">{"7 roles"}</span></div>
