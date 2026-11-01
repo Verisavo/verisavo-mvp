@@ -4,6 +4,8 @@ What to do when something needs attention. The **activity log** in Admin → Act
 
 ## Payments (Stripe)
 
+**Email links say "page not found".** The links are built from Supabase's Site URL (Authentication → URL Configuration). It must be the address the site runs on, and that address must also be in Redirect URLs.
+
 **A customer paid but still shows Free**
 1. In Stripe → Developers → Webhooks → your endpoint, look for failed deliveries (they show 4xx/5xx).
 2. Fix the cause and press **Resend** on the event. The app handles each event once and re-reads the subscription from Stripe, so resending is always safe.

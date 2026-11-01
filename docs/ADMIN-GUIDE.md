@@ -15,7 +15,7 @@ Your numbers at a glance:
 
 ## Users
 
-- **Search** by name, email or organisation.
+- **Search** by name, email or organisation, and **filter** by plan and status. Page numbers and a total are at the bottom.
 - **Each row shows:**
   - their plan (Free or Monthly, with the renewal or end date)
   - how much of their allowance they've used: free questions out of 5, or messages this month out of 100
@@ -32,7 +32,7 @@ Every one of these actions is recorded in the activity log, with your name.
 
 This is what the Intelligence Assistant answers from. **Only published documents are used.**
 
-1. **Add a document:** upload a PDF, Word (.docx), .txt or .md file up to 4 MB, or paste the text. Give it a title. You can also tag the markets it covers (leave them all unticked if it applies everywhere). It's saved as a **draft**.
+1. **Add a document:** upload a PDF, Word (.docx), .txt or .md file up to 4 MB, or paste the text. Give it a title. You can also tick the countries it covers in the dropdown (leave it empty if it applies everywhere) and its genre, the industry sector. Genre is a label for you and a filter on the document list; it doesn't change answers. It's saved as a **draft**.
 2. **Check the text:** PDFs sometimes come out messy (page numbers, headers, broken tables). Tidy the text in the editor and press **Save changes**. Scanned PDFs have no text at all, so paste the text instead.
 3. **Publish:** the document becomes searchable straight away. Edits to a published document are re-published when you save.
 4. **Try a question:** type what a customer might ask, and see which sections the assistant would use and how well they match. If nothing matches well, the assistant tells the customer it doesn't know rather than guessing.
@@ -40,7 +40,7 @@ This is what the Intelligence Assistant answers from. **Only published documents
 
 ## AI settings
 
-- **Who answers questions:** choose Claude, OpenAI or Gemini, and the model.
+- **Who answers questions:** choose Claude, OpenAI or Gemini, and pick the model from the dropdown. Saving tries it first, so a model that doesn't work is never saved.
   - Bigger models give better answers but cost more per question.
   - **Test answers** sends one tiny request to check it works.
 - **How documents are searched:** choose OpenAI or Gemini. Claude doesn't offer this part.
@@ -50,7 +50,7 @@ This is what the Intelligence Assistant answers from. **Only published documents
 
 ## Activity
 
-Everything important, newest first, filterable by type:
+Everything important, newest first, with page numbers. Filter by type, person and dates:
 - sign-ins and account changes
 - admin actions
 - knowledge-base changes

@@ -61,8 +61,8 @@ The live site runs on **Vercel** with Henry's account, and on the **live Supabas
 |---|---|---|
 | 1 | Accounts, sign-in, dashboard | 0000–0003 |
 | 2 | Admin dashboard, knowledge base, AI settings | 0004–0005 |
-| 3 | Assistant answers, limits, payments, uploads, PDF reports | 0006–0007 |
-| 4 | WhatsApp | 0008 |
+| 3 | Assistant answers, limits, payments, uploads, PDF reports | 0006–0008 |
+| 4 | WhatsApp | 0009 |
 | 5 | Everything, plus "Start free" on the landing page | — |
 
 Running `npm run db:migrate:prod` always applies every migration not yet applied, so it's safe to run before any stage. Order for each release:
