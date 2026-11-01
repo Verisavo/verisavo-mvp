@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investigations</title>
+<style>
+:root { --ind: #1F273F; --b100: #E3EBF8; --b200: #CCDDF1; --b300: #A8C6E8; --b400: #80AADC; --b700: #4362B2; --b800: #3A5292; --body: #3D4559; --mut: #6B7488; --line: #E6EAF1; --bg: #F7F9FC; --ok: #0E7A5C; --okbg: #E3F4EC; --wait: #9A5B00; --waitbg: #FFF4DF; --no: #A23B3B; --nobg: #FBEAEA; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ind); font: 400 15px/1.5 "Inter", "Geist", "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.wrap { width: min(760px, 100%); margin: 0 auto; padding: 28px 20px 120px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
+.top h1 { margin: 0; font-size: 1.5rem; line-height: 1.2; font-weight: 600; letter-spacing: -.02em; }
+.top p { margin: 4px 0 0; color: var(--mut); font-size: .92rem; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 11px; border: 1px solid var(--ind); background: var(--ind); color: #fff; font-weight: 600; font-size: .92rem; white-space: nowrap; }
+.btn:hover { background: var(--b800); border-color: var(--b800); }
+.btn[disabled] { opacity: .4; cursor: not-allowed; }
+.btn.ghost { background: #fff; color: var(--ind); border-color: var(--line); }
+.btn.ghost:hover { background: var(--bg); }
+.btn svg, .ic { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.back { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; padding: 6px 0; margin-bottom: 14px; color: var(--b800); font-weight: 500; font-size: .9rem; }
+.x { position: fixed; top: 14px; right: 14px; width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: #fff; display: grid; place-items: center; z-index: 5; }
+/* list */
+.list { display: grid; gap: 10px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; align-items: center; width: 100%; text-align: left; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.row:hover { border-color: var(--b300); }
+.row h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+.meta { color: var(--mut); font-size: .84rem; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.bar { grid-column: 1 / -1; height: 5px; border-radius: 99px; background: var(--b100); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--b700); border-radius: 99px; }
+.st { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; font-size: .76rem; font-weight: 600; white-space: nowrap; }
+.st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.st.live { background: var(--b100); color: var(--b700); }
+.st.done { background: var(--okbg); color: var(--ok); }
+.st.draft { background: #EEF0F4; color: var(--mut); }
+.tag { font-size: .7rem; font-weight: 600; color: var(--wait); background: var(--waitbg); padding: 2px 7px; border-radius: 6px; }
+.empty { padding: 48px 24px; text-align: center; border: 1px dashed var(--b200); border-radius: 16px; background: #fff; color: var(--mut); }
+.empty h3 { margin: 0 0 6px; color: var(--ind); font-size: 1.05rem; }
+.empty .btn { margin-top: 16px; }
+/* form */
+.card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px; display: grid; gap: 20px; }
+.f { display: grid; gap: 7px; }
+.f > span { font-weight: 600; font-size: .9rem; }
+.f small { color: var(--mut); font-weight: 400; font-size: .82rem; }
+.in { width: 100%; border: 1px solid #DCE3EE; border-radius: 11px; padding: 11px 13px; background: #fff; font-size: .95rem; }
+.in:focus { outline: none; border-color: var(--b700); box-shadow: 0 0 0 3px var(--b100); }
+textarea.in { min-height: 84px; resize: vertical; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.gaps { display: flex; flex-wrap: wrap; gap: 6px; }
+.gaps button { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 6px 11px; font-size: .8rem; color: var(--body); text-align: left; }
+.gaps button:hover { border-color: var(--b300); }
+.qs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.qs li { display: grid; grid-template-columns: 22px minmax(0, 1fr) 28px; gap: 8px; align-items: center; padding: 9px 10px; border-radius: 10px; background: var(--bg); font-size: .9rem; }
+.qs li b { font-size: .75rem; color: var(--b700); font-weight: 600; text-align: center; }
+.qs li button { border: 0; background: none; width: 28px; height: 28px; border-radius: 8px; color: var(--mut); font-size: 18px; line-height: 1; }
+.qs li button:hover { background: #fff; color: var(--ind); }
+.addq { display: flex; gap: 8px; }
+.addq .in { padding: 9px 12px; }
+.addq .btn { height: 40px; }
+.range { display: grid; gap: 8px; }
+.range .rh { display: flex; justify-content: space-between; align-items: baseline; }
+.range output { font-weight: 600; font-size: 1.05rem; }
+input[type=range] { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; border-radius: 99px; outline: none; background: var(--b200); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 2px solid var(--ind); box-shadow: 0 2px 6px rgba(31,39,63,.2); }
+input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 2px solid var(--ind); }
+input[type=range]:focus-visible { box-shadow: 0 0 0 3px var(--b100); }
+.pay { display: flex; flex-wrap: wrap; gap: 8px; }
+.pay button { border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 9px 13px; font-size: .88rem; font-weight: 500; }
+.pay button[aria-checked=true] { border-color: var(--ind); box-shadow: 0 0 0 1px var(--ind); }
+.pay button[disabled] { opacity: .45; cursor: not-allowed; }
+.foot { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,.96); border-top: 1px solid var(--line); backdrop-filter: blur(6px); }
+.foot > div { width: min(760px, 100%); margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.foot .tot { display: grid; }
+.foot .tot b { font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.foot .tot small { color: var(--mut); font-size: .78rem; }
+/* detail */
+.dh { display: grid; gap: 8px; margin-bottom: 18px; }
+.dh h1 { margin: 0; font-size: 1.5rem; line-height: 1.2; letter-spacing: -.02em; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.stat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.stat span { display: block; color: var(--mut); font-size: .8rem; }
+.stat b { display: block; margin-top: 4px; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.sec { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; margin-bottom: 14px; }
+.sec h2 { margin: 0 0 12px; font-size: 1rem; font-weight: 600; }
+.sec h2 small { color: var(--mut); font-weight: 400; font-size: .82rem; margin-left: 6px; }
+.find { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.find li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; font-size: .93rem; line-height: 1.5; }
+.find li .ic { margin-top: 3px; color: var(--b700); }
+.find.unk li .ic { color: var(--mut); }
+.find + h3 { margin-top: 18px; }
+.sec h3 { margin: 0 0 10px; font-size: .82rem; font-weight: 600; color: var(--mut); text-transform: none; }
+.resp { list-style: none; margin: 0; padding: 0; }
+.resp li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.resp li:first-child { border-top: 0; }
+.av { width: 34px; height: 34px; border-radius: 50%; background: var(--b100); color: var(--b800); display: grid; place-items: center; font-size: .75rem; font-weight: 600; }
+.resp b { font-weight: 600; font-size: .9rem; }
+.resp p { margin: 2px 0 0; color: var(--mut); font-size: .82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.v { font-size: .74rem; font-weight: 600; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.v.ok { background: var(--okbg); color: var(--ok); }
+.v.wait { background: var(--waitbg); color: var(--wait); }
+.v.no { background: var(--nobg); color: var(--no); }
+.note { color: var(--mut); font-size: .8rem; margin: 10px 0 0; }
+.toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); background: var(--ind); color: #fff; padding: 11px 16px; border-radius: 11px; font-size: .88rem; box-shadow: 0 12px 30px rgba(31,39,63,.25); z-index: 20; max-width: calc(100% - 32px); }
+@media (max-width: 560px) {
+  .wrap { padding: 20px 16px 120px; }
+  .two, .stats { grid-template-columns: minmax(0, 1fr); }
+  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .stat { padding: 12px; }
+  .stat b { font-size: 1.05rem; }
+  .card, .sec { padding: 18px 16px; }
+  .top h1, .dh h1 { font-size: 1.3rem; }
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .top { flex-wrap: wrap; }
+  .top .btn { width: 100%; }
+  .row .st { justify-self: start; }
+  .foot > div { padding: 10px 16px; }
+}
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<main id="app" class="wrap" aria-live="polite"></main>
+<script>
+(function () {
+  "use strict";
+  var RATE = 1.15, Q = new URLSearchParams(location.search), INLINE = Q.get("inline") === "1", EMBED = window.parent !== window;
+  var $ = function (s, r) { return (r || document).querySelector(s); }, $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var money = function (v) { v = Math.round(v * 100) / 100; return "$" + v.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+  var ago = function (t) { var m = Math.round((Date.now() - t) / 60000); return m < 60 ? Math.max(1, m) + "m ago" : m < 1440 ? Math.round(m / 60) + "h ago" : Math.round(m / 1440) + "d ago"; };
+  var uid = function (p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); };
+  var I = { arrow: '<svg class="ic" viewBox="0 0 20 20"><path d="M12 5l-5 5 5 5"/></svg>', plus: '<svg class="ic" viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg>', pin: '<svg class="ic" viewBox="0 0 20 20" style="width:13px;height:13px"><path d="M10 17s-5-4.6-5-8.4a5 5 0 0 1 10 0C15 12.4 10 17 10 17z"/><circle cx="10" cy="8.6" r="1.8"/></svg>', tick: '<svg class="ic" viewBox="0 0 20 20"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>', q: '<svg class="ic" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.5" stroke-dasharray="2.4 2.2"/><path d="M8.2 8.2a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.8.6-.8 1.2M10 13.6v.1"/></svg>', chat: '<svg class="ic" viewBox="0 0 20 20"><path d="M4 5h12v8H9l-4 3v-3H4z"/></svg>' };
+
+  /* ---------- data: the same browser store as the admin simulation, so SavoScout responses appear here ---------- */
+  var S = { surveys: {}, submissions: {}, scouts: {}, transactions: {} };
+  function load() { try { var o = JSON.parse(localStorage.getItem("vs-mvp") || "{}"); ["surveys", "submissions", "scouts", "transactions"].forEach(function (k) { S[k] = o[k] || {}; }); } catch (e) {} }
+  function save() { try { localStorage.setItem("vs-mvp", JSON.stringify(S)); } catch (e) {} }
+  function credits() { try { return +localStorage.getItem("vs-credits") || 0; } catch (e) { return 0; } }
+  function user() { try { return JSON.parse(sessionStorage.getItem("verisavo-user") || "null") || {}; } catch (e) { return {}; } }
+  var qid = 0;
+  function newQ(type, text, options) { return { id: "q" + Date.now().toString(36) + (qid++), type: type, text: text, options: options || [], required: true }; }
+  function product(d) { var m = (d || "").match(/\b(onion|maize|rice|fertili[sz]er|seed|tomato|cement|solar lantern|lantern|soap|cooking oil|oil|sugar|flour|beans|yam|cassava|battery|detergent|bread|milk|phone|airtime)s?\b/i); return m ? m[1].toLowerCase() : ""; }
+  function draftQs(d) {
+    var p = product(d) || "the product", out = [];
+    out.push(newQ("single", "Is " + p + " available at this location today?", ["Yes", "No", "Limited availability"]));
+    var q = newQ("number", "What is the current selling price of " + p + "?"); q.short = "price"; out.push(q);
+    out.push(newQ("single", "What type of outlet is this?", ["Open market", "Retail shop", "Wholesale store", "Supermarket"]));
+    if (/supplier|supply|source|distribut/i.test(d)) out.push(newQ("single", "Where does the seller usually buy from?", ["Local producers", "Distributors", "Imported", "Not sure"]));
+    if (/brand|competitor/i.test(d)) out.push(newQ("short", "Which brands are on display?"));
+    out.push(newQ("photo", "Take a photo of the shelf or display showing the product and price."));
+    return out;
+  }
+  function seed() {
+    if (Object.keys(S.surveys).length) return;
+    var H = 3600000, now = Date.now(), names = ["Ama Mensah", "Kwesi Boateng", "Abena Owusu", "Yaw Asante", "Efua Darko", "Kojo Appiah", "Chidi Okeke", "Ngozi Eze", "Tunde Bello", "Aisha Musa"];
+    names.forEach(function (n, i) { S.scouts["sc-" + i] = { name: n, country: i < 6 ? "Ghana" : "Nigeria", city: i < 6 ? "Kumasi" : "Lagos", status: "verified", waLinked: true, joinedAt: now - (40 + i) * 86400000, lastActive: now - i * 5 * H, sample: true }; });
+    function mk(id, o) {
+      var qs = draftQs(o.request); S.surveys[id] = { title: o.title, industry: "", country: o.country, regions: [o.city], location: o.location, brief: o.request, questions: qs, request: o.request, gap: o.request, rewardPts: 10, costTotal: o.target * RATE, gpsRadius: 100, sample: true, status: o.status, target: o.target, timeframe: "7d", createdAt: o.at, publishedAt: o.at, deadline: o.at + 7 * 86400000, billing: { method: "invoice", rate: RATE, authorised: o.target * RATE } };
+      o.prices.forEach(function (pr, i) {
+        var a = {}; qs.forEach(function (q) { a[q.id] = q.type === "number" ? pr : q.type === "single" ? q.options[i % 5 === 4 ? 2 : 0] : q.type === "photo" ? "shelf-" + (i + 1) + ".jpg" : "Mixed local brands"; });
+        var st = typeof o.st === "function" ? o.st(i) : "approved";
+        S.submissions["sbx" + id + i] = { surveyId: id, surveyTitle: o.title, scoutId: "sc-" + (o.base + i % 4), scoutName: names[o.base + i % 4], region: o.city, country: o.country, answers: a, media: [{ name: "shelf-" + (i + 1) + ".jpg", kind: "photo" }], reward: 10, status: st, reason: st === "rejected" ? "Location mismatch" : undefined, createdAt: now - (i * 7 + 2) * H, channel: "whatsapp", sample: true };
+      });
+    }
+    mk("svx1", { title: "Cooking oil availability in Kumasi", request: "Is cooking oil consistently stocked in Kumasi retail shops, and which brands run out first?", country: "Ghana", city: "Kumasi", location: "Kejetia Market and nearby shops", status: "active", target: 40, at: now - 3 * 86400000, base: 0, prices: [41, 43, 40, 44, 42, 58, 41, 43, 45, 42, 44, 41, 43, 46], st: function (i) { return i === 5 ? "rejected" : i > 10 ? "pending" : "approved"; } });
+    mk("svx2", { title: "Detergent shelf prices in Lagos", request: "What are competitor shelf prices for detergent in Lagos, and is any brand discounting?", country: "Nigeria", city: "Lagos", location: "Supermarkets and kiosks in Ikeja", status: "completed", target: 12, at: now - 12 * 86400000, base: 6, prices: [1850, 1900, 1800, 2100, 1875, 1950, 1820, 1900, 1990, 1880, 1860, 1920] });
+    save();
+  }
+  var list = function () { return Object.keys(S.surveys).map(function (id) { var s = S.surveys[id]; s.id = id; return s; }).filter(function (s) { return s.status !== "archived"; }).sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); }); };
+  var subsOf = function (id) { return Object.keys(S.submissions).map(function (k) { var x = S.submissions[k]; x.id = k; return x; }).filter(function (x) { return x.surveyId === id; }).sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); }); };
+  var place = function (s) { return [(s.regions || [])[0], s.country].filter(Boolean).join(", "); };
+  var stLabel = function (s) { return s.status === "completed" ? '<span class="st done">Complete</span>' : s.status === "active" ? '<span class="st live">Collecting evidence</span>' : '<span class="st draft">Draft</span>'; };
+
+  /* ---------- routing ---------- */
+  function route() { var h = location.hash.slice(1); if (/^c-survey-/.test(h)) return { v: "detail", id: h.slice(9) }; if (/^c-builder/.test(h)) return { v: "new" }; return { v: "list" }; }
+  function go(h) { if (location.hash.slice(1) === h) render(); else location.hash = h; }
+  addEventListener("hashchange", render);
+  addEventListener("storage", function (e) { if (e.key === "vs-mvp") { load(); if (route().v !== "new") render(); } });
+  function toast(t) { var d = document.createElement("div"); d.className = "toast"; d.setAttribute("role", "status"); d.textContent = t; document.body.appendChild(d); setTimeout(function () { d.remove(); }, 3600); }
+  function closer() { return EMBED && !INLINE ? '<button type="button" class="x" data-close aria-label="Close">' + '<svg class="ic" viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15"/></svg></button>' : ""; }
+
+  var app = $("#app"), F = null;
+  function render() {
+    load(); var r = route(); document.querySelectorAll(".foot").forEach(function (x) { x.remove(); });
+    if (r.v === "new") return viewNew();
+    if (r.v === "detail" && S.surveys[r.id]) return viewDetail(r.id);
+    viewList();
+  }
+
+  /* ---------- 1. Investigations ---------- */
+  function viewList() {
+    var L = list();
+    app.innerHTML = closer() + '<header class="top"><div><h1>Investigations</h1><p>Questions SavoScouts are answering on the ground.</p></div>' +
+      (L.length ? '<button type="button" class="btn" data-new>' + I.plus + 'New investigation</button>' : "") + '</header>' +
+      (L.length ? '<div class="list">' + L.map(function (s) {
+        var subs = subsOf(s.id), ok = subs.filter(function (x) { return x.status === "approved"; }).length, p = Math.min(100, Math.round(ok / (s.target || 1) * 100));
+        return '<button type="button" class="row" data-open="' + esc(s.id) + '"><div><h3>' + esc(s.title) + '</h3><div class="meta"><span>' + I.pin + ' ' + esc(place(s)) + '</span><span>' + ok + ' of ' + s.target + ' verified</span>' + (s.sample ? '<span class="tag">Example</span>' : "") + '</div></div>' + stLabel(s) +
+          (s.status !== "draft" ? '<span class="bar" aria-hidden="true"><i style="width:' + p + '%"></i></span>' : "") + '</button>';
+      }).join("") + '</div>' :
+      '<div class="empty"><h3>No investigations yet</h3><p>When a question can’t be answered from existing evidence, SavoScouts can check it on the ground.</p><button type="button" class="btn" data-new>' + I.plus + 'New investigation</button></div>');
+  }
+
+  /* ---------- 2. New investigation: one page ---------- */
+  var COUNTRIES = ["Ghana", "Nigeria", "Kenya", "Uganda", "Tanzania", "Rwanda", "Ethiopia", "South Africa", "Côte d’Ivoire", "Senegal", "Cameroon", "Zambia", "Egypt", "Morocco"];
+  var GAPS = [["Is cooking oil consistently stocked in Kumasi retail shops, and which brands run out first?", "Ghana", "Kumasi"], ["What are competitor shelf prices for detergent in Lagos, and is any brand discounting?", "Nigeria", "Lagos"], ["Are solar lanterns sold in Gulu markets, at what price, and who supplies the sellers?", "Uganda", "Gulu"]];
+  function guess(t) { var c = "", city = ""; COUNTRIES.forEach(function (x) { if (t.indexOf(x) >= 0) c = x; }); GAPS.forEach(function (g) { if (t.indexOf(g[2]) >= 0) { c = c || g[1]; city = g[2]; } }); return [c, city]; }
+  function viewNew() {
+    var gap = Q.get("gap") || "", g = guess(gap), cr = credits();
+    if (!F) F = { q: gap, country: g[0], city: g[1], n: 20, qs: gap ? draftQs(gap) : [], pay: cr >= 20 ? "credits" : "card", touched: false };
+    app.innerHTML = closer() + '<button type="button" class="back" data-home>' + I.arrow + 'Investigations</button>' +
+      '<header class="top"><div><h1>New investigation</h1><p>Ask a question. SavoScouts collect the evidence on the ground.</p></div></header>' +
+      '<form class="card" novalidate id="nf">' +
+      '<label class="f"><span>What do you need to find out?</span><textarea class="in" id="f-q" maxlength="400" placeholder="e.g. Is cooking oil consistently stocked in Kumasi shops, and at what price?">' + esc(F.q) + '</textarea></label>' +
+      '<div class="f" id="f-gaps"' + (F.q ? ' hidden' : '') + '><small>Or start from an Intelligence Gap in your Assistant chats</small><div class="gaps">' + GAPS.map(function (x, i) { return '<button type="button" data-gap="' + i + '">' + esc(x[0]) + '</button>'; }).join("") + '</div></div>' +
+      '<div class="two"><label class="f"><span>Country</span><select class="in" id="f-c"><option value="">Choose a country</option>' + COUNTRIES.map(function (c) { return '<option' + (c === F.country ? " selected" : "") + '>' + c + '</option>'; }).join("") + '</select></label>' +
+      '<label class="f"><span>City or market</span><input class="in" id="f-city" maxlength="80" placeholder="e.g. Kumasi" value="' + esc(F.city) + '"></label></div>' +
+      '<div class="f"><span>What SavoScouts will record <small>drafted from your question</small></span><ol class="qs" id="f-qs"></ol>' +
+      '<div class="addq"><label class="vh" for="f-add">Add a question</label><input class="in" id="f-add" maxlength="160" placeholder="Add a question"><button type="button" class="btn ghost" id="f-addb">Add</button></div></div>' +
+      '<div class="f range"><div class="rh"><span style="font-weight:600;font-size:.9rem">Responses</span><output id="f-no">' + F.n + '</output></div><input type="range" id="f-n" min="5" max="100" step="5" value="' + F.n + '" aria-label="Number of responses"></div>' +
+      '<div class="f"><span>Pay with</span><div class="pay" role="radiogroup" aria-label="Pay with" id="f-pay"></div></div>' +
+      '</form>';
+    var foot = document.createElement("div"); foot.className = "foot";
+    foot.innerHTML = '<div><div class="tot"><b id="f-t"></b><small id="f-ts"></small></div><button type="button" class="btn" id="f-go">Deploy investigation</button></div>';
+    document.body.appendChild(foot);
+    var q = $("#f-q");
+    function drawQs() {
+      $("#f-qs").innerHTML = F.qs.length ? F.qs.map(function (x, i) { return '<li><b>' + (i + 1) + '</b><span>' + esc(x.text) + '</span><button type="button" data-rmq="' + i + '" aria-label="Remove question">×</button></li>'; }).join("") : '<li style="grid-template-columns:1fr;color:var(--mut)">Describe what you need to find out and the questions are drafted for you.</li>';
+    }
+    function drawPay() {
+      var cr = credits(), M = [["credits", "Response credits (" + cr + ")", cr < F.n], ["card", "Card", false], ["momo", "Mobile money", false], ["invoice", "Invoice", false]].filter(function (m) { return m[0] !== "credits" || cr > 0; });
+      if (F.pay === "credits" && cr < F.n) F.pay = "card";
+      $("#f-pay").innerHTML = M.map(function (m) { return '<button type="button" role="radio" data-pay="' + m[0] + '" aria-checked="' + (F.pay === m[0]) + '"' + (m[2] ? " disabled" : "") + '>' + m[1] + '</button>'; }).join("");
+    }
+    function sum() {
+      var t = F.n * RATE, s = $("#f-n"), p = ((F.n - 5) / 95 * 100).toFixed(1) + "%";
+      s.style.background = "linear-gradient(to right, #1F273F " + p + ", #CCDDF1 " + p + ")";
+      $("#f-no").textContent = F.n; $("#f-t").textContent = F.pay === "credits" ? F.n + " credits" : money(t);
+      $("#f-ts").textContent = F.pay === "credits" ? "From your response credits" : F.n + " × " + money(RATE) + " · charged only for verified responses";
+      $("#f-go").disabled = !(F.q.trim().length > 8 && F.country && F.city.trim() && F.qs.length);
+    }
+    drawQs(); drawPay(); sum();
+    var draftT;
+    q.addEventListener("input", function () { F.q = q.value; $("#f-gaps").hidden = !!F.q.trim(); clearTimeout(draftT); draftT = setTimeout(function () { if (!F.touched) { F.qs = F.q.trim().length > 8 ? draftQs(F.q) : []; drawQs(); } var g = guess(F.q); if (g[0] && !F.country) { F.country = g[0]; $("#f-c").value = g[0]; } if (g[1] && !F.city) { F.city = g[1]; $("#f-city").value = g[1]; } sum(); }, 350); sum(); });
+    $("#f-c").addEventListener("change", function (e) { F.country = e.target.value; sum(); });
+    $("#f-city").addEventListener("input", function (e) { F.city = e.target.value; sum(); });
+    $("#f-n").addEventListener("input", function (e) { F.n = +e.target.value; drawPay(); sum(); });
+    function addQ() { var v = $("#f-add").value.trim(); if (!v) return; F.qs.push(newQ("short", v)); F.touched = true; $("#f-add").value = ""; drawQs(); sum(); }
+    $("#f-addb").addEventListener("click", addQ);
+    $("#f-add").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); addQ(); } });
+    app.addEventListener("click", newClicks);
+    function newClicks(e) {
+      var b;
+      if ((b = e.target.closest("[data-gap]"))) { var x = GAPS[+b.dataset.gap]; F.q = x[0]; F.country = x[1]; F.city = x[2]; F.qs = draftQs(x[0]); app.removeEventListener("click", newClicks); return viewNew(); }
+      if ((b = e.target.closest("[data-rmq]"))) { F.qs.splice(+b.dataset.rmq, 1); F.touched = true; drawQs(); sum(); }
+      if ((b = e.target.closest("[data-pay]")) && !b.disabled) { F.pay = b.dataset.pay; drawPay(); sum(); }
+      if (e.target.closest("[data-home]")) app.removeEventListener("click", newClicks);
+    }
+    $("#f-go").addEventListener("click", function () {
+      if (this.disabled) return;
+      var id = uid("sv"), now = Date.now(), u = user(), p = product(F.q), city = F.city.trim();
+      var title = p ? p.charAt(0).toUpperCase() + p.slice(1) + " in " + city : F.q.trim().replace(/\?$/, "").slice(0, 60);
+      S.surveys[id] = { title: title, industry: "", country: F.country, regions: [city], location: city, brief: F.q.trim(), questions: F.qs, target: F.n, timeframe: "7d", rewardPts: 10, costTotal: F.n * RATE, gpsRadius: 100, status: "active", createdAt: now, publishedAt: now, deadline: now + 7 * 86400000, request: F.q.trim(), gap: Q.get("gap") || "", billing: { method: F.pay, email: u.email || "", company: u.organisation || "", rate: RATE, authorised: F.n * RATE, authorisedAt: now } };
+      if (F.pay === "credits") try { localStorage.setItem("vs-credits", String(Math.max(0, credits() - F.n))); } catch (er) {}
+      save(); F = null; app.removeEventListener("click", newClicks);
+      go("c-survey-" + id); toast("Deployed. SavoScouts in " + city + " are being notified on WhatsApp.");
+    });
+    setTimeout(function () { (F && F.q ? $("#f-c").value ? $("#f-n") : $("#f-c") : q).focus(); }, 30);
+  }
+
+  /* ---------- 3. Investigation: progress, what we know, responses ---------- */
+  function brief(s, subs) {
+    var ok = subs.filter(function (x) { return x.status === "approved"; }), out = { know: [], unknown: [] };
+    if (!ok.length) { out.unknown.push(subs.length ? "No response has been verified yet. Findings appear once responses pass verification." : "No responses yet. SavoScouts have been notified."); return out; }
+    (s.questions || []).forEach(function (q) {
+      var vals = ok.map(function (x) { return x.answers && x.answers[q.id]; }).filter(function (v) { return v !== undefined && v !== ""; });
+      if (!vals.length) return;
+      if (q.type === "number") { var n = vals.map(Number).filter(function (v) { return !isNaN(v); }).sort(function (a, b) { return a - b; }); if (!n.length) return; var mid = n[Math.floor(n.length / 2)]; out.know.push("Median price " + mid.toLocaleString("en-GB") + ", ranging from " + n[0].toLocaleString("en-GB") + " to " + n[n.length - 1].toLocaleString("en-GB") + " (" + n.length + " outlets)."); }
+      else if (q.type === "single") { var c = {}; vals.forEach(function (v) { c[v] = (c[v] || 0) + 1; }); var top = Object.keys(c).sort(function (a, b) { return c[b] - c[a]; })[0]; out.know.push(q.text.replace(/\?$/, "") + ": “" + top + "” at " + Math.round(c[top] / vals.length * 100) + "% of outlets."); }
+    });
+    if (ok.length < s.target) out.unknown.push("Coverage is " + ok.length + " of " + s.target + " verified responses, so findings may change as more evidence arrives.");
+    var pend = subs.filter(function (x) { return x.status === "pending"; }).length; if (pend) out.unknown.push(pend + " response" + (pend === 1 ? " is" : "s are") + " still being verified and not yet included.");
+    var rej = subs.filter(function (x) { return x.status === "rejected"; }).length; if (rej) out.unknown.push(rej + " response" + (rej === 1 ? " was" : "s were") + " not verified and " + (rej === 1 ? "is" : "are") + " excluded.");
+    return out;
+  }
+  function viewDetail(id) {
+    var s = S.surveys[id], subs = subsOf(id), ok = subs.filter(function (x) { return x.status === "approved"; }).length, B = brief(s, subs), bill = s.billing || {}, rate = bill.rate || RATE;
+    var summ = function (x) { var parts = []; (s.questions || []).forEach(function (q) { var v = x.answers && x.answers[q.id]; if (v === undefined || v === "" || q.type === "photo") return; if (q.type === "number" || q.type === "single") parts.push(q.type === "number" ? "Price " + Number(v).toLocaleString("en-GB") : v); }); return parts.slice(0, 3).join(" · ") || "Response received"; };
+    var badge = function (x) { return x.status === "approved" ? '<span class="v ok">Verified</span>' : x.status === "rejected" ? '<span class="v no">Not verified</span>' : '<span class="v wait">Being verified</span>'; };
+    var ini = function (n) { return String(n || "S").split(" ").map(function (w) { return w[0]; }).join("").slice(0, 2).toUpperCase(); };
+    app.innerHTML = closer() + '<button type="button" class="back" data-home>' + I.arrow + 'Investigations</button>' +
+      '<header class="dh"><div class="meta">' + stLabel(s) + '<span>' + I.pin + ' ' + esc(place(s)) + '</span>' + (s.sample ? '<span class="tag">Example</span>' : "") + '</div><h1>' + esc(s.title) + '</h1><p style="margin:0;color:var(--body)">' + esc(s.request || s.brief) + '</p></header>' +
+      '<div class="stats"><div class="stat"><span>Verified</span><b>' + ok + ' / ' + s.target + '</b></div><div class="stat"><span>Received</span><b>' + subs.length + '</b></div><div class="stat"><span>Charged</span><b>' + (bill.method === "credits" ? ok + " cr" : money(ok * rate)) + '</b></div></div>' +
+      '<section class="sec"><h2>What the evidence shows <small>from verified responses</small></h2>' +
+      (B.know.length ? '<ul class="find">' + B.know.map(function (t) { return '<li>' + I.tick + '<span>' + esc(t) + '</span></li>'; }).join("") + '</ul>' : "") +
+      (B.unknown.length ? (B.know.length ? '<h3 style="margin-top:16px">Still unknown</h3>' : "") + '<ul class="find unk">' + B.unknown.map(function (t) { return '<li>' + I.q + '<span>' + esc(t) + '</span></li>'; }).join("") + '</ul>' : "") +
+      (EMBED ? '<p style="margin:16px 0 0"><button type="button" class="btn ghost" data-ask>' + I.chat + 'Ask the Assistant about this</button></p>' : "") + '</section>' +
+      '<section class="sec"><h2>Responses <small>' + subs.length + '</small></h2>' + (subs.length ? '<ul class="resp">' + subs.map(function (x) { return '<li><span class="av" aria-hidden="true">' + ini(x.scoutName) + '</span><div style="min-width:0"><b>' + esc(x.scoutName || "SavoScout") + '</b><p>' + esc(x.region || "") + ' · ' + ago(x.createdAt) + ' · ' + esc(summ(x)) + '</p></div>' + badge(x) + '</li>'; }).join("") + '</ul>' : '<p class="note" style="margin:0">Responses appear here as SavoScouts submit them.</p>') + '</section>' +
+      '<p class="note">' + (bill.method === "credits" ? "Paid with response credits." : "Up to " + money(s.target * rate) + " authorised. You are charged " + money(rate) + " only for each verified response.") + '</p>';
+  }
+
+  document.addEventListener("click", function (e) {
+    var b;
+    if (e.target.closest("[data-new]")) { F = null; return go("c-builder"); }
+    if (e.target.closest("[data-home]")) { F = null; return go("c-overview"); }
+    if ((b = e.target.closest("[data-open]"))) return go("c-survey-" + b.dataset.open);
+    if (e.target.closest("[data-close]")) { parent.postMessage({ vs: "close-platform" }, "*"); return; }
+    if (e.target.closest("[data-ask]")) { var s = S.surveys[route().id]; if (s) parent.postMessage({ vs: "ask", q: "What do the SavoScout findings on " + s.title.charAt(0).toLowerCase() + s.title.slice(1) + " mean for our decision?" }, "*"); }
+  });
+  load(); seed(); render();
+})();
+</script>
+</body>
+</html>
