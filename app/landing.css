@@ -1907,3 +1907,37 @@ html body #ln #trust .ln-link { margin-top: 18px !important; }
 /* >>> problem band */
 html body #ln #why.why { background: #F4F7FB !important; border-top: 1px solid #E6ECF4; border-bottom: 1px solid #E6ECF4; }
 /* <<< problem band */
+/* >>> site alignment v2 */
+/* homepage hero: centred, like the inner pages */
+html body #ln .v3-hero-in { display: grid !important; justify-items: center !important; text-align: center !important; }
+html body #ln .v3-hero h1 { margin-inline: auto !important; text-align: center !important; }
+html body #ln .v3-hero .v3-lede { margin-inline: auto !important; max-width: 54ch !important; text-align: center !important; }
+html body #ln .v3-hero .v3-ctas { justify-content: center !important; }
+/* one eyebrow style everywhere */
+html body #ln :is(.why-eb, .wf-eb, .pb-eb, .hp2-eb, .hp2-trust .v3-tr2-head .ln-eb) { font: 500 .76rem/1 "Inter", var(--sans) !important; letter-spacing: .12em !important; text-transform: uppercase !important; color: #4362B2 !important; }
+/* network heading centred, matching the walkthrough above it */
+html body #ln .pb-head { grid-template-columns: minmax(0, 1fr) !important; justify-items: center; text-align: center; gap: 0 !important; }
+html body #ln .pb-head .pb-lead { margin: 16px auto 0 !important; max-width: 52ch; }
+/* the problem: centred like the sections around it */
+html body #ln .why-in { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; justify-items: center; text-align: center; gap: 18px !important; }
+html body #ln .why-in .why-p { margin: 0 auto !important; max-width: 56ch !important; text-align: center !important; }
+/* list numbers in the brand blue */
+html body #ln .hp2-n { color: #4362B2 !important; font-weight: 600 !important; }
+/* inner page footers laid out like the homepage footer */
+html body .pg .pg-foot { display: grid !important; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "brand cols" "bar bar"; column-gap: clamp(32px, 6vw, 96px); align-items: start; padding-top: clamp(56px, 7vw, 88px) !important; padding-bottom: 32px !important; }
+html body .pg .pg-foot .foot-brand { grid-area: brand; display: grid !important; gap: 12px; align-content: start; justify-items: start; }
+html body .pg .pg-foot .foot-brand .logo { font-size: 2rem !important; font-weight: 700 !important; letter-spacing: -.03em !important; color: #1F273F !important; }
+html body .pg .pg-foot .foot-brand > span { max-width: 26ch; font-size: .95rem !important; line-height: 1.5 !important; color: #5B6478 !important; }
+html body .pg .pg-foot .foot-cols { grid-area: cols; display: grid !important; margin: 0 !important; max-width: none !important; justify-self: stretch; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 24px !important; }
+html body .pg .pg-foot .foot-cols > div { display: grid; gap: 10px; align-content: start; justify-items: start; }
+html body .pg .pg-foot .foot-cols h3 { margin: 0 0 6px !important; font: 700 .72rem/1 var(--sans) !important; letter-spacing: .14em !important; text-transform: uppercase !important; color: #1F273F !important; }
+html body .pg .pg-foot .foot-cols :is(a, button) { font-size: .95rem !important; color: #2E3650 !important; }
+html body .pg .pg-foot .foot-bar { grid-area: bar; display: flex !important; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; margin-top: clamp(48px, 6vw, 72px) !important; padding-top: 22px !important; border-top: 1px solid rgba(31,39,63,.1) !important; }
+html body .pg .pg-foot .foot-bar nav { display: flex; align-items: center; gap: 20px; order: 1 !important; }
+html body .pg .pg-foot .foot-bar > span { order: 0 !important; }
+@media (max-width: 860px) {
+  html body .pg .pg-foot { grid-template-columns: minmax(0, 1fr); grid-template-areas: "brand" "cols" "bar"; row-gap: 40px; }
+  html body .pg .pg-foot .foot-bar { margin-top: 8px !important; flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 560px) { html body .pg .pg-foot .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; row-gap: 32px !important; } }
+/* <<< site alignment v2 */
