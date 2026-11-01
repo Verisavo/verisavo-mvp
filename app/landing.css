@@ -1819,3 +1819,11 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
 }
 @media (max-width: 600px) { #ln .wf-main { padding: 18px 14px; border-radius: 18px; min-height: 380px; } }
 /* <<< workflow explainer */
+/* >>> homepage problem text */
+#ln .why { padding-block: clamp(64px, 8vw, 112px); background: #fff; font-family: "Inter", var(--sans); }
+#ln .why-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: end; }
+#ln .why-eb { margin: 0 0 16px; font: 500 .76rem/1 "Inter", var(--sans); letter-spacing: .12em; text-transform: uppercase; color: #4362B2; }
+#ln .why h2:not(#_a):not(#_b):not(#_c):not(#_d) { margin: 0; font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(2rem, 1.2rem + 2vw, 3.25rem) !important; line-height: 1.05 !important; letter-spacing: -.04em !important; color: #1F273F !important; }
+#ln .why-p { margin: 0; max-width: 52ch; font: 400 clamp(1rem, .96rem + .2vw, 1.12rem)/1.65 "Inter", var(--sans); color: #4A5368; }
+@media (max-width: 860px) { #ln .why-in { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+/* <<< homepage problem text */
