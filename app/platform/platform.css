@@ -2035,4 +2035,17 @@ html body .ps-steps p { margin: 0 !important; font-size: .92rem !important; line
 html body .ps-foot { margin: 22px 0 0 !important; text-align: center; font: 500 .92rem/1.4 "Inter", var(--sans) !important; color: #3A5292 !important; }
 @media (max-width: 900px) { html body .ps-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } html body .ps-steps::before { display: none; } }
 @media (max-width: 560px) { html body .ps-steps { grid-template-columns: minmax(0, 1fr); } }
+/* hero card: compact and calm */
+@media (min-width: 1100px) { html body .hero .hero-grid:has(.ax-hero) { grid-template-columns: minmax(0, 1fr) minmax(0, 440px) !important; column-gap: 64px !important; align-items: center !important; } }
+html body .ax-hero.pv { max-width: 440px !important; justify-self: end; align-self: center; }
+html body .pv-card { gap: 10px; padding: 14px; border-radius: 18px; background: rgba(255,255,255,.97); box-shadow: 0 0 0 1px #E1E8F2, 0 30px 60px -40px rgba(31,39,63,.45); backdrop-filter: blur(6px); }
+html body .pv-q { font-size: .84rem !important; padding: 2px 4px 0; }
+html body .pv-q span { font-size: .6rem; }
+html body .pv-a, html body .pv-gap { gap: 6px; padding: 12px; border-radius: 12px; }
+html body .pv-k { font-size: .6rem !important; }
+html body .pv-t { font-size: .84rem !important; line-height: 1.45 !important; }
+html body .pv-ev { gap: 4px; }
+html body .pv-ev li { padding: 6px 9px; border-radius: 8px; font-size: .74rem; }
+html body .pv-btn { padding: 6px 11px; border-radius: 8px; font-size: .72rem; }
+html body .pv-cap { font-size: .7rem !important; }
 /* <<< product page v2 */
