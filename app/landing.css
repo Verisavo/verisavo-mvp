@@ -1653,6 +1653,10 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
   html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-blk text { font-size: 19px !important; }
   html body .ln .pb .net-scroll::after { display: none !important; }
 }
+/* phones: let the diagram use the full screen width */
+@media (max-width: 760px) {
+  html body .ln .pb .net-card { margin-left: -18px !important; margin-right: -18px !important; padding: 2px !important; border-radius: 12px !important; }
+}
 /* <<< problem sim */
 /* >>> workflow explainer */
 #ln .wf { padding-block: clamp(72px, 9vw, 128px); background: #fff; font-family: "Inter", var(--sans); }
