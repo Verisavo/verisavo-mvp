@@ -1641,19 +1641,18 @@ html body .ln .pb .net-card.in .net-svg .net-mem { stroke: #A8C6E8 !important; s
 html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; stroke-dasharray: .1 .1 !important; animation: netTrace 6s linear 1.2s infinite; }
 @keyframes netRing { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -18; } }
 @media (prefers-reduced-motion: reduce) { html body .ln .pb .net-card.in .net-svg :is(.net-mem, .net-pm) { animation: none; } }
-/* phones: the same horizontal drawing at full size, swiped sideways */
+/* phones: the whole horizontal drawing in one view, scaled to fit, no sideways scrolling */
 @media (max-width: 760px) {
-  html body .ln .pb .net-card { padding: 8px !important; }
-  html body .ln .pb .net-scroll { overflow-x: auto !important; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: thin; padding-bottom: 6px; }
-  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) { display: block !important; width: 1020px !important; min-width: 1020px !important; max-width: none !important; }
-  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) text { font-size: 13px !important; }
-  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-cols text { font-size: 12px !important; }
-  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-cols text.net-colm { font-size: 14px !important; }
-  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-sm { font-size: 11px !important; }
+  html body .ln .pb .net-card { padding: 4px !important; border-radius: 14px !important; }
+  html body .ln .pb .net-scroll { overflow: visible !important; padding: 0 !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) { display: block !important; width: 100% !important; min-width: 0 !important; max-width: 100% !important; height: auto !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) text { font-size: 20px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-cols text { font-size: 21px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-cols text.net-colm { font-size: 23px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-sm { font-size: 17px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-blk text { font-size: 19px !important; }
   html body .ln .pb .net-scroll::after { display: none !important; }
-  html body .ln .pb .pb-swipe { display: block; }
 }
-.pb-swipe { display: none; margin: 10px 0 0; text-align: center; font: 500 .8rem/1.3 "Inter", var(--sans); color: #6B7488; }
 /* <<< problem sim */
 /* >>> workflow explainer */
 #ln .wf { padding-block: clamp(72px, 9vw, 128px); background: #fff; font-family: "Inter", var(--sans); }
