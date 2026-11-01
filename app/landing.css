@@ -1844,3 +1844,48 @@ html body #ln #trust .ln-link { margin-top: 18px !important; }
 @media (max-width: 960px) { html body #ln #trust .v3-tr2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { html body #ln #trust .v3-tr2 { grid-template-columns: minmax(0, 1fr); } }
 /* <<< trust v4 */
+/* >>> mobile apple */
+/* Phones: one rhythm for every section — 24px gutters, equal section spacing, centred headings, readable line lengths */
+@media (max-width: 760px) {
+  html body #ln .ln-wrap { padding-left: 24px !important; padding-right: 24px !important; }
+  html body #ln #why, html body #ln #workflow, html body #ln #problem, html body #ln #uses, html body #ln #trust.hp2-trust { padding-top: 88px !important; padding-bottom: 88px !important; }
+  /* hero */
+  html body #ln .v3-hero .ln-wrap { text-align: center !important; padding-top: 32px !important; padding-bottom: 72px !important; }
+  html body #ln .v3-hero h1 { font-size: clamp(2.5rem, 10.5vw, 3rem) !important; line-height: 1.04 !important; letter-spacing: -.035em !important; text-wrap: balance; }
+  html body #ln .v3-hero h1 br { display: none; }
+  html body #ln .v3-hero .v3-lede { margin: 20px auto 0 !important; max-width: 32ch !important; font-size: 1.0625rem !important; line-height: 1.55 !important; }
+  html body #ln .v3-hero .v3-ctas { display: flex !important; flex-wrap: wrap; justify-content: center !important; width: 100%; margin-top: 28px !important; gap: 10px !important; }
+  /* every section heading: label, title, one short paragraph, centred */
+  html body #ln :is(.why-in, .pb-head, .wf-head, .hp2-l, .v3-tr2-head) { display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 0 !important; }
+  html body #ln :is(.why-in, .pb-head) > div { display: flex; flex-direction: column; align-items: center; }
+  html body #ln :is(.why-eb, .pb-eb, .wf-eb, .hp2-eb, .ln-eb) { margin: 0 0 14px !important; text-align: center !important; }
+  html body #ln :is(#why, #problem, #workflow, #uses, #trust) h2:not(#_a):not(#_b):not(#_c):not(#_d) { font-size: clamp(1.9rem, 8vw, 2.25rem) !important; line-height: 1.08 !important; letter-spacing: -.03em !important; text-align: center !important; text-wrap: balance; max-width: 15ch; margin-left: auto !important; margin-right: auto !important; }
+  html body #ln :is(#why, #problem, #uses) h2 br { display: none; }
+  html body #ln :is(.why-p, .pb-lead, .wf-lead, .hp2-l > p:not(.hp2-eb), #trust .ln-sub) { margin: 16px auto 0 !important; max-width: 34ch !important; text-align: center !important; font-size: 1.0625rem !important; line-height: 1.55 !important; color: #4A5368 !important; }
+  html body #ln .pb-head { margin-bottom: 32px !important; }
+  html body #ln .wf-head { margin-bottom: 28px !important; }
+  /* the walkthrough: all six steps fit, no sideways scrolling */
+  html body #ln .wf-side { justify-content: space-between !important; gap: 0 !important; overflow: visible !important; }
+  html body #ln .wf-side::before { left: 8% !important; right: 8% !important; }
+  html body #ln .wf-side button { flex: 1 1 0 !important; width: auto !important; min-width: 0 !important; font-size: .64rem !important; line-height: 1.2 !important; padding: 0 1px !important; }
+  html body #ln .wf-side button::before { width: 30px !important; height: 30px !important; font-size: .68rem !important; }
+  html body #ln .wf-main { border-radius: 20px !important; }
+  html body #ln .wf-cap, html body #ln .v3-net-src { max-width: 32ch; margin-left: auto !important; margin-right: auto !important; }
+  /* what you can do: centred head, a calm list below */
+  html body #ln .hp2-split { gap: 36px !important; }
+  html body #ln .hp2-list li { grid-template-columns: 34px minmax(0, 1fr) !important; padding: 22px 0 !important; }
+  html body #ln .hp2-list h3 { font-size: 1.125rem !important; }
+  /* trust: compact rows, icon beside the words */
+  html body #ln #trust .v3-tr2-head { margin-bottom: 32px !important; }
+  html body #ln #trust .v3-tr2 { gap: 10px !important; }
+  html body #ln #trust .v3-tr2 article { display: grid !important; grid-template-columns: 38px minmax(0, 1fr); column-gap: 14px !important; padding: 18px !important; }
+  html body #ln #trust .v3-tr2-ic { grid-row: 1 / span 2; margin: 2px 0 0 !important; }
+  html body #ln #trust .v3-tr2 article p { margin-top: 4px !important; }
+  /* closing call to action */
+  html body #ln .ln-close .ln-wrap { padding-left: 16px !important; padding-right: 16px !important; }
+  html body #ln .ln-close h2 { font-size: clamp(1.9rem, 8vw, 2.25rem) !important; line-height: 1.08 !important; letter-spacing: -.03em !important; text-wrap: balance; }
+  html body #ln .ln-close h2 br { display: none; }
+  html body #ln .ln-close p:not(.hp2-sign) { max-width: 30ch; margin-left: auto !important; margin-right: auto !important; }
+  html body #ln .ln-close .hp2-ctas { display: flex !important; flex-wrap: wrap; justify-content: center; width: auto; max-width: none; }
+}
+/* <<< mobile apple */
