@@ -28,6 +28,10 @@ Your numbers at a glance:
 
 Every one of these actions is recorded in the activity log, with your name.
 
+## Conversations
+
+Every user's chats, newest first. Search by title, filter by person and dates, and open one to read it. Chats are read-only here. **Each time you open one, it's recorded in the activity log** under your name, because people may ask about private business plans. The Privacy Policy needs to say that admins can read conversations.
+
 ## Knowledge base
 
 This is what the Intelligence Assistant answers from. **Only published documents are used.**

@@ -85,7 +85,8 @@ export class Client {
   }
   async json(method, path, body) { const r = await this.req(method, path, { body }); return { status: r.status, data: await r.json().catch(() => null), headers: r.headers }; }
   async page(path) { const r = await this.req("GET", path); return { status: r.status, location: r.headers.get("location") ?? "", html: await r.text() }; }
-  async login(user) { const r = await this.json("POST", "/api/auth/login", { email: user.email, password: user.password }); return r.status; }
+  // each test sign-in has its own address, so a long run does not trip the sign-in limit per address
+  async login(user) { const ip = `198.18.${crypto.randomInt(256)}.${crypto.randomInt(256)}`; const r = await this.req("POST", "/api/auth/login", { body: { email: user.email, password: user.password }, headers: { "x-forwarded-for": ip } }); return r.status; }
   async logout() { await this.req("POST", "/api/auth/logout", { body: {} }); }
   // Submits a form found on a page (or in the raw `html` of an earlier step) the way a browser without JavaScript does,
   // which drives the app's server actions. Returns the re-rendered page: `html` raw (to submit its forms next) and

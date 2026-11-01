@@ -133,6 +133,48 @@ test("a chat can be renamed by its owner only; titles are checked, and another p
   assert.equal(await title(), undefined);
 });
 
+test("conversation lists: people see only their own chats; admins see all, and each opening is logged", async () => {
+  const stamp = uuid().slice(0, 8);
+  const alice = await createUser({ name: `Alice ${stamp}` }), bob = await createUser({ name: `Bob ${stamp}` });
+  const script = "<img src=x onerror=alert(1)>";
+  const [conv] = await sql`insert into conversations (user_id, title) values (${alice.id}, ${`Alice plan ${stamp}`}) returning id`;
+  await sql`insert into messages (conversation_id, user_id, role, content) values (${conv.id}, ${alice.id}, 'user', ${`Secret question ${stamp} ${script}`})`;
+  const aliceWeb = new Client(), bobWeb = new Client();
+  await aliceWeb.login(alice);
+  await bobWeb.login(bob);
+  const body = html => html.slice(html.indexOf("<tbody"), html.indexOf("</tbody>"));
+
+  // their own list: search and dates work
+  assert.ok(body((await aliceWeb.page(`/dashboard/conversations?q=${stamp}`)).html).includes(`Alice plan ${stamp}`));
+  assert.ok(!body((await aliceWeb.page("/dashboard/conversations?q=nothing-like-this")).html).includes(stamp));
+  assert.ok(!body((await aliceWeb.page("/dashboard/conversations?to=2020-01-01")).html).includes(stamp));
+  assert.equal((await aliceWeb.req("GET", "/dashboard/conversations?from=junk&page=abc")).status, 200);
+
+  // the chat page shows the text as text
+  const chat = (await aliceWeb.page(`/dashboard/conversations/${conv.id}`)).html;
+  assert.ok(chat.includes(`Secret question ${stamp}`));
+  assert.ok(!chat.includes(script), "stored text is never HTML");
+
+  // someone else can't list it, open it, or reach it through the assistant, even by asking for another person
+  assert.ok(!body((await bobWeb.page(`/dashboard/conversations?q=${stamp}&who=${encodeURIComponent(alice.email)}`)).html).includes(stamp));
+  assert.equal((await bobWeb.req("GET", `/dashboard/conversations/${conv.id}`)).status, 404);
+  assert.ok(!(await bobWeb.page(`/assistant?c=${conv.id}`)).html.includes(`Alice plan ${stamp}`));
+  for (const path of ["/admin/conversations", `/admin/conversations/${conv.id}`]) assert.equal((await bobWeb.req("GET", path)).status, 404, path);
+  assert.equal((await new Client().req("GET", `/dashboard/conversations/${conv.id}`)).status, 307);
+
+  // admins: everyone's, filter by person; reading is logged, and listing isn't
+  const logged = async () => (await sql`select count(*)::int n from audit_events where action = 'admin.conversation_view' and target_id = ${alice.id}`)[0].n;
+  assert.ok(body((await admin.page(`/admin/conversations?who=${encodeURIComponent(alice.email)}`)).html).includes(`Alice plan ${stamp}`));
+  assert.ok(!body((await admin.page(`/admin/conversations?who=${encodeURIComponent(bob.email)}`)).html).includes(`Alice plan ${stamp}`));
+  assert.equal(await logged(), 0);
+  const read = (await admin.page(`/admin/conversations/${conv.id}`)).html;
+  assert.ok(read.includes(`Secret question ${stamp}`));
+  assert.ok(!read.includes(script));
+  assert.equal(await logged(), 1);
+  assert.equal((await admin.req("GET", "/admin/conversations/not-a-uuid")).status, 404);
+  assert.equal((await admin.req("GET", `/admin/conversations/${uuid()}`)).status, 404);
+});
+
 test("a model that doesn't work is never saved", async () => {
   const [before] = await sql`select answer_provider, answer_model from ai_settings where id = 1`;
   const r = await admin.submit("/admin/ai", 'name="provider"', { provider: before.answer_provider, model: "no-such-model-e2e" }, "/admin/ai");
