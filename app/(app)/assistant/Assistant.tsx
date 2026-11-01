@@ -77,8 +77,8 @@ async function subscribe() {
 
 const navBtn = "flex w-full cursor-pointer items-center gap-2.5 rounded-lg border-0 bg-transparent px-3 py-[9px] text-left text-[14.4px] leading-[1.2] font-medium text-ink no-underline hover:bg-brand-200";
 
-export default function Assistant({ user, live, usage: initialUsage, conversations }:
-  { user: AssistantUser; live: boolean; usage: UsageView | null; conversations: { id: string; title: string }[] }) {
+export default function Assistant({ user, live, usage: initialUsage, conversations, openId }:
+  { user: AssistantUser; live: boolean; usage: UsageView | null; conversations: { id: string; title: string }[]; openId?: string }) {
   const [full, setFull] = useState(false);              // window or full screen (phones are always full screen)
   // the server lists newest first; the sidebar shows this list reversed
   const [convs, setConvs] = useState<Conv[]>(() => conversations.map(c => ({ ...c, items: [], loaded: false })).reverse());
@@ -250,6 +250,7 @@ export default function Assistant({ user, live, usage: initialUsage, conversatio
     const sc = handoff?.scope && (MARKETS as readonly string[]).includes(handoff.scope) ? handoff.scope : undefined;
     if (sc) setScope(sc);
     if (handoff?.q?.trim()) void send(handoff.q, sc);
+    else if (openId) void openConv(openId);   // "Continue in the assistant" from the conversation page
     else inputRef.current?.focus();
     // runs once on mount; send() reads the latest state through its own setState calls
     // eslint-disable-next-line react-hooks/exhaustive-deps
