@@ -1,6 +1,7 @@
 import { AX_GALLERY, AX_WORKS } from "./axMarkup";
 // Converted from the original static page. Markup only: behaviour lives in lib/platform/.
 const VSX = "<div class=\"vsx\" role=\"table\" aria-label=\"How Verisavo differs from general-purpose AI\"><div class=\"vsx-r vsx-hr\" role=\"row\"><div role=\"columnheader\"><span class=\"vh\">Question</span></div><div class=\"vsx-g\" role=\"columnheader\">General-purpose AI</div><div class=\"vsx-v\" role=\"columnheader\">Verisavo</div></div><div class=\"vsx-r\" role=\"row\"><div class=\"vsx-q\" role=\"rowheader\">Where do answers come from?</div><div class=\"vsx-g\" role=\"cell\"><span class=\"vsx-k\">General-purpose AI</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M4.5 8h7\"/></svg><p>Training data, available information and connected sources.</p></div><div class=\"vsx-v\" role=\"cell\"><span class=\"vsx-k\">Verisavo</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M3.5 8.4l3 3 6-6.6\"/></svg><p>Connects company data, public records, research, digital platforms and <span style=\"white-space:nowrap\">Ground-Level</span> Intelligence.</p></div></div><div class=\"vsx-r\" role=\"row\"><div class=\"vsx-q\" role=\"rowheader\">Can you trace the evidence?</div><div class=\"vsx-g\" role=\"cell\"><span class=\"vsx-k\">General-purpose AI</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M4.5 8h7\"/></svg><p>Source visibility and verification vary by tool.</p></div><div class=\"vsx-v\" role=\"cell\"><span class=\"vsx-k\">Verisavo</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M3.5 8.4l3 3 6-6.6\"/></svg><p>Every finding links to its source, location, date and reliability.</p></div></div><div class=\"vsx-r\" role=\"row\"><div class=\"vsx-q\" role=\"rowheader\">What happens when evidence is missing?</div><div class=\"vsx-g\" role=\"cell\"><span class=\"vsx-k\">General-purpose AI</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M4.5 8h7\"/></svg><p>May answer despite incomplete information.</p></div><div class=\"vsx-v\" role=\"cell\"><span class=\"vsx-k\">Verisavo</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M3.5 8.4l3 3 6-6.6\"/></svg><p>Names the Intelligence Gap and suggests what to check next.</p></div></div><div class=\"vsx-r\" role=\"row\"><div class=\"vsx-q\" role=\"rowheader\">What about markets with little online information?</div><div class=\"vsx-g\" role=\"cell\"><span class=\"vsx-k\">General-purpose AI</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M4.5 8h7\"/></svg><p>Depends largely on what is already online.</p></div><div class=\"vsx-v\" role=\"cell\"><span class=\"vsx-k\">Verisavo</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M3.5 8.4l3 3 6-6.6\"/></svg><p>SavoScouts gather and verify evidence directly from local markets.</p></div></div><div class=\"vsx-r\" role=\"row\"><div class=\"vsx-q\" role=\"rowheader\">Does understanding improve over time?</div><div class=\"vsx-g\" role=\"cell\"><span class=\"vsx-k\">General-purpose AI</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M4.5 8h7\"/></svg><p>Depends on memory, connected data and context.</p></div><div class=\"vsx-v\" role=\"cell\"><span class=\"vsx-k\">Verisavo</span><svg class=\"vsx-i\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M3.5 8.4l3 3 6-6.6\"/></svg><p>Market Memory keeps findings, tracks change and updates as new evidence arrives.</p></div></div></div><p class=\"vsx-src\">Comparison describes general capabilities; individual AI tools vary. Verisavo capabilities are presented as designed, including features under development.</p>";
+const PV = "<div class=\"pv-card\" aria-label=\"Illustrative Verisavo answer\"><p class=\"pv-q\"><span>You asked</span>Why are our noodle sales slowing in Accra?</p><div class=\"pv-a\"><p class=\"pv-k\">Answer</p><p class=\"pv-t\">Sales are down 18% since August, in line with a new import levy and a cheaper rival pack.</p><ul class=\"pv-ev\"><li><b>Sales down 18% since August</b><span>Company data \u00b7 Checked</span></li><li><b>Import levy from 1 September</b><span>Public records \u00b7 Verified</span></li><li><b>Rival pack 15% cheaper</b><span>Digital platforms \u00b7 Verified</span></li></ul></div><div class=\"pv-gap\"><p class=\"pv-k\">Intelligence Gap</p><p class=\"pv-t\">Are shops out of stock, or are shoppers switching?</p><span class=\"pv-btn\">Investigate with SavoScouts</span></div></div><p class=\"pv-cap\">Illustrative example. Names and figures are invented.</p>";
 export default function Main() {
   return (
     <main id="main">
@@ -14,12 +15,12 @@ export default function Main() {
           <div className="hero-title">
             {" "}
             <h1 id="hero-title">
-              <span className="l1">{"Understand the market"}</span>
+              <span className="l1">{"Ask about your market."}</span>
               {" "}
-              <span className="tone">{"around your business."}</span>
+              <span className="tone">{"See the evidence behind every answer."}</span>
             </h1>
             {" "}
-            <p className="sub">{"We connect scattered market evidence, so you see what is happening and what is still unknown."}</p>
+            <p className="sub">{"Verisavo connects your company data with public records, research and evidence from the ground, and tells you what is still unknown."}</p>
             {" "}
           </div>
           {" "}
@@ -29,6 +30,7 @@ export default function Main() {
             <a className="btn btn-rect plain" href="/contact">{"Contact us"}</a>
             {" "}
           </div>
+          <div className="ax-hero pv" dangerouslySetInnerHTML={{ __html: PV }} />
           {" "}
         </div>
         {" "}
@@ -182,6 +184,7 @@ export default function Main() {
           {" "}
           <div className="band-head">
             {" "}
+            <p className="pp-eb">{"Why Verisavo"}</p>
             <h2 id="platform-title">{"Beyond the Answer"}</h2>
             {" "}
             <p>
