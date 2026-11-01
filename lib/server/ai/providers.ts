@@ -9,7 +9,7 @@ import { openai } from "@ai-sdk/openai";
 export const PROVIDER_IDS = ["anthropic", "openai", "google"] as const;
 export type ProviderId = (typeof PROVIDER_IDS)[number];
 
-// answerModels are suggestions; an admin may type any model ID the service offers, and "Test" checks it works
+// answerModels fill the dropdown; an admin may also enter any other model ID the service offers. Saving tries it first.
 export const PROVIDERS: Record<ProviderId, { label: string; envKey: string; answerModels: string[] }> = {
   anthropic: { label: "Claude (Anthropic)", envKey: "ANTHROPIC_API_KEY", answerModels: ["claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"] },
   openai: { label: "OpenAI", envKey: "OPENAI_API_KEY", answerModels: ["gpt-5.5", "gpt-5.4-mini"] },
@@ -21,6 +21,12 @@ export const PROVIDERS: Record<ProviderId, { label: string; envKey: string; answ
 // minSimilarity: weaker matches are dropped so the assistant can say it doesn't know. Each model scores on its own
 // scale: Gemini gave unrelated questions 48–55% and related ones 64–74% (dev test, 2026-10-17). OpenAI's 25% is
 // a starting point. Tune both with real questions in "Try a question".
+export const MODEL_NOTES: Record<string, string> = {
+  "claude-opus-5-5": "best answers, highest cost", "claude-sonnet-5-5": "balanced", "claude-haiku-5-5": "fastest, lowest cost",
+  "gpt-5.5": "best answers, higher cost", "gpt-5.4-mini": "faster, lower cost",
+  "gemini-pro-latest": "best answers, higher cost", "gemini-flash-latest": "faster, lower cost"
+};
+
 export const EMBEDDINGS = {
   "openai:text-embedding-3-small": { provider: "openai", model: "text-embedding-3-small", label: "OpenAI text-embedding-3-small", minSimilarity: 0.25 },
   "openai:text-embedding-3-large": { provider: "openai", model: "text-embedding-3-large", label: "OpenAI text-embedding-3-large", minSimilarity: 0.25 },

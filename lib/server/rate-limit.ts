@@ -33,7 +33,7 @@ export async function allow(rules: Rule[]): Promise<boolean> {
     if (Math.random() < 0.01) void db.execute(sql`delete from rate_limits where window_start < now() - interval '1 day'`).catch(() => {});
     return ok;
   } catch (err) {
-    console.error("[rate-limit] counter failed, allowing request:", err instanceof Error ? err.message : err);
+    console.error("[rate-limit] counter failed, allowing request:", err instanceof Error ? err.name : "error");   // messages can contain emails and IPs
     return true;
   }
 }
@@ -42,7 +42,9 @@ export async function allow(rules: Rule[]): Promise<boolean> {
 export const LIMITS = {
   login: (ip: string, email: string): Rule[] => [
     { key: `login:ip:${ip}`, limit: 20, windowSeconds: 300 },
-    { key: `login:email:${email}`, limit: 10, windowSeconds: 900 }
+    // the low limit is per visitor, so nobody can lock someone else out by failing with their email on purpose
+    { key: `login:ip-email:${ip}:${email}`, limit: 10, windowSeconds: 900 },
+    { key: `login:email:${email}`, limit: 100, windowSeconds: 900 }
   ],
   signup: (ip: string, email: string): Rule[] => [
     { key: `signup:ip:${ip}`, limit: 5, windowSeconds: 3600 },
@@ -51,7 +53,8 @@ export const LIMITS = {
   // forgot password and "send the email again"
   email: (ip: string, email: string): Rule[] => [
     { key: `email:ip:${ip}`, limit: 5, windowSeconds: 3600 },
-    { key: `email:email:${email}`, limit: 3, windowSeconds: 3600 }
+    { key: `email:ip-email:${ip}:${email}`, limit: 3, windowSeconds: 3600 },
+    { key: `email:email:${email}`, limit: 10, windowSeconds: 3600 }
   ],
   link: (ip: string): Rule[] => [{ key: `link:ip:${ip}`, limit: 20, windowSeconds: 300 }],
   reset: (ip: string): Rule[] => [{ key: `reset:ip:${ip}`, limit: 10, windowSeconds: 300 }],

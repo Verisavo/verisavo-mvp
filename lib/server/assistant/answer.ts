@@ -91,7 +91,7 @@ export async function prepareAnswer({ userId, conversationId, question, market, 
   ]);
   const scope = market === ALL_MARKETS ? "all African markets" : market;
   const sources = [...new Map(hits.map(h => [h.documentId, { documentId: h.documentId, title: h.title }])).values()];
-  const text = `${knowledgeBlock(hits)}${attachmentsBlock(files)}\n\nMarket: ${scope}\nQuestion: ${question}`;
+  const text = `${knowledgeBlock(hits)}${attachmentsBlock(files)}\n\nMarket: ${scope}\nQuestion: ${defuse(question)}`;
   const content: ModelMessage["content"] = files.images.length
     ? [{ type: "text", text }, ...files.images.map(i => ({ type: "image" as const, image: i.data, mediaType: i.mediaType }))]
     : text;

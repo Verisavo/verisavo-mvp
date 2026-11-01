@@ -1,0 +1,1 @@
+ALTER TABLE "kb_documents" ADD COLUMN "genres" text[] DEFAULT '{}'::text[] NOT NULL;

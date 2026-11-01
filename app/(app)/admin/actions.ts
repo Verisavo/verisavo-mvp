@@ -9,13 +9,13 @@ import { requireAdmin } from "@/lib/server/admin";
 import { audit } from "@/lib/server/audit";
 import { pauseRenewal } from "@/lib/server/billing";
 import { cleanText } from "@/lib/server/http";
-import { COUNTRY_MARKETS, ALL_MARKETS } from "@/lib/markets";
+import { COUNTRY_MARKETS, ALL_MARKETS, GENRES } from "@/lib/markets";
 import { ExtractError, extractText, tidyText } from "@/lib/server/rag/extract";
 import { archiveDocument, createDocument, publishDocument, reindexStale, restoreDocument, saveDocument, type KbResult } from "@/lib/server/rag/knowledge";
 import { searchKnowledge, type KbHit } from "@/lib/server/rag/search";
 import { embedQuery } from "@/lib/server/rag/embed";
 import { answerSetup, getAiSettings, saveAiSettings, searchSetup } from "@/lib/server/ai/settings";
-import { describeAiError, EMBEDDINGS, isEmbedding, isProvider, keySet, MODEL_ID, PROVIDERS } from "@/lib/server/ai/providers";
+import { describeAiError, EMBEDDINGS, isEmbedding, isProvider, keySet, languageModel, MODEL_ID, PROVIDERS } from "@/lib/server/ai/providers";
 import { generateText } from "ai";
 import { resetAllowance } from "@/lib/server/entitlements";
 import { unlink } from "@/lib/server/whatsapp/links";
@@ -24,6 +24,7 @@ export type ActionState = { ok?: string; error?: string } | null;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const toState = (r: KbResult): ActionState => (r.ok ? { ok: r.message } : { error: r.error });
 const marketsFrom = (formData: FormData) => formData.getAll("markets").map(String).filter(m => COUNTRY_MARKETS.includes(m));
+const genresFrom = (formData: FormData) => formData.getAll("genres").map(String).filter(g => (GENRES as readonly string[]).includes(g));
 const MAX_BODY = 500_000;   // characters, about 250 pages of text
 
 // ---------- Users (M2.2) ----------
@@ -81,7 +82,7 @@ export async function createKbDocument(_state: ActionState, formData: FormData):
   if (!body) return { error: sourceName ? "We couldn't find any text in that file. Scanned PDFs have no text: paste it instead." : "Upload a file or paste the document's text." };
   if (body.length > MAX_BODY) return { error: "That document is too long. Split it into smaller documents." };
   const title = cleanText(formData.get("title"), 200) || cleanText(sourceName?.replace(/\.[a-z0-9]+$/i, ""), 200) || "Untitled document";
-  const id = await createDocument({ title, body, markets: marketsFrom(formData), sourceName }, admin.id);
+  const id = await createDocument({ title, body, markets: marketsFrom(formData), genres: genresFrom(formData), sourceName }, admin.id);
   revalidatePath("/admin/knowledge");
   redirect(`/admin/knowledge/${id}?created=1`);
 }
@@ -95,7 +96,7 @@ export async function saveKbDocument(_state: ActionState, formData: FormData): P
   if (!title) return { error: "Give the document a title." };
   if (!body) return { error: "The document needs some text." };
   if (body.length > MAX_BODY) return { error: "That document is too long. Split it into smaller documents." };
-  const result = await saveDocument(id, { title, body, markets: marketsFrom(formData) }, admin.id);
+  const result = await saveDocument(id, { title, body, markets: marketsFrom(formData), genres: genresFrom(formData) }, admin.id);
   revalidatePath(`/admin/knowledge/${id}`); revalidatePath("/admin/knowledge");
   return toState(result);
 }
@@ -139,12 +140,18 @@ export async function saveAnswerSettings(_state: ActionState, formData: FormData
   const model = cleanText(formData.get("model"), 80);
   if (!isProvider(provider)) return { error: "Choose a service." };
   if (!keySet(provider)) return { error: `Add ${PROVIDERS[provider].envKey} in the hosting settings first.` };
-  if (!MODEL_ID.test(model)) return { error: "Enter a model ID, e.g. one of the suggestions." };
+  if (!MODEL_ID.test(model)) return { error: "Choose a model, or enter its ID." };
+  try {
+    await generateText({ model: languageModel(provider, model), prompt: "Reply with the single word OK.", maxOutputTokens: 1000 });
+  } catch (err) {
+    console.error("[admin/ai] model check failed:", err instanceof Error ? err.name : "error");
+    return { error: `Not saved: ${describeAiError(err)}` };
+  }
   const before = await getAiSettings();
   await saveAiSettings({ answerProvider: provider, answerModel: model }, admin.id);
   await audit("ai.answers_change", { actorId: admin.id, targetType: "ai_settings", metadata: { from: `${before.answerProvider}/${before.answerModel}`, to: `${provider}/${model}` } });
   revalidatePath("/admin/ai");
-  return { ok: `Saved. Answers now come from ${PROVIDERS[provider].label}, ${model}. Press Test to check it works.` };
+  return { ok: `Saved and working. Answers now come from ${PROVIDERS[provider].label}, ${model}.` };
 }
 
 const reindexMessage = (r: { done: number; failed: number; left: number }) =>
@@ -159,6 +166,12 @@ export async function saveSearchSettings(_state: ActionState, formData: FormData
   if (!keySet(provider)) return { error: `Add ${PROVIDERS[provider].envKey} in the hosting settings first.` };
   const before = await getAiSettings();
   if (before.saved && before.embeddingId === id) return { ok: "That's already the search model." };
+  try {
+    await embedQuery(id, "Test question about Lagos retail prices");
+  } catch (err) {
+    console.error("[admin/ai] search model check failed:", err instanceof Error ? err.name : "error");
+    return { error: `Not saved: ${describeAiError(err)}` };
+  }
   await saveAiSettings({ embeddingId: id }, admin.id);
   await audit("ai.search_change", { actorId: admin.id, targetType: "ai_settings", metadata: { from: before.embeddingId, to: id } });
   const result = await reindexStale(admin.id);

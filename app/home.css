@@ -272,6 +272,8 @@ body.menu-open #menu-btn .b-ic { display: none; }
 .va .a-google { background: var(--white); color: var(--indigo); border: 1px solid var(--b200); border-radius: 10px; min-height: 48px; text-decoration: none; }
 .va .a-google:hover { border-color: var(--b500); }
 .va .a-google svg { width: 18px; height: 18px; }
+.va .a-google { cursor: pointer; }
+.va .a-google-wrap:not([hidden]) { display: grid; gap: 14px; }
 .va .a-or { display: flex; align-items: center; gap: 12px; color: var(--b600); font-size: 0.8125rem; }
 .va .a-or::before, .va .a-or::after { content: ""; flex: 1; height: 1px; background: var(--b200); }
 .va .a-form { display: grid; gap: 12px; }
