@@ -2069,3 +2069,19 @@ html body footer.foot .foot-top { padding: 7px 12px !important; border: 1px soli
 }
 @media (max-width: 560px) { html body footer.foot .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; row-gap: 32px !important; } }
 /* <<< product footer like home */
+/* >>> product alignment v2 */
+/* hero: centred and white, like the other pages */
+html body section.hero { background: #fff !important; min-height: 0 !important; padding: 0 !important; }
+html body section.hero::before, html body section.hero::after { display: none !important; }
+html body section.hero .hero-bg { display: none !important; }
+html body section.hero .hero-grid { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; justify-items: center !important; text-align: center !important; row-gap: 32px !important; min-height: 0 !important; padding-top: clamp(120px, 13vw, 168px) !important; padding-bottom: clamp(72px, 8vw, 112px) !important; }
+html body section.hero .hero-title { display: grid; justify-items: center; }
+html body section.hero h1#hero-title { margin: 0 auto !important; max-width: 18ch; font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.4rem) !important; line-height: 1.04 !important; letter-spacing: -.045em !important; color: #1F273F !important; text-align: center !important; text-wrap: balance; }
+html body section.hero .sub { margin: 24px auto 0 !important; max-width: 54ch !important; font: 400 clamp(1.02rem, .98rem + .25vw, 1.15rem)/1.6 "Inter", var(--sans) !important; color: #4A5368 !important; text-align: center !important; }
+html body section.hero .hero-actions { justify-content: center !important; justify-self: center !important; }
+/* the answer: light band, same heading scale and eyebrow */
+html body section#answer.ax-gal { background: #F7F9FC !important; border-top: 1px solid #EDF1F6; border-bottom: 1px solid #EDF1F6; }
+html body .ax-gal .ax-head .pp-eb { color: #4362B2 !important; }
+html body :is(#ax-gal-h, #platform-title):not(#_a) { font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(1.9rem, 1.2rem + 1.9vw, 3rem) !important; line-height: 1.06 !important; letter-spacing: -.04em !important; color: #1F273F !important; }
+html body .ax-gal .ax-head .lead, html body #platform .band-head p { margin-top: 16px !important; font: 400 clamp(1rem, .96rem + .2vw, 1.1rem)/1.65 "Inter", var(--sans) !important; color: #4A5368 !important; }
+/* <<< product alignment v2 */
