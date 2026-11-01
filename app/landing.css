@@ -1621,4 +1621,6 @@ html body #pg-pricing .pi-note { margin: 0; font: 400 .8rem/1.5 var(--sans); col
 #ln .pb-head .pb-lead { margin: 0; }
 #ln .pb .net-card { background-color: #fff; }
 @media (max-width: 860px) { #ln .pb-head { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+#ln .pb .net-gq circle { fill: #EEF3FB; stroke: #80AADC; stroke-width: 1.2; stroke-dasharray: 2.2 2; }
+#ln .pb .net-svg .net-gq text { font-size: 10px !important; font-weight: 700 !important; fill: #3A5292 !important; }
 /* <<< problem sim */
