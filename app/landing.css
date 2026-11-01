@@ -1822,6 +1822,16 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
 #ln .wf-tag { justify-self: start; padding: 3px 8px; border-radius: 6px; background: #E3EBF8; color: #3A5292; font-size: .68rem; font-weight: 600; letter-spacing: .02em; }
 #ln .wf-tag-i { background: #F3F4F7; color: #5B6478; }
 #ln .wf-tt + .wf-cols { margin-top: 0; }
+/* step labels with supporting copy */
+#ln .wf-side button { align-content: start; }
+#ln .wf-bl { display: block; }
+#ln .wf-bc { display: block; max-width: 20ch; margin: 2px auto 0; font-size: .74rem; font-weight: 400; line-height: 1.4; color: #8A93A6; }
+#ln .wf-side button.on .wf-bc { color: #4A5368; }
+#ln .wf-cur-c { display: none; }
+@media (max-width: 860px) {
+  #ln .wf-bc { display: none; }
+  #ln .wf-cur-c { display: block; margin: -6px auto 0; max-width: 34ch; min-height: 2.9em; text-align: center; font: 400 .92rem/1.45 "Inter", var(--sans); color: #4A5368; }
+}
 /* <<< workflow explainer */
 /* >>> homepage problem text */
 #ln .why { padding-block: clamp(64px, 8vw, 112px); background: #fff; font-family: "Inter", var(--sans); }
