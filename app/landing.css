@@ -1621,4 +1621,5 @@ html body #pg-pricing .pi-note { margin: 0; font: 400 .8rem/1.5 var(--sans); col
 #ln .pb-head .pb-lead { margin: 0; }
 #ln .pb .net-card { background-color: #fff; }
 @media (max-width: 860px) { #ln .pb-head { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+#ln .pb .v3-net-src { margin: 16px 0 0; text-align: center; font-size: .8rem; color: #8A93A6; }
 /* <<< problem sim */
