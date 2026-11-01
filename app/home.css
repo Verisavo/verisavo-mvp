@@ -1869,3 +1869,54 @@ html body #pg-community.pg .c2-qs details p { margin: 0; padding: 0 4px 22px; ma
 }
 @media (max-width: 360px) { #pg-community .c2-acts { grid-template-columns: minmax(0, 1fr); } }
 /* <<< community v2 */
+/* >>> about v2 */
+html body #pg-about-us#pg-about-us.pg.pg .pg-in { width: min(1160px, calc(100% - 40px)); }
+#pg-about-us .ab2 { display: grid; font-family: "Inter", var(--sans); }
+#pg-about-us .ab2 > * + * { margin-top: clamp(88px, 11vw, 140px); }
+html body #pg-about-us#pg-about-us.pg.pg .a2-eb { margin: 0 0 14px !important; font: 500 .76rem/1 "Inter", var(--sans) !important; letter-spacing: .12em !important; text-transform: uppercase; color: #4362B2 !important; }
+/* hero */
+#pg-about-us .a2-hero { display: grid; justify-items: center; text-align: center; padding-top: clamp(8px, 2vw, 32px); }
+html body #pg-about-us#pg-about-us.pg.pg .a2-hero h1:not(#_a):not(#_b):not(#_c) { margin: 0; max-width: 16ch; font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.4rem) !important; line-height: 1.02 !important; letter-spacing: -.045em !important; color: #1F273F !important; text-wrap: balance; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-hero h1 span { color: #4362B2; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-lead { margin: 24px 0 0; max-width: 54ch; font: 400 clamp(1.02rem, .98rem + .25vw, 1.15rem)/1.6 "Inter", var(--sans) !important; color: #4A5368 !important; }
+/* section heads */
+#pg-about-us .a2-head { display: grid; justify-items: center; text-align: center; margin: 0 auto clamp(36px, 4.5vw, 56px); max-width: 640px; }
+#pg-about-us .a2-head-l { justify-items: start; text-align: left; margin: 0; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-head h2:not(#_a):not(#_b):not(#_c) { margin: 0; font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(1.9rem, 1.2rem + 1.9vw, 3rem) !important; line-height: 1.06 !important; letter-spacing: -.04em !important; color: #1F273F !important; text-wrap: balance; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-head > p:not(.a2-eb) { margin: 16px 0 0; max-width: 52ch; font: 400 clamp(1rem, .96rem + .2vw, 1.1rem)/1.65 "Inter", var(--sans) !important; color: #4A5368 !important; }
+/* why we exist: light band, two blocks */
+#pg-about-us .a2-band { position: relative; isolation: isolate; padding-block: clamp(72px, 9vw, 120px); }
+#pg-about-us .a2-band::before { content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1; background: #F7F9FC; border-top: 1px solid #EDF1F6; border-bottom: 1px solid #EDF1F6; }
+#pg-about-us .a2-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 1000px; margin: 0 auto; }
+#pg-about-us .a2-two article { padding: clamp(24px, 3vw, 36px); border-radius: 18px; background: #fff; box-shadow: 0 0 0 1px #E6ECF4, 0 18px 40px -30px rgba(31,39,63,.35); }
+html body #pg-about-us#pg-about-us.pg.pg .a2-two .a2-k { margin: 0 0 12px; font: 600 .74rem/1 "Inter", var(--sans) !important; letter-spacing: .08em; text-transform: uppercase; color: #4362B2 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-two p:not(.a2-k) { margin: 0; font-size: 1.02rem !important; line-height: 1.65 !important; color: #3D4559 !important; }
+/* beliefs: numbered columns with a top rule */
+#pg-about-us .a2-beliefs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 28px; }
+#pg-about-us .a2-beliefs li { display: grid; align-content: start; gap: 8px; padding-top: 20px; border-top: 1px solid #CCDDF1; }
+#pg-about-us .a2-beliefs span { font: 600 .74rem/1 "Inter", var(--sans); color: #4362B2; margin-bottom: 6px; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-beliefs h3 { margin: 0; font: 600 1.08rem/1.3 "Inter", var(--sans) !important; letter-spacing: -.015em; color: #1F273F !important; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-beliefs p { margin: 0; font-size: .94rem !important; line-height: 1.6 !important; color: #5B6478 !important; }
+/* team: heading left, words right */
+#pg-about-us .a2-team { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 80px); align-items: start; padding-top: clamp(40px, 5vw, 64px); border-top: 1px solid #E3E9F2; }
+#pg-about-us .a2-team-copy { display: grid; gap: 18px; }
+html body #pg-about-us#pg-about-us.pg.pg .a2-team-copy p { margin: 0; font-size: clamp(1.02rem, .98rem + .25vw, 1.15rem) !important; line-height: 1.65 !important; color: #3D4559 !important; }
+/* press: heading in the same style */
+html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby="hl-h"] .intro h2:not(#_a):not(#_b):not(#_c) { font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(1.9rem, 1.2rem + 1.9vw, 3rem) !important; line-height: 1.06 !important; letter-spacing: -.04em !important; color: #1F273F !important; }
+/* tablet */
+@media (max-width: 1000px) {
+  #pg-about-us .a2-beliefs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  #pg-about-us .a2-two { grid-template-columns: minmax(0, 1fr); }
+  #pg-about-us .a2-team { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+}
+/* phone */
+@media (max-width: 600px) {
+  #pg-about-us .ab2 > * + * { margin-top: 72px; }
+  #pg-about-us .a2-band { padding-block: 64px; }
+  #pg-about-us .a2-two article { padding: 22px 20px; }
+  #pg-about-us .a2-beliefs { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  #pg-about-us .a2-team { padding-top: 40px; }
+}
+/* <<< about v2 */

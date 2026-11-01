@@ -1,4 +1,5 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
+const AB = "<div class=\"ab2\">\n<header class=\"a2-hero\">\n  <p class=\"a2-eb\">About Verisavo</p>\n  <h1 id=\"about-h\">Building the intelligence layer <span>for African markets.</span></h1>\n  <p class=\"a2-lead\">Verisavo helps businesses understand what is happening in their markets, why it matters, what remains unknown and what it means for their next decision.</p>\n</header>\n\n<section class=\"a2-sec a2-band\" aria-labelledby=\"exist-h\">\n  <div class=\"a2-head\">\n    <p class=\"a2-eb\">Why we exist</p>\n    <h2 id=\"exist-h\">Connecting what is scattered</h2>\n  </div>\n  <div class=\"a2-two\">\n    <article><p class=\"a2-k\">The problem</p><p>Across Africa, valuable market information sits in company data, public records, digital platforms, research and local communities. Much of it is fragmented, so the bigger picture is hard to see.</p></article>\n    <article><p class=\"a2-k\">Our approach</p><p>Verisavo is designed to connect these pieces, assess the evidence and show the relationships behind market changes. With technology and evidence from the ground, we are building an understanding of African markets that keeps evolving.</p></article>\n  </div>\n</section>\n\n<section class=\"a2-sec\" aria-labelledby=\"believe-h\">\n  <div class=\"a2-head\">\n    <p class=\"a2-eb\">Principles</p>\n    <h2 id=\"believe-h\">What we believe</h2>\n    <p>These principles shape how the platform is designed and how we talk about what it knows.</p>\n  </div>\n  <ol class=\"a2-beliefs\">\n    <li><span>01</span><h3>Evidence before assertion</h3><p>Important conclusions rest on evidence. An answer is not true because a model produced it.</p></li>\n    <li><span>02</span><h3>Context before conclusion</h3><p>A data point means little without where, when, who it applies to and how it was collected.</p></li>\n    <li><span>03</span><h3>Relationships matter</h3><p>Prices, distribution, infrastructure, policy and behaviour shape one another. We look at how the pieces connect.</p></li>\n    <li><span>04</span><h3>Unknown is a valid answer</h3><p>When the evidence cannot answer a question, we say so and name the Intelligence Gap.</p></li>\n    <li><span>05</span><h3>Markets change</h3><p>Understanding is never final. Market Memory is designed to record what changed and which evidence changed it.</p></li>\n    <li><span>06</span><h3>Human decisions stay human</h3><p>Verisavo supports the decision. The people responsible for it make it.</p></li>\n  </ol>\n</section>\n\n<section class=\"a2-sec a2-team\" aria-labelledby=\"team-h\">\n  <div class=\"a2-head a2-head-l\">\n    <p class=\"a2-eb\">Team</p>\n    <h2 id=\"team-h\">Our team</h2>\n  </div>\n  <div class=\"a2-team-copy\">\n    <p>Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and Ground-Level Intelligence. We work closely with businesses, researchers and local communities on real market challenges.</p>\n    <p>Our ambition goes beyond building another AI product. We are laying the foundation for a connected intelligence layer that makes African markets clearer and easier to understand.</p>\n  </div>\n</section>\n</div>";
 export default function AboutUsPage() {
   return (
     <section className="pg" id="pg-about-us" aria-labelledby="about-h" aria-hidden="true">
@@ -7,85 +8,7 @@ export default function AboutUsPage() {
         {" "}
         <button type="button" className="pg-link pg-back" data-back=""><span aria-hidden="true">{"←"}</span>{" Back"}</button>
         {" "}
-        <header className="pg-head">
-          {" "}
-          <p className="lab">{"Company"}</p>
-          {" "}
-          <h1 id="about-h"><span className="acc">{"About"}</span>{" Verisavo"}</h1>
-          {" "}
-          <p className="lead">{"Verisavo is building a connected intelligence layer for African markets, helping businesses understand what is happening around them, why it matters, what remains unknown and what it means for their next decision."}</p>
-          {" "}
-          <p>{"Across Africa, valuable market information exists in company data, public records, digital platforms, research and local communities. Yet much of it remains fragmented, making it difficult to see the bigger picture."}</p>
-          {" "}
-          <p>{"Verisavo is designed to connect these scattered pieces, assess the evidence and reveal the relationships behind market changes. By combining technology with intelligence from the ground, we are building an evolving understanding of African markets that helps businesses make better-informed decisions."}</p>
-        </header>
-        {" "}
-        
-        {" "}
-        <section className="pg-sec" aria-labelledby="believe-h">
-          {" "}
-          <div className="intro">
-            <h2 id="believe-h">{"What we "}<span className="acc">{"believe"}</span></h2>
-            <p>{"These principles shape how the platform is designed and how we talk about what it knows."}</p>
-          </div>
-          {" "}
-          <div className="cards">
-            {" "}
-            <article className="card glass">
-              <span className="n">{"01"}</span>
-              <h3>{"Evidence before assertion"}</h3>
-              <p>
-                {"Important conclusions should rest on evidence. An answer is not true because a model produced it."}
-              </p>
-            </article>
-            {" "}
-            <article className="card glass">
-              <span className="n">{"02"}</span>
-              <h3>{"Context before conclusion"}</h3>
-              <p>{"A data point means little without where, when, who it applies to and how it was collected."}</p>
-            </article>
-            {" "}
-            <article className="card glass">
-              <span className="n">{"03"}</span>
-              <h3>{"Relationships matter"}</h3>
-              <p>
-                {"Prices, distribution, infrastructure, policy and behaviour shape one another. We look at how the pieces connect."}
-              </p>
-            </article>
-            {" "}
-            <article className="card glass">
-              <span className="n">{"04"}</span>
-              <h3>{"Unknown is a valid answer"}</h3>
-              <p>{"When the evidence cannot answer a question, we say so and name the Intelligence Gap."}</p>
-            </article>
-            {" "}
-            <article className="card glass">
-              <span className="n">{"05"}</span>
-              <h3>{"Markets change"}</h3>
-              <p>{"Understanding is never final. Market Memory is designed to record what changed and which evidence changed it."}</p>
-            </article>
-            {" "}
-            <article className="card glass">
-              <span className="n">{"06"}</span>
-              <h3>{"Human decisions stay human"}</h3>
-              <p>{"Verisavo supports the decision. The people responsible for it make it."}</p>
-            </article>
-            {" "}
-          </div>
-          {" "}
-        </section>
-        {" "}
-        <section className="team" aria-labelledby="team-h">
-          {" "}
-          <div className="team-copy">
-            <p className="lab">{"Team"}</p>
-            <h2 id="team-h"><span className="acc">{"Our"}</span>{" Team"}</h2>
-            <p className="lead">{"Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and ground-level intelligence. We combine technology with local market knowledge to connect fragmented information, assess how far evidence can be trusted and build market intelligence that is honest about its limits."}</p>
-            <p>{"Our team works closely with businesses, researchers and local communities to address real market challenges and help businesses make better-informed decisions."}</p>
-            <p>{"Our ambition goes beyond building another AI product. We are laying the foundation for a connected intelligence layer that makes African markets clearer, more accessible and easier to understand."}</p>
-          </div>
-          {" "}
-        </section>
+        <div className="ab2-mount" dangerouslySetInnerHTML={{ __html: AB }} />
         {" "}
         <section className="pg-sec" aria-labelledby="hl-h">
           {" "}
