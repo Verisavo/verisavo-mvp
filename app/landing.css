@@ -1827,3 +1827,21 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
 #ln .why-p { margin: 0; max-width: 52ch; font: 400 clamp(1rem, .96rem + .2vw, 1.12rem)/1.65 "Inter", var(--sans); color: #4A5368; }
 @media (max-width: 860px) { #ln .why-in { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
 /* <<< homepage problem text */
+/* >>> trust v4 */
+/* Built on trust: centred heading, four principles side by side, separated by hairlines */
+html body #ln #trust.hp2-trust { padding-block: clamp(72px, 9vw, 128px) !important; background: #F7F9FC !important; border-top: 1px solid #EDF1F6; border-bottom: 1px solid #EDF1F6; }
+html body #ln #trust.hp2-trust > .ln-wrap { display: block !important; }
+html body #ln #trust .v3-tr2-head { display: flex !important; flex-direction: column; align-items: center !important; text-align: center !important; max-width: 640px !important; margin: 0 auto clamp(40px, 5vw, 64px) !important; }
+html body #ln #trust .v3-tr2-head, html body #ln #trust .v3-tr2-head > * { text-align: center !important; justify-self: center !important; margin-left: auto !important; margin-right: auto !important; }
+html body #ln #trust .v3-tr2-head .ln-sub { max-width: 48ch; }
+html body #ln #trust .v3-tr2 { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px !important; max-width: 1080px; margin: 0 auto; border: 0 !important; background: none; }
+html body #ln #trust .v3-tr2 article { display: flex !important; flex-direction: column; gap: 0 !important; padding: 22px !important; border: 0 !important; border-radius: 18px !important; background: #fff !important; box-shadow: 0 0 0 1px #E6ECF4, 0 18px 40px -30px rgba(31,39,63,.35) !important; }
+html body #ln #trust .v3-tr2-ic { width: 38px !important; height: 38px !important; border-radius: 50% !important; background: #fff !important; color: #1F273F !important; margin: 0 0 18px !important; box-shadow: 0 0 0 1px #CCDDF1, 0 0 0 5px #F4F7FB; }
+html body #ln #trust .v3-tr2-ic svg { width: 18px !important; height: 18px !important; }
+html body #ln #trust .v3-tr2 article:first-child .v3-tr2-ic { background: #1F273F !important; color: #fff !important; box-shadow: 0 0 0 5px #E3EBF8; }
+html body #ln #trust .v3-tr2 article h3 { margin: 0 !important; font: 600 1.08rem/1.3 "Inter", var(--sans) !important; letter-spacing: -.015em !important; color: #1F273F !important; }
+html body #ln #trust .v3-tr2 article p { margin: 8px 0 0 !important; font-size: .94rem !important; line-height: 1.6 !important; color: #5B6478 !important; }
+html body #ln #trust .ln-link { margin-top: 18px !important; }
+@media (max-width: 960px) { html body #ln #trust .v3-tr2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { html body #ln #trust .v3-tr2 { grid-template-columns: minmax(0, 1fr); } }
+/* <<< trust v4 */
