@@ -1628,4 +1628,6 @@ html body .ln .pb .net-svg .net-hub { fill: #4362B2; }
 html body .ln .pb .net-svg .net-blk text { font-weight: 600 !important; fill: #1F273F !important; }
 html body .ln .pb .net-svg .net-dot-g { fill: #4362B2 !important; }
 @media (max-width: 640px) { html body .ln .pb .net-svg .net-cols text.net-colm { font-size: 19px !important; } }
+html body .ln .pb .net-svg .net-orb { fill: none; stroke: none; }
+html body .ln .pb .net-svg .net-dot-o { fill: #4362B2 !important; stroke: #fff; stroke-width: 1.5; }
 /* <<< problem sim */
