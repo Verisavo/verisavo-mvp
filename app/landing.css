@@ -1904,3 +1904,6 @@ html body #ln #trust .ln-link { margin-top: 18px !important; }
   html body #ln .ln-close .hp2-ctas { display: flex !important; flex-wrap: wrap; justify-content: center; width: auto; max-width: none; }
 }
 /* <<< mobile apple */
+/* >>> problem band */
+html body #ln #why.why { background: #F4F7FB !important; border-top: 1px solid #E6ECF4; border-bottom: 1px solid #E6ECF4; }
+/* <<< problem band */
