@@ -1992,6 +1992,7 @@ html body #va-scope-menu .mk-done { background: #1F273F; color: #fff; }
   #platform .vsx-g .vsx-i, #platform .vsx-v .vsx-i { grid-row: 1 / span 2; }
 }
 /* <<< beyond the answer */
+
 /* >>> product page v2 */
 /* section labels, same as the homepage */
 html body .pp-eb { margin: 0 0 14px !important; font: 500 .76rem/1 "Inter", var(--sans) !important; letter-spacing: .12em !important; text-transform: uppercase !important; color: #4362B2 !important; }
