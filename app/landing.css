@@ -1622,4 +1622,10 @@ html body #pg-pricing .pi-note { margin: 0; font: 400 .8rem/1.5 var(--sans); col
 #ln .pb .net-card { background-color: #fff; }
 @media (max-width: 860px) { #ln .pb-head { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
 #ln .pb .v3-net-src { margin: 16px 0 0; text-align: center; font-size: .8rem; color: #8A93A6; }
+/* Verisavo Intelligence Network diagram */
+html body .ln .pb .net-svg .net-cols text.net-colm { font-weight: 700 !important; fill: #1F273F !important; font-size: 14px !important; letter-spacing: -.005em !important; }
+html body .ln .pb .net-svg .net-hub { fill: #4362B2; }
+html body .ln .pb .net-svg .net-blk text { font-weight: 600 !important; fill: #1F273F !important; }
+html body .ln .pb .net-svg .net-dot-g { fill: #4362B2 !important; }
+@media (max-width: 640px) { html body .ln .pb .net-svg .net-cols text.net-colm { font-size: 19px !important; } }
 /* <<< problem sim */
