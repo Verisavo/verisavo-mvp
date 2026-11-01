@@ -1679,7 +1679,7 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
 /* main and scenes */
 #ln .wf-main { position: relative; padding: 26px; overflow: hidden; display: grid; align-content: center; }
 #ln .wf-sc { display: none; }
-#ln .wf-sc.on { display: grid; gap: 16px; align-content: start; animation: wfIn .35s ease both; transform-origin: 0 0; transition: transform .9s cubic-bezier(.3,.1,.2,1); }
+#ln .wf-sc.on { display: grid; gap: 16px; align-content: start; animation: wfIn .35s ease backwards; }
 @keyframes wfIn { from { opacity: 0; } to { opacity: 1; } }
 #ln .wf-a { opacity: 0; transform: translateY(6px); transition: opacity .4s ease, transform .4s ease; }
 #ln .wf-sc.go .wf-a { opacity: 1; transform: none; transition-delay: var(--d, 0s); }
@@ -1774,5 +1774,10 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
   #ln .wf-a, #ln .wf-f, #ln .wf-f b, #ln .wf-bar-f::after { transition: none !important; }
   #ln .wf-sc.on { animation: none; } #ln .wf-cur { display: none; } #ln .wf-caret { animation: none; }
 }
-@media (prefers-reduced-motion: reduce) { #ln .wf-sc.on { transform: none !important; } }
+/* focus: the part being described pops out, the rest fades back */
+#ln .wf-shade { position: absolute; inset: 0; z-index: 2; background: rgba(247,249,252,.62); backdrop-filter: blur(1.5px); -webkit-backdrop-filter: blur(1.5px); opacity: 0; pointer-events: none; transition: opacity .45s ease; }
+#ln .wf-main.pop .wf-shade { opacity: 1; }
+#ln .wf-sc .wf-pop { position: relative; z-index: 3; background-color: #fff; transform: scale(var(--ps, 1.06)) !important; box-shadow: 0 0 0 1px #CCDDF1, 0 28px 56px -24px rgba(31,39,63,.45); border-radius: 14px; transition: transform .5s cubic-bezier(.2,.9,.3,1.25), box-shadow .5s, opacity .4s !important; }
+#ln .wf-sc .wf-res.wf-pop { background-color: #1F273F; }
+@media (prefers-reduced-motion: reduce) { #ln .wf-shade { display: none; } #ln .wf-sc .wf-pop { transform: none !important; box-shadow: none; } }
 /* <<< workflow explainer */
