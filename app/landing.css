@@ -1793,4 +1793,29 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
 #ln .wf-nt { font-weight: 600; color: #1F273F; }
 @media (max-width: 860px) { #ln .wf-side { border-right: 0; border-bottom: 1px solid #EDF1F6; } }
 @media (prefers-reduced-motion: reduce) { #ln .wf-prog li.on i { transition: none; } }
+/* not a dashboard: a step track above an open stage */
+#ln .wf-win { background: none; padding: 0; box-shadow: none; border-radius: 0; max-width: 1040px; }
+#ln .wf-app { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; background: none; box-shadow: none; border-radius: 0; overflow: visible; min-height: 0; }
+#ln .wf-side { counter-reset: wfs; position: relative; flex-direction: row; justify-content: space-between; gap: 0; padding: 0; background: none; border: 0; overflow-x: auto; scrollbar-width: none; }
+#ln .wf-side::-webkit-scrollbar { display: none; }
+#ln .wf-side::before { content: ""; position: absolute; left: 6%; right: 6%; top: 17px; height: 1px; background: #E3E9F2; }
+#ln .wf-side button { counter-increment: wfs; position: relative; flex: 1 1 0; min-width: 104px; display: grid; justify-items: center; gap: 8px; padding: 0 4px; border-radius: 0; background: none !important; box-shadow: none !important; color: #8A93A6; font-size: .82rem; text-align: center; }
+#ln .wf-side button svg { display: none; }
+#ln .wf-side button::before { content: counter(wfs, decimal-leading-zero); display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1px #DCE4EF; font: 600 .74rem/1 "Inter", var(--sans); color: #8A93A6; transition: background .3s, color .3s, box-shadow .3s, transform .3s; }
+#ln .wf-side button:hover { color: #1F273F; }
+#ln .wf-side button.on { color: #1F273F; font-weight: 600; }
+#ln .wf-side button.on::before { background: #1F273F; color: #fff; box-shadow: 0 0 0 5px #E3EBF8; transform: scale(1.06); }
+#ln .wf-side button.past::before { background: #E3EBF8; color: #3A5292; box-shadow: none; }
+#ln .wf-main { border-radius: 24px; padding: clamp(24px, 4vw, 44px); min-height: 360px; background: radial-gradient(120% 90% at 50% 0%, #F7F9FC 0%, #EEF2F8 100%); box-shadow: inset 0 0 0 1px #E8EDF4; }
+#ln .wf-sc.on { width: min(760px, 100%); margin: 0 auto; }
+#ln .wf-shade { border-radius: 24px; background: rgba(238,242,248,.62); }
+#ln .wf-card, #ln .wf-table, #ln .wf-bars > div { background: #fff; }
+#ln .wf-nar { margin-top: 16px; }
+@media (max-width: 860px) {
+  #ln .wf-side { justify-content: flex-start; gap: 4px; padding-bottom: 4px; }
+  #ln .wf-side::before { left: 40px; right: 40px; }
+  #ln .wf-side button { flex: 0 0 auto; width: 96px; min-width: 96px; white-space: normal; padding: 0 2px; }
+  #ln .wf-main { min-height: 340px; }
+}
+@media (max-width: 600px) { #ln .wf-main { padding: 18px 14px; border-radius: 18px; min-height: 380px; } }
 /* <<< workflow explainer */
