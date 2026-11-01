@@ -36,8 +36,12 @@ export async function extractText(file: File, accept: string = KB_ACCEPT, maxCha
   let text: string;
   if (ext === ".pdf") {
     const pdf = await getDocumentProxy(bytes);
+    try {
     if (pdf.numPages > MAX_PDF_PAGES) throw new ExtractError(`That PDF has more than ${MAX_PDF_PAGES} pages. Split it into smaller documents.`);
     text = (await pdfToText(pdf, { mergePages: true })).text;
+    } finally {
+      await pdf.loadingTask.destroy();   // otherwise each PDF stays in memory on a warm server
+    }
   } else if (ext === ".docx") {
     await openOffice(bytes);   // proves it unpacks within the cap before mammoth unpacks it again
     text = (await mammoth.extractRawText({ buffer: Buffer.from(bytes) })).value;
@@ -145,7 +149,9 @@ async function xlsxText(zip: JSZip, maxChars: number): Promise<string> {
         return type === "s" ? shared[Number(v)] ?? "" : type === "inlineStr" ? textOf(c.inner, "t") : v;
       });
       if (!cells.some(c => c.trim())) continue;
-      const line = cells.join(" | ");
+      // one row can repeat a huge shared string: stop before joining it into something enormous
+      let width = 0;
+      const line = cells.filter(c => (width += c.length) <= maxChars).join(" | ");
       rows.push(line);
       size += line.length + 1;
     }

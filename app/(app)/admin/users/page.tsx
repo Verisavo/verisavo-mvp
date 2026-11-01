@@ -1,7 +1,8 @@
 import { connection } from "next/server";
 import { requireAdmin } from "@/lib/server/admin";
 import { fmtDay, fmtWhen, pageParam } from "../format";
-import { listUsers } from "../queries";
+import Pagination from "../Pagination";
+import { listUsers, PAGE_SIZE } from "../queries";
 import UserToggle from "./UserToggle";
 import ResetAllowance from "./ResetAllowance";
 import UnlinkWhatsApp from "./UnlinkWhatsApp";
@@ -16,9 +17,11 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
   const admin = await requireAdmin();
   const p = await searchParams;
   const q = typeof p.q === "string" ? p.q.trim().slice(0, 120) : "";
-  const page = pageParam(p.page);
-  const { rows, more } = await listUsers(q, page);
-  const href = (n: number) => `/admin/users?${new URLSearchParams({ ...(q ? { q } : {}), page: String(n) })}`;
+  const plan = p.plan === "paid" || p.plan === "free" ? p.plan : "";
+  const status = p.status === "active" || p.status === "disabled" || p.status === "unconfirmed" ? p.status : "";
+  const { rows, total, page } = await listUsers({ q, plan, status }, pageParam(p.page));
+  const filtered = Boolean(q || plan || status);
+  const href = (n: number) => `/admin/users?${new URLSearchParams({ ...(q ? { q } : {}), ...(plan ? { plan } : {}), ...(status ? { status } : {}), page: String(n) })}`;
 
   return (
     <>
@@ -27,10 +30,19 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
           <h1 className="font-serif text-[clamp(1.9rem,1.4rem+1.6vw,2.5rem)] leading-tight font-medium tracking-[-0.03em]">{"Users"}</h1>
           <p className="mt-1 text-brand-800">{"Everyone with a Verisavo account."}</p>
         </div>
-        <form className="flex gap-2 max-sm:w-full" role="search">
+        <form className="flex flex-wrap items-center gap-2 max-sm:w-full" role="search">
           <label className="sr-only" htmlFor="u-q">{"Search users"}</label>
-          <input className="input min-h-10 w-64 max-sm:w-auto max-sm:min-w-0 max-sm:flex-1" id="u-q" name="q" defaultValue={q} placeholder="Name, email or organisation" />
-          <button className="btn" type="submit">{"Search"}</button>
+          <input className="input min-h-10 w-64 max-sm:w-full" id="u-q" name="q" defaultValue={q} placeholder="Name, email or organisation" />
+          <label className="sr-only" htmlFor="u-plan">{"Plan"}</label>
+          <select className="input min-h-10 w-32 max-sm:min-w-0 max-sm:flex-1" id="u-plan" name="plan" defaultValue={plan}>
+            <option value="">{"All plans"}</option><option value="paid">{"Monthly"}</option><option value="free">{"Free"}</option>
+          </select>
+          <label className="sr-only" htmlFor="u-status">{"Status"}</label>
+          <select className="input min-h-10 w-40 max-sm:min-w-0 max-sm:flex-1" id="u-status" name="status" defaultValue={status}>
+            <option value="">{"All statuses"}</option><option value="active">{"Active"}</option><option value="disabled">{"Disabled"}</option><option value="unconfirmed">{"Email not confirmed"}</option>
+          </select>
+          <button className="btn" type="submit">{"Apply"}</button>
+          {filtered && <a className="btn btn-ghost" href="/admin/users">{"Clear"}</a>}
         </form>
       </div>
 
@@ -83,12 +95,7 @@ export default async function AdminUsers({ searchParams }: { searchParams: Param
         </table>
       </section>
 
-      {(page > 1 || more) && (
-        <nav className="flex justify-between text-sm font-semibold" aria-label="Pages">
-          {page > 1 ? <a href={href(page - 1)}>{"← Newer"}</a> : <span />}
-          {more && <a href={href(page + 1)}>{"Older →"}</a>}
-        </nav>
-      )}
+      <Pagination page={page} total={total} size={PAGE_SIZE} href={href} />
     </>
   );
 }

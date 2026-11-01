@@ -12,7 +12,7 @@ import { embedTexts } from "./embed";
 // Only published documents have chunks, so search can never return a draft or an archived document.
 export type KbResult = { ok: true; message: string } | { ok: false; error: string };
 
-type Fields = { title: string; body: string; markets: string[] };
+type Fields = { title: string; body: string; markets: string[]; genres: string[] };
 
 async function getDocument(id: string) {
   const [doc] = await db.select().from(kbDocuments).where(eq(kbDocuments.id, id)).limit(1);
@@ -21,7 +21,7 @@ async function getDocument(id: string) {
 
 export async function createDocument(fields: Fields & { sourceName?: string | null }, actorId: string): Promise<string> {
   const id = await db.transaction(async tx => {
-    const [doc] = await tx.insert(kbDocuments).values({ title: fields.title, markets: fields.markets, sourceName: fields.sourceName ?? null, createdBy: actorId }).returning({ id: kbDocuments.id });
+    const [doc] = await tx.insert(kbDocuments).values({ title: fields.title, markets: fields.markets, genres: fields.genres, sourceName: fields.sourceName ?? null, createdBy: actorId }).returning({ id: kbDocuments.id });
     const [ver] = await tx.insert(kbVersions).values({ documentId: doc.id, body: fields.body, createdBy: actorId }).returning({ id: kbVersions.id });
     await tx.update(kbDocuments).set({ currentVersionId: ver.id }).where(eq(kbDocuments.id, doc.id));
     return doc.id;
@@ -41,7 +41,7 @@ export async function saveDocument(id: string, fields: Fields, actorId: string):
       const [ver] = await tx.insert(kbVersions).values({ documentId: id, body: fields.body, createdBy: actorId }).returning({ id: kbVersions.id });
       versionId = ver.id;
     }
-    await tx.update(kbDocuments).set({ title: fields.title, markets: fields.markets, currentVersionId: versionId, updatedAt: new Date() }).where(eq(kbDocuments.id, id));
+    await tx.update(kbDocuments).set({ title: fields.title, markets: fields.markets, genres: fields.genres, currentVersionId: versionId, updatedAt: new Date() }).where(eq(kbDocuments.id, id));
   });
   await audit("kb.update", { actorId, targetType: "kb_document", targetId: id });
   if (doc.status !== "published") return { ok: true, message: "Saved." };

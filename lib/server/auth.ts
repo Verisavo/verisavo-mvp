@@ -44,6 +44,24 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
   return { ...user, profile };
 }
 
+// Is "Continue with Google" switched on in Supabase? Asked at most every 5 minutes, so the button appears by itself
+// once it's set up, and nobody is sent to a Google button that can't work.
+let google: { on: boolean; at: number } | null = null;
+export async function googleEnabled(): Promise<boolean> {
+  if (google && Date.now() - google.at < 300_000) return google.on;
+  try {
+    const r = await fetch(`${process.env.SUPABASE_URL}/auth/v1/settings`, { headers: { apikey: process.env.SUPABASE_PUBLISHABLE_KEY ?? "" }, cache: "no-store", signal: AbortSignal.timeout(5000) });
+    const settings = (await r.json()) as { external?: { google?: boolean } };
+    google = { on: r.ok && Boolean(settings.external?.google), at: Date.now() };
+    return google.on;
+  } catch {
+    return google?.on ?? false;
+  }
+}
+
+// After signing in with Google, only these pages can be the destination
+export const afterGoogle = (next: unknown): string => (next === "/assistant" ? "/assistant" : "/dashboard");
+
 // For pages and server actions: the current user, or a redirect to sign in
 export async function requireUser(): Promise<CurrentUser> {
   const user = await getCurrentUser();

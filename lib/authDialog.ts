@@ -5,7 +5,7 @@
 export type PublicUser = { id: string; email: string; name: string; organisation: string; role: string };
 export type DemoUser = { name: string; email: string; organisation: string };
 type Mode = "in" | "up" | "forgot";
-type ApiResult = { ok: boolean; status: number; data: { error?: string; message?: string; user?: PublicUser } };
+type ApiResult = { ok: boolean; status: number; data: { error?: string; message?: string; user?: PublicUser; url?: string } };
 
 // The dialog markup always exists on both pages, so a missing element is a bug worth failing loudly on
 function $<T extends Element = HTMLElement>(selector: string): T {
@@ -67,21 +67,25 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 type Options = {
   onSignedIn: (user: PublicUser) => void;   // after a real sign in
   onDemo: (user: DemoUser) => void;         // the stand-in before release (user = what was typed)
+  beforeGoogle?: () => string;              // where to land after Google sign-in; runs just before leaving the page
 };
 
-export default function setupAuthDialog({ onSignedIn, onDemo }: Options) {
+export default function setupAuthDialog({ onSignedIn, onDemo, beforeGoogle }: Options) {
   if (!document.querySelector("#auth")) return null;
   const auth = $<HTMLDialogElement>("#auth");
   const tabs = $$<HTMLButtonElement>("#auth [role=tab]");
   const msg = $("#a-msg"), form = $<HTMLFormElement>("#a-form"), sent = $("#a-sent"), submit = $<HTMLButtonElement>("#a-submit");
   const field = (id: string) => $<HTMLInputElement>("#a-" + id);
-  let mode: Mode = "in", opener: Element | null = null, sentTo = "";
+  const googleWrap = $("#a-google-wrap");
+  let mode: Mode = "in", opener: Element | null = null, sentTo = "", googleOn = false;
 
   // Arriving from an expired or reused email link (/auth/confirm sends people to ?auth=link-expired#signin)
   const params = new URLSearchParams(location.search);
   const NOTICES: Record<string, string> = {
     "link-expired": "That link has expired or was already used. Sign in, or ask for a new email.",
-    "too-many": "Too many attempts. Please wait a few minutes and try again."
+    "too-many": "Too many attempts. Please wait a few minutes and try again.",
+    "google-failed": "Google sign-in didn't finish. Please try again, or use your email.",
+    "disabled": "This account is disabled. Please contact Verisavo."
   };
   let notice = NOTICES[params.get("auth") ?? ""] ?? "";
   if (params.has("auth")) {
@@ -102,6 +106,7 @@ export default function setupAuthDialog({ onSignedIn, onDemo }: Options) {
     $$("#auth .a-up").forEach(el => { el.hidden = m !== "up"; });
     $("#auth .a-pw").hidden = m === "forgot";
     $("#a-forgot").hidden = m !== "in";
+    googleWrap.hidden = !googleOn || m === "forgot";
     field("password").autocomplete = m === "up" ? "new-password" : "current-password";
     msg.textContent = ""; form.hidden = false; sent.hidden = true;
   }
@@ -116,7 +121,7 @@ export default function setupAuthDialog({ onSignedIn, onDemo }: Options) {
   const fail = (text: string, focusId?: string) => { msg.textContent = text; if (focusId) field(focusId).focus(); };
   const showSent = (title: string, text: string, canResend: boolean) => {
     $("#a-sent-title").textContent = title; $("#a-sent-text").textContent = text;
-    $("#a-resend").hidden = !canResend; form.hidden = true; sent.hidden = false; msg.textContent = "";
+    $("#a-resend").hidden = !canResend; form.hidden = true; sent.hidden = false; msg.textContent = ""; googleWrap.hidden = true;
   };
 
   auth.addEventListener("close", () => {
@@ -128,6 +133,24 @@ export default function setupAuthDialog({ onSignedIn, onDemo }: Options) {
   tabs.forEach(t => t.addEventListener("click", () => setMode(t.dataset.mode as Mode)));
   $("#a-switch").addEventListener("click", () => setMode(mode === "in" ? "up" : "in"));
   $("#a-forgot").addEventListener("click", () => { setMode("forgot"); field("email").focus(); });
+
+  // The Google button only appears once Google is switched on in Supabase
+  if (authLive()) {
+    fetch("/api/auth/options", { cache: "no-store" }).then(r => (r.ok ? r.json() : null)).then(o => {
+      googleOn = Boolean(o?.google);
+      if (form.hidden === false) googleWrap.hidden = !googleOn || mode === "forgot";
+    }).catch(() => {});
+  }
+  $<HTMLButtonElement>("#a-google").addEventListener("click", async e => {
+    const btn = e.currentTarget as HTMLButtonElement;
+    btn.disabled = true; msg.textContent = "";
+    try {
+      const r = await post("/api/auth/google", { next: beforeGoogle ? beforeGoogle() : "/dashboard" });
+      if (r.ok && r.data.url) { location.href = r.data.url; return; }
+      msg.textContent = r.data.message || "We couldn't open Google sign-in. Please try again.";
+    } catch { msg.textContent = "Something went wrong. Check your connection and try again."; }
+    btn.disabled = false;
+  });
 
   $<HTMLButtonElement>("#a-resend").addEventListener("click", async e => {
     const btn = e.currentTarget as HTMLButtonElement;

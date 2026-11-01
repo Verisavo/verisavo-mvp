@@ -21,7 +21,7 @@ export default async function ConfirmPage({ searchParams }: { searchParams: Prom
   await connection();
   if (!released(1)) notFound();
   const params = await searchParams;
-  const tokenHash = one(params.token_hash), type = one(params.type), next = one(params.next);
+  const tokenHash = one(params.token_hash), type = one(params.type);
   const text = tokenHash && isLinkType(type) ? LINK_TEXT[type] : null;
 
   return (
@@ -36,7 +36,6 @@ export default async function ConfirmPage({ searchParams }: { searchParams: Prom
               <p className="-mt-1.5 text-[15px] text-brand-800">{text.body}</p>
               <input type="hidden" name="token_hash" value={tokenHash} />
               <input type="hidden" name="type" value={type} />
-              <input type="hidden" name="next" value={next} />
               <div><button className="btn" type="submit">{text.button}</button></div>
             </form>
           ) : (

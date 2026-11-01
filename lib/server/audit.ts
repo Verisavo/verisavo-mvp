@@ -14,6 +14,6 @@ export async function audit(action: string, { actorId = null, targetType = null,
   try {
     await db.insert(auditEvents).values({ action, actorId, targetType, targetId: targetId == null ? null : String(targetId), metadata });
   } catch (err) {
-    console.error("[audit] could not record", action, err instanceof Error ? err.message : err);
+    console.error("[audit] could not record", action, err instanceof Error ? err.name : "error");
   }
 }

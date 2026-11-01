@@ -46,7 +46,7 @@ export default async function AdminKnowledgeDoc({ params, searchParams }: { para
           <h2 id="edit-h" className="text-[17px] font-semibold">{"Edit"}</h2>
           {doc.status === "archived"
             ? <p className="rounded-xl bg-canvas p-4 text-[13px] leading-relaxed whitespace-pre-wrap text-brand-800">{current?.body}</p>
-            : <EditDocumentForm id={doc.id} title={doc.title} body={current?.body ?? ""} markets={doc.markets} />}
+            : <EditDocumentForm id={doc.id} title={doc.title} body={current?.body ?? ""} markets={doc.markets} genres={doc.genres} />}
         </section>
 
         <aside className="grid gap-6">
@@ -56,6 +56,7 @@ export default async function AdminKnowledgeDoc({ params, searchParams }: { para
             <p className="-mt-1.5 text-sm text-brand-800">{STATUS_TEXT[doc.status]}</p>
             <dl className="grid gap-1.5 text-sm">
               <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Searchable sections"}</dt><dd className="tabular-nums">{doc.chunkCount}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Genre"}</dt><dd className="text-right">{doc.genres.length ? doc.genres.join(", ") : "None"}</dd></div>
               <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Markets"}</dt><dd className="text-right">{doc.markets.length ? doc.markets.join(", ") : "All"}</dd></div>
               <div className="flex justify-between gap-3"><dt className="text-brand-800">{"Last published"}</dt><dd>{fmtWhen(doc.publishedAt)}</dd></div>
               {doc.sourceName && <div className="flex justify-between gap-3"><dt className="text-brand-800">{"From file"}</dt><dd className="truncate text-right" title={doc.sourceName}>{doc.sourceName}</dd></div>}

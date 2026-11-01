@@ -5,7 +5,6 @@ import { createSupabase } from "@/lib/server/supabase";
 import { audit } from "@/lib/server/audit";
 import { grantRecovery } from "@/lib/server/recovery";
 import { allow, clientIp, LIMITS } from "@/lib/server/rate-limit";
-import { safePath } from "@/lib/server/http";
 import { isLinkType, type LinkType } from "./links";
 
 const EVENTS: Record<LinkType, string> = { email: "auth.email_confirmed", recovery: "auth.recovery_link", email_change: "auth.email_changed" };
@@ -25,5 +24,7 @@ export async function confirmLink(formData: FormData): Promise<void> {
   if (error || !data.user) redirect(EXPIRED);
   if (type === "recovery") await grantRecovery(supabase);
   await audit(EVENTS[type], { actorId: data.user.id });
-  redirect(type === "recovery" ? "/reset-password" : safePath(formData.get("next"), "/dashboard"));
+  // Always the dashboard, which says whose account this is: a link can come from someone else's email, and would
+  // otherwise quietly sign the reader into that person's account.
+  redirect(type === "recovery" ? "/reset-password" : "/dashboard?confirmed=1");
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { released } from "@/lib/release";
@@ -8,6 +8,8 @@ import { requireUser } from "@/lib/server/auth";
 import { db } from "@/lib/server/db";
 import { conversations } from "@/db/schema";
 import AccountHeader from "../AccountHeader";
+import { CHART } from "../chartColors";
+import { ColumnChart } from "../Charts";
 import { signOutAction } from "./actions";
 import { BillingButton, CheckoutNotice, DeleteConversation, EmailForm, PasswordForm, ProfileForm, UnlinkWhatsApp, WhatsAppLink } from "./forms";
 import { getLink, maskPhone } from "@/lib/server/whatsapp/links";
@@ -33,8 +35,17 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .orderBy(desc(conversations.updatedAt))
     .limit(50);
   const firstName = user.profile.name.split(" ")[0];
+  // someone who only signs in with Google has no password to change
+  const [login] = await db.execute<{ has_password: boolean }>(sql`select coalesce(encrypted_password, '') <> '' as has_password from auth.users where id = ${user.id}`);
+  // questions per day, last 14 days
+  const asked = released(3) ? await db.execute<{ day: string; questions: number }>(sql`
+    select to_char(d, 'YYYY-MM-DD') as day, count(m.id)::int as questions
+    from generate_series(current_date - 13, current_date, interval '1 day') d
+    left join messages m on m.user_id = ${user.id} and m.role = 'user' and m.created_at >= d and m.created_at < d + interval '1 day'
+    group by d order by d`) : [];
+  const askedTotal = asked.reduce((n, d) => n + d.questions, 0);
   const ent = released(3) ? await getEntitlements(user.id) : null;   // plans and limits arrive with M3
-  const { checkout } = await searchParams;
+  const { checkout, confirmed } = await searchParams;
   const checkoutStatus = checkout === "success" || checkout === "cancel" ? checkout : null;
 
   return (
@@ -48,12 +59,21 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       </AccountHeader>
 
       <main className="mx-auto grid max-w-5xl gap-6 px-5 pt-7 pb-20 sm:pt-10">
+        {confirmed === "1" && <p role="status" className="rounded-xl bg-brand-100 p-3.5 text-sm">{`You're signed in as ${user.email}. If that isn't your email, press Sign out.`}</p>}
         <div>
           <h1 className="font-serif text-[clamp(2rem,1.4rem+2vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.03em]">
             {firstName ? `Hello ${firstName}.` : "Your dashboard"}
           </h1>
           <p className="mt-2 text-brand-800">{"Your Verisavo workspace: conversations, plan and account settings."}</p>
         </div>
+
+        {asked.length > 0 && (
+          <section className="card min-w-0" aria-labelledby="activity-h">
+            <p className="eyebrow">{"Your activity"}</p>
+            <h2 id="activity-h" className="text-[17px] font-semibold">{askedTotal ? `${askedTotal} question${askedTotal === 1 ? "" : "s"} in the last 14 days` : "No questions in the last 14 days"}</h2>
+            <ColumnChart data={[...asked]} height={200} series={{ key: "questions", label: "Questions", color: CHART.blue }} label={`Your questions per day over the last 14 days: ${askedTotal} in total`} />
+          </section>
+        )}
 
         <div className="grid items-start gap-6 md:grid-cols-2">
           {ent ? <PlanCard ent={ent} checkout={checkoutStatus} /> : (
@@ -111,7 +131,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <section className="card" aria-labelledby="pw-h">
             <p className="eyebrow">{"Security"}</p>
             <h2 id="pw-h" className="text-[17px] font-semibold">{"Password"}</h2>
-            <PasswordForm />
+            {login?.has_password ? <PasswordForm /> : <p className="text-sm text-brand-800">{"You sign in with Google, so there's no password to change. To add one, use “Forgot password?” on the sign-in page."}</p>}
           </section>
         </div>
       </main>
