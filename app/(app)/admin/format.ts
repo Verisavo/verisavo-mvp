@@ -23,6 +23,7 @@ const ACTIONS: Record<string, string> = {
   "auth.email_change_requested": "Asked to change email",
   "auth.email_changed": "Changed email",
   "profile.update": "Updated profile",
+  "conversation.rename": "Renamed a conversation",
   "conversation.delete": "Deleted a conversation",
   "conversation.delete_all": "Deleted all their conversations",
   "admin.allowance_reset": "Reset a user's allowance",

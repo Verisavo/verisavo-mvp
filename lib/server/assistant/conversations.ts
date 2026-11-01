@@ -61,6 +61,12 @@ export async function undoQuestion({ conversationId, messageId, created }: { con
   else await db.delete(messages).where(eq(messages.id, messageId));
 }
 
+export async function renameConversation(userId: string, id: string, title: string): Promise<boolean> {
+  const renamed = await db.update(conversations).set({ title }).where(and(eq(conversations.id, id), eq(conversations.userId, userId))).returning({ id: conversations.id });
+  if (renamed.length) await audit("conversation.rename", { actorId: userId, targetType: "conversation", targetId: id });
+  return renamed.length > 0;
+}
+
 export async function deleteConversation(userId: string, id: string): Promise<boolean> {
   const removed = await db.delete(conversations).where(and(eq(conversations.id, id), eq(conversations.userId, userId))).returning({ id: conversations.id });
   if (removed.length) await audit("conversation.delete", { actorId: userId, targetType: "conversation", targetId: id });

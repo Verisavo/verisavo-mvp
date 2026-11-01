@@ -1,5 +1,6 @@
 "use client";
 import { useActionState, useEffect, useState } from "react";
+import { useConfirm } from "../Confirm";
 import { useRouter } from "next/navigation";
 import { changeEmail, changePassword, deleteConversation, updateProfile, type FormState } from "./actions";
 
@@ -106,10 +107,14 @@ export function PasswordForm() {
 }
 
 export function DeleteConversation({ id, title }: { id: string; title: string }) {
+  const { guard, dialog } = useConfirm();
   return (
-    <form action={deleteConversation} onSubmit={e => { if (!window.confirm(`Delete “${title}”? This can't be undone.`)) e.preventDefault(); }}>
+    <>
+    {dialog}
+    <form action={deleteConversation} onSubmit={guard({ title: "Delete this conversation?", body: `“${title}” will be deleted. This can't be undone.`, action: "Delete", danger: true })}>
       <input type="hidden" name="id" value={id} />
       <button type="submit" aria-label={`Delete “${title}”`} className="cursor-pointer rounded-lg px-2 py-1.5 text-[13px] font-semibold text-brand-800 hover:bg-brand-100 hover:text-ink">{"Delete"}</button>
     </form>
+    </>
   );
 }

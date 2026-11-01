@@ -1,6 +1,7 @@
 "use client";
-import { useActionState, useState, type FormEvent } from "react";
+import { useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import { continueReindex, saveAnswerSettings, saveSearchSettings, testAnswers, testSearch } from "../actions";
+import { useConfirm } from "../../Confirm";
 import { Note } from "../knowledge/forms";
 
 export type ServiceView = { id: string; label: string; envKey: string; keySet: boolean; models: string[] };
@@ -30,9 +31,18 @@ export function AnswerForm({ services, notes, current }: { services: ServiceView
   const models = services.find(s => s.id === provider)?.models ?? [];
   const [other, setOther] = useState(!models.includes(current.model));
   const pick = (s: ServiceView) => { if (s.id !== provider) { setProvider(s.id); setModel(s.models[0] ?? ""); setOther(false); } };
+  // React resets a form to how the page loaded once its action finishes, without telling our state: put back what is chosen
+  const form = useRef<HTMLFormElement>(null);
+  const shown = useRef({ provider, value: other ? OTHER : model });
+  shown.current = { provider, value: other ? OTHER : model };
+  useEffect(() => {
+    form.current?.querySelectorAll<HTMLInputElement>("input[name=provider]").forEach(r => { r.checked = r.value === shown.current.provider; });
+    const select = form.current?.querySelector<HTMLSelectElement>("#ai-model");
+    if (select) select.value = shown.current.value;
+  }, [state]);
   return (
     <div className="grid gap-4">
-      <form action={action} className="grid gap-4">
+      <form ref={form} action={action} className="grid gap-4">
         <fieldset className="grid gap-2">
           <legend className="label mb-2">{"Service"}</legend>
           {services.map(s => (
@@ -66,12 +76,12 @@ export function AnswerForm({ services, notes, current }: { services: ServiceView
 export function SearchForm({ options, current, stale }: { options: SearchOption[]; current: string; stale: number }) {
   const [state, action, pending] = useActionState(saveSearchSettings, null);
   const [more, cont, continuing] = useActionState(continueReindex, null);
-  const confirmSwitch = (e: FormEvent<HTMLFormElement>) => {
-    const next = new FormData(e.currentTarget).get("embedding");
-    if (next !== current && !window.confirm("Switch knowledge search? Every published document is re-indexed with the new model. Until a document is re-indexed it doesn't appear in answers.")) e.preventDefault();
-  };
+  const { guard, dialog } = useConfirm();
+  const confirmSwitch = guard((e: FormEvent<HTMLFormElement>) => new FormData(e.currentTarget).get("embedding") !== current
+    ? { title: "Switch knowledge search?", body: "Every published document is re-indexed with the new model. Until a document is re-indexed, it doesn't appear in answers.", action: "Switch and re-index" } : null);
   return (
     <div className="grid gap-4">
+      {dialog}
       <form action={action} onSubmit={confirmSwitch} className="grid gap-4">
         <fieldset className="grid gap-2">
           <legend className="label mb-2">{"Search model"}</legend>
