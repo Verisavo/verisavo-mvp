@@ -1,3 +1,4 @@
+"use client";
 // Converted from the original static page. Markup only: behaviour lives in lib/platform/.
 export default function Footer() {
   return (
@@ -22,6 +23,7 @@ export default function Footer() {
           <nav aria-label="Legal">
             <button type="button" data-legal="terms">{"Terms of Service"}</button>
             <button type="button" data-legal="privacy">{"Privacy Policy"}</button>
+            <button type="button" className="foot-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>{"Back to top ↑"}</button>
           </nav>
           {" "}
         </div>
