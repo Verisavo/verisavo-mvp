@@ -2084,4 +2084,10 @@ html body section#answer.ax-gal { background: #F7F9FC !important; border-top: 1p
 html body .ax-gal .ax-head .pp-eb { color: #4362B2 !important; }
 html body :is(#ax-gal-h, #platform-title):not(#_a) { font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(1.9rem, 1.2rem + 1.9vw, 3rem) !important; line-height: 1.06 !important; letter-spacing: -.04em !important; color: #1F273F !important; }
 html body .ax-gal .ax-head .lead, html body #platform .band-head p { margin-top: 16px !important; font: 400 clamp(1rem, .96rem + .2vw, 1.1rem)/1.65 "Inter", var(--sans) !important; color: #4A5368 !important; }
+/* headline on two lines: the question, then the promise */
+html body section.hero h1#hero-title :is(.l1, .tone) { display: block !important; }
+@media (min-width: 761px) {
+  html body section.hero h1#hero-title { max-width: none !important; font-size: clamp(2.4rem, .6rem + 4.2vw, 4rem) !important; }
+  html body section.hero h1#hero-title :is(.l1, .tone) { white-space: nowrap; }
+}
 /* <<< product alignment v2 */
