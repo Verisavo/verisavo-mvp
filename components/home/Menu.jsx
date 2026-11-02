@@ -12,7 +12,7 @@ export default function Menu() {
         </ul>
         <ul className="mnav-small">
           <li style={{ "--i": "6" }}><button type="button" data-page="about-us">{"About us"}</button></li>
-          <li style={{ "--i": "7" }}><a href="/docs.html">{"Documentation"}</a></li>
+          <li style={{ "--i": "7" }}><a href="/docs.html">{"Docs"}</a></li>
           <li style={{ "--i": "8" }}><button type="button" data-page="careers">{"Careers"}</button></li>
           <li style={{ "--i": "9" }}><button type="button" data-page="contact">{"Contact us"}</button></li>
           <li style={{ "--i": "10" }}><button type="button" data-dialog="signin">{"Sign in"}</button></li>
