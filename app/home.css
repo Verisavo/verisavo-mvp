@@ -2351,4 +2351,23 @@ html body #pg-scout#pg-scout.pg.pg .sx-pop-box b { color: #1F273F; }
 #pg-scout .sx-pop-box .sx-btn { margin-top: 8px; }
 @keyframes sxFade { from { opacity: 0; } } @keyframes sxUp { from { opacity: 0; transform: translateY(12px); } }
 @media (prefers-reduced-motion: reduce) { #pg-scout .sx-pop, #pg-scout .sx-pop-box, #pg-scout .sx-dot { animation: none; } }
+/* referral */
+#pg-scout .sx-ref { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); align-items: start; margin-bottom: 16px; }
+html body #pg-scout#pg-scout.pg.pg .sx-ref-copy > p:not(.sx-k):not(.sx-msg) { margin: 8px 0 16px; max-width: 54ch; }
+html body #pg-scout#pg-scout.pg.pg .sx-ref #sx-ref-link { flex: 1; min-width: 0; min-height: 44px; padding: 0 14px !important; border-radius: 10px !important; border: 1px solid #DCE4F0 !important; background: #F7F9FC !important; box-shadow: none !important; font: 400 .88rem/1 "Inter", var(--sans) !important; color: #3D4559 !important; -webkit-text-fill-color: #3D4559; }
+#pg-scout .sx-ref-share { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 10px; }
+html body #pg-scout#pg-scout.pg.pg .sx-ref-share a.sx-btn { text-decoration: none; }
+#pg-scout .sx-ref-code { font-size: .84rem; color: #8A93A6; } #pg-scout .sx-ref-code b { color: #1F273F; letter-spacing: .06em; }
+html body #pg-scout#pg-scout.pg.pg .sx-ok-msg { color: #2E6B4F !important; }
+#pg-scout .sx-ref-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 18px; border-radius: 16px; background: #F7F9FC; box-shadow: inset 0 0 0 1px #E3EBF8; }
+#pg-scout .sx-ref-stats > div { display: grid; gap: 4px; }
+#pg-scout .sx-ref-stats b { font: 600 1.7rem/1.1 "Inter", var(--sans); letter-spacing: -.03em; color: #1F273F; }
+#pg-scout .sx-ref-stats span { font-size: .8rem; color: #6B7488; }
+#pg-scout .sx-ref-list { grid-column: 1 / -1; list-style: none; margin: 6px 0 0; padding: 10px 0 0; border-top: 1px solid #E3EBF8; display: grid; gap: 6px; }
+#pg-scout .sx-ref-list li { display: flex; justify-content: space-between; gap: 10px; font-size: .84rem; color: #5B6478; }
+#pg-scout .sx-ref-list em { font-style: normal; font-weight: 600; color: #1F273F; }
+@media (max-width: 860px) { #pg-scout .sx-ref { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) { #pg-scout .sx-ref-row { flex-direction: column; } }
+/* username field: keep the @ clear of the text */
+html body #pg-scout#pg-scout.pg.pg .sx-set .sx-at input:not([type=checkbox]) { padding-left: 32px !important; }
 /* <<< scout dashboard v1 */
