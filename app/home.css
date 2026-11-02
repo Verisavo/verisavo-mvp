@@ -2053,3 +2053,16 @@ html body #pg-research#pg-research.pg.pg .rs-card .rs-cta { padding: 16px 14px 0
 html body #pg-research#pg-research.pg.pg .rs-card .rs-cta .rs-soon { margin: 0 !important; }
 html body #pg-research#pg-research.pg.pg :is(.cs-card, .ar-list > article) .cs-read { display: block !important; margin-left: 0 !important; margin-right: 0 !important; }
 /* <<< insights v2 */
+/* >>> pricing alignment v2 */
+html body #pg-pricing#pg-pricing.pg.pg { background: #fff !important; }
+html body:has(#pg-pricing.open):not(.menu-open) .top::before { background: rgba(255,255,255,.96) !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pc-head .lab, html body #pg-pricing#pg-pricing.pg.pg .pi .lab { margin: 0 0 14px !important; font: 500 .76rem/1 "Inter", var(--sans) !important; letter-spacing: .12em !important; text-transform: uppercase !important; color: #4362B2 !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pc-head h1:not(#_a):not(#_b):not(#_c) { margin-inline: auto !important; max-width: 20ch !important; font-family: "Inter", var(--sans) !important; font-weight: 500 !important; font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.4rem) !important; line-height: 1.04 !important; letter-spacing: -.045em !important; color: #1F273F !important; text-wrap: balance; }
+html body #pg-pricing#pg-pricing.pg.pg .pc-lead { margin: 24px auto 0 !important; max-width: 54ch !important; font: 400 clamp(1.02rem, .98rem + .25vw, 1.15rem)/1.6 "Inter", var(--sans) !important; color: #4A5368 !important; }
+/* plan cards and the investigations panel use the site card */
+html body #pg-pricing#pg-pricing.pg.pg :is(.pc-card, .pi) { border: 0 !important; border-radius: 20px !important; background: #fff !important; box-shadow: 0 0 0 1px #E6ECF4, 0 18px 40px -32px rgba(31,39,63,.35) !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pc-card.pc-main { box-shadow: 0 0 0 1.5px #1F273F, 0 30px 60px -38px rgba(31,39,63,.5) !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pi-buy { border-radius: 16px !important; background: #F7F9FC !important; box-shadow: 0 0 0 1px #E6ECF4 !important; border: 0 !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pi h2:not(#_a):not(#_b) { font-family: "Inter", var(--sans) !important; font-weight: 500 !important; letter-spacing: -.035em !important; color: #1F273F !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pc-btn { border-radius: 10px !important; }
+/* <<< pricing alignment v2 */
