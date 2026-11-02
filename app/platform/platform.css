@@ -2125,4 +2125,7 @@ html body footer.lf:not(#_a):not(#_b):not(#_c) .lf-bar nav :is(a, button):hover,
 }
 /* Back to top removed from the footer */
 html body :is(.lf-top-btn, .foot-top):not(#_a):not(#_b) { display: none !important; }
+/* inner pages: the footer runs to the bottom edge, no white strip below it */
+html body .pg .pg-in:has(> .pg-foot):not(#_a):not(#_b) { padding-bottom: 0 !important; margin-bottom: 0 !important; }
+html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 32px) !important; }
 /* <<< minimal footer v1 */
