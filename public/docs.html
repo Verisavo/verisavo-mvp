@@ -22,7 +22,7 @@
 :root {
   --bg: #FFFFFF; --bg2: #F6F8FC; --panel: #FFFFFF; --tint: #E3EBF8;
   --ink: #1F273F; --body: #3A4460; --sub: #5E6780; --line: rgba(31,39,63,.1); --line2: rgba(31,39,63,.18);
-  --accent: #4362B2; --accent-soft: #E3EBF8; --accent-ink: #3A5292; --hl: #80AADC;
+  --accent: #3A5292; --accent-soft: #E3EBF8; --accent-ink: #3A5292; --hl: #80AADC;
   --code: #F3F6FB; --warn: #8A5A12; --warn-bg: #FBF3E4;
   --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
   --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -337,7 +337,7 @@ html body h2:not(#_a):not(#_b):not(#_c):not(#_d) { line-height: 1.06 !important;
 html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not(#_b):not(#_c):not(#_d) span.acc { color: inherit !important; }
 /* >>> docs alignment v2 */
 /* section label above the title, same as the site's eyebrows */
-.doc .crumb { margin: 0 0 14px !important; font: 500 .76rem/1 "Inter", var(--sans, sans-serif) !important; letter-spacing: .12em !important; text-transform: uppercase !important; color: #4362B2 !important; }
+.doc .crumb { margin: 0 0 14px !important; font: 500 .76rem/1 "Inter", var(--sans, sans-serif) !important; letter-spacing: .12em !important; text-transform: uppercase !important; color: #3A5292 !important; }
 .doc h1 { font-family: "Inter", sans-serif !important; font-weight: 500 !important; letter-spacing: -.045em !important; line-height: 1.04 !important; color: #1F273F !important; }
 .doc h2 { font-family: "Inter", sans-serif !important; font-weight: 500 !important; letter-spacing: -.035em !important; color: #1F273F !important; }
 .doc .intro { color: #4A5368 !important; }
@@ -351,13 +351,13 @@ html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not
 .side { box-shadow: none !important; }
 body.nav-open .side { box-shadow: 20px 0 50px -30px rgba(0,0,0,.5) !important; }
 /* highlighted figure boxes: light blue instead of indigo */
-.flow-hi { fill: #EEF3FB !important; stroke: #4362B2 !important; stroke-width: 1.5px !important; }
+.flow-hi { fill: #EEF3FB !important; stroke: #A8C6E8 !important; stroke-width: 1px !important; }
 .flow-th, .gf-th { fill: #1F273F !important; }
-.flow-nh, .flow-sh, .gf-kh, .gf-sh { fill: #4362B2 !important; }
+.flow-nh, .flow-sh, .gf-kh, .gf-sh { fill: #3A5292 !important; }
 /* no Royal Indigo fills in the Docs: steps, Fact chips, chart marks and the header button use the light blue scale */
 .steps > li::before { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #CCDDF1; font-weight: 600 !important; }
 .c-fact { background: #CCDDF1 !important; color: #1F273F !important; }
-.sk-n { fill: #4362B2 !important; }
+.sk-n:not(.sk-cn):not(.sk-sn):not(.sk-xn) { fill: #3A5292 !important; }
 .cta { background: #E3EBF8 !important; color: #1F273F !important; box-shadow: inset 0 0 0 1px #CCDDF1; }
 .cta:hover { background: #CCDDF1 !important; }
 /* <<< docs alignment v2 */
