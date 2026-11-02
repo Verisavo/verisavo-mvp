@@ -1793,7 +1793,7 @@ html body #pg-community.pg .c2-lead { margin: 24px 0 0; max-width: 46ch; font: 4
 #pg-community .c2-task dl div { display: flex; justify-content: space-between; gap: 12px; font-size: .78rem; }
 #pg-community .c2-task dt { color: #8A93A6; } #pg-community .c2-task dd { margin: 0; font-weight: 500; color: #1F273F; }
 #pg-community .c2-reply { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-#pg-community .c2-reply span { padding: 9px; border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px #E6ECF4; text-align: center; font-size: .82rem; font-weight: 600; color: #4362B2; }
+#pg-community .c2-reply :is(span, button) { padding: 9px; border: 0; cursor: pointer; font-family: "Inter", var(--sans); border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px #E6ECF4; text-align: center; font-size: .82rem; font-weight: 600; color: #4362B2; }
 #pg-community .c2-phone figcaption { font-size: .76rem; color: #8A93A6; }
 /* section heads */
 #pg-community .c2-head { display: grid; justify-items: center; text-align: center; margin: 0 auto clamp(36px, 4.5vw, 56px); max-width: 640px; }
@@ -1868,6 +1868,26 @@ html body #pg-community.pg .c2-qs details p { margin: 0; padding: 0 4px 22px; ma
   #pg-community .c2-close { border-radius: 20px; }
 }
 @media (max-width: 360px) { #pg-community .c2-acts { grid-template-columns: minmax(0, 1fr); } }
+/* interactive chat */
+#pg-community .c2-chat { height: 452px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; align-content: start; }
+#pg-community .c2-chat::-webkit-scrollbar { display: none; }
+#pg-community .c2-new { opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease; }
+#pg-community .c2-new.in { opacity: 1; transform: none; }
+#pg-community .c2-reply button:hover { background: #F4F7FB !important; }
+#pg-community .c2-reply button:focus-visible { outline: 2px solid #80AADC; outline-offset: 2px; }
+#pg-community .c2-reply.used button { pointer-events: none; opacity: .45; }
+#pg-community .c2-typing { display: inline-flex; gap: 4px; padding: 13px 14px; }
+#pg-community .c2-typing span { width: 6px; height: 6px; border-radius: 50%; background: #A8C6E8; animation: c2Dot 1s infinite ease-in-out; }
+#pg-community .c2-typing span:nth-child(2) { animation-delay: .15s; } #pg-community .c2-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes c2Dot { 0%, 80%, 100% { opacity: .35; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+#pg-community .c2-att p { display: flex; align-items: center; gap: 8px; font-size: .8rem !important; color: #3A5292 !important; }
+#pg-community .c2-att svg { width: 15px; height: 15px; flex: none; fill: none; stroke: #3A5292; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#pg-community .c2-ok { box-shadow: 0 0 0 1px #CCDDF1 !important; }
+#pg-community .c2-ok b { color: #1F273F; font-weight: 600; }
+#pg-community .c2-next { justify-self: start; padding: 8px 14px; border: 0; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px #CCDDF1; color: #3A5292; font: 600 .8rem/1 "Inter", var(--sans); cursor: pointer; }
+#pg-community .c2-next:hover { background: #F4F7FB; }
+@media (prefers-reduced-motion: reduce) { #pg-community .c2-new { transition: none; } #pg-community .c2-typing span { animation: none; } }
+@media (max-width: 600px) { #pg-community .c2-chat { height: 430px; } }
 /* <<< community v2 */
 /* >>> about v2 */
 html body #pg-about-us#pg-about-us.pg.pg .pg-in { width: min(1160px, calc(100% - 40px)); }
@@ -1919,6 +1939,9 @@ html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby="hl-h"] .intro 
   #pg-about-us .a2-beliefs { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   #pg-about-us .a2-team { padding-top: 40px; }
 }
+/* Press images on white */
+html body #pg-about-us#pg-about-us.pg.pg .hl-card .hl-art svg > rect:first-child { fill: #fff !important; }
+html body #pg-about-us#pg-about-us.pg.pg .hl-card .rs-art { background: #fff !important; border-bottom: 1px solid #EDF1F6; }
 /* <<< about v2 */
 /* >>> careers v2 */
 html body #pg-careers#pg-careers.pg.pg .pg-in { width: min(1160px, calc(100% - 40px)); }
