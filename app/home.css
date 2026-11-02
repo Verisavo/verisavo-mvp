@@ -2087,7 +2087,7 @@ html body #pg-use-cases#pg-use-cases.pg.pg .u2-facts li { position: relative; pa
 #pg-use-cases .cs-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 16px !important; }
 html body #pg-use-cases#pg-use-cases.pg.pg .cs-card { display: flex !important; flex-direction: column; gap: 0 !important; padding: 8px 8px 22px !important; border: 0 !important; border-radius: 20px !important; background: #fff !important; box-shadow: 0 0 0 1px #E6ECF4, 0 18px 40px -32px rgba(31,39,63,.35) !important; cursor: pointer; transition: box-shadow .25s, transform .25s !important; }
 html body #pg-use-cases#pg-use-cases.pg.pg .cs-card:hover, html body #pg-use-cases#pg-use-cases.pg.pg .cs-card:focus-visible { transform: translateY(-2px); box-shadow: 0 0 0 1px #CCDDF1, 0 26px 50px -34px rgba(31,39,63,.45) !important; outline: none; }
-html body #pg-use-cases#pg-use-cases.pg.pg .cs-card .rs-art { margin: 0 0 18px !important; border-radius: 14px !important; overflow: hidden; aspect-ratio: 3 / 2; background: #EEF3FB; }
+html body #pg-use-cases#pg-use-cases.pg.pg .cs-card .rs-art { margin: 0 0 18px !important; border-radius: 14px !important; overflow: hidden; aspect-ratio: 3 / 2; background: #F8FAFD !important; box-shadow: inset 0 0 0 1px #EDF1F6 !important; }
 html body #pg-use-cases#pg-use-cases.pg.pg .cs-card .rs-art svg { display: block; width: 100%; height: 100%; }
 html body #pg-use-cases#pg-use-cases.pg.pg .cs-card > :not(.rs-art) { padding-inline: 14px !important; }
 html body #pg-use-cases#pg-use-cases.pg.pg .cs-card .rs-meta { margin: 0 !important; font: 500 .78rem/1.4 "Inter", var(--sans) !important; color: #4362B2 !important; }
@@ -2134,6 +2134,9 @@ html body #pg-use-cases#pg-use-cases.pg.pg .u2-btn.u2-solid:hover { background: 
   #pg-use-cases .u2-acts { display: grid; width: 100%; max-width: 360px; }
   html body #pg-use-cases#pg-use-cases.pg.pg .u2-btn { justify-content: center; }
 }
+/* illustrations sit on a near-white panel */
+html body #pg-use-cases#pg-use-cases.pg.pg .cs-card .rs-art svg > rect:first-child { fill: #F8FAFD !important; }
+html body #pg-use-cases#pg-use-cases.pg.pg .cs-card .rs-art { filter: none !important; }
 /* footer matches the other light pages */
 html body #pg-use-cases.pg .pg-foot { background: #F4F6FA !important; }
 html body #pg-use-cases.pg .pg-foot :is(span, p, button, a) { color: #5B6478 !important; }
