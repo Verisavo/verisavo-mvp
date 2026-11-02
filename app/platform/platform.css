@@ -2095,7 +2095,7 @@ html body section.hero h1#hero-title :is(.l1, .tone) { display: block !important
 html body .mnav-big :is(a, button) { word-spacing: -.32em; }
 /* <<< product alignment v2 */
 /* >>> soft accents v1 */
-html body .ps-steps li:first-child .ps-n { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #A8C6E8, 0 0 0 5px #F4F7FB !important; }
+html body .ps-steps li:first-child .ps-n { background: #fff !important; color: #1F273F !important; box-shadow: 0 0 0 1px #CCDDF1, 0 0 0 5px #F4F7FB !important; }
 html body .oh-sl :is(svg, path, circle) { stroke: #80AADC !important; }
 html body .oh-mk { fill: #80AADC !important; }
 /* <<< soft accents v1 */

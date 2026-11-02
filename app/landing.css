@@ -1951,8 +1951,8 @@ html body .mnav-big :is(a, button) { word-spacing: -.32em; }
 /* >>> soft accents v1 */
 /* No solid indigo or bright-blue dots: highlighted circles use the light blue scale, small accents use a softer blue */
 html body #ln .wf-side button.on::before { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #A8C6E8, 0 0 0 5px #F4F7FB !important; }
-html body #ln #trust .v3-tr2 article:first-child .v3-tr2-ic { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #CCDDF1, 0 0 0 5px #F4F7FB !important; }
-html body #pg-community .c2-steps li:first-child .c2-n, html body #pg-use-cases .u2-steps li:first-child .u2-n { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #A8C6E8, 0 0 0 5px #F4F7FB !important; }
+html body #ln #trust .v3-tr2 article:first-child .v3-tr2-ic { background: #fff !important; color: #1F273F !important; box-shadow: 0 0 0 1px #CCDDF1, 0 0 0 5px #F4F7FB !important; }
+html body #pg-community .c2-steps li:first-child .c2-n, html body #pg-use-cases .u2-steps li:first-child .u2-n { background: #fff !important; color: #1F273F !important; box-shadow: 0 0 0 1px #CCDDF1, 0 0 0 5px #F4F7FB !important; }
 html body #pg-research#pg-research.pg.pg .rs-chip[aria-pressed="true"], html body #pg-careers#pg-careers.pg.pg .ca2-filter button[aria-pressed="true"] { background: #E3EBF8 !important; border-color: #A8C6E8 !important; color: #1F273F !important; }
 html body #pg-careers#pg-careers.pg.pg .ca2-filter button[aria-pressed="true"] i { color: #3A5292 !important; }
 html body #ln .wf-caret { background: #80AADC !important; }
