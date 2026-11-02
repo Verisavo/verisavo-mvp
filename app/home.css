@@ -1955,6 +1955,10 @@ html body #pg-about-us#pg-about-us.pg.pg .pg-sec[aria-labelledby="hl-h"] .intro 
 /* Press images on white */
 html body #pg-about-us#pg-about-us.pg.pg .hl-card .hl-art svg > rect:first-child { fill: #fff !important; }
 html body #pg-about-us#pg-about-us.pg.pg .hl-card .rs-art { background: #fff !important; border-bottom: 1px solid #EDF1F6; }
+/* Press card text area on a light grey panel */
+html body #pg-about-us#pg-about-us.pg.pg .hl-card .hl-body { background: #F7F9FC !important; }
+html body #pg-about-us#pg-about-us.pg.pg .hl-card .rs-art { border-bottom-color: #EDF1F6 !important; }
+html body #pg-about-us#pg-about-us.pg.pg .hl-card .rs-soon { background: #fff !important; }
 /* <<< about v2 */
 /* >>> careers v2 */
 html body #pg-careers#pg-careers.pg.pg .pg-in { width: min(1160px, calc(100% - 40px)); }
