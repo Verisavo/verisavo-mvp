@@ -1991,4 +1991,6 @@ html body footer.lf:not(#_a):not(#_b):not(#_c) .lf-bar nav :is(a, button):hover,
   html body nav.foot-min:not(#_a):not(#_b):not(#_c) { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; justify-content: stretch !important; gap: 14px 24px !important; }
   html body footer.lf:not(#_a):not(#_b):not(#_c) .lf-bar, html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) .foot-bar, html body footer.foot:not(#_a):not(#_b):not(#_c) .foot-bar { margin-top: 40px !important; flex-direction: column !important; align-items: flex-start !important; }
 }
+/* Back to top removed from the footer */
+html body :is(.lf-top-btn, .foot-top):not(#_a):not(#_b) { display: none !important; }
 /* <<< minimal footer v1 */
