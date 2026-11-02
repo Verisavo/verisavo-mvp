@@ -1942,4 +1942,7 @@ html body .pg .pg-foot .foot-bar > span { order: 0 !important; }
 @media (max-width: 560px) { html body .pg .pg-foot .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; row-gap: 32px !important; } }
 /* header pill: sound and Menu only; Contact us lives in the menu and footer */
 html body .top .pill .pa[data-dialog="access"] { display: none !important; }
+/* small menu links that are plain links (Documentation) match the buttons */
+html body .mnav-small a { font-size: clamp(.95rem, .85rem + .4vw, 1.2rem); font-weight: 500; letter-spacing: .04em; }
+html body .mnav-small a:hover, html body .mnav-small a:focus-visible { color: var(--white); }
 /* <<< site alignment v2 */
