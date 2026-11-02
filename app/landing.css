@@ -1940,4 +1940,6 @@ html body .pg .pg-foot .foot-bar > span { order: 0 !important; }
   html body .pg .pg-foot .foot-bar { margin-top: 8px !important; flex-direction: column; align-items: flex-start; }
 }
 @media (max-width: 560px) { html body .pg .pg-foot .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; row-gap: 32px !important; } }
+/* menu open: only sound and Close stay in the pill; Contact us is already in the menu */
+html body.menu-open .top .pill .pa[data-dialog="access"] { display: none !important; }
 /* <<< site alignment v2 */
