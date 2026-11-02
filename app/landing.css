@@ -1945,4 +1945,6 @@ html body .top .pill .pa[data-dialog="access"] { display: none !important; }
 /* small menu links that are plain links (Documentation) match the buttons */
 html body .mnav-small a { font-size: clamp(.95rem, .85rem + .4vw, 1.2rem); font-weight: 500; letter-spacing: .04em; }
 html body .mnav-small a:hover, html body .mnav-small a:focus-visible { color: var(--white); }
+/* big menu links: monospace spaces are a full letter wide, so pull words closer */
+html body .mnav-big :is(a, button) { word-spacing: -.32em; }
 /* <<< site alignment v2 */

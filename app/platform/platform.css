@@ -2090,4 +2090,6 @@ html body section.hero h1#hero-title :is(.l1, .tone) { display: block !important
   html body section.hero h1#hero-title { max-width: none !important; font-size: clamp(2.4rem, .6rem + 4.2vw, 4rem) !important; }
   html body section.hero h1#hero-title :is(.l1, .tone) { white-space: nowrap; }
 }
+/* big menu links: closer word spacing */
+html body .mnav-big :is(a, button) { word-spacing: -.32em; }
 /* <<< product alignment v2 */
