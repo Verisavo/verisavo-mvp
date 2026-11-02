@@ -1948,3 +1948,22 @@ html body .mnav-small a:hover, html body .mnav-small a:focus-visible { color: va
 /* big menu links: monospace spaces are a full letter wide, so pull words closer */
 html body .mnav-big :is(a, button) { word-spacing: -.32em; }
 /* <<< site alignment v2 */
+/* >>> soft accents v1 */
+/* No solid indigo or bright-blue dots: highlighted circles use the light blue scale, small accents use a softer blue */
+html body #ln .wf-side button.on::before { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #A8C6E8, 0 0 0 5px #F4F7FB !important; }
+html body #ln #trust .v3-tr2 article:first-child .v3-tr2-ic { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #CCDDF1, 0 0 0 5px #F4F7FB !important; }
+html body #pg-community .c2-steps li:first-child .c2-n, html body #pg-use-cases .u2-steps li:first-child .u2-n { background: #E3EBF8 !important; color: #3A5292 !important; box-shadow: 0 0 0 1px #A8C6E8, 0 0 0 5px #F4F7FB !important; }
+html body #pg-research#pg-research.pg.pg .rs-chip[aria-pressed="true"], html body #pg-careers#pg-careers.pg.pg .ca2-filter button[aria-pressed="true"] { background: #E3EBF8 !important; border-color: #A8C6E8 !important; color: #1F273F !important; }
+html body #pg-careers#pg-careers.pg.pg .ca2-filter button[aria-pressed="true"] i { color: #3A5292 !important; }
+html body #ln .wf-caret { background: #80AADC !important; }
+html body .ln .pb .net-svg circle.net-dot-g, html body .ln .pb .net-svg circle.net-dot-o { fill: #80AADC !important; }
+html body #ln .wf-inv.done { background: #80AADC !important; }
+html body #ln .wf-sc.go .wf-steps li.wf-a i { background: #80AADC !important; border-color: #80AADC !important; }
+html body #ln .wf-bar-f::after { background: #80AADC !important; }
+html body #ln .wf-side button.on svg { color: #80AADC !important; }
+html body #pg-community .c2-facts li::before, html body #pg-community .c2-safe li::before, html body #pg-careers .k2-facts li::before { border-color: #80AADC !important; }
+html body #pg-community .c2-why article::before { background: #A8C6E8 !important; }
+html body #pg-community .c2-qs summary i::before, html body #pg-community .c2-qs summary i::after { background: #80AADC !important; }
+html body #pg-pricing .pc-list svg { color: #80AADC !important; }
+html body #pg-pricing .pc-list :is(svg, path) { stroke: #80AADC !important; }
+/* <<< soft accents v1 */
