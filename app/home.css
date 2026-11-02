@@ -1888,6 +1888,19 @@ html body #pg-community.pg .c2-qs details p { margin: 0; padding: 0 4px 22px; ma
 #pg-community .c2-next:hover { background: #F4F7FB; }
 @media (prefers-reduced-motion: reduce) { #pg-community .c2-new { transition: none; } #pg-community .c2-typing span { animation: none; } }
 @media (max-width: 600px) { #pg-community .c2-chat { height: 430px; } }
+/* larger phone screen */
+#pg-community .c2-dev { width: min(100%, 430px) !important; padding: 12px !important; border-radius: 44px !important; }
+#pg-community .c2-chat { height: 560px !important; padding: 16px 12px 14px !important; gap: 10px !important; border-radius: 0 0 34px 34px !important; }
+#pg-community .c2-top { padding: 16px 18px 14px !important; font-size: 1rem !important; }
+#pg-community .c2-av { width: 34px !important; height: 34px !important; font-size: .85rem !important; }
+#pg-community .c2-msg { padding: 13px 15px !important; }
+#pg-community .c2-msg p { font-size: .94rem !important; }
+#pg-community .c2-msg p.c2-t { font-size: 1.08rem !important; }
+#pg-community .c2-msg p.c2-k { font-size: .7rem !important; }
+#pg-community .c2-task dl div { font-size: .86rem !important; }
+#pg-community .c2-reply :is(span, button) { padding: 11px !important; font-size: .92rem !important; }
+#pg-community .c2-att p { font-size: .88rem !important; }
+@media (max-width: 600px) { #pg-community .c2-chat { height: 500px !important; } #pg-community .c2-dev { border-radius: 38px !important; } }
 /* <<< community v2 */
 /* >>> about v2 */
 html body #pg-about-us#pg-about-us.pg.pg .pg-in { width: min(1160px, calc(100% - 40px)); }
