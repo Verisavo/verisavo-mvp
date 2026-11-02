@@ -2065,6 +2065,7 @@ html body #pg-pricing#pg-pricing.pg.pg .pc-card.pc-main { box-shadow: 0 0 0 1.5p
 html body #pg-pricing#pg-pricing.pg.pg .pi-buy { border-radius: 16px !important; background: #F7F9FC !important; box-shadow: 0 0 0 1px #E6ECF4 !important; border: 0 !important; }
 html body #pg-pricing#pg-pricing.pg.pg .pi h2:not(#_a):not(#_b) { font-family: "Inter", var(--sans) !important; font-weight: 500 !important; letter-spacing: -.035em !important; color: #1F273F !important; }
 html body #pg-pricing#pg-pricing.pg.pg .pc-btn { border-radius: 10px !important; }
+html body #pg-pricing#pg-pricing.pg.pg .pc-credit { padding: 0 !important; background: none !important; border: 0 !important; border-radius: 0 !important; font: 500 .86rem/1.4 "Inter", var(--sans) !important; color: #6B7488 !important; }
 /* <<< pricing alignment v2 */
 /* >>> use cases v1 */
 html body #pg-use-cases#pg-use-cases.pg.pg { background: #fff !important; color: #1F273F; }
