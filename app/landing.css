@@ -1653,6 +1653,31 @@ html body .ln .pb .net-card.in .net-svg .net-pm { stroke: #A8C6E8 !important; st
   html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-blk text { font-size: 19px !important; }
   html body .ln .pb .net-scroll::after { display: none !important; }
 }
+/* >>> network slider v1 */
+/* phones: the diagram stays large and slides sideways, like a filmstrip */
+@media (max-width: 760px) {
+  html body .ln .pb .net-card { position: relative; padding: 0 !important; border-radius: 16px !important; overflow: hidden; }
+  html body .ln .pb .net-scroll { overflow-x: auto !important; overflow-y: hidden !important; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: none; padding: 18px 0 8px !important; touch-action: pan-x pan-y; }
+  html body .ln .pb .net-scroll::-webkit-scrollbar { display: none; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) { width: 980px !important; min-width: 980px !important; max-width: none !important; margin: 0 18px; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) text { font-size: 17px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-cols text { font-size: 16px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-cols text.net-colm { font-size: 18px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-sm { font-size: 14px !important; }
+  html body .ln .pb .net-scroll .net-svg:not(.net-svg-m) .net-blk text { font-size: 16px !important; }
+  html body .ln .pb .net-scroll::after { display: none !important; }
+  /* soft edges show there is more to either side */
+  html body .ln .pb .net-card .net-fade { position: absolute; top: 0; bottom: 34px; width: 28px; z-index: 2; pointer-events: none; transition: opacity .25s ease; }
+  html body .ln .pb .net-card .net-fade-l { left: 0; background: linear-gradient(90deg, #F3F6FA, rgba(243,246,250,0)); }
+  html body .ln .pb .net-card .net-fade-r { right: 0; background: linear-gradient(270deg, #F3F6FA, rgba(243,246,250,0)); }
+  html body .ln .pb .net-card[data-at="start"] .net-fade-l, html body .ln .pb .net-card[data-at="end"] .net-fade-r { opacity: 0; }
+  /* track under the diagram: a thumb that moves as you slide */
+  html body .ln .pb .net-hint { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 4px 0 14px; font: 500 .75rem/1 "Inter", var(--sans); color: #8A93A6; }
+  html body .ln .pb .net-track { position: relative; width: 64px; height: 3px; border-radius: 3px; background: #E3EBF8; overflow: hidden; }
+  html body .ln .pb .net-thumb { position: absolute; top: 0; left: 0; height: 100%; width: 40%; border-radius: 3px; background: #A8C6E8; }
+}
+@media (min-width: 761px) { html body .ln .pb .net-hint, html body .ln .pb .net-fade { display: none !important; } }
+/* <<< network slider v1 */
 /* <<< problem sim */
 /* >>> workflow explainer */
 #ln .wf { padding-block: clamp(72px, 9vw, 128px); background: #fff; font-family: "Inter", var(--sans); }
