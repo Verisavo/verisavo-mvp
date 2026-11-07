@@ -18,6 +18,7 @@ export default function PlatformClient() {
       (await import("@/lib/scoutplatform")).default();
       (await import("@/lib/platform/context")).default();
       (await import("@/lib/platform/company")).default();
+      (await import("@/lib/platform/sidenav")).default();
       (await import("@/lib/platform/model")).default();
       (await import("@/lib/platform/soon")).default();
       (await import("@/lib/platform/mnavbg")).default();
