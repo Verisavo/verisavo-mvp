@@ -467,6 +467,10 @@ function route() {
 function go(h) { if (location.hash.slice(1) === h) render(); else location.hash = h; S.ui.sidebar = false; }
 window.addEventListener('hashchange', () => { closeLayer(); render(); window.scrollTo(0, 0); });
 
+/* >>> inline hash report */
+if (INLINE) { const rep = () => { try { parent.postMessage({vs: 'inv-hash', h: location.hash.slice(1)}, '*'); } catch (e) {} }; window.addEventListener('hashchange', rep); rep(); }
+/* <<< inline hash report */
+
 /* render scheduling: forms are not re-rendered by live data */
 let rq = null;
 function scheduleRender(force) {
