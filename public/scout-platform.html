@@ -291,8 +291,6 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .happ .content{width:100%;max-width:1320px;margin:0 auto}
 .happ.inline .htop{min-height:56px;padding:8px 20px}
 .happ.inline .htitle h1{font-size:16px;font-weight:600}
-.happ.inline .hnav{margin-left:auto}.happ.inline .hnew{flex:none;height:40px;gap:6px;background:#1F273F;border-color:#1F273F;color:#fff}.happ.inline .hnew:hover{background:#2C3656}.happ.inline .hnav button.on{color:#1F273F}.happ.inline .card>.head>.btn[data-go="c-builder"]{display:none}.happ.inline .hnew svg{width:16px;height:16px}.happ.inline .hnew.on{opacity:.55;pointer-events:none}
-@media (max-width:760px){.happ.inline .hnew{position:absolute;top:8px;right:16px;height:36px}}
 .happ.inline .content{padding:18px 20px 32px;gap:14px}
 .happ .card{border-radius:14px;padding:16px}.happ .kpi .val{font-size:22px}.happ .kpi .ico{width:32px;height:32px}
 @media (max-width:640px){.happ .g4,.happ .g2:has(>.kpi){grid-template-columns:repeat(2,minmax(0,1fr))}.happ .kpi .val{font-size:20px}.happ .kpi .lab{font-size:12px;padding-right:34px}}
@@ -484,15 +482,11 @@ function scheduleRender(force) {
 
 /* ---------------- shell ---------------- */
 function hshell(r, title, body, extraTop) {
-  const tabs = INLINE
-    /* inside the Assistant: the sidebar has Overview and Investigations; Investigations carries its own tabs and a New task button */
-    ? (r.page === 'overview' ? [] : [['c-surveys', 'Investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['@gaps', 'Intelligence Gaps', 'info', false], ['c-billing', 'Billing', 'card', r.page === 'billing']])
-    : [['c-overview', 'Overview', 'grid', r.page === 'overview'], ['c-surveys', 'Manage investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder'], ['c-billing', 'Billing', 'card', r.page === 'billing']];
-  if (INLINE && r.page !== 'overview') title = r.page === 'builder' ? 'Set up a task' : 'Investigations';
+  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview'], ['c-surveys', 'Manage investigations', 'clip', r.page === 'surveys' || r.page === 'survey'], ['c-builder', 'Investigate market', 'search', r.page === 'builder'], ['c-billing', 'Billing', 'card', r.page === 'billing']];
   return `<div class="happ ${INLINE ? 'inline' : ''}">
   <header class="htop">
     <div class="htitle">${INLINE ? '' : `<img class="logo-light" src="${LOGO}" alt="Verisavo"><img class="logo-dark" src="${LOGOW}" alt="Verisavo"><span class="hsep" aria-hidden="true"></span>`}<h1>${title}</h1></div>
-    ${tabs.length ? `<nav class="hnav" aria-label="Market investigations">${tabs.map(t => `<button class="${t[3] ? 'on' : ''}" ${t[0][0] === '@' ? `data-act="${t[0].slice(1)}"` : `data-go="${t[0]}"`}${t[3] ? ' aria-current="page"' : ''}>${ic[t[2]]}<span>${t[1]}</span></button>`).join('')}</nav>` : ''}${INLINE && tabs.length ? `<button class="btn sm hnew${r.page === 'builder' ? ' on' : ''}" data-go="c-builder">${ic.plus}<span>New task</span></button>` : ''}
+    <nav class="hnav" aria-label="Market investigations">${tabs.map(t => `<button class="${t[3] ? 'on' : ''}" data-go="${t[0]}"${t[3] ? ' aria-current="page"' : ''}>${ic[t[2]]}<span>${t[1]}</span></button>`).join('')}</nav>
     ${extraTop}${EXIT && !INLINE ? `<button class="btn ghost sm exitb" data-act="exit">${ic.back}<span>${EXIT}</span></button>` : ''}
   </header>
   <main class="content">${S.loaded ? '' : `<div class="note">${S.slow ? ic.info + '<span>The workspace data is taking longer than usual to load. What you see may be out of date.</span>' : '<span class="spin"></span><span>Loading workspace data…</span>'}</div>`}${body}</main></div>`;
@@ -1255,8 +1249,7 @@ document.addEventListener('click', async (e) => {
   if (t.dataset.tab) { S.ui[t.dataset.tab] = t.dataset.v; return render(); }
   const a = t.dataset.act, v = t.dataset.v, id = t.dataset.id;
   if (a === 'wafull') { WAFULL = !WAFULL; render(); const b = $('.wa-exp'); if (b) b.focus(); const wb = $('#wa-body'); if (wb) wb.scrollTop = wb.scrollHeight; return; }
-  if (a === 'gaps') { try { window.parent.postMessage({vs: 'open-gaps'}, '*'); } catch (e) {} }
-  else if (a === 'exit') { try { window.parent.postMessage({vs: 'close-platform'}, '*'); } catch (e) {} }
+  if (a === 'exit') { try { window.parent.postMessage({vs: 'close-platform'}, '*'); } catch (e) {} }
   else if (a === 'openside') { S.ui.sidebar = true; render(); }
   else if (a === 'closeside') { S.ui.sidebar = false; render(); }
   else if (a === 'close') { if (t.classList.contains('modal-bg') && e.target !== t) return; closeLayer(); }
