@@ -2557,6 +2557,11 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main .gexk{font-size:12px;color:var(--px-muted);margin-right:2px}
 #va .va-main .gchip{font-size:12px;color:var(--px-ink);background:var(--px-canvas);border:1px solid var(--px-line);border-radius:999px;padding:3px 9px;line-height:1.3}
 #va .va-main .sh{font-size:14px;font-weight:600;color:var(--px-ink);margin:22px 0 4px;padding-top:16px;border-top:1px solid var(--px-line)}
+#va .va-main .upd{margin:14px 0 6px;padding:12px 14px;border:1px solid var(--px-line);border-radius:10px;background:var(--px-canvas)}
+#va .va-main .updk{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--px-indigo);margin-bottom:6px}
+#va .va-main .updk svg{width:14px;height:14px}
+#va .va-main .upd p{font-size:14px;line-height:1.55;margin:0 0 6px;color:var(--px-ink)}
+#va .va-main .pend{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--px-muted);margin-bottom:10px}
 #va .va-main .gempty{padding:22px 16px;text-align:center;color:var(--px-muted)}
 #va .va-main .gempty p{margin:0 0 6px;font-size:14px;color:var(--px-ink)}
 #va .va-main .gempty p.small{color:var(--px-muted);font-size:13px;line-height:1.5;max-width:320px;margin:0 auto}
