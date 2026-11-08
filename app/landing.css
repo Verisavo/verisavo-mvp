@@ -2105,3 +2105,27 @@ html body #pg-about-us#pg-about-us.pg.pg .a2-people { margin-top: 8px; }
 html body #pg-about-us#pg-about-us.pg.pg .a2-inv { margin-top: 0; }
 html body #pg-about-us#pg-about-us.pg.pg .a2-inv p { color: #3D4559 !important; font-size: 1rem !important; line-height: 1.6 !important; opacity: 1 !important; }
 html body #pg-about-us#pg-about-us.pg.pg .a2-people b { font-size: 1rem; }
+/* implementation doc, 8 Nov 2026 */
+html body .top .pill .pa-nav { display: none; }
+@media (min-width: 900px) { html body .top .pill .pa-nav { display: flex; } }
+#ln .wf-ex { margin: 14px 0 0; font-size: .9rem; color: #3A5292; font-weight: 500; }
+#ln .wf-play { display: block; margin: 0 auto 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid #CCDDF1; background: #fff; color: #1F273F; font: 500 .85rem/1 "Inter", sans-serif; cursor: pointer; }
+#ln .wf-play:hover { border-color: #4362B2; }
+#ln .wf-unk { font-style: normal; padding: 2px 8px; border-radius: 6px; background: #F3F4F7; color: #3D4559; font-weight: 600; font-size: .7rem; }
+#ln .wf-why { margin: 6px 0 0; font-size: .8rem; color: #5B6478; }
+#ln .wf-dec { margin: 4px 0 0; font-size: .88rem; color: #1F273F; }
+#ln #wf-h:focus { outline: none; }
+#ln #wf-h:focus-visible { outline: 2px solid #4362B2; outline-offset: 6px; border-radius: 4px; }
+#ln .hp2-uc li { display: grid !important; gap: 6px; padding: clamp(22px, 2.4vw, 30px) 0 !important; }
+#ln .hp2-uca { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 10px; }
+#ln .hp2-uca .ln-btn { min-height: 40px; padding: 0 16px; font-size: .9rem; }
+#ln .hp2-lnk, .hp2-lnk { border: 0; background: none; padding: 0; font: 500 .92rem/1.4 "Inter", sans-serif; color: #3A5292; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+#ln .hp2-lnk:hover { color: #1F273F; }
+/* sample task board is visible before sign-in */
+#pg-community-tasks .cmt-board { display: grid !important; }
+#pg-community-tasks .cmt-gate { padding: 20px 24px !important; justify-items: start !important; text-align: left !important; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 16px; }
+#pg-community-tasks .cmt-gate h2 { font-size: 1.15rem !important; }
+#pg-community-tasks .cmt-gate .cm-btn { margin-top: 0 !important; min-width: 0 !important; }
+@media (max-width: 700px) { #pg-community-tasks .cmt-gate { grid-template-columns: 1fr; } }
+#pg-community-tasks:not(.cmt-in) .cmt-main::before { content: "Sample task"; display: inline-block; margin-bottom: 6px; padding: 2px 8px; border-radius: 6px; background: #E3EBF8; color: #3A5292; font: 600 .7rem/1.4 "Inter", sans-serif; }
+.cs-ill { margin: 0; font: 600 .75rem/1.3 "Inter", sans-serif; color: #3A5292; }

@@ -2960,3 +2960,5 @@ html body #va .va-who.small, html body #va .va-who small { color: var(--q-ink2) 
 /* the internal Admin simulation is not shown publicly; footer contact address */
 [data-admin] { display: none !important; }
 .foot-mail { color: inherit; text-decoration: underline; text-underline-offset: 3px; margin-left: 6px; }
+.hero-actions{flex-wrap:wrap}.hero-actions .prev-lab{flex-basis:100%;margin:0 0 2px;font:500 .85rem/1.3 Inter,system-ui,sans-serif;color:#3A5292}
+.gwhy { display: block; margin-top: 4px; font-size: .8rem; line-height: 1.45; color: #5B6478; }

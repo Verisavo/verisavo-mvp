@@ -1,5 +1,5 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/home/.
-const AB = "<div class=\"ab2\">\n<header class=\"a2-hero\">\n  <p class=\"a2-eb\">About Verisavo</p>\n  <h1 id=\"about-h\">Building the intelligence layer <span>for African markets.</span></h1>\n  <p class=\"a2-lead\">Verisavo helps businesses understand what is happening in their markets, why it matters, what remains unknown and what it means for their next decision.</p>\n</header>\n\n<section class=\"a2-sec a2-band\" aria-labelledby=\"exist-h\">\n  <div class=\"a2-head\">\n    <p class=\"a2-eb\">Why we exist</p>\n    <h2 id=\"exist-h\">Connecting what is scattered</h2>\n  </div>\n  <div class=\"a2-two\">\n    <article><p class=\"a2-k\">The problem</p><p>Across Africa, valuable market information sits in company data, public records, digital platforms, research and local communities. Much of it is fragmented, so the bigger picture is hard to see.</p></article>\n    <article><p class=\"a2-k\">Our approach</p><p>Verisavo is designed to connect these pieces, assess the evidence and show the relationships behind market changes. With technology and evidence from the ground, we are building an understanding of African markets that keeps evolving.</p></article>\n  </div>\n</section>\n\n<section class=\"a2-sec\" aria-labelledby=\"believe-h\">\n  <div class=\"a2-head\">\n    <p class=\"a2-eb\">Principles</p>\n    <h2 id=\"believe-h\">What we believe</h2>\n    <p>These principles shape how the platform is designed and how we talk about what it knows.</p>\n  </div>\n  <ol class=\"a2-beliefs\">\n    <li><span>01</span><h3>Evidence before assertion</h3><p>Important conclusions rest on evidence. An answer is not true because a model produced it.</p></li>\n    <li><span>02</span><h3>Context before conclusion</h3><p>A data point means little without where, when, who it applies to and how it was collected.</p></li>\n    <li><span>03</span><h3>Relationships matter</h3><p>Prices, distribution, infrastructure, policy and behaviour shape one another. We look at how the pieces connect.</p></li>\n    <li><span>04</span><h3>Unknown is a valid answer</h3><p>When the evidence cannot answer a question, we say so and name the Intelligence Gap.</p></li>\n    <li><span>05</span><h3>Markets change</h3><p>Understanding is never final. Market Memory is designed to record what changed and which evidence changed it.</p></li>\n    <li><span>06</span><h3>Human decisions stay human</h3><p>Verisavo supports the decision. The people responsible for it make it.</p></li>\n  </ol>\n</section>\n\n<section class=\"a2-sec a2-team\" aria-labelledby=\"team-h\">\n  <div class=\"a2-head a2-head-l\">\n    <p class=\"a2-eb\">Team</p>\n    <h2 id=\"team-h\">Our team</h2>\n  </div>\n  <div class=\"a2-team-copy\">\n    <p>Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and Ground-Level Intelligence. We work closely with businesses, researchers and local communities on real market challenges.</p>\n    <p>Our ambition goes beyond building another AI product. We are laying the foundation for a connected intelligence layer that makes African markets clearer and easier to understand.</p>\n  </div>\n  <ul class=\"a2-people\" aria-label=\"Leadership\">\n    <li><span class=\"a2-av\" aria-hidden=\"true\">HO</span><b>Henry Oranika</b><span>Chief Executive Officer</span></li>\n    <li><span class=\"a2-av\" aria-hidden=\"true\">II</span><b>Ifeanyi Iwele</b><span>Chief Operating Officer</span></li>\n    <li><span class=\"a2-av\" aria-hidden=\"true\">AO</span><b>Angel Ozougwu</b><span>Head of Research</span></li>\n  </ul>\n  <div class=\"a2-inv\">\n    <h3>For investors</h3>\n    <p>Verisavo is in early access in Lagos, Accra and Nairobi, with more than 500 users on the platform, a community of over 1,000 people and grant funding received. We are happy to share more about where we are going.</p>\n    <button type=\"button\" class=\"obtn solid\" data-page=\"contact\" data-topic=\"Investors\">Contact us</button>\n  </div>\n</section>\n</div>";
+const AB = "<div class=\"ab2\">\n<header class=\"a2-hero\">\n  <p class=\"a2-eb\">About Verisavo</p>\n  <h1 id=\"about-h\">Building the intelligence layer <span>for African markets.</span></h1>\n  <p class=\"a2-lead\">We help businesses, investors and diaspora entrepreneurs make decisions in African markets using evidence they can trace.</p>\n</header>\n\n<section class=\"a2-sec a2-band\" aria-labelledby=\"exist-h\">\n  <div class=\"a2-head\">\n    <p class=\"a2-eb\">Why we exist</p>\n    <h2 id=\"exist-h\">Connecting what is scattered</h2>\n  </div>\n  <div class=\"a2-two\">\n    <article><p class=\"a2-k\">The problem</p><p>Across Africa, valuable market information sits in company data, public records, digital platforms, research and local communities. Much of it never goes online. When a kiosk in Kano runs out of your product, the shopkeeper knows, but your sales report only shows an order that did not come.</p></article>\n    <article><p class=\"a2-k\">Our approach</p><p>Verisavo is designed to connect these pieces, assess the evidence and show the relationships behind market changes. With technology and evidence from the ground, we are building an understanding of African markets that keeps evolving.</p></article>\n  </div>\n</section>\n\n<section class=\"a2-sec\" aria-labelledby=\"believe-h\">\n  <div class=\"a2-head\">\n    <p class=\"a2-eb\">Principles</p>\n    <h2 id=\"believe-h\">What we believe</h2>\n    <p>These principles shape how the platform is designed and how we talk about what it knows. <button type="button" class="hp2-lnk" data-sample>See an Unknown and its sources in the sample answer</button></p>\n  </div>\n  <ol class=\"a2-beliefs\">\n    <li><span>01</span><h3>Evidence before assertion</h3><p>Important conclusions rest on evidence. An answer is not true because a model produced it.</p></li>\n    <li><span>02</span><h3>Context before conclusion</h3><p>A data point means little without where, when, who it applies to and how it was collected.</p></li>\n    <li><span>03</span><h3>Relationships matter</h3><p>Prices, distribution, infrastructure, policy and behaviour shape one another. We look at how the pieces connect.</p></li>\n    <li><span>04</span><h3>Unknown is a valid answer</h3><p>When the evidence cannot answer a question, we say so and name the Intelligence Gap.</p></li>\n    <li><span>05</span><h3>Markets change</h3><p>Understanding is never final. Market Memory is designed to record what changed and which evidence changed it.</p></li>\n    <li><span>06</span><h3>Human decisions stay human</h3><p>Verisavo supports the decision. The people responsible for it make it.</p></li>\n  </ol>\n</section>\n\n<section class=\"a2-sec a2-team\" aria-labelledby=\"team-h\">\n  <div class=\"a2-head a2-head-l\">\n    <p class=\"a2-eb\">Team</p>\n    <h2 id=\"team-h\">Our team</h2>\n  </div>\n  <div class=\"a2-team-copy\">\n    <p>Verisavo brings together expertise in artificial intelligence, market research, data engineering, product development and Ground-Level Intelligence. We work closely with businesses, researchers and local communities on real market challenges.</p>\n    <p>Our ambition goes beyond building another AI product. We are laying the foundation for a connected intelligence layer that makes African markets clearer and easier to understand.</p>\n  </div>\n  <ul class=\"a2-people\" aria-label=\"Leadership\">\n    <li><span class=\"a2-av\" aria-hidden=\"true\">HO</span><b>Henry Oranika</b><span>Founder and CEO</span></li>\n    <li><span class=\"a2-av\" aria-hidden=\"true\">II</span><b>Ifeanyi Iwele</b><span>Chief Operating Officer</span></li>\n    <li><span class=\"a2-av\" aria-hidden=\"true\">AO</span><b>Angel Ozougwu</b><span>Head of Research</span></li>\n  </ul>\n  <div class=\"a2-inv\">\n    <h3>For investors</h3>\n    <p>Verisavo is in early access in Lagos, Accra and Nairobi, with more than 500 users on the platform, a community of over 1,000 people and grant funding received. We are happy to share more about where we are going.</p>\n    <button type=\"button\" class=\"obtn solid\" data-page=\"contact\" data-topic=\"Investors\">Contact us</button>\n  </div>\n</section>\n</div>";
 export default function AboutUsPage() {
   return (
     <section className="pg" id="pg-about-us" aria-labelledby="about-h" aria-hidden="true">
@@ -13,7 +13,7 @@ export default function AboutUsPage() {
         <section className="pg-sec" aria-labelledby="hl-h">
           {" "}
           <div className="intro">
-            <h2 id="hl-h">{"Press"}</h2>
+            <h2 id="hl-h">{"News and updates"}</h2>
             <p>{"News, announcements and moments from the Verisavo team."}</p>
           </div>
           {" "}
@@ -40,7 +40,7 @@ export default function AboutUsPage() {
               {" "}
               <div className="hl-body">
                 {" "}
-                <p className="rs-meta">{"Upcoming webinar · November 2026"}</p>
+                <p className="rs-meta">{"Upcoming · Webinar · November 2026"}</p>
                 {" "}
                 <h3>{"Deciding with incomplete information"}</h3>
                 {" "}
@@ -48,7 +48,7 @@ export default function AboutUsPage() {
                   {"Join us for a live session on separating what the evidence supports from what is still unknown, and on knowing when a question is worth investigating on the ground."}
                 </p>
                 {" "}
-                <button type="button" className="pg-link" data-dialog="access">{"Register interest"}</button>
+                
                 {" "}
               </div>
               {" "}
@@ -112,7 +112,7 @@ export default function AboutUsPage() {
               {" "}
               <div className="hl-body">
                 {" "}
-                <p className="rs-meta">{"Podcast · Coming soon"}</p>
+                <p className="rs-meta">{"Planned · Podcast"}</p>
                 {" "}
                 <h3>{"The Verisavo Podcast"}</h3>
                 {" "}
@@ -151,7 +151,7 @@ export default function AboutUsPage() {
               {" "}
               <div className="hl-body">
                 {" "}
-                <p className="rs-meta">{"Event · September 2026 · Verisavo team"}</p>
+                <p className="rs-meta">{"Published · Event · September 2026"}</p>
                 {" "}
                 <h3>{"Listening first: highlights from our CX session"}</h3>
                 {" "}
@@ -290,7 +290,7 @@ export default function AboutUsPage() {
               {" "}
               <div className="hl-body">
                 {" "}
-                <p className="rs-meta">{"Community · September 2026 · Veritech Learning"}</p>
+                <p className="rs-meta">{"Published · Community · September 2026 · Veritech Learning"}</p>
                 {" "}
                 <h3>{"Reaching 100 students across 5 schools with Veritech Learning"}</h3>
                 {" "}
@@ -350,7 +350,7 @@ export default function AboutUsPage() {
               {" "}
               <div className="hl-body">
                 {" "}
-                <p className="rs-meta">{"Team · September 2026 · Verisavo team"}</p>
+                <p className="rs-meta">{"Published · Team · September 2026"}</p>
                 {" "}
                 <h3>{"Team hangout: time away from the screen"}</h3>
                 {" "}
@@ -377,8 +377,7 @@ export default function AboutUsPage() {
           <p>{"Questions about a market, partnerships or early access? We would like to hear from you."}</p>
           {" "}
           <div className="acts">
-            <button type="button" className="obtn solid" data-page="contact">{"Talk to our team"}</button>
-            <button type="button" className="obtn" data-dialog="access">{"Contact us"}</button>
+            <button type="button" className="obtn solid" data-page="contact">{"Contact our team"}</button>
           </div>
           {" "}
         </section>

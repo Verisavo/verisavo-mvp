@@ -1452,7 +1452,7 @@ async function saveSurvey(status) {
   if (status === 'active' && B.pay.method === 'credits') { try { localStorage.setItem('vs-credits', String(Math.max(0, credits() - B.responses))); } catch (e) {} }
   await put('surveys', id, doc);
   if (status === 'active') { if (INLINE) { try { window.parent.postMessage({ vs: 'task-deployed', id, title: doc.title, target: doc.target, gap: doc.gap || '', gaps: B.gaps || (doc.gap ? [doc.gap] : []), regions: doc.regions, country: doc.country }, '*'); } catch (e) {} } B = null; go('c-survey-' + id); toast(INLINE ? 'Investigation deployed. Results will come back into your conversation as SavoScouts respond.' : 'Investigation deployed. The Verisavo agent is sending it to SavoScouts on WhatsApp.'); }
-  else { if (route().id !== id) go('c-builder-' + id); toast('Draft saved. Find it under Manage investigations → Draft, or on the Set up a task page.'); }
+  else { if (route().id !== id) go('c-builder-' + id); toast('Draft saved. Find it under Manage investigations → Draft, or on the Create a task page.'); }
 }
 /* ---------------- sample workspace (website preview, no shared database) ---------------- */
 function seed() {

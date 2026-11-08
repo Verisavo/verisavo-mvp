@@ -25,8 +25,9 @@ export default function Main() {
           {" "}
           <div className="hero-actions">
             {" "}
-            <button type="button" className="btn btn-rect solid" id="ask-cta">{"Ask Verisavo"}</button>
-            <a className="btn btn-rect plain" href="/contact">{"Contact us"}</a>
+            <p className="prev-lab">{"Interactive preview · sample data"}</p>
+            <button type="button" className="btn btn-rect solid" data-open-sample="">{"Explore a sample answer"}</button>
+            <a className="btn btn-rect plain" href="/contact" data-topic="Early access">{"Request early access"}</a>
             {" "}
           </div>
           {" "}
@@ -182,7 +183,7 @@ export default function Main() {
           {" "}
           <div className="band-head">
             {" "}
-            <h2 id="platform-title">{"Why Verisavo"}</h2>
+            <h2 id="platform-title">{"What you can check for yourself"}</h2>
             {" "}
             <p>
               {"Connect company knowledge, market information and verified evidence from the ground to understand African markets."}

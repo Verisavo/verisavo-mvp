@@ -372,7 +372,7 @@ body.nav-open .side { box-shadow: 20px 0 50px -30px rgba(0,0,0,.5) !important; }
   <a class="brand" href="#introduction"><b>Verisavo</b><span>Docs</span></a>
   <div class="search">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>
-    <input id="q" type="search" placeholder="Search the docs" autocomplete="off" aria-label="Search the docs" aria-controls="results">
+    <input id="q" type="search" placeholder="Search docs" autocomplete="off" aria-label="Search docs" aria-controls="results">
     <kbd>/</kbd>
     <div class="results" id="results" hidden></div>
   </div>
@@ -412,7 +412,7 @@ const svg = (k) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" s
 const card = (href, ic, t, s) => `<a class="cardx" href="#${href}"><span class="ic">${svg(ic)}</span><b>${t}</b><span>${s}</span></a>`;
 const note = (t, kind = "") => `<div class="callout ${kind}">${svg(kind === "warn" ? "warn" : "info")}<p>${t}</p></div>`;
 const prompt = (t, label = "Example question") => `<div class="prompt"><span class="prompt-k">${label}</span><div class="prompt-b">${t}</div></div>`;
-const NOW = '<span class="tag t-now">Available</span>', EA = '<span class="tag t-now">Early access</span>', DEV = '<span class="tag t-dev">In development</span>', PLAN = '<span class="tag t-plan">Planned</span>';
+const NOW = '<span class="tag t-now">Available</span>', EA = '<span class="tag t-now">Early access</span>', DEV = '<span class="tag t-dev">In development</span>', PLAN = '<span class="tag t-plan">Planned</span>', SOON = '<span class="tag t-plan">Coming soon</span>';
 
 const FLOW = `<figure class="figure"><svg class="fig-d" viewBox="0 0 960 268" role="img" aria-label="How evidence moves through Verisavo, from market reality to your decision, with Intelligence Gaps looping back through SavoScouts">
   <defs><marker id="fa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" class="flow-ah"/></marker></defs>
@@ -464,7 +464,7 @@ const ALIAS = {"seven-layers": "how-it-works", "signals": "evidence", "evidence-
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
   <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects scattered market evidence so you can see what is happening, why, and what is still unknown.</p>
-  <div class="cards">${card("quickstart","bolt","Quickstart","Create a free account and ask your first question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, evolve and understand.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
+  <div class="cards">${card("quickstart","bolt","Quickstart","Create a free account and ask your first question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, evolve and decide.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
   <h2 id="problem">The problem it solves</h2>
   <p>The information you need usually exists, in company data, public records, digital platforms, research and what traders know. It rarely adds up, and it is hard to tell which pieces are reliable or current.</p>
   <p>Verisavo connects that evidence, keeps its context and tells you what it cannot answer yet.</p>
@@ -473,16 +473,18 @@ const PAGES = [
    <tr><th>Ask</th><td>Ask in plain language in the web Intelligence Assistant. Early access in Lagos, Accra and Nairobi.</td></tr>
    <tr><th>Evidence</th><td>See the source, place, time and reliability behind an answer. Early access.</td></tr>
    <tr><th>Gaps</th><td>Unanswered questions are named as Intelligence Gaps. Early access.</td></tr>
-   <tr><th>Investigate</th><td>Set up a task and SavoScouts fill the gap with verified Ground-Level Intelligence. Available.</td></tr>
+   <tr><th>Investigate</th><td>Choose Investigate this gap and SavoScouts fill the gap with verified Ground-Level Intelligence. Available.</td></tr>
    <tr><th>Remember</th><td>Market Memory is designed to record how understanding changes. In development.</td></tr>
    <tr><th>Explore scenarios</th><td>Market Simulation will compare outcomes under stated assumptions. Planned.</td></tr>
   </tbody></table></div>
   ${FLOW}
   <h2 id="who">Who it is for</h2>
-  <p>Commercial, strategy and operations teams deciding where to launch, how to price and why sales are changing, from Accra to Nairobi.</p>
+  <p>Businesses deciding where to launch, how to price and why sales are changing; investors checking whether a market opportunity holds up; and diaspora entrepreneurs planning a launch they cannot check in person. <a href="/platform#sample">Explore a sample answer</a> to see how it works.</p>
   ${note("<b>Decisions stay human.</b> Verisavo brings evidence and uncertainty closer to you. You make the decision.")}` },
  { g: "Get started", id: "quickstart", t: "Quickstart", ic: "bolt", crumb: "Get started", body: `
   <p class="intro">Create a free account, ask your first market question and read the answer. It takes about five minutes.</p>
+  <h2 id="preview">Try the web preview</h2>
+  <p>Open the <a href="/platform#sample">sample answer</a> without signing up. It uses sample data for cooking oil in Accra, so you can trace a source, open Unknown and preview the task a SavoScout would receive.</p>
   <h2 id="access">Create your account</h2>
   <ol class="steps">
    <li><b>Choose Ask Verisavo</b><p>Choose <strong>Ask Verisavo</strong> on the website and sign up with your work email or Google.</p></li>
@@ -498,7 +500,7 @@ const PAGES = [
   <h2 id="plans">Early access plans</h2>
   <div class="tbl"><table><thead><tr><th>Plan</th><th>Price</th><th>What you get</th></tr></thead><tbody>
    <tr><th>Free</th><td>$0</td><td>Free to start, with limited questions each month.</td></tr>
-   <tr><th>Business</th><td>$7.99 a month</td><td>For businesses. Investigations are charged separately.</td></tr>
+   <tr><th>Verisavo</th><td>$7.99 a month</td><td>For businesses. Investigations are charged separately.</td></tr>
    <tr><th>Enterprise</th><td>Custom</td><td>For teams with specialised requirements: team access, custom investigation coverage and tailored reporting. Ask us from the pricing page.</td></tr>
    <tr><th>Market investigations</th><td>$1.15 per verified SavoScout response</td><td>You pay only for responses that pass verification. Unused responses stay on your account.</td></tr>
   </tbody></table></div>
@@ -514,7 +516,7 @@ const PAGES = [
    <li><b>Verify: establish what can be trusted</b><p><a href="#verification">Verification</a> is designed to check evidence is reliable enough for its purpose, compare sources, flag inconsistencies and keep uncertainty visible.</p></li>
    <li><b>Connect: show the relationships behind market change</b><p>The <a href="#intelligence-graph">Market Intelligence Network</a> is being built to link evidence across businesses, products, competitors, prices, places and time, with every finding traceable.</p></li>
    <li><b>Evolve: keep up with the market</b><p><a href="#market-memory">Market Memory</a> is designed to record what was known, what changed and which evidence changed it, so earlier conclusions can be revisited.</p></li>
-   <li><b>Understand: support your decision</b><p>You question it all through the <a href="#asking-questions">Verisavo Intelligence Assistant</a>, in early access on the web. It explores explanations, names Intelligence Gaps and helps you weigh options. Your team decides.</p></li>
+   <li><b>Decide: your team makes the call</b><p>You question it all through the <a href="#asking-questions">Verisavo Intelligence Assistant</a>, in early access on the web. It explores explanations, names Intelligence Gaps and helps you weigh options. Your team decides.</p></li>
   </ol>
   ${FLOW}
   <h3 id="principles">Principles</h3>
@@ -790,7 +792,7 @@ const PAGES = [
   <p>SavoScouts receive tasks and send responses on WhatsApp today. SMS, USSD and voice are designed for later, so contributors will not be limited to smartphone users.</p>
   <h3 id="rewards">Rewards</h3>
   <p>SavoScouts earn rewards only for verified work. See <a href="#scout-rewards">SavoScout rewards</a>.</p>
-  ${note("Set up a task from any Intelligence Gap in the Assistant. You pay only for responses that pass verification.")}
+  ${note("Choose Investigate this gap on any Intelligence Gap, or Create a task for a standalone brief. You pay only for responses that pass verification.")}
   <h2 id="scout-rewards">SavoScout rewards</h2>
   <p>Rewards shape the evidence you get back, so the scheme is designed around quality, not volume. ${DEV}</p>
   <h3 id="what-earns">What earns a reward</h3>
@@ -808,7 +810,7 @@ const PAGES = [
   <p>Only SavoScouts are rewarded. The shopkeepers, traders and customers they speak to are never pressured, know who is asking and can decline.</p>
   ${note("Reward amounts, payment methods and eligibility will vary by country and are still being finalised. A separate SavoScouts guide will cover them.")}` },
  { g: "Use Verisavo", id: "market-simulation", t: "Market Simulation", ic: "layers", crumb: "Use Verisavo", body: `
-  <p class="intro">Market Simulation is designed to help you compare possible outcomes under different assumptions before you commit. ${PLAN}</p>
+  <p class="intro">Market Simulation is designed to help you compare possible outcomes under different assumptions before you commit. ${SOON}</p>
   <h2 id="what">What it will do</h2>
   <ul><li>Compare options, such as launching in one Abuja district or two</li><li>Show the assumptions behind each scenario</li><li>Test how sensitive an outcome is to price, distribution or demand</li></ul>
   <h2 id="how">How a scenario is built</h2>
@@ -839,7 +841,7 @@ const PAGES = [
    <tr><th>Intelligence Assistant</th><td>Ask market questions in plain language in your browser.</td><td>${EA}</td></tr>
    <tr><th>Evidence in answers</th><td>Answers show each finding's source and how well it is supported.</td><td>${EA}</td></tr>
    <tr><th>Intelligence Gaps</th><td>Questions the evidence cannot answer are named, with what would close them.</td><td>${EA}</td></tr>
-   <tr><th>SavoScouts investigations</th><td>Set up a task from an Intelligence Gap and get verified Ground-Level Intelligence back.</td><td>${NOW}</td></tr>
+   <tr><th>SavoScouts investigations</th><td>Investigate an Intelligence Gap, or create a standalone task, and get verified Ground-Level Intelligence back.</td><td>${NOW}</td></tr>
    <tr><th>Company Knowledge Base</th><td>Upload your own records privately so answers can use them.</td><td>${NOW}</td></tr>
   </tbody></table></div>
   <h2 id="building">In development</h2>
@@ -850,7 +852,7 @@ const PAGES = [
   </tbody></table></div>
   <h2 id="planned">Planned</h2>
   <div class="tbl"><table><thead><tr><th>Feature</th><th>What it means</th><th>Status</th></tr></thead><tbody>
-   <tr><th>Market Simulation</th><td>Compare possible outcomes under stated assumptions.</td><td>${PLAN}</td></tr>
+   <tr><th>Market Simulation</th><td>Compare possible outcomes under stated assumptions. Shown as Simulator in the workspace.</td><td>${SOON}</td></tr>
    <tr><th>Enterprise features</th><td>Team access and permissions, custom investigation coverage, team workflows and advanced analysis.</td><td>${PLAN}</td></tr>
   </tbody></table></div>
   ${note("No dates are published. A feature moves to early access when it is reliable enough for real decisions.")}` },
@@ -863,8 +865,8 @@ const PAGES = [
   <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>The Intelligence Assistant runs in your browser. WhatsApp is how SavoScouts receive tasks and send their responses.</p></details>
   <details class="faq"><summary>Is my company data shared with other customers?</summary><p>No. Your company data stays private, protected and under your control. See <a href="#privacy">Privacy and your data</a>.</p></details>
   <details class="faq"><summary>What happens when Verisavo does not know?</summary><p>It says so and names the Intelligence Gap. You decide whether to accept the uncertainty, add your own data or investigate.</p></details>
-  <details class="faq"><summary>How much does Verisavo cost?</summary><p>Free is $0, with limited monthly questions. Business is $7.99 a month. Enterprise is priced on request. See <a href="#quickstart">Plans</a>.</p><p>Market investigations cost $1.15 per verified SavoScout response, charged separately. You pay only for responses that pass verification, and unused responses stay on your account. Prices are in US dollars and may change during early access.</p></details>
-  <details class="faq"><summary>Who is Verisavo for?</summary><p>Anyone who needs a clearer view of African markets: consumer goods brands, distributors, retailers, growing businesses, investors, consulting and research firms, and development and public institutions.</p></details>
+  <details class="faq"><summary>How much does Verisavo cost?</summary><p>Free is $0, with limited monthly questions. Verisavo is $7.99 a month. Enterprise is priced on request. See <a href="#quickstart">Plans</a>.</p><p>Market investigations cost $1.15 per verified SavoScout response, charged separately. You pay only for responses that pass verification, and unused responses stay on your account. Prices are in US dollars and may change during early access.</p></details>
+  <details class="faq"><summary>Who is Verisavo for?</summary><p>Businesses, investors and diaspora entrepreneurs making decisions in African markets: consumer goods brands, distributors, retailers, growing businesses, investors, diaspora founders planning a launch, consulting and research firms, and development and public institutions.</p></details>
   <details class="faq"><summary>Can Verisavo predict what will happen?</summary><p>No. Verisavo shows what the evidence supports and what is still unknown. <a href="#market-simulation">Market Simulation</a> is designed to compare possible outcomes under stated assumptions, not to forecast.</p></details>
   <h2 id="glossary">Glossary</h2>
   <dl class="gloss">
@@ -881,6 +883,10 @@ const PAGES = [
    <dt>Verisavo Intelligence Assistant</dt><dd>The conversational way to ask questions and explore evidence.</dd>
    <dt>Client Intelligence</dt><dd>Private information that belongs to your organisation.</dd>
    <dt>Platform Intelligence</dt><dd>Evidence available across Verisavo under its governance rules.</dd>
+   <dt>Ground data</dt><dd>Observations gathered directly from markets by SavoScouts, with their verification status visible.</dd>
+   <dt>Your data</dt><dd>Information your organisation owns, kept privately in your Knowledge Base. In the sample preview it is shown as sample data.</dd>
+   <dt>Market data</dt><dd>Evidence from public records, digital platforms and research, shown with its source.</dd>
+   <dt>Investigation</dt><dd>A task SavoScouts carry out to answer an Intelligence Gap, with its responses and verification status.</dd>
   </dl>` },
 ];
 
@@ -906,7 +912,7 @@ function render(id, anchor) {
   const body = p.body.replace(/<h2 id="([^"]+)">([^<]+)/g, (m, a, t) => `<h2 id="${p.id}--${a}"><a class="h-anchor" href="#${p.id}">${t}</a>`);
   doc.innerHTML = `<p class="crumb">${p.crumb}</p><h1>${p.t}</h1>${body}
     <nav class="pager" aria-label="Previous and next">${prev ? `<a href="#${prev.id}"><small>Previous</small>${prev.t}</a>` : ""}${next ? `<a class="next" href="#${next.id}"><small>Next</small>${next.t}</a>` : ""}</nav>
-    <div class="doc-foot"><div class="helpful"><span>Was this page helpful?</span><button type="button" aria-pressed="false">Yes</button><button type="button" aria-pressed="false">No</button></div><span>Verisavo Docs · early access</span></div>`;
+    <div class="doc-foot"><span>Verisavo Docs · early access</span></div>`;
   document.title = p.t + " · Verisavo Docs";
   side.querySelectorAll("a").forEach(a => a.toggleAttribute("aria-current", a.dataset.id === p.id) || a.dataset.id === p.id && a.setAttribute("aria-current", "page"));
   side.querySelectorAll("a").forEach(a => { if (a.dataset.id === p.id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
