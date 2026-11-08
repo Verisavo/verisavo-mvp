@@ -945,8 +945,8 @@ function cBuilder(r) {
     inner = `<div class="grid g-main"><div class="stack">
       <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation: the place, the instructions and survey questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Describe it in plain words. Verisavo turns it into a task for SavoScouts: the place, the instructions and the evidence questions.'}</p></div>
       ${fromChat ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : `
-      <div class="askbox"><textarea id="b-ai" data-b="ai" rows="3" placeholder="For example: Are kiosks in Kano running out of our 1kg detergent, and why?">${esc(B.ai)}</textarea>
-        <div class="askbar"><span class="faint">${B.prepared ? 'Task prepared below. Change the description and prepare again if needed.' : 'One or two sentences is enough.'}</span><button class="btn" data-act="prepare">${ic.spark}${B.prepared ? 'Prepare again' : 'Prepare task'}</button></div></div>
+      <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="For example: Are kiosks in Kano running out of our 1kg detergent, and why?">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Prepare again' : 'Prepare task'}">${ic.spark}<span>${B.prepared ? 'Prepare again' : 'Prepare'}</span></button></div>
+      <p class="faint askhint">${B.prepared ? 'Task prepared below. Change the description and prepare again if needed.' : 'One or two sentences is enough. Verisavo fills in the rest.'}</p>
       ${B.prepared ? '' : `<div class="field"><span class="flabel faint" style="font-weight:400">Try one of these</span><div class="chips sugg">${GAPS.map((g, i) => `<button type="button" class="chipbtn" data-act="usegap" data-v="${i}">${esc(g.gap)}</button>`).join('')}</div></div>`}`}
       ${showDetails ? `
       ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Task prepared.</b> Verisavo read your description and filled in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
@@ -1395,6 +1395,7 @@ document.addEventListener('input', (e) => {
   if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
   if (d.pay) { B.pay[d.pay] = t.type === 'checkbox' ? t.checked : t.value; if (t.type === 'checkbox') render(); else softRender(); return; }
+  if (d.b === 'ai' && t.tagName === 'TEXTAREA' && t.closest('.askbox')) { t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 160) + 'px'; }
   if (d.b) { B[d.b] = d.b === 'responses' ? Math.max(0, Math.round(Number(t.value) || 0)) : t.value; if (d.b === 'country') { B.countries = t.value ? [t.value] : []; B.regions = B.regions.filter(r => (COUNTRIES[t.value] || []).includes(r)); render(); return; } if (d.rerender || B.step === 0) softRender(); return; }
   if (d.q) { const [i, k] = d.q.split(':'); B.questions[i][k] = t.value; if (k === 'type') { const q = B.questions[i]; if ((t.value === 'single' || t.value === 'multi') && !(q.options || []).length) q.options = ['Option 1', 'Option 2']; render(); } else softRender(); return; }
   if (d.qo) { const [i, j] = d.qo.split(':').map(Number); B.questions[i].options[j] = t.value; return; }
@@ -1587,18 +1588,31 @@ td { border-top-color: var(--line); }
 .happ.inline .hnew { background: var(--primary); border-color: var(--primary); color: #fff; }
 .happ.inline .hnew:hover { background: #2C3656; }
 
-/* task builder: ask first */
-.askbox { background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 28px -18px rgba(31,39,63,.18); padding: 14px 14px 10px 18px; transition: border-color var(--q-t) var(--q-ease), box-shadow var(--q-t) var(--q-ease); }
-.askbox:focus-within { border-color: var(--primary-3); box-shadow: 0 0 0 4px rgba(58,82,146,.12), 0 10px 28px -18px rgba(31,39,63,.18); }
-.askbox textarea { display: block; width: 100%; border: 0; outline: 0; resize: none; background: none; font: inherit; font-size: 16px; line-height: 1.5; color: var(--ink); padding: 4px 0 8px; min-height: 72px; }
+/* task builder: ask first, compact and quiet */
+.askbox { display: flex; align-items: flex-end; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); padding: 8px 8px 8px 16px; transition: border-color var(--q-t) var(--q-ease), box-shadow var(--q-t) var(--q-ease); }
+.askbox:focus-within { border-color: var(--primary-3); box-shadow: 0 0 0 4px rgba(58,82,146,.12); }
+.askbox textarea { flex: 1 1 auto; display: block; width: auto; min-width: 0; border: 0; outline: 0; resize: none; background: none; font: inherit; font-size: 15px; line-height: 1.5; color: var(--ink); padding: 8px 0; min-height: 40px; max-height: 160px; height: 40px; overflow-y: hidden; }
 .askbox textarea::placeholder { color: var(--ink-3); }
 .askbox textarea:focus { box-shadow: none; }
-.askbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.askbar .faint { font-size: 12.5px; }
-.askbar .btn svg { width: 15px; height: 15px; }
-.chips.sugg .chipbtn { border-radius: 999px; padding: 8px 14px; height: auto; white-space: normal; text-align: left; line-height: 1.3; }
+.askbox .askgo { flex: none; height: 36px; border-radius: 10px; padding: 0 12px; gap: 6px; }
+.askbox .askgo svg { width: 15px; height: 15px; }
+.askhint { margin: -6px 0 0; font-size: 12.5px; }
+.chips.sugg .chipbtn { border-radius: 999px; padding: 7px 13px; height: auto; white-space: normal; text-align: left; line-height: 1.3; font-size: 13px; }
 .prepnote { background: var(--primary-100); border-color: transparent; }
 .prepnote svg { color: var(--primary); }
+/* the whole Set up a task page: narrower column, calmer rhythm */
+.happ.inline .g-main { grid-template-columns: minmax(0, 1fr) 272px; gap: 28px; align-items: start; }
+@media (max-width: 1100px) { .happ.inline .g-main { grid-template-columns: 1fr; } }
+.happ.inline .stepper { padding: 2px 0 14px; }
+.happ.inline .field { gap: 6px; }
+.happ.inline .field label, .happ.inline .flabel { font-size: 13px; color: var(--ink-2); font-weight: 500; }
+.happ.inline .in, .happ.inline input.in, .happ.inline select.in { height: 40px; padding: 0 12px; font-size: 14px; }
+.happ.inline textarea.in { min-height: 72px; padding: 9px 12px; font-size: 14px; }
+.happ.inline .chipbtn { height: 32px; padding: 0 12px; font-size: 13px; border-radius: 8px; }
+.happ.inline .note { padding: 10px 12px; font-size: 13px; border-radius: 10px; }
+.happ.inline .kv { padding: 8px 0; font-size: 13px; }
+.happ.inline h2 { font-size: 20px !important; }
+@media (max-width: 640px) { .askbox { padding: 6px 6px 6px 12px; } .askbox .askgo span { display: none; } .askbox .askgo { width: 36px; padding: 0; justify-content: center; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }
 /* <<< quiet system v1 */
 </style>
