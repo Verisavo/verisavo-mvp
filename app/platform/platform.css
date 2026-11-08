@@ -2539,6 +2539,20 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main.vapx-on > .va-body{flex:1 1 auto!important;margin-top:0!important;padding:0 24px!important;display:flex!important;flex-direction:column!important}
 #va .va-main.vapx-on > .va-dock{margin-bottom:0!important;padding:0 24px 12px!important}
 #va .va-main.vapx-on > .va-body > *:not(.vapx), #va .va-main.vapx-on > .va-dock > *:not(.vapx){display:none!important}
+/* the host page uses some of the same class names (.ans, .btn, .foot, .dlg, .ok, .x…): undo what leaks through */
+#va .va-main .vapx .ans, #va .va-main .sheet .ans{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+#va .va-main :where(.btn){min-height:0;opacity:1;text-decoration:none;cursor:pointer;line-height:1.2;font-family:inherit;pointer-events:auto}
+#va .va-main :where(.btn:disabled){opacity:.5;cursor:default}
+#va .va-main :where(.btn .ic){width:16px;height:16px;transition:none}
+#va .va-main :where(.btn:hover .ic){transform:none}
+#va .va-main :where(.foot){background:transparent;border-top:0;color:inherit;padding-block:0}
+#va .va-main :where(.row){justify-content:flex-start}
+#va .va-main :where(.ok){width:auto;height:auto;border-radius:0;display:inline;place-items:unset}
+#va .va-main :where(.status){background:transparent}
+#va .va-main :where(.x){flex:none;cursor:pointer;place-items:unset;border-color:transparent}
+#va .va-main :where(.nav){min-height:0}
+#va .va-main :where(.dlg){padding:0;gap:0}
+#va .va-main :where(.vh){white-space:nowrap}
 #va .va-main.vapx-on.inv-on > .va-body, #va .va-main.vapx-on.inv-on > .va-top #topbar, #va .va-main.vapx-on.inv-on > .va-top #topRight, #va .va-main.vapx-on.inv-on > #sheet, #va .va-main.vapx-on.inv-on > #modal{display:none!important}
 #va .va-main.vapx-on.brief-on > .va-top #topbar, #va .va-main.vapx-on.kb-on > .va-top #topbar, #va .va-main.vapx-on.kb-on > .va-top #topRight, #va .va-main.vapx-on.kb-on > .va-body, #va .va-main.vapx-on.kb-on > .va-dock, #va .va-main.vapx-on.kb-on > #sheet{display:none!important}
 #va .va-main.vapx-on.kb-on > .va-top{justify-content:flex-end!important}
@@ -2558,7 +2572,7 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main .sheet{z-index:30;top:64px}
 #va .va-main.vapx-on > .va-hi, #va .va-main.vapx-on > .va-top #va-new2, #va .va-main.vapx-on > .va-top .va-pop-wrap:has(> #va-more){display:none!important}
 #va .va-main.vapx-on .vapx .compose textarea:focus-visible{box-shadow:none!important;outline:0!important}
-#va .va-main.vapx-on .vapx .compose textarea{padding:8px 4px 10px!important}
+#va .va-main.vapx-on .vapx .compose textarea{overflow-y:hidden}
 #va .va-main .scrim{z-index:50;inset:0}
 #va .va-main .toast{z-index:60}
 #va .va-main .pop{z-index:45}
