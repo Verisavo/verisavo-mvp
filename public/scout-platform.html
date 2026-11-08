@@ -947,6 +947,7 @@ function cBuilder(r) {
       ${fromChat ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : `
       <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Generate task again' : 'Generate task'}">${ic.spark}<span>${B.prepared ? 'Generate again' : 'Generate task'}</span></button></div>
       ${B.prepared ? `<p class="faint askhint">Task generated below. Change the description and generate again if needed.</p>` : ''}
+      ${(() => { const dr = B.prepared || B.id ? [] : surveys().filter(x => x.status === 'draft' && !x.sample); return dr.length ? `<div class="field drafts-field"><span class="flabel faint" style="font-weight:400">Your drafts</span><div class="drafts">${dr.slice(0, 5).map(x => `<button type="button" class="draftrow" data-go="c-builder-${x.id}"><span class="dt">${esc(x.title)}</span><span class="dm">${x.questions ? x.questions.length + ' question' + (x.questions.length === 1 ? '' : 's') + ' · ' : ''}saved ${ago(x.updatedAt || x.createdAt)}</span><span class="da">Continue</span></button>`).join('')}</div><p class="faint" style="font-size:12.5px;margin:6px 0 0">All drafts are also under Manage investigations → Draft.</p></div>` : ''; })()}
       ${B.prepared ? '' : `<div class="field sugg-field"><span class="flabel faint" style="font-weight:400">Try one of these</span><div class="chips sugg">${GAPS.map((g, i) => `<button type="button" class="chipbtn" data-act="usegap" data-v="${i}">${esc(g.gap)}</button>`).join('')}</div></div>`}`}
       ${showDetails ? `
       ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Task generated.</b> Verisavo read your description and filled in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
@@ -1438,13 +1439,13 @@ async function saveSurvey(status) {
   if (!B.title.trim()) { B.step = 0; render(); return toast('Add an investigation name first.'); }
   const P = pricing(B.responses, B.timeframe), id = B.id || uid('sv'), prev = S.surveys[id] || {};
   const doc = {title: B.title.trim(), industry: B.industry, country: bCountries()[0] || '', countries: bCountries(), regions: B.regions, location: B.location, brief: B.brief, questions: B.questions, target: B.responses, timeframe: B.timeframe,
-    rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), publishedAt: status === 'active' ? Date.now() : null,
+    rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), updatedAt: Date.now(), publishedAt: status === 'active' ? Date.now() : null,
     deadline: status === 'active' ? Date.now() + tf(B.timeframe)[2] * 86400000 : null, request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: PER_RESPONSE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
   B.id = id;
   if (status === 'active' && B.pay.method === 'credits') { try { localStorage.setItem('vs-credits', String(Math.max(0, credits() - B.responses))); } catch (e) {} }
   await put('surveys', id, doc);
   if (status === 'active') { B = null; go('c-survey-' + id); toast('Investigation deployed. The Verisavo agent is sending it to SavoScouts on WhatsApp.'); }
-  else { if (route().id !== id) go('c-builder-' + id); toast('Draft saved.'); }
+  else { if (route().id !== id) go('c-builder-' + id); toast('Draft saved. Find it under Manage investigations → Draft, or on the Set up a task page.'); }
 }
 /* ---------------- sample workspace (website preview, no shared database) ---------------- */
 function seed() {
@@ -1530,6 +1531,13 @@ button:active:not([disabled]) { transform: scale(.985); }
 .hback:hover { background: var(--field); color: var(--ink); }
 .hback svg { width: 16px; height: 16px; }
 @media (max-width: 760px) { .hback span { display: none; } .hback { padding: 0 7px; } }
+/* drafts on the first step */
+.drafts { display: flex; flex-direction: column; gap: 8px; max-width: 680px; }
+.draftrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "t a" "m a"; align-items: center; column-gap: 12px; text-align: left; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); cursor: pointer; font: inherit; color: var(--ink); }
+.draftrow:hover { background: var(--field); }
+.draftrow .dt { grid-area: t; font-weight: 500; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.draftrow .dm { grid-area: m; font-size: 12.5px; color: var(--ink-2); }
+.draftrow .da { grid-area: a; font-size: 13px; font-weight: 500; color: var(--primary-3); }
 /* header: one quiet toolbar */
 .htop, .happ.inline .htop { background: var(--bg); border-bottom: 1px solid var(--line); min-height: 56px; }
 .happ.inline .htop { padding: 8px 20px; }
