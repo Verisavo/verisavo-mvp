@@ -952,15 +952,15 @@ function cBuilder(r) {
       ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Task prepared.</b> Verisavo read your description and filled in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
       <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
       <div class="field"><label for="b-industry">Industry</label><select class="in" id="b-industry" data-b="industry"><option value="">Select your industry</option>${INDUSTRIES.map(x => `<option ${B.industry === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
-      <div class="field"><span class="flabel">Target countries <span class="faint" style="font-weight:400">· tick one or more</span></span><div class="chips">${Object.keys(COUNTRIES).map(x => `<button type="button" class="chipbtn ${cs.includes(x) ? 'on' : ''}" data-act="togglecountry" data-v="${esc(x)}" aria-pressed="${cs.includes(x)}">${cs.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div></div>
-      <div class="field"><span class="flabel">Target regions or cities</span>${cs.length ? cs.map(c => `<div class="cgroup"><span class="faint" style="display:block;font-size:12.5px;margin:6px 0 6px">${esc(c)}</span><div class="chips">${(COUNTRIES[c] || []).map(x => `<button type="button" class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div></div>`).join('') : '<span class="faint" style="font-size:13px">Tick a country to see its regions.</span>'}</div>
+      <div class="field"><label for="b-country">Target country</label><select class="in" id="b-country" data-b="country" data-rerender="1"><option value="">Select your target country</option>${Object.keys(COUNTRIES).map(x => `<option ${cs[0] === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
+      <div class="field"><span class="flabel">Target regions or cities</span>${cs.length ? `<div class="chips">${(COUNTRIES[cs[0]] || []).map(x => `<button type="button" class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div>` : '<span class="faint" style="font-size:13px">Choose a country to see its regions.</span>'}</div>
       <div class="field"><label for="b-location">Main collection point</label><input class="in" id="b-location" data-b="location" placeholder="For example, Tamale Central Market" value="${esc(B.location)}"></div>
       <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea></div>
       <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<p class="faint" style="font-size:13px">Prefer to fill in the details yourself? <button type="button" class="link" data-act="manual" style="font:inherit;background:none;border:0;padding:0;cursor:pointer">Set up the task manually</button></p>`}
     </div>
     ${showDetails ? `<div class="card" style="align-self:start"><div class="head"><h2 style="font-size:16px">Coverage summary</h2></div>
-      <div class="kv"><span>${cs.length > 1 ? 'Target countries' : 'Target country'}</span><b>${esc(cs.join(', ') || '—')}</b></div><div class="kv"><span>Selected regions</span><b class="num">${B.regions.length}</b></div>
-      <div class="kv"><span>Registered SavoScouts in ${cs.length > 1 ? 'these countries' : 'country'}</span><b class="num">${arr('scouts').filter(s => cs.includes(s.country)).length}</b></div>
+      <div class="kv"><span>Target country</span><b>${esc(cs[0] || '—')}</b></div><div class="kv"><span>Selected regions</span><b class="num">${B.regions.length}</b></div>
+      <div class="kv"><span>Registered SavoScouts in country</span><b class="num">${arr('scouts').filter(s => cs.includes(s.country)).length}</b></div>
       <div class="kv"><span>SavoScouts in selected regions</span><b class="num">${arr('scouts').filter(s => cs.includes(s.country) && B.regions.includes(s.city)).length}</b></div>
       <div class="kv"><span>GPS radius</span><b>100 m</b></div></div>` : ''}</div>`;
   } else if (B.step === 1) {
@@ -994,7 +994,7 @@ function cBuilder(r) {
       <div><h2 style="font-size:22px">Review and deploy</h2><p class="muted" style="margin:2px 0 0">Check the investigation before the Verisavo agent sends it to SavoScouts.</p></div>
       <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Investigation summary</h2>
         ${B.gap ? `<div class="kv"><span>Intelligence Gap</span><b style="text-align:right">${esc(B.gap)}</b></div>` : ''}<div class="kv"><span>Objective</span><b style="text-align:right">${esc(B.ai || '—')}</b></div>
-        <div class="kv"><span>Investigation name</span><b>${esc(B.title)}</b></div><div class="kv"><span>Industry</span><b>${esc(B.industry || '—')}</b></div><div class="kv"><span>${bCountries().length > 1 ? 'Target countries' : 'Target country'}</span><b>${esc(bCountries().join(', '))}</b></div>
+        <div class="kv"><span>Investigation name</span><b>${esc(B.title)}</b></div><div class="kv"><span>Industry</span><b>${esc(B.industry || '—')}</b></div><div class="kv"><span>Target country</span><b>${esc(bCountries()[0] || '')}</b></div>
         <div class="kv"><span>Target regions</span><div class="tags">${B.regions.map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div></div><div class="kv"><span>Collection point</span><b>${esc(B.location || '—')}</b></div>
         <div class="kv"><span>Evidence questions</span><b class="num">${B.questions.length}</b></div><div class="kv"><span>Expected responses</span><b class="num">${fmt(B.responses)}</b></div>
         <div class="kv"><span>Timeframe</span><b>${tf(B.timeframe)[1]}</b></div><div class="kv"><span>GPS verification radius</span><b>100 metres</b></div></div>
@@ -1362,7 +1362,6 @@ document.addEventListener('click', async (e) => {
   else if (a === 'usegap') { const g = GAPS[Number(v)]; prepareFromText(g.gap); Object.assign(B, {title: g.title, industry: g.industry, country: g.country, countries: [g.country], regions: g.regions.slice(), location: g.location, brief: g.brief}); render(); toast('Task prepared from the example. Review and edit before deploying.'); }
   else if (a === 'genbrief') genBrief(id);
   else if (a === 'ref') openSub(id);
-  else if (a === 'togglecountry') { const cs = bCountries(); B.countries = cs.includes(v) ? cs.filter(x => x !== v) : [...cs, v]; B.country = B.countries[0] || ''; B.regions = B.regions.filter(r => B.countries.some(c => (COUNTRIES[c] || []).includes(r))); render(); }
   else if (a === 'toggleregion') { B.regions = B.regions.includes(v) ? B.regions.filter(x => x !== v) : [...B.regions, v]; render(); }
   else if (a === 'bstep') { B.step = Number(v); render(); window.scrollTo(0, 0); }
   else if (a === 'settf') { B.timeframe = v; render(); }
@@ -1396,7 +1395,7 @@ document.addEventListener('input', (e) => {
   if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
   if (d.pay) { B.pay[d.pay] = t.type === 'checkbox' ? t.checked : t.value; if (t.type === 'checkbox') render(); else softRender(); return; }
-  if (d.b) { B[d.b] = d.b === 'responses' ? Math.max(0, Math.round(Number(t.value) || 0)) : t.value; if (d.rerender || B.step === 0) softRender(); return; }
+  if (d.b) { B[d.b] = d.b === 'responses' ? Math.max(0, Math.round(Number(t.value) || 0)) : t.value; if (d.b === 'country') { B.countries = t.value ? [t.value] : []; B.regions = B.regions.filter(r => (COUNTRIES[t.value] || []).includes(r)); render(); return; } if (d.rerender || B.step === 0) softRender(); return; }
   if (d.q) { const [i, k] = d.q.split(':'); B.questions[i][k] = t.value; if (k === 'type') { const q = B.questions[i]; if ((t.value === 'single' || t.value === 'multi') && !(q.options || []).length) q.options = ['Option 1', 'Option 2']; render(); } else softRender(); return; }
   if (d.qo) { const [i, j] = d.qo.split(':').map(Number); B.questions[i].options[j] = t.value; return; }
   if (d.j) { J[d.j] = t.value; if (d.j === 'country') J.city = (COUNTRIES[t.value] || [])[0] || ''; if (t.tagName === 'SELECT' || t.type === 'radio') render(); else { const b = $('#jnext'); if (b) b.disabled = !jValid(); } return; }
