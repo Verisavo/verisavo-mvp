@@ -32,7 +32,7 @@ export default function CareersPage() {
           <div className="ca-mail">
             <span className="ca-addr" id="ca-addr">{"career@verisavo.com"}</span>
             <button type="button" className="obtn" id="ca-copy">{"Copy email"}</button>
-            <a className="obtn solid" href="/apply.html?role=Career%20enquiry">{"Email us "}<span aria-hidden="true">{"→"}</span></a>
+            <a className="obtn solid" href="mailto:career@verisavo.com?subject=Career%20enquiry">{"Email us"}</a>
           </div>
           {" "}
           <p className="ca-note" id="ca-note" aria-live="polite"></p>
@@ -49,7 +49,7 @@ export default function CareersPage() {
             {" "}
           </div>
           {" "}
-          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><button type="button" data-page="research" data-tab="research">{"Insights"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="community">{"Community"}</button><button type="button" data-page="contact">{"Contact us"}</button></nav>
+          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><button type="button" data-page="research" data-tab="research">{"Insights"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="community">{"Become a SavoScout"}</button><button type="button" data-page="contact">{"Contact us"}</button></nav>
           <div className="foot-bar">
             {" "}
             <span>{"© 2026 Verisavo. All rights reserved."}</span>

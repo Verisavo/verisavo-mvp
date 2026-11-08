@@ -29,7 +29,7 @@ export default function Header() {
             </svg>
           </button>
           {" "}
-          <button type="button" className="login" data-login="">{"Log in"}</button>
+          <button type="button" className="login" data-login="">{"Sign in"}</button>
           {" "}
           <button type="button" className="vmenu" id="vmenu-btn" aria-expanded="false" aria-controls="vmenu">
             <span id="vmenu-lab">{"Menu"}</span>

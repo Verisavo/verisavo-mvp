@@ -34,7 +34,7 @@ export default function ResearchPage() {
           {" "}
           <div className="rs-grid" id="rs-grid">
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's Macro-Economic Outlook, open study details" data-title="Africa's Macro-Economic Outlook" data-cat="Research" style={{ "--i": "0" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's macroeconomic outlook, open study details" data-title="Africa's macroeconomic outlook" data-cat="Research" style={{ "--i": "0" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -61,15 +61,15 @@ export default function ResearchPage() {
               {" "}
               <p className="rs-meta">{"Research · 12 min read"}</p>
               {" "}
-              <h3>{"Africa's Macro-Economic Outlook"}</h3>
+              <h3>{"Africa's macroeconomic outlook"}</h3>
               {" "}
-              <p className="rs-sub">{"Growth, Risk, and Opportunity in a Fragmented Continent."}</p>
+              <p className="rs-sub">{"Growth, risk and opportunity across 54 economies."}</p>
               {" "}
               <div className="rs-cta"><span className="rs-soon">{"Coming soon"}</span></div>
               {" "}
             </article>
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="Navigating Africa's Business Landscape, open study details" data-title="Navigating Africa's Business Landscape" data-cat="Market Operations" style={{ "--i": "1" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="Doing business across Africa's markets, open study details" data-title="Doing business across Africa's markets" data-cat="Market Operations" style={{ "--i": "1" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -110,15 +110,15 @@ export default function ResearchPage() {
               {" "}
               <p className="rs-meta">{"Market Operations · 12 min read"}</p>
               {" "}
-              <h3>{"Navigating Africa's Business Landscape"}</h3>
+              <h3>{"Doing business across Africa's markets"}</h3>
               {" "}
-              <p className="rs-sub">{"Context, Culture, and Commercial Reality across the mosaic of markets."}</p>
+              <p className="rs-sub">{"Context, culture and commercial reality, market by market."}</p>
               {" "}
               <div className="rs-cta"><span className="rs-soon">{"Coming soon"}</span></div>
               {" "}
             </article>
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="AI and Productivity in Africa, open study details" data-title="AI and Productivity in Africa" data-cat="Technology" style={{ "--i": "2" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="AI and productivity in Africa, open study details" data-title="AI and productivity in Africa" data-cat="Technology" style={{ "--i": "2" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -184,15 +184,15 @@ export default function ResearchPage() {
               {" "}
               <p className="rs-meta">{"Technology · 11 min read"}</p>
               {" "}
-              <h3>{"AI and Productivity in Africa"}</h3>
+              <h3>{"AI and productivity in Africa"}</h3>
               {" "}
-              <p className="rs-sub">{"Unlocking Growth Beyond Automation: AI as an augmentation and coordination layer."}</p>
+              <p className="rs-sub">{"Beyond automation: AI as a way to coordinate work and support people."}</p>
               {" "}
               <div className="rs-cta"><span className="rs-soon">{"Coming soon"}</span></div>
               {" "}
             </article>
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="Private Capital in Africa, open study details" data-title="Private Capital in Africa" data-cat="Finance" style={{ "--i": "3" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="Private capital in Africa, open study details" data-title="Private capital in Africa" data-cat="Finance" style={{ "--i": "3" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -246,15 +246,15 @@ export default function ResearchPage() {
               {" "}
               <p className="rs-meta">{"Finance · 10 min read"}</p>
               {" "}
-              <h3>{"Private Capital in Africa"}</h3>
+              <h3>{"Private capital in Africa"}</h3>
               {" "}
-              <p className="rs-sub">{"Risk, Returns, and the Reality of deals succeeding or failing on the ground."}</p>
+              <p className="rs-sub">{"Risk, returns and why deals succeed or fail on the ground."}</p>
               {" "}
               <div className="rs-cta"><span className="rs-soon">{"Coming soon"}</span></div>
               {" "}
             </article>
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's Urban Shift, open study details" data-title="Africa's Urban Shift" data-cat="Consumer Behaviour" style={{ "--i": "4" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's urban shift, open study details" data-title="Africa's urban shift" data-cat="Consumer Behaviour" style={{ "--i": "4" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -340,7 +340,7 @@ export default function ResearchPage() {
               {" "}
               <p className="rs-meta">{"Consumer Behaviour · 9 min read"}</p>
               {" "}
-              <h3>{"Africa's Urban Shift"}</h3>
+              <h3>{"Africa's urban shift"}</h3>
               {" "}
               <p className="rs-sub">{"How young Africans and rising cities are redefining brand loyalty and power."}</p>
               {" "}
@@ -348,7 +348,7 @@ export default function ResearchPage() {
               {" "}
             </article>
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's Critical Minerals Opportunity, open study details" data-title="Africa's Critical Minerals Opportunity" data-cat="Energy & Infrastructure" style={{ "--i": "5" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's critical minerals, open study details" data-title="Africa's critical minerals" data-cat="Energy & Infrastructure" style={{ "--i": "5" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -459,7 +459,7 @@ export default function ResearchPage() {
               {" "}
               <p className="rs-meta">{"Energy & Infrastructure · 12 min read"}</p>
               {" "}
-              <h3>{"Africa's Critical Minerals Opportunity"}</h3>
+              <h3>{"Africa's critical minerals"}</h3>
               {" "}
               <p className="rs-sub">{"The global race for minerals and Africa's path from extraction to value creation."}</p>
               {" "}
@@ -467,7 +467,7 @@ export default function ResearchPage() {
               {" "}
             </article>
             {" "}
-            <article className="rs-card" tabIndex="0" role="button" aria-label="Harnessing Africa's $2 Trillion Informal Economy, open study details" data-title="Harnessing Africa's $2 Trillion Informal Economy" data-cat="Economy" style={{ "--i": "6" }}>
+            <article className="rs-card" tabIndex="0" role="button" aria-label="Africa's informal economy: what official data misses, open study details" data-title="Africa's informal economy: what official data misses" data-cat="Economy" style={{ "--i": "6" }}>
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -720,9 +720,9 @@ export default function ResearchPage() {
               {" "}
               <p className="rs-meta">{"Economy · 10 min read"}</p>
               {" "}
-              <h3>{"Harnessing Africa's $2 Trillion Informal Economy"}</h3>
+              <h3>{"Africa's informal economy: what official data misses"}</h3>
               {" "}
-              <p className="rs-sub">{"Unlocking Value from Informal Markets."}</p>
+              <p className="rs-sub">{"How much everyday commerce goes uncounted, and how to see it."}</p>
               {" "}
               <div className="rs-cta"><span className="rs-soon">{"Coming soon"}</span></div>
               {" "}
@@ -1105,7 +1105,7 @@ export default function ResearchPage() {
           <h2 id="rs-cta-h">{"Have a market question "}<span className="acc">{"of your own?"}</span></h2>
           {" "}
           <div className="acts">
-            <button type="button" className="obtn solid" data-ask="">{"Ask Verisavo "}<span aria-hidden="true">{"→"}</span></button>
+            <button type="button" className="obtn solid" data-ask="">{"Ask Verisavo"}</button>
             <button type="button" className="obtn" data-page="contact">{"Talk to our team"}</button>
           </div>
           {" "}
@@ -1121,7 +1121,7 @@ export default function ResearchPage() {
             {" "}
           </div>
           {" "}
-          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><button type="button" data-page="research" data-tab="research">{"Insights"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="community">{"Community"}</button><button type="button" data-page="contact">{"Contact us"}</button></nav>
+          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><button type="button" data-page="research" data-tab="research">{"Insights"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="community">{"Become a SavoScout"}</button><button type="button" data-page="contact">{"Contact us"}</button></nav>
           <div className="foot-bar">
             {" "}
             <span>{"© 2026 Verisavo. All rights reserved."}</span>

@@ -16,6 +16,8 @@ export default function Header() {
           </svg>
         </button>
         {" "}
+        <button type="button" className="pa-ask" data-ask="">{"Ask Verisavo"}</button>
+        {" "}
         <button type="button" className="pa" data-dialog="access">{"Contact us"}</button>
         {" "}
         <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu">

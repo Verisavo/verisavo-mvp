@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -290,7 +290,7 @@ dl.gloss dd { color: var(--body); }
 .tbl thead th { font: 600 .8125rem/1.3 var(--sans) !important; letter-spacing: 0 !important; text-transform: none !important; color: #5B6478 !important; }
 .callout:not(.warn) { background: #F4F6FA !important; border: 1px solid #E9EDF3 !important; }
 .callout:not(.warn) svg { color: #1F273F !important; }
-.gf-k { fill: #8A93A6 !important; }
+.gf-k { fill: #5B6478 !important; }
 .side a[aria-current="page"], .side a.on, .side .on > a { color: #1F273F !important; }
 /* docs: phones and tablets */
 @media (max-width: 640px) {
@@ -317,7 +317,7 @@ dl.gloss dd { color: var(--body); }
   .tbl table.stk tr { padding: 12px 14px; border-top: 1px solid var(--line); }
   .tbl table.stk tr:first-child { border-top: 0; }
   .tbl table.stk td { border: 0 !important; padding: 3px 0 !important; }
-  .tbl table.stk td::before { content: attr(data-l); display: block; font: 600 .75rem/1.5 var(--sans); color: #8A93A6; }
+  .tbl table.stk td::before { content: attr(data-l); display: block; font: 600 .75rem/1.5 var(--sans); color: #5B6478; }
   .tbl table.stk td:first-child::before { display: none; }
   .tbl table.stk td:first-child { font-weight: 600; color: var(--ink); padding-bottom: 6px !important; }
 }
@@ -464,16 +464,16 @@ const ALIAS = {"seven-layers": "how-it-works", "signals": "evidence", "evidence-
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
   <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects scattered market evidence so you can see what is happening, why, and what is still unknown.</p>
-  <div class="cards">${card("quickstart","bolt","Quickstart","Get early access and ask your first question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, evolve and understand.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
+  <div class="cards">${card("quickstart","bolt","Quickstart","Create a free account and ask your first question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, evolve and understand.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
   <h2 id="problem">The problem it solves</h2>
   <p>The information you need usually exists, in company data, public records, digital platforms, research and what traders know. It rarely adds up, and it is hard to tell which pieces are reliable or current.</p>
   <p>Verisavo connects that evidence, keeps its context and tells you what it cannot answer yet.</p>
   <h2 id="what-it-does">What you can do</h2>
   <div class="tbl"><table><thead><tr><th>Capability</th><th>What it means for you</th></tr></thead><tbody>
-   <tr><th>Ask</th><td>Ask in plain language on WhatsApp. Early access. Web app in development.</td></tr>
+   <tr><th>Ask</th><td>Ask in plain language in the web Intelligence Assistant. Early access in Lagos, Accra and Nairobi.</td></tr>
    <tr><th>Evidence</th><td>See the source, place, time and reliability behind an answer. Early access.</td></tr>
    <tr><th>Gaps</th><td>Unanswered questions are named as Intelligence Gaps. Early access.</td></tr>
-   <tr><th>Investigate</th><td>SavoScouts are being built to fill a gap with verified Ground-Level Intelligence. In development.</td></tr>
+   <tr><th>Investigate</th><td>Set up a task and SavoScouts fill the gap with verified Ground-Level Intelligence. Available.</td></tr>
    <tr><th>Remember</th><td>Market Memory is designed to record how understanding changes. In development.</td></tr>
    <tr><th>Explore scenarios</th><td>Market Simulation will compare outcomes under stated assumptions. Planned.</td></tr>
   </tbody></table></div>
@@ -482,12 +482,12 @@ const PAGES = [
   <p>Commercial, strategy and operations teams deciding where to launch, how to price and why sales are changing, from Accra to Nairobi.</p>
   ${note("<b>Decisions stay human.</b> Verisavo brings evidence and uncertainty closer to you. You make the decision.")}` },
  { g: "Get started", id: "quickstart", t: "Quickstart", ic: "bolt", crumb: "Get started", body: `
-  <p class="intro">Get early access, ask your first market question and read the answer. It takes about five minutes.</p>
-  <h2 id="access">Get early access</h2>
+  <p class="intro">Create a free account, ask your first market question and read the answer. It takes about five minutes.</p>
+  <h2 id="access">Create your account</h2>
   <ol class="steps">
-   <li><b>Enter your WhatsApp number</b><p>Choose <strong>Get early access</strong> on the website and add your number.</p></li>
-   <li><b>Confirm the code</b><p>Enter the six-digit code we send you on WhatsApp.</p></li>
-   <li><b>Open Verisavo</b><p>Follow the link to start a WhatsApp conversation. Web sign-in comes later.</p></li>
+   <li><b>Choose Ask Verisavo</b><p>Choose <strong>Ask Verisavo</strong> on the website and sign up with your work email or Google.</p></li>
+   <li><b>Add your company data (optional)</b><p>Create a private Knowledge Base and upload files such as sales or delivery records. Only your organisation can see them.</p></li>
+   <li><b>Open the Intelligence Assistant</b><p>You land in the Assistant in your browser, ready for your first question.</p></li>
   </ol>
   <h2 id="first-question">Ask your first question</h2>
   <p>Start with a decision you face, and name the place and time.</p>
@@ -497,10 +497,10 @@ const PAGES = [
   <ul><li><strong>What the evidence supports</strong>, separate from what is inferred or <a href="#intelligence-states">unknown</a>.</li><li><strong>Where it comes from</strong>: source, place, time and method.</li><li><strong>What conflicts</strong>: disagreeing evidence stays visible.</li><li><strong>What is still unknown</strong>: questions the evidence cannot answer yet.</li></ul>
   <h2 id="plans">Early access plans</h2>
   <div class="tbl"><table><thead><tr><th>Plan</th><th>Price</th><th>What you get</th></tr></thead><tbody>
-   <tr><th>Community</th><td>$0</td><td>Free to start, with limited questions each month.</td></tr>
-   <tr><th>Verisavo</th><td>$7.99 a month</td><td>For businesses. Investigations are charged separately.</td></tr>
-   <tr><th>Enterprise</th><td>Custom</td><td>For organisations needing continuous market intelligence. Ask us from the pricing page.</td></tr>
-   <tr><th>Market investigations</th><td>$1.15 per verified SavoScout response</td><td>You pay only for responses that pass verification. Unused responses stay on your account. In development.</td></tr>
+   <tr><th>Free</th><td>$0</td><td>Free to start, with limited questions each month.</td></tr>
+   <tr><th>Business</th><td>$7.99 a month</td><td>For businesses. Investigations are charged separately.</td></tr>
+   <tr><th>Enterprise</th><td>Custom</td><td>For teams with specialised requirements: team access, custom investigation coverage and tailored reporting. Ask us from the pricing page.</td></tr>
+   <tr><th>Market investigations</th><td>$1.15 per verified SavoScout response</td><td>You pay only for responses that pass verification. Unused responses stay on your account.</td></tr>
   </tbody></table></div>
   <p>Prices are in US dollars. Early access prices may change.</p>
   <h2 id="next">Next steps</h2>
@@ -514,7 +514,7 @@ const PAGES = [
    <li><b>Verify: establish what can be trusted</b><p><a href="#verification">Verification</a> is designed to check evidence is reliable enough for its purpose, compare sources, flag inconsistencies and keep uncertainty visible.</p></li>
    <li><b>Connect: show the relationships behind market change</b><p>The <a href="#intelligence-graph">Market Intelligence Network</a> is being built to link evidence across businesses, products, competitors, prices, places and time, with every finding traceable.</p></li>
    <li><b>Evolve: keep up with the market</b><p><a href="#market-memory">Market Memory</a> is designed to record what was known, what changed and which evidence changed it, so earlier conclusions can be revisited.</p></li>
-   <li><b>Understand: support your decision</b><p>You question it all through the <a href="#asking-questions">Verisavo Intelligence Assistant</a>, in early access on WhatsApp. It explores explanations, names Intelligence Gaps and helps you weigh options. Your team decides.</p></li>
+   <li><b>Understand: support your decision</b><p>You question it all through the <a href="#asking-questions">Verisavo Intelligence Assistant</a>, in early access on the web. It explores explanations, names Intelligence Gaps and helps you weigh options. Your team decides.</p></li>
   </ol>
   ${FLOW}
   <h3 id="principles">Principles</h3>
@@ -541,7 +541,7 @@ const PAGES = [
    <tr><th>Verification</th><td>Designed to check evidence is fit for purpose through cross-source comparison, contributor reliability and contradiction detection. In development.</td></tr>
    <tr><th>Market Intelligence Network</th><td>Being built to link businesses, products, prices, places and events to the evidence behind each link. In development.</td></tr>
    <tr><th>Market Memory</th><td>Designed to record what was known, what changed and which evidence changed it. In development.</td></tr>
-   <tr><th>Intelligence Assistant</th><td>Ask questions, explore evidence and see what is unknown. Early access on WhatsApp, web app in development.</td></tr>
+   <tr><th>Intelligence Assistant</th><td>Ask questions, explore evidence and see what is unknown. Early access on the web.</td></tr>
    <tr><th>Market Simulation</th><td>Will explore outcomes under stated assumptions. Planned.</td></tr>
   </tbody></table></div>
   <h2 id="sources">Where the evidence comes from</h2>
@@ -773,7 +773,7 @@ const PAGES = [
  { g: "Use Verisavo", id: "savoscouts", t: "SavoScouts", ic: "pin", crumb: "Use Verisavo", body: `
   <p class="intro">SavoScouts gather Ground-Level Intelligence when existing evidence cannot answer your question, and are rewarded only for verified work.</p>
   <h2 id="savoscouts">SavoScouts</h2>
-  <p>SavoScouts are Verisavo's network of local contributors. They are being built to answer questions such as this week's price of 5-litre cooking oil in three Kumasi markets. ${DEV}</p>
+  <p>SavoScouts are Verisavo's network of local contributors. They answer questions such as this week's price of 5-litre cooking oil in three Kumasi markets. ${NOW}</p>
   <h3 id="lifecycle">How an investigation works</h3>
   <ol class="steps">
    <li><b>Intelligence Gap</b><p>A specific question existing evidence cannot answer.</p></li>
@@ -787,10 +787,10 @@ const PAGES = [
   <p>Each verified SavoScout response costs $1.15, charged separately from your <a href="#quickstart">plan</a>. You pay only for responses that pass verification, and unused responses stay on your account. Brief 40 shelf checks in Accra, 36 pass, and you pay $41.40.</p>
   <p>Prices are in US dollars and may change during early access.</p>
   <h3 id="channels">Capture channels</h3>
-  <p>SavoScouts can report through the mobile app, WhatsApp, SMS, USSD or voice, depending on the deployment, so you are not limited to smartphone users.</p>
+  <p>SavoScouts receive tasks and send responses on WhatsApp today. SMS, USSD and voice are designed for later, so contributors will not be limited to smartphone users.</p>
   <h3 id="rewards">Rewards</h3>
   <p>SavoScouts earn rewards only for verified work. See <a href="#scout-rewards">SavoScout rewards</a>.</p>
-  ${note("Investigations are in development. Get early access to hear when they open.")}
+  ${note("Set up a task from any Intelligence Gap in the Assistant. You pay only for responses that pass verification.")}
   <h2 id="scout-rewards">SavoScout rewards</h2>
   <p>Rewards shape the evidence you get back, so the scheme is designed around quality, not volume. ${DEV}</p>
   <h3 id="what-earns">What earns a reward</h3>
@@ -834,16 +834,16 @@ const PAGES = [
   <ul><li><strong>Decisions stay human.</strong> Verisavo supports your decision. The people responsible make it.</li><li><strong>No false certainty.</strong> Findings show how well the evidence supports them, and unknowns stay visible.</li><li><strong>Markets, not individuals.</strong> Field work favours observations about markets over information about people, and asks for consent first.</li><li><strong>Africa is not one market.</strong> Evidence carries its geography, so a finding from Kumasi is not stretched to cover Ghana, let alone a continent.</li></ul>` },
  { g: "Reference", id: "roadmap", t: "Roadmap", ic: "clock", crumb: "Reference", body: `
   <p class="intro">Where each part of Verisavo stands today, so you know what you can use now.</p>
-  <h2 id="now">In early access</h2>
+  <h2 id="now">Available and in early access</h2>
   <div class="tbl"><table><thead><tr><th>Feature</th><th>What it means</th><th>Status</th></tr></thead><tbody>
-   <tr><th>Intelligence Assistant on WhatsApp</th><td>Ask market questions in plain language on WhatsApp.</td><td>${EA}</td></tr>
+   <tr><th>Intelligence Assistant</th><td>Ask market questions in plain language in your browser.</td><td>${EA}</td></tr>
    <tr><th>Evidence in answers</th><td>Answers show each finding's source and how well it is supported.</td><td>${EA}</td></tr>
    <tr><th>Intelligence Gaps</th><td>Questions the evidence cannot answer are named, with what would close them.</td><td>${EA}</td></tr>
+   <tr><th>SavoScouts investigations</th><td>Set up a task from an Intelligence Gap and get verified Ground-Level Intelligence back.</td><td>${NOW}</td></tr>
+   <tr><th>Company Knowledge Base</th><td>Upload your own records privately so answers can use them.</td><td>${NOW}</td></tr>
   </tbody></table></div>
   <h2 id="building">In development</h2>
   <div class="tbl"><table><thead><tr><th>Feature</th><th>What it means</th><th>Status</th></tr></thead><tbody>
-   <tr><th>Web app</th><td>The Intelligence Assistant in your browser, alongside WhatsApp.</td><td>${DEV}</td></tr>
-   <tr><th>SavoScouts investigations</th><td>Targeted Ground-Level Intelligence for a specific Intelligence Gap.</td><td>${DEV}</td></tr>
    <tr><th>Verification</th><td>Systematic reliability checks across sources and contributors.</td><td>${DEV}</td></tr>
    <tr><th>Market Intelligence Network</th><td>Explore how businesses, products, places and events connect.</td><td>${DEV}</td></tr>
    <tr><th>Market Memory</th><td>See how understanding of a market changes over time.</td><td>${DEV}</td></tr>
@@ -851,7 +851,7 @@ const PAGES = [
   <h2 id="planned">Planned</h2>
   <div class="tbl"><table><thead><tr><th>Feature</th><th>What it means</th><th>Status</th></tr></thead><tbody>
    <tr><th>Market Simulation</th><td>Compare possible outcomes under stated assumptions.</td><td>${PLAN}</td></tr>
-   <tr><th>Enterprise features</th><td>Market investigations, a company knowledge base, team workflows, advanced analysis and targeted Ground-Level Intelligence.</td><td>${PLAN}</td></tr>
+   <tr><th>Enterprise features</th><td>Team access and permissions, custom investigation coverage, team workflows and advanced analysis.</td><td>${PLAN}</td></tr>
   </tbody></table></div>
   ${note("No dates are published. A feature moves to early access when it is reliable enough for real decisions.")}` },
  { g: "Reference", id: "faq", t: "FAQ and glossary", ic: "chat", crumb: "Reference", body: `
@@ -859,11 +859,11 @@ const PAGES = [
   <h2 id="faq">FAQ</h2>
   <details class="faq"><summary>How is Verisavo different from a general AI assistant?</summary><p>Answers are built from connected market evidence and are designed to show their sources, their reliability and what is still unknown. As SavoScouts come online, you will be able to investigate gaps on the ground.</p></details>
   <details class="faq"><summary>How does Verisavo connect the evidence?</summary><p>Through the <a href="#intelligence-graph">Market Intelligence Network</a>. It is being built to link businesses, products, prices, places and events, each link tied to its evidence and date. A connection shows where to look, not what caused a change.</p></details>
-  <details class="faq"><summary>Which markets does Verisavo cover?</summary><p>African markets, starting with selected cities. Coverage grows as evidence builds up.</p></details>
-  <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>Yes. The Verisavo Intelligence Assistant is in early access on WhatsApp. A web app is in development.</p></details>
+  <details class="faq"><summary>Which markets does Verisavo cover?</summary><p>Early access starts in Lagos, Accra and Nairobi. You can ask about other places, and answers will say where evidence is thin. Coverage grows as evidence builds up.</p></details>
+  <details class="faq"><summary>Can I use Verisavo on WhatsApp?</summary><p>The Intelligence Assistant runs in your browser. WhatsApp is how SavoScouts receive tasks and send their responses.</p></details>
   <details class="faq"><summary>Is my company data shared with other customers?</summary><p>No. Your company data stays private, protected and under your control. See <a href="#privacy">Privacy and your data</a>.</p></details>
   <details class="faq"><summary>What happens when Verisavo does not know?</summary><p>It says so and names the Intelligence Gap. You decide whether to accept the uncertainty, add your own data or investigate.</p></details>
-  <details class="faq"><summary>How much does Verisavo cost?</summary><p>Community is free, with limited monthly questions. Verisavo is $7.99 a month for businesses. Enterprise is priced on request. See <a href="#quickstart">Plans</a>.</p><p>Market investigations, once they open, cost $1.15 per verified SavoScout response, charged separately. You pay only for responses that pass verification, and unused responses stay on your account. Prices are in US dollars and may change during early access.</p></details>
+  <details class="faq"><summary>How much does Verisavo cost?</summary><p>Free is $0, with limited monthly questions. Business is $7.99 a month. Enterprise is priced on request. See <a href="#quickstart">Plans</a>.</p><p>Market investigations cost $1.15 per verified SavoScout response, charged separately. You pay only for responses that pass verification, and unused responses stay on your account. Prices are in US dollars and may change during early access.</p></details>
   <details class="faq"><summary>Who is Verisavo for?</summary><p>Anyone who needs a clearer view of African markets: consumer goods brands, distributors, retailers, growing businesses, investors, consulting and research firms, and development and public institutions.</p></details>
   <details class="faq"><summary>Can Verisavo predict what will happen?</summary><p>No. Verisavo shows what the evidence supports and what is still unknown. <a href="#market-simulation">Market Simulation</a> is designed to compare possible outcomes under stated assumptions, not to forecast.</p></details>
   <h2 id="glossary">Glossary</h2>
