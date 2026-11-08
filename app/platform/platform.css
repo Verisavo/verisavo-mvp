@@ -2129,3 +2129,192 @@ html body :is(.lf-top-btn, .foot-top):not(#_a):not(#_b) { display: none !importa
 html body .pg .pg-in:has(> .pg-foot):not(#_a):not(#_b) { padding-bottom: 0 !important; margin-bottom: 0 !important; }
 html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 32px) !important; }
 /* <<< minimal footer v1 */
+/* >>> quiet system v1 */
+/* Verisavo Assistant: a quiet, Apple-style system. One ink, one brand colour, hairlines instead of shadows,
+   a 4-pt spacing grid, Inter set like SF, and motion that only answers a person's action. */
+#va {
+  --q-ink: #1D1D1F; --q-ink2: #6E6E73; --q-ink3: #8E8E93;
+  --q-line: rgba(0,0,0,.08); --q-line2: rgba(0,0,0,.12);
+  --q-fill: #F5F5F7; --q-fill2: #EBEBED; --q-white: #FFFFFF;
+  --q-brand: #1F273F; --q-brand2: #2C3656; --q-link: #3A5292; --q-tint: rgba(31,39,63,.07); --q-ring: rgba(58,82,146,.18);
+  --q-ok: #1D7F52; --q-ok-bg: #E7F5EC; --q-warn: #A85A0A; --q-warn-bg: #FFF4E3; --q-err: #B9304A; --q-err-bg: #FCEBEE;
+  --q-r1: 6px; --q-r2: 8px; --q-r3: 10px; --q-r4: 12px; --q-r5: 16px;
+  --q-ease: cubic-bezier(.2, 0, 0, 1); --q-t: 160ms;
+  --q-shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 32px -16px rgba(0,0,0,.16);
+  --q-font: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+html body #va, html body #va * { font-feature-settings: "cv11", "ss03", "calt" !important; -webkit-font-smoothing: antialiased; }
+html body #va, html body #va button, html body #va input, html body #va textarea, html body #va select { font-family: var(--q-font) !important; }
+html body #va { color: var(--q-ink) !important; }
+html body #va[open] { border: 1px solid var(--q-line) !important; border-radius: 14px !important; box-shadow: 0 24px 80px -24px rgba(0,0,0,.28), 0 0 0 .5px rgba(0,0,0,.04) !important; }
+html body #va.va-full, html body #va[data-full="1"] { border-radius: 0 !important; }
+html body #va button { transition: background-color var(--q-t) var(--q-ease), color var(--q-t) var(--q-ease), border-color var(--q-t) var(--q-ease), box-shadow var(--q-t) var(--q-ease), transform var(--q-t) var(--q-ease), opacity var(--q-t) var(--q-ease); }
+html body #va button:active:not(:disabled) { transform: scale(.985); }
+html body #va :focus-visible { outline: 0 !important; box-shadow: 0 0 0 2px var(--q-white), 0 0 0 4px var(--q-link) !important; }
+
+/* sidebar */
+html body #va .va-side { background: var(--q-fill) !important; border-right: 1px solid var(--q-line) !important; padding: 14px 10px 12px !important; gap: 2px !important; }
+html body #va .va-brand { padding: 2px 6px 12px !important; }
+html body #va .va-word { font: 600 1rem/1 var(--q-font) !important; letter-spacing: -.01em !important; color: var(--q-ink) !important; }
+html body #va .va-brand .vsn-mark { width: 26px !important; height: 26px !important; border-radius: 7px !important; }
+html body #va .va-new { height: 38px !important; padding: 0 12px !important; border-radius: var(--q-r3) !important; background: var(--q-white) !important; border: 1px solid var(--q-line) !important; box-shadow: 0 1px 1px rgba(0,0,0,.03) !important; font: 500 .875rem/1 var(--q-font) !important; color: var(--q-ink) !important; }
+html body #va .va-new:hover { background: var(--q-white) !important; border-color: var(--q-line2) !important; }
+html body #va .va-new .vi { width: 12px !important; height: 12px !important; padding: 3px !important; background: var(--q-ink) !important; color: var(--q-white) !important; stroke-width: 2.4 !important; }
+html body #va .vsn { margin-top: 10px !important; }
+html body #va .vsn-h, html body #va .va-h.va-h-recent, html body #va .va-h { margin: 14px 0 4px !important; padding-left: 10px !important; font: 600 .6875rem/1 var(--q-font) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--q-ink3) !important; }
+html body #va .vsn-h:first-child { margin-top: 8px !important; }
+html body #va .vsn .va-nav, html body #va .va-recent button { min-height: 32px !important; padding: 6px 10px !important; border-radius: var(--q-r2) !important; font: 500 .875rem/1.25 var(--q-font) !important; color: var(--q-ink) !important; gap: 9px !important; }
+html body #va .vsn .va-nav .vi, html body #va .vsn .va-nav svg { width: 16px !important; height: 16px !important; color: var(--q-ink2) !important; stroke-width: 1.7 !important; }
+html body #va .vsn .va-nav:hover { background: rgba(0,0,0,.045) !important; }
+html body #va .vsn-i[aria-current="page"] { background: var(--q-tint) !important; color: var(--q-ink) !important; font-weight: 600 !important; }
+html body #va .vsn-i[aria-current="page"] svg { color: var(--q-brand) !important; }
+html body #va .vsn-soon { color: var(--q-ink3) !important; }
+html body #va .vsn-soon svg { color: var(--q-ink3) !important; }
+html body #va .vsn-soon em { background: var(--q-fill2) !important; color: var(--q-ink2) !important; font: 500 .6875rem/1 var(--q-font) !important; padding: 3px 7px !important; }
+html body #va .va-recent button { color: var(--q-ink2) !important; font-weight: 400 !important; }
+html body #va .va-recent button[aria-current="true"], html body #va .va-recent .is-cur { background: var(--q-tint) !important; color: var(--q-ink) !important; font-weight: 500 !important; }
+html body #va .va-empty { font-size: .8125rem !important; line-height: 1.5 !important; color: var(--q-ink3) !important; padding-left: 10px !important; }
+html body #va .va-side hr, html body #va .vsn + .va-h-recent { border-color: var(--q-line) !important; }
+html body #va .va-user { border-top: 1px solid var(--q-line) !important; padding: 12px 4px 0 !important; }
+html body #va .va-av { width: 30px !important; height: 30px !important; border-radius: 50% !important; background: var(--q-fill2) !important; color: var(--q-ink) !important; font: 600 .6875rem/1 var(--q-font) !important; }
+html body #va .va-who b { font: 600 .8125rem/1.2 var(--q-font) !important; color: var(--q-ink) !important; }
+html body #va .va-who small { font: 400 .75rem/1.3 var(--q-font) !important; color: var(--q-ink3) !important; }
+
+/* icon buttons, toolbar */
+html body #va .va-ib { width: 30px !important; height: 30px !important; border-radius: var(--q-r2) !important; color: var(--q-ink2) !important; }
+html body #va .va-ib:hover, html body #va .va-ib[aria-expanded="true"] { background: rgba(0,0,0,.05) !important; color: var(--q-ink) !important; }
+html body #va .va-top { min-height: 52px !important; padding: 8px 12px 8px 16px !important; border-bottom: 1px solid var(--q-line) !important; background: var(--q-white) !important; }
+html body #va .va-main.brief-on > .va-top, html body #va .va-main.kb-on > .va-top { border-bottom-color: transparent !important; }
+/* with an investigations view open, the window controls sit on that view's own toolbar: one bar instead of two */
+@media (min-width: 761px) {
+  html body #va .va-main.inv-on { position: relative !important; }
+  html body #va .va-main.inv-on > .va-top { position: absolute !important; top: 0 !important; right: 0 !important; left: auto !important; z-index: 4 !important; min-height: 56px !important; padding: 0 12px !important; border: 0 !important; background: transparent !important; pointer-events: none !important; }
+  html body #va .va-main.inv-on > .va-top > * { pointer-events: auto; }
+  html body #va .va-main.inv-on > .va-top .va-scope, html body #va .va-main.inv-on > .va-top #va-open-side { display: none !important; }
+}
+html body #va .va-scope { height: 32px !important; padding: 0 10px 0 12px !important; border-radius: var(--q-r2) !important; border: 1px solid var(--q-line) !important; background: var(--q-white) !important; font: 500 .8125rem/1 var(--q-font) !important; color: var(--q-ink) !important; }
+html body #va .va-scope:hover { background: var(--q-fill) !important; }
+html body #va .va-pop { border: 1px solid var(--q-line) !important; border-radius: var(--q-r4) !important; box-shadow: var(--q-shadow) !important; padding: 6px !important; }
+html body #va .va-pop button, html body #va .va-pop [role="menuitem"] { border-radius: var(--q-r2) !important; font: 500 .8125rem/1.2 var(--q-font) !important; color: var(--q-ink) !important; padding: 8px 10px !important; }
+html body #va .va-pop button:hover, html body #va .va-pop [role="menuitem"]:hover { background: var(--q-fill) !important; }
+
+/* greeting */
+html body #va .va-main:not(.va-dark) { background: var(--q-white) !important; }
+html body #va .va-hello { padding-bottom: 24px !important; }
+html body #va .va-hello h2 { font-family: var(--q-font) !important; font-weight: 600 !important; font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem) !important; line-height: 1.1 !important; letter-spacing: -.025em !important; color: var(--q-ink) !important; max-width: 20ch; margin-inline: auto; }
+html body #va .va-sub { font-size: 1.0625rem !important; line-height: 1.5 !important; color: var(--q-ink2) !important; margin-top: 12px !important; }
+html body #va .va-foot, html body #va .va-main > .va-dock ~ p, html body #va .va-brandline { color: var(--q-ink3) !important; font-size: .75rem !important; }
+
+/* composer */
+html body #va .va-composer { border: 1px solid var(--q-line2) !important; border-radius: var(--q-r5) !important; background: var(--q-white) !important; box-shadow: 0 1px 2px rgba(0,0,0,.03) !important; transition: border-color var(--q-t) var(--q-ease), box-shadow var(--q-t) var(--q-ease) !important; }
+html body #va .va-composer:hover { border-color: rgba(0,0,0,.18) !important; }
+html body #va .va-composer:focus-within { border-color: var(--q-link) !important; box-shadow: 0 0 0 4px var(--q-ring) !important; }
+html body #va .va-composer textarea, html body #va #va-in { border: 0 !important; background: transparent !important; box-shadow: none !important; font: 400 1rem/1.5 var(--q-font) !important; color: var(--q-ink) !important; padding: 14px 16px 6px !important; }
+html body #va #va-in::placeholder { color: var(--q-ink3) !important; }
+html body #va .va-row { padding: 6px 10px 10px 12px !important; }
+html body #va .va-add, html body #va .va-row .va-ib { width: 32px !important; height: 32px !important; }
+html body #va .va-row .va-chip, html body #va .va-row button:not(.va-send):not(.va-ib):not(.va-add) { height: 32px !important; padding: 0 12px !important; border-radius: var(--q-r2) !important; border: 1px solid var(--q-line) !important; background: var(--q-white) !important; font: 500 .8125rem/1 var(--q-font) !important; color: var(--q-ink) !important; box-shadow: none !important; transform: none !important; }
+html body #va .va-send { height: 36px !important; width: auto !important; padding: 0 14px !important; border-radius: var(--q-r3) !important; background: var(--q-brand) !important; font: 600 .875rem/1 var(--q-font) !important; gap: 8px !important; }
+html body #va .va-send:hover:not(:disabled) { background: var(--q-brand2) !important; }
+html body #va .va-send:disabled { background: var(--q-fill2) !important; color: var(--q-ink3) !important; }
+html body #va .va-chips { gap: 8px !important; margin-top: 12px !important; }
+html body #va .va-chips .va-chip { height: 36px !important; padding: 0 14px !important; border-radius: var(--q-r3) !important; border: 1px solid var(--q-line) !important; background: var(--q-white) !important; font: 500 .8125rem/1 var(--q-font) !important; color: var(--q-ink) !important; box-shadow: none !important; }
+html body #va .va-chips .va-chip:hover { background: var(--q-fill) !important; border-color: var(--q-line) !important; transform: none !important; box-shadow: none !important; }
+html body #va .va-chip .vi, html body #va .va-chip svg { color: var(--q-ink2) !important; }
+html body #va .va-sugg { border: 1px solid var(--q-line) !important; border-radius: var(--q-r4) !important; box-shadow: none !important; }
+html body #va .va-sugg:hover { background: var(--q-fill) !important; }
+
+/* conversation */
+html body #va .va-thread { gap: 20px !important; }
+html body #va .va-msg-q, html body #va .va-q, html body #va .va-thread .me, html body #va li[data-role="user"] > div { background: var(--q-fill) !important; color: var(--q-ink) !important; border-radius: 18px 18px 4px 18px !important; font: 400 .9375rem/1.5 var(--q-font) !important; box-shadow: none !important; border: 0 !important; }
+html body #va .va-mark { width: 28px !important; height: 28px !important; border-radius: 8px !important; background: var(--q-brand) !important; font: 600 .75rem/1 var(--q-font) !important; }
+html body #va .va-card { border: 1px solid var(--q-line) !important; border-radius: var(--q-r4) !important; padding: 16px 18px !important; box-shadow: none !important; gap: 8px !important; }
+html body #va .va-card b { font: 600 .9375rem/1.3 var(--q-font) !important; color: var(--q-ink) !important; }
+html body #va .va-card p { font-size: .9375rem !important; line-height: 1.55 !important; color: var(--q-ink2) !important; }
+html body #va .va-state { padding: 3px 8px !important; border-radius: var(--q-r1) !important; background: var(--q-fill) !important; font: 500 .75rem/1.2 var(--q-font) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--q-ink2) !important; }
+html body #va .va-state::first-letter { text-transform: uppercase; }
+html body #va .va-gapact { background: var(--q-fill) !important; box-shadow: none !important; border-radius: var(--q-r3) !important; padding: 12px 14px !important; margin-top: 14px !important; }
+html body #va .va-gapact p { font: 400 .875rem/1.45 var(--q-font) !important; color: var(--q-ink2) !important; gap: 3px !important; }
+html body #va .va-gapact p b { font: 600 .8125rem/1.2 var(--q-font) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--q-ink) !important; }
+html body #va .va-msg-u { background: var(--q-fill) !important; color: var(--q-ink) !important; box-shadow: none !important; border-radius: 18px 18px 4px 18px !important; font-size: .9375rem !important; }
+html body #va .va-msg-u .va-meta { color: var(--q-ink3) !important; }
+html body #va .va-gapbtn { min-height: 34px !important; padding: 0 12px !important; border-radius: var(--q-r2) !important; background: var(--q-brand) !important; font: 600 .8125rem/1 var(--q-font) !important; }
+html body #va .va-gapbtn:hover { background: var(--q-brand2) !important; }
+html body #va .xa-entry { color: var(--q-link) !important; font: 500 .875rem/1 var(--q-font) !important; }
+html body #va .va-typing i { background: var(--q-ink3) !important; }
+
+/* Intelligence Gaps page (brief panel) */
+html body #va #va-brief { padding-top: 28px !important; }
+html body #va #va-brief .vb-eb { font: 500 .8125rem/1.2 var(--q-font) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--q-ink3) !important; }
+html body #va #va-brief .vb-head h2, html body #va #va-brief h2, html body #va #va-brief h1 { font-family: var(--q-font) !important; font-weight: 600 !important; font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2rem) !important; line-height: 1.15 !important; letter-spacing: -.02em !important; color: var(--q-ink) !important; }
+html body #va #va-brief .vb-head > p:not(.vb-eb), html body #va #va-brief .vs-lead, html body #va #va-brief .vs-sub { font-size: 1rem !important; line-height: 1.55 !important; color: var(--q-ink2) !important; }
+html body #va #va-brief .vs-gap, html body #va #va-brief .vb-card, html body #va #va-brief .vs-card { border: 1px solid var(--q-line) !important; border-radius: var(--q-r4) !important; box-shadow: none !important; padding: 18px 20px !important; }
+html body #va #va-brief .vs-gap-from { font-size: .8125rem !important; color: var(--q-ink3) !important; }
+html body #va #va-brief .vs-gap-from b, html body #va #va-brief .vs-gap-from q { color: var(--q-ink2) !important; font-weight: 400 !important; }
+html body #va #va-brief .vs-gap-h { font: 600 1.0625rem/1.35 var(--q-font) !important; letter-spacing: -.01em !important; color: var(--q-ink) !important; }
+html body #va #va-brief .vs-gap-why { font-size: .9375rem !important; color: var(--q-ink2) !important; }
+html body #va #va-brief .vs-gap-why b { color: var(--q-ink) !important; font-weight: 500 !important; }
+html body #va #va-brief .vb-btn { min-height: 36px !important; padding: 0 14px !important; border-radius: var(--q-r3) !important; border: 1px solid var(--q-line) !important; background: var(--q-white) !important; color: var(--q-ink) !important; font: 500 .875rem/1 var(--q-font) !important; box-shadow: none !important; }
+html body #va #va-brief .vb-btn:hover { background: var(--q-fill) !important; border-color: var(--q-line) !important; }
+html body #va #va-brief .vb-btn.vb-solid { background: var(--q-brand) !important; border-color: var(--q-brand) !important; color: var(--q-white) !important; font-weight: 600 !important; }
+html body #va #va-brief .vb-btn.vb-solid:hover { background: var(--q-brand2) !important; border-color: var(--q-brand2) !important; }
+html body #va #va-brief .vs-gap { box-shadow: none !important; border: 1px solid var(--q-line) !important; }
+html body #va #va-brief .vs-muted, html body #va #va-brief .vs-or { color: var(--q-ink3) !important; font-size: .875rem !important; }
+html body #va #va-brief .vs-or a, html body #va #va-brief .vs-or button, html body #va #va-brief .vs-link { color: var(--q-link) !important; font-weight: 500 !important; }
+
+/* Company knowledge */
+html body #va .va-main.kb-on > #va-brief { display: none !important; }
+html body #va .kb .kb-card h2 { font-family: var(--q-font) !important; font-weight: 600 !important; letter-spacing: -.02em !important; color: var(--q-ink) !important; }
+html body #va .kb .kb-lead, html body #va .kb .kb-card > p { color: var(--q-ink2) !important; }
+html body #va .kb .kb-f { font: 500 .8125rem/1.2 var(--q-font) !important; color: var(--q-ink) !important; }
+html body #va .kb .kb-f small { color: var(--q-ink3) !important; }
+html body #va .kb .kb-f input, html body #va .kb .kb-f textarea { border: 1px solid var(--q-line2) !important; border-radius: var(--q-r3) !important; padding: 10px 12px !important; font: 400 .9375rem/1.4 var(--q-font) !important; color: var(--q-ink) !important; transition: border-color var(--q-t) var(--q-ease), box-shadow var(--q-t) var(--q-ease); }
+html body #va .kb .kb-f input:hover, html body #va .kb .kb-f textarea:hover { border-color: rgba(0,0,0,.2) !important; }
+html body #va .kb .kb-f input:focus, html body #va .kb .kb-f textarea:focus { border-color: var(--q-link) !important; box-shadow: 0 0 0 4px var(--q-ring) !important; }
+html body #va .kb .kb-add { border: 1px solid var(--q-line) !important; border-radius: var(--q-r2) !important; background: var(--q-white) !important; color: var(--q-ink) !important; font: 500 .8125rem/1 var(--q-font) !important; padding: 8px 12px !important; }
+html body #va .kb .kb-add:hover { background: var(--q-fill) !important; }
+html body #va .kb .kb-go { border-radius: var(--q-r3) !important; background: var(--q-brand) !important; color: var(--q-white) !important; font-weight: 600 !important; }
+html body #va .kb .kb-go:disabled { background: var(--q-fill2) !important; color: var(--q-ink3) !important; }
+html body #va .kb .kb-skip { color: var(--q-ink2) !important; font-weight: 500 !important; }
+html body #va .kb .kb-priv { color: var(--q-ink2) !important; }
+
+/* Example answer */
+html body #va #vx { background: var(--q-fill) !important; border-top: 1px solid var(--q-line) !important; }
+html body #va #vx .xa-eg { background: var(--q-fill2) !important; color: var(--q-ink2) !important; font: 500 .6875rem/1 var(--q-font) !important; letter-spacing: 0 !important; text-transform: none !important; }
+html body #va #vx .xa-q { background: var(--q-fill2) !important; color: var(--q-ink) !important; }
+html body #va #vx .xa-card, html body #va #vx .xa-first, html body #va #vx .xa-done { border: 1px solid var(--q-line) !important; border-radius: var(--q-r4) !important; box-shadow: none !important; }
+html body #va #vx .xa-done { display: grid !important; grid-template-columns: auto minmax(0,1fr) auto !important; align-items: center !important; gap: 10px !important; }
+html body #va #vx .xa-done .xa-sp { display: none !important; }
+html body #va #vx .xa-done .xa-ok { background: var(--q-ok-bg) !important; color: var(--q-ok) !important; }
+@container (max-width: 640px) { html body #va #vx .xa-done { grid-template-columns: auto minmax(0,1fr) !important; } html body #va #vx .xa-done .xa-lnk { grid-column: 2 !important; justify-self: start !important; } }
+html body #va #vx .xa-tag { background: var(--q-fill) !important; border: 1px solid var(--q-line) !important; color: var(--q-ink) !important; border-radius: var(--q-r1) !important; font-size: .75rem !important; }
+html body #va #vx .xa-tag.good { background: var(--q-ok-bg) !important; border-color: transparent !important; color: var(--q-ok) !important; }
+html body #va #vx .xa-lead { font-size: 1.0625rem !important; line-height: 1.6 !important; color: var(--q-ink) !important; }
+html body #va #vx .xa-cite { background: var(--q-fill2) !important; color: var(--q-ink) !important; border-radius: 5px !important; }
+html body #va #vx .xa-cite:hover { background: var(--q-tint) !important; }
+html body #va #vx .xa-pill { border-radius: var(--q-r3) !important; border: 1px solid var(--q-line) !important; background: var(--q-white) !important; color: var(--q-ink) !important; }
+html body #va #vx .xa-pill:hover { background: var(--q-fill) !important; border-color: var(--q-line) !important; }
+html body #va #vx .xa-pill[aria-pressed="true"] { background: var(--q-brand) !important; border-color: var(--q-brand) !important; color: var(--q-white) !important; }
+html body #va #vx .xa-pill b { background: var(--q-fill) !important; border-color: var(--q-line) !important; color: var(--q-ink2) !important; }
+html body #va #vx .xa-pill[aria-pressed="true"] b { background: rgba(255,255,255,.14) !important; border-color: transparent !important; color: var(--q-white) !important; }
+html body #va #vx .xa-gap { background: var(--q-fill) !important; border: 0 !important; border-radius: var(--q-r4) !important; }
+html body #va #vx .xa-gap-k { font: 500 .75rem/1 var(--q-font) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--q-ink3) !important; }
+html body #va #vx .xa-go, html body #va #vx .xa-ab { border-radius: var(--q-r3) !important; height: 36px !important; }
+html body #va #vx .xa-go { background: var(--q-brand) !important; }
+html body #va #vx .xa-ab { border: 1px solid var(--q-line) !important; }
+html body #va #vx .xa-ab em { background: var(--q-fill2) !important; color: var(--q-ink2) !important; }
+html body #va #vx .xa-dr { border-left: 1px solid var(--q-line) !important; }
+html body #va #vx .xa-sum div { background: var(--q-fill) !important; }
+html body #va #vx .xa-meter i { background: var(--q-brand) !important; }
+html body #va #vx .xa-tab[aria-selected="true"] { border-bottom-color: var(--q-ink) !important; color: var(--q-ink) !important; }
+html body #va #vx .xa-lab { border-radius: var(--q-r1) !important; font-weight: 500 !important; }
+html body #va #vx .l-ev { background: var(--q-fill2) !important; color: var(--q-ink) !important; }
+html body #va #vx .xa-badge { background: var(--q-ok-bg) !important; color: var(--q-ok) !important; }
+html body #va #vx .xa-badge.you { background: var(--q-tint) !important; color: var(--q-brand) !important; }
+html body #va #vx .xa-num { background: var(--q-fill2) !important; color: var(--q-ink) !important; }
+html body #va #vx .xa-it.hl { background: var(--q-white) !important; box-shadow: 0 0 0 1.5px var(--q-link) !important; }
+
+/* mobile drawer */
+html body #va .va-app.va-drawer .va-side { box-shadow: var(--q-shadow) !important; }
+@media (prefers-reduced-motion: reduce) { html body #va *, html body #va *::before, html body #va *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }
+/* <<< quiet system v1 */

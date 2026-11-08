@@ -4,6 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400..700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" data-quiet-font>
 <style>
 /* Layout: app shell from the Figma files. Fixed sidebar + sticky header, content in white cards on a pale paper ground. */
 :root{
@@ -1406,6 +1407,90 @@ async function boot() {
   }, err => { clearTimeout(timer); if (!S.loaded) { S.loaded = true; render(); } }));
 }
 boot();
-</script>
+</script><style data-quiet>
+/* >>> quiet system v1 */
+/* Investigations app: same quiet system as the Assistant. Tokens first, then the few shapes the tokens don't reach. */
+:root, :root[data-theme="light"] {
+  --primary: #1F273F; --primary-2: #1F273F; --primary-3: #3A5292; --primary-100: #EEF1F6; --primary-200: #DDE3EE;
+  --ink: #1D1D1F; --ink-2: #6E6E73; --ink-3: #8E8E93;
+  --bg: #FFFFFF; --paper: #F5F5F7; --card: #FFFFFF; --line: #E5E5EA; --field: #F2F2F4;
+  --ok: #1D7F52; --ok-bg: #E7F5EC; --warn: #A85A0A; --warn-bg: #FFF4E3; --err: #B9304A; --err-bg: #FCEBEE; --info: #3A5292; --info-bg: #EEF1F6;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 32px -16px rgba(0,0,0,.16);
+  --f: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --r: 10px; --r-lg: 12px;
+  --q-ease: cubic-bezier(.2, 0, 0, 1); --q-t: 160ms;
+}
+body { font-feature-settings: "cv11", "ss03", "calt"; -webkit-font-smoothing: antialiased; letter-spacing: 0; font-size: 14px; line-height: 1.5; }
+h1, h2, h3, h4 { letter-spacing: -.015em; }
+:focus-visible { outline: 0; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--primary-3); }
+button { transition: background-color var(--q-t) var(--q-ease), color var(--q-t) var(--q-ease), border-color var(--q-t) var(--q-ease), box-shadow var(--q-t) var(--q-ease), transform var(--q-t) var(--q-ease), opacity var(--q-t) var(--q-ease); }
+button:active:not([disabled]) { transform: scale(.985); }
 
+/* header: one quiet toolbar */
+.htop, .happ.inline .htop { background: var(--bg); border-bottom: 1px solid var(--line); min-height: 56px; }
+.happ.inline .htop { padding: 8px 20px; }
+@media (min-width: 761px) { .happ.inline .htop { padding-right: 236px; } }
+.htitle h1, .happ.inline .htitle h1 { font-size: 17px; font-weight: 600; letter-spacing: -.015em; color: var(--ink); }
+.hnav { gap: 2px; padding: 2px; border-radius: 9px; background: var(--field); }
+.hnav button { height: 30px; padding: 0 12px; border-radius: 7px; font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.hnav button:hover { color: var(--ink); }
+.hnav button.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 0 0 .5px rgba(0,0,0,.04); }
+.hnav svg { width: 15px; height: 15px; }
+
+/* blocks */
+.card, .happ .card { border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: none; padding: 18px 20px; }
+.card h2 { font-size: 17px; letter-spacing: -.015em; }
+.card .head { border-bottom-color: var(--line); }
+.kpi .lab { font-size: 13px; color: var(--ink-2); }
+.kpi .val { font-size: 28px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.kpi .ico { background: var(--field); color: var(--ink-3); border-radius: 9px; width: 32px; height: 32px; }
+.kpi .ico svg { width: 16px; height: 16px; }
+.delta b { color: var(--ok); }
+
+/* controls */
+.btn { height: 36px; padding: 0 14px; border-radius: var(--r); font-size: 13.5px; font-weight: 600; background: var(--primary); color: #fff; }
+.btn:hover { filter: none; background: #2C3656; }
+.btn.ghost { background: var(--card); color: var(--ink); border-color: var(--line); font-weight: 500; }
+.btn.ghost:hover { background: var(--field); }
+.btn.soft { background: var(--primary-100); color: var(--primary); border-color: transparent; }
+.btn.soft:hover { background: var(--primary-200); }
+.btn.okb { background: var(--ok); }
+.btn.sm { height: 30px; padding: 0 10px; border-radius: 8px; font-size: 12.5px; }
+.link { color: var(--primary-3); }
+.pill { height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+.pill.info { background: var(--info-bg); color: var(--info); }
+.bar { background: var(--field); height: 4px; }
+.bar i { background: var(--primary); }
+.in, input.in, select.in, textarea.in, .field input, .field select, .field textarea { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); color: var(--ink); transition: border-color var(--q-t) var(--q-ease), box-shadow var(--q-t) var(--q-ease); }
+.in:hover, .field input:hover, .field select:hover, .field textarea:hover { border-color: rgba(0,0,0,.18); }
+.in:focus, .field input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--primary-3); box-shadow: 0 0 0 4px rgba(58,82,146,.16); }
+.field label, .flabel { font-size: 13px; font-weight: 500; color: var(--ink); }
+.tabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
+.tabs .cnt { background: var(--field); color: var(--ink-2); border-radius: 5px; }
+th { background: var(--paper); color: var(--ink-2); font-size: 12.5px; font-weight: 500; }
+td { border-top-color: var(--line); }
+.kv { border-bottom-style: solid; border-bottom-color: var(--line); }
+.navlabel { letter-spacing: 0; text-transform: none; font-size: 11px; font-weight: 600; }
+.nav.on { background: rgba(31,39,63,.07); color: var(--ink); border-color: transparent; font-weight: 600; }
+.chip-loc { border-radius: 8px; }
+.toast { border-radius: var(--r); box-shadow: var(--shadow); }
+.modal { border-radius: 16px; border: 1px solid var(--line); }
+
+/* stepper */
+.step .dot { background: var(--field); color: var(--ink-3); width: 26px; height: 26px; font-size: 12.5px; }
+.step.on .dot { background: var(--primary); color: #fff; }
+.step.done .dot { background: var(--primary-100); color: var(--primary); }
+.step { font-size: 12.5px; }
+.step.on { font-weight: 500; }
+.step:not(:last-child)::after { background: var(--line); }
+
+/* inside the Assistant: paper ground, white cards */
+.happ.inline { background: var(--paper); }
+.happ.inline .content { padding: 18px 20px 32px; gap: 14px; }
+.happ.inline .hnew { background: var(--primary); border-color: var(--primary); color: #fff; }
+.happ.inline .hnew:hover { background: #2C3656; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }
+/* <<< quiet system v1 */
+</style>
 </body></html>
