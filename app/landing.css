@@ -2026,3 +2026,9 @@ html body :is(.lf-top-btn, .foot-top):not(#_a):not(#_b) { display: none !importa
 html body .pg .pg-in:has(> .pg-foot):not(#_a):not(#_b) { padding-bottom: 0 !important; margin-bottom: 0 !important; }
 html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 32px) !important; }
 /* <<< minimal footer v1 */
+
+/* network stages */
+.net-stage rect { fill: #E3EBF8; stroke: #CCDDF1; stroke-width: 1; }
+.net-stage text { fill: #1F273F; font-weight: 600; font-size: 12.5px; }
+.ln .net-stage rect { fill: #E3EBF8 !important; stroke: #CCDDF1 !important; }
+.ln .net-stage text { fill: #1F273F !important; }
