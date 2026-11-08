@@ -853,6 +853,50 @@ const KIND_BRIEF = {
   'Shopper feedback': 'Ask shoppers at the shelf, with consent, which brand they chose today and what made the difference.',
   'Open observation': 'Observe the product in the market: stock, price, competition and anything unusual. Photograph what you see.'
 };
+/* Gap-aware question builder: turns the ticked Intelligence Gaps into field questions a SavoScout can answer on the ground. */
+const GAP_KIND_RX = [['Price check', /price|cheaper|cost|discount|promotion|margin/i], ['Availability and shelf', /stock|availab|shelf|out of|missing|facing|run(ning)? out|pack size/i], ['Retailer interviews', /deliver|distribut|supplier|wholesal|restock|route|priorit/i], ['Shopper feedback', /shopper|consumer|customer|prefer|choose|switch|buy|brand loyalty|why .* buy/i], ['Outlet mapping', /outlet|kiosk|where .* sold|coverage|how many shops|reach/i]];
+function kindsFromGaps(gaps, kinds) {
+  const out = (kinds || []).filter(Boolean);
+  gaps.forEach(g => GAP_KIND_RX.forEach(([k, rx]) => { if (rx.test(g) && !out.includes(k)) out.push(k); }));
+  return out.length ? out : ['Open observation'];
+}
+function gapQs(gaps, kinds, prod, city) {
+  const P = prod || 'the product', where = city ? ' in ' + city : '';
+  const out = [newQ('single', 'What type of outlet are you at?', ['Kiosk', 'Small shop', 'Open-market stall', 'Supermarket', 'Wholesaler'])];
+  out.push(newQ('short', 'Name of the shop, stall or market'));
+  const add = q => { if (out.length < 20) out.push(q); };
+  kinds.forEach(k => {
+    if (k === 'Availability and shelf') {
+      add(newQ('single', `Is ${P} on the shelf right now?`, ['Yes, well stocked', 'Yes, only a few units', 'No, sold out', 'Not stocked here']));
+      add(newQ('multi', 'Which rival brands are on the shelf today?', ['Leading rival', 'Second rival', 'Store or local brand', 'None']));
+      add(newQ('single', `When did this outlet last run out of ${P}?`, ['This week', 'In the last month', 'Rarely runs out', 'Seller not sure']));
+      add(newQ('photo', `Photograph the shelf where ${P} is (or should be) displayed.`));
+    } else if (k === 'Price check') {
+      const q = newQ('number', `Shelf price of ${P} today`); q.unit = 'per pack'; q.short = 'price'; add(q);
+      const r = newQ('number', 'Shelf price of the closest rival pack'); r.unit = 'per pack'; add(r);
+      add(newQ('single', 'Is there any promotion or discount on either product?', ['Yes, on ours', 'Yes, on the rival', 'Yes, on both', 'No']));
+      add(newQ('photo', 'Photograph the price labels for both products.'));
+    } else if (k === 'Retailer interviews') {
+      add(newQ('single', `Who supplies this outlet with ${P}?`, ['Distributor van', 'Wholesaler in the market', 'Buys directly from the company', 'Other or not sure']));
+      add(newQ('single', 'How often does stock arrive?', ['Several times a week', 'Weekly', 'Every two weeks', 'Irregularly']));
+      const d = newQ('number', 'How many days late was the most recent delivery?'); d.unit = 'days'; add(d);
+      add(newQ('paragraph', 'In the seller’s words: which brands does the supplier push, and why?'));
+    } else if (k === 'Shopper feedback') {
+      add(newQ('single', 'Which brand did the shopper buy today?', ['Ours', 'Leading rival', 'Another brand', 'Did not buy']));
+      add(newQ('single', 'What decided it?', ['Price', 'It was the only one in stock', 'Pack size', 'Habit or trust', 'Promotion']));
+      add(newQ('paragraph', `What would make this shopper choose ${P} next time?`));
+    } else if (k === 'Outlet mapping') {
+      add(newQ('single', `Does this outlet sell ${P}?`, ['Yes', 'Used to, not any more', 'Never has']));
+      add(newQ('single', 'How often does it reorder?', ['Weekly or more', 'Every two weeks', 'Monthly', 'Not sure']));
+      add(newQ('photo', 'Photograph the shop front so the outlet can be mapped.'));
+    } else {
+      add(newQ('paragraph', `Describe what you see of ${P}${where}: stock, price, competition, anything unusual.`));
+      add(newQ('photo', 'Photograph what you observed.'));
+    }
+  });
+  gaps.slice(0, 3).forEach(g => add(newQ('paragraph', 'Seller’s view on: ' + g.replace(/\?$/, '') + '. What have they noticed?')));
+  return out;
+}
 function fromGapCtx(raw) {
   let g; try { g = JSON.parse(raw); } catch (e) { return; }
   if (!g || !g.gap) return;
@@ -868,8 +912,11 @@ function fromGapCtx(raw) {
   B.brief = kinds.map(k => KIND_BRIEF[k]).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(' ') || KIND_BRIEF['Open observation'];
   if (kinds.length > 1) B.title = ((prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Market') + (g.city ? ' in ' + g.city : '') + ': ' + kinds.map(k => k.toLowerCase().replace('availability and shelf', 'availability').replace('price check', 'prices').replace('retailer interviews', 'distribution').replace('outlet mapping', 'outlets').replace('shopper feedback', 'shoppers')).join(', '));
   const desc = (prod ? prod + ' ' : '') + kinds.join(', ').toLowerCase() + (g.city ? ' in ' + g.city : '') + '. ' + gaps.join(' ');
-  B.questions = templateQs(desc);
-  if (SAMPLER) setTimeout(() => { if (B.prepared && B.questions.length <= 8) { B.questions = []; genQuestions(); } }, 50);
+  B.kinds = kindsFromGaps(gaps, kinds.filter(k => k && k !== 'Open observation'));
+  B.brief = B.kinds.map(k => KIND_BRIEF[k]).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(' ') || B.brief;
+  if (B.kinds.length > 1) B.title = (prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Market') + (g.city ? ' in ' + g.city : '') + ': ' + B.kinds.map(k => k.toLowerCase().replace('availability and shelf', 'availability').replace('price check', 'prices').replace('retailer interviews', 'distribution').replace('outlet mapping', 'outlets').replace('shopper feedback', 'shoppers')).join(', ');
+  B.questions = gapQs(gaps, B.kinds, prod, g.city);
+  B.builtBy = 'verisavo';
 }
 function cBuilder(r) {
   if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
@@ -880,7 +927,7 @@ function cBuilder(r) {
   if (B.step === 0) {
     const regs = COUNTRIES[B.country] || [];
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">${B.prepared ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you need to understand?'}</h2><p class="muted" style="margin:2px 0 0">${B.prepared ? 'Verisavo prepared this task from your conversation: the place, the instructions and a first set of evidence questions. Review and change anything before it reaches SavoScouts.' : 'Start from an Intelligence Gap in your Assistant conversations, or describe a new investigation.'}</p></div>
+      <div><h2 style="font-size:22px">${B.prepared ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you need to understand?'}</h2><p class="muted" style="margin:2px 0 0">${B.prepared ? 'Verisavo prepared this task from your conversation: the place, the instructions and survey questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Start from an Intelligence Gap in your Assistant conversations, or describe a new investigation.'}</p></div>
       ${B.prepared ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : ''}
       ${B.prepared ? '' : `<div class="field"><span class="flabel">Investigate an Intelligence Gap <span class="sample">Sample</span></span><div class="gapc">${GAPS.map((g, i) => `<button class="gap ${B.gap === g.gap ? 'on' : ''}" data-act="usegap" data-v="${i}"><b style="font-weight:500">${esc(g.gap)}</b><small>${esc(g.regions.join(', '))}, ${esc(g.country)} · from your Assistant chat</small></button>`).join('')}</div></div>`}
       <div class="field"><label for="b-ai">Investigation objective</label><textarea class="in" id="b-ai" data-b="ai" placeholder="For example: is cooking oil consistently stocked in Kumasi shops, and at what price?">${esc(B.ai)}</textarea></div>
@@ -900,8 +947,8 @@ function cBuilder(r) {
   } else if (B.step === 1) {
     inner = `<div class="narrow" style="max-width:820px">
       <div class="row between"><div><h2 style="font-size:22px">Evidence questions</h2><p class="muted" style="margin:2px 0 0">What SavoScouts answer and photograph on the ground. The Verisavo agent asks these one by one on WhatsApp.</p></div><button class="btn ghost sm" data-act="saveDraft">Save draft</button></div>
-      <div class="card stack"><label class="flabel" for="b-ai">Prepare with Verisavo</label><textarea class="in" id="b-ai" data-b="ai" placeholder="Describe what you want to understand about the market. For example: onion prices, availability and supplier sources in Tamale markets.">${esc(B.ai)}</textarea>
-        <div class="row between"><span class="faint" style="font-size:12px">${B.prepared ? 'Verisavo prepared these from your Intelligence Gap. Edit any question, or prepare a fresh set.' : SAMPLER ? 'Turns your objective into clear questions. Review every question before deploying.' : 'Builds a starter set from your description.'}</span><button class="btn sm" data-act="genq" id="genq">${ic.spark}Prepare questions</button></div></div>
+      <div class="card stack"><label class="flabel" for="b-ai">${B.prepared ? 'Verisavo task builder' : 'Prepare with Verisavo'}</label>${B.prepared ? `<p class="faint" style="margin:-4px 0 2px;font-size:12.5px">Built from your Intelligence Gap${B.gaps && B.gaps.length > 1 ? 's' : ''}: ${(B.kinds || []).map(k => k.toLowerCase()).join(', ') || 'open observation'}. Every question is something a SavoScout can see or ask on the ground.</p>` : ''}<textarea class="in" id="b-ai" data-b="ai" placeholder="Describe what you want to understand about the market. For example: onion prices, availability and supplier sources in Tamale markets.">${esc(B.ai)}</textarea>
+        <div class="row between"><span class="faint" style="font-size:12px">${B.prepared ? 'Edit any question, add your own, or rebuild the set from the description above.' : SAMPLER ? 'Turns your objective into clear questions. Review every question before deploying.' : 'Builds a starter set from your description.'}</span><button class="btn sm" data-act="genq" id="genq">${ic.spark}${B.prepared ? 'Rebuild questions' : 'Prepare questions'}</button></div></div>
       <div class="row between"><h3 style="font-size:16px">Questions (${B.questions.length} / 20)</h3></div>
       ${B.questions.map((q, i) => qEditor(q, i)).join('') || `<div class="card">${emptyState('clip', 'No questions yet', 'Generate a starter set above or add questions one by one.')}</div>`}
       <div class="row"><button class="btn soft" data-act="addq" ${B.questions.length >= 20 ? 'disabled' : ''}>${ic.plus}Add question</button></div>
@@ -1360,8 +1407,8 @@ Return JSON only: an array of 6 to 8 objects {"type": one of "short","paragraph"
       if (Array.isArray(out)) qs = out.filter(q => q && q.text && QTYPES.some(t => t[0] === q.type)).slice(0, 12).map(q => ({id: uid('q'), type: q.type, text: String(q.text), options: (q.type === 'single' || q.type === 'multi') ? (q.options || []).map(String).slice(0, 6) : undefined, unit: q.type === 'number' ? (q.unit || '') : undefined}));
     } catch (e) { if (e && e.code === 'rate_limited') toast('Too many requests. Using the starter set instead.'); }
   }
-  if (!qs || !qs.length) qs = templateQs(desc);
-  B.questions = [...B.questions, ...qs].slice(0, 20);
+  if (!qs || !qs.length) qs = (B.prepared && B.gaps && B.gaps.length) ? gapQs(B.gaps, B.kinds && B.kinds.length ? B.kinds : kindsFromGaps(B.gaps, []), '', B.regions[0]) : templateQs(desc);
+  B.questions = B.prepared ? qs.slice(0, 20) : [...B.questions, ...qs].slice(0, 20);
   render(); toast(`${qs.length} questions added. Review and edit them before publishing.`);
 }
 async function saveSurvey(status) {
