@@ -2609,6 +2609,30 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main .srcact{display:flex;margin:20px 0 6px}
 #va .va-main .srcview .shead > div{flex:1 1 auto;min-width:0}
 #va .va-main .srcview .shead h2{text-align:left}
+#va .va-main .kh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:2px 0 14px}
+#va .va-main .kh h3{font-size:17px;font-weight:600;letter-spacing:-.01em;color:var(--px-ink);margin:0 0 3px}
+#va .va-main .kh p{font-size:13px;line-height:1.45;color:var(--px-muted);margin:0}
+#va .va-main .kstr{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:12px;font-weight:500;color:var(--px-muted);padding:5px 8px;border-radius:999px;background:var(--px-canvas)}
+#va .va-main .kstr .meter{display:inline-flex;gap:2px}#va .va-main .kstr .meter i{width:8px;height:3px;border-radius:2px;background:#D5DCE8}#va .va-main .kstr .meter i.f{background:var(--px-indigo)}
+#va .va-main .kcards{display:grid;gap:10px}
+#va .va-main .kcard{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:14px;border:1px solid var(--px-line);border-radius:12px;background:#fff;transition:border-color 160ms var(--px-ease),box-shadow 160ms var(--px-ease)}
+#va .va-main .kcard:hover{border-color:#CCDDF1}
+#va .va-main .kcard.hl{border-color:#80AADC;box-shadow:0 0 0 3px #E3EBF8}
+#va .va-main .kcard.new{background:#FBFCFE}
+#va .va-main .kico{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#E3EBF8;color:var(--px-indigo)}
+#va .va-main .kico svg{width:19px;height:19px}
+#va .va-main .ktext{display:block;width:100%;padding:0;border:0;background:none;text-align:left;font:inherit;font-size:14px;font-weight:600;line-height:1.45;color:var(--px-ink);cursor:pointer}
+#va .va-main .ktext:hover{color:var(--px-blue-800)}
+#va .va-main .kmeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:8px;font-size:13px;color:var(--px-muted)}
+#va .va-main .kmeta > span{display:inline-flex;align-items:center;gap:5px}
+#va .va-main .kmeta{gap:6px 14px}
+#va .va-main .kmeta svg{width:13px;height:13px}
+#va .va-main .kpill{padding:3px 8px;border-radius:999px;font-weight:500}
+#va .va-main .kpill.y{background:#E3EBF8;color:#3A5292}#va .va-main .kpill.g{background:#E3EBF8;color:#1F273F}#va .va-main .kpill.m{background:#EEF1F6;color:#3A5292}
+#va .va-main .kact{grid-column:2;display:flex;justify-content:flex-end;margin-top:2px}
+#va .va-main .kcta{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:0;border-radius:8px;background:#E3EBF8;color:#1F273F;font:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
+#va .va-main .kcta:hover{background:#CCDDF1}
+#va .va-main .kcta svg{width:14px;height:14px}
 #va .va-main .gempty{padding:22px 16px;text-align:center;color:var(--px-muted)}
 #va .va-main .gempty p{margin:0 0 6px;font-size:14px;color:var(--px-ink)}
 #va .va-main .gempty p.small{color:var(--px-muted);font-size:13px;line-height:1.5;max-width:320px;margin:0 auto}
@@ -2650,7 +2674,7 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 /* wide windows: the evidence panel is a full-height column beside the conversation, not a floating card */
 #va .va-app{container:vaapp / inline-size}
 @container vaapp (min-width:1180px){
-#va .va-main.vapx-on.sheet-open{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(360px,32%);grid-template-rows:auto minmax(0,1fr) auto}
+#va .va-main.vapx-on.sheet-open{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(400px,36%);grid-template-rows:auto minmax(0,1fr) auto}
 #va .va-main.vapx-on.sheet-open > .va-top{grid-column:1;grid-row:1;position:static!important;z-index:60}
 #va .va-main.vapx-on.sheet-open > .va-body{grid-column:1;grid-row:2;container:vamain / inline-size}
 #va .va-main.vapx-on.sheet-open > .va-dock{grid-column:1;grid-row:3;container:vamain / inline-size}
