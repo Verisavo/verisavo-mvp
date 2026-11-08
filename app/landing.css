@@ -2059,3 +2059,6 @@ html body .ln .pb .net-svg .net-blk.net-stage rect, html body .ln .net-svg .net-
 #ln .wf-mu .wf-inv { justify-self: start; opacity: .45; transition: opacity .25s, background-color .25s; }
 #ln .wf-mu .wf-inv.en { opacity: 1; }
 /* <<< workflow step 3 */
+
+/* workflow: whatever the cursor clicks sits above the fade, so it stays sharp */
+#ln .wf-sc .wf-lift { position: relative; z-index: 3; }
