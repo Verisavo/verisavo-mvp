@@ -2591,7 +2591,25 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main .vapx .welcome{padding:clamp(24px, 8vh, 72px) 0 12px}
 #va .va-main .vapx .welcome h1{font-size:clamp(26px, 2.6vw, 32px)}
 #va .va-main.sheet-open > .va-body, #va .va-main.sheet-open > .va-dock{padding-right:24px!important}
-@container vamain (min-width:1100px){#va .va-main.sheet-open > .va-body, #va .va-main.sheet-open > .va-dock{padding-right:436px!important;transition:padding 260ms var(--px-ease)}}
+/* wide windows: the evidence panel is a full-height column beside the conversation, not a floating card */
+#va .va-app{container:vaapp / inline-size}
+@container vaapp (min-width:1180px){
+#va .va-main.vapx-on.sheet-open{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(360px,32%);grid-template-rows:auto minmax(0,1fr) auto}
+#va .va-main.vapx-on.sheet-open > .va-top{grid-column:1;grid-row:1;position:static!important;z-index:60}
+#va .va-main.vapx-on.sheet-open > .va-body{grid-column:1;grid-row:2;container:vamain / inline-size}
+#va .va-main.vapx-on.sheet-open > .va-dock{grid-column:1;grid-row:3;container:vamain / inline-size}
+#va .va-main.vapx-on.sheet-open > #sheet{grid-column:2;grid-row:1 / -1;min-height:0;position:relative;z-index:30;display:flex}
+#va .va-main.vapx-on.sheet-open > #sheet .sheet{position:static!important;top:auto!important;right:auto!important;bottom:auto!important;width:100%!important;height:100%!important;max-height:none;border-radius:0!important;box-shadow:none!important;border-left:1px solid var(--px-line);animation:none!important}
+#va .va-main.vapx-on.sheet-open > #sheet .sheet .shead{min-height:52px;padding:10px 160px 10px 20px;border-bottom:1px solid var(--px-line);align-items:center}
+#va .va-main.vapx-on.sheet-open > #sheet .sheet .shead h2{font-size:15px}
+#va .va-main.vapx-on.sheet-open > #sheet .sheet .shead > div{min-width:0}
+#va .va-main.vapx-on.sheet-open > #sheet .sheet .shead .small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#va .va-main.vapx-on.sheet-open > #sheet .sheet .shead .icb[data-act="closeSheet"]{display:none}
+#va .va-main.vapx-on.sheet-open > .va-top .va-top-r{position:absolute;top:0;right:0;height:52px;display:flex;align-items:center;padding-right:10px;z-index:120!important}
+#va .va-main.vapx-on.sheet-open > #modal, #va .va-main.vapx-on.sheet-open > #toast, #va .va-main.vapx-on.sheet-open > .va-bed{grid-column:1 / -1;grid-row:1 / -1}
+#va .va-main.vapx-on.sheet-open > .vapx-top, #va .va-main.vapx-on.sheet-open > nav#side, #va .va-main.vapx-on.sheet-open > .va-brief, #va .va-main.vapx-on.sheet-open > .va-hi, #va .va-main.vapx-on.sheet-open > .va-inv{grid-column:1}
+#va .va-main.sheet-open > .va-body, #va .va-main.sheet-open > .va-dock{padding-right:24px!important}
+}
 #va .va-main .sheet{z-index:30;top:64px}
 #va .va-main.vapx-on > .va-hi, #va .va-main.vapx-on > .va-top #va-new2, #va .va-main.vapx-on > .va-top .va-pop-wrap:has(> #va-more){display:none!important}
 #va .va-main.vapx-on .vapx .compose textarea:focus-visible{box-shadow:none!important;outline:0!important}
