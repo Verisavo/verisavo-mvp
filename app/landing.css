@@ -2029,6 +2029,6 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 
 /* network stages */
 .net-stage rect { fill: #E3EBF8; stroke: #CCDDF1; stroke-width: 1; }
-.net-stage text { fill: #1F273F; font-weight: 600; font-size: 12.5px; }
+.net-stage text { font: 500 13px var(--mono); fill: var(--i9); }
 .ln .net-stage rect { fill: #E3EBF8 !important; stroke: #CCDDF1 !important; }
-.ln .net-stage text { fill: #1F273F !important; }
+.ln .net-stage text { font-weight: 500 !important; }
