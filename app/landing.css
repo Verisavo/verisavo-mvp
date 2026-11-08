@@ -1626,7 +1626,7 @@ html body #pg-pricing .pi-note { margin: 0; font: 400 .8rem/1.5 var(--sans); col
 /* Verisavo Intelligence Network diagram */
 html body .ln .pb .net-svg .net-cols text.net-colm { font-weight: 700 !important; fill: #1F273F !important; font-size: 14px !important; letter-spacing: -.005em !important; }
 html body .ln .pb .net-svg .net-hub { fill: #4362B2; }
-html body .ln .pb .net-svg .net-blk text { font-weight: 600 !important; fill: #1F273F !important; }
+html body .ln .pb .net-svg .net-blk text { font-weight: 500 !important; fill: #1F273F !important; }
 html body .ln .pb .net-svg .net-dot-g { fill: #4362B2 !important; }
 @media (max-width: 640px) { html body .ln .pb .net-svg .net-cols text.net-colm { font-size: 19px !important; } }
 html body .ln .pb .net-svg .net-orb { fill: none; stroke: none; }
