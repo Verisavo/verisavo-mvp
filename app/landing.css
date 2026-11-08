@@ -878,7 +878,7 @@ body.menu-open .ln-hero-in, body.menu-open .ln-hero-foot, body.menu-open .ln-lab
 .ln .net-src rect, .ln .net-out rect, .ln .net-gap rect { rx: 20px; ry: 20px; fill: url(#ohfill); stroke: rgba(255,255,255,.9); stroke-width: 1; filter: url(#ohsh); }
 .ln .net-scout rect, .ln .net-gap rect { stroke: #A8C6E8; stroke-dasharray: 4 4; }
 .ln .net-out.net-o0 rect { fill: #1F273F; stroke: #1F273F; }
-.ln .net-src text, .ln .net-out text, .ln .net-gap text { font-weight: 500 !important; }
+.ln .net-src text, .ln .net-out text, .ln .net-gap text, .ln .net-stage text { font-weight: 500 !important; }
 .ln .net-e { stroke: rgba(31,39,63,.18); stroke-width: 1; }
 .ln .net-p { stroke: rgba(67,98,178,.28); stroke-width: 1.2; }
 .ln .net-mem { stroke: rgba(31,39,63,.18); }
@@ -1065,7 +1065,7 @@ html body .ln .v3-hero::after { display: none !important; animation: none !impor
 .ln .v3-net-src { margin: 12px 0 0; font: 400 .8125rem/1.4 var(--sans); color: #7A8196; }
 .ln .net-cols text, .ln .net-memt { font: 500 12px var(--sans) !important; fill: #6A7285 !important; letter-spacing: 0 !important; text-transform: none !important; }
 .ln .net-n text { font: 500 13px var(--sans) !important; fill: var(--i9) !important; }
-.ln .net-src text, .ln .net-out text, .ln .net-gap text { font: 500 13px var(--sans) !important; }
+.ln .net-src text, .ln .net-out text, .ln .net-gap text, .ln .net-stage text { font: 500 13px var(--sans) !important; }
 .ln .net-sm { font-size: 10.5px !important; }
 :root { --container: 1500px; --gutter: clamp(20px, 3vw, 32px); --edge: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))); --measure: 68ch; }
 /* Global container */
@@ -1136,6 +1136,7 @@ html body .ln .v3-hero::after { display: none !important; animation: none !impor
   html body .ln .net-scroll .net-svg:not(.net-svg-m) text { font-size: 21px !important; }
   html body .ln .net-scroll .net-svg:not(.net-svg-m) .net-cols text { font-size: 19px !important; }
   html body .ln .net-scroll .net-svg:not(.net-svg-m) .net-gap text { font-size: 17px !important; }
+  html body .ln .net-scroll .net-svg:not(.net-svg-m) .net-stage text { font-size: 17px !important; }
   html body .ln .net-scroll::after { display: none !important; }
 }
 /* story scene on phones: the text fade covers only the bottom, so the city stays sharp */
