@@ -2280,6 +2280,25 @@ html body #va #va-brief .vs-gview { margin-top: 2px !important; }
 html body #va #va-brief .vs-or { justify-content: flex-start !important; color: var(--q-ink3) !important; font-size: .8125rem !important; }
 html body #va #va-brief .vs-empty { padding: 28px 16px !important; border-radius: var(--q-r4) !important; background: var(--q-fill) !important; font-size: .875rem !important; color: var(--q-ink2) !important; }
 html body #va #va-brief .vs-empty b { color: var(--q-ink) !important; }
+html body #va #va-brief .vs-gopen-list { display: grid !important; gap: 10px !important; }
+html body #va #va-brief .vs-glist { list-style: none !important; margin: 4px 0 0 !important; padding: 0 !important; display: grid !important; gap: 2px !important; }
+html body #va #va-brief .vs-gi { margin: 0 !important; }
+html body #va #va-brief .vs-gck-l { display: grid !important; grid-template-columns: 18px minmax(0, 1fr) !important; gap: 10px !important; align-items: start !important; padding: 8px 8px 8px 6px !important; margin: 0 -6px !important; border-radius: var(--q-r2) !important; cursor: pointer !important; }
+html body #va #va-brief .vs-gck-l:hover { background: var(--q-fill) !important; }
+html body #va #va-brief .vs-gck { position: absolute !important; opacity: 0 !important; width: 1px !important; height: 1px !important; margin: 0 !important; }
+html body #va #va-brief .vs-gbox { width: 18px !important; height: 18px !important; margin-top: 1px !important; border-radius: 5px !important; border: 1.5px solid rgba(0,0,0,.25) !important; background: var(--q-white) !important; display: grid !important; place-items: center !important; transition: background-color var(--q-t) var(--q-ease), border-color var(--q-t) var(--q-ease) !important; }
+html body #va #va-brief .vs-gck:checked + .vs-gbox { background: var(--q-brand) !important; border-color: var(--q-brand) !important; }
+html body #va #va-brief .vs-gck:checked + .vs-gbox::after { content: "" !important; width: 5px !important; height: 9px !important; margin-top: -2px !important; border: solid #fff !important; border-width: 0 2px 2px 0 !important; transform: rotate(45deg) !important; }
+html body #va #va-brief .vs-gck:focus-visible + .vs-gbox { box-shadow: 0 0 0 2px var(--q-white), 0 0 0 4px var(--q-link) !important; }
+html body #va #va-brief .vs-gtxt { display: grid !important; gap: 3px !important; min-width: 0 !important; }
+html body #va #va-brief .vs-gtxt .vs-gap-h { font-weight: 500 !important; font-size: .9375rem !important; }
+html body #va #va-brief .vs-gtxt .vs-gap-why { font-size: .8125rem !important; }
+html body #va #va-brief .vs-gtxt .vs-muted { font-size: .75rem !important; }
+html body #va #va-brief .vs-gact { display: grid !important; gap: 8px !important; justify-items: start !important; padding: 2px 0 6px !important; }
+html body #va #va-brief .vs-gcreate b { font-weight: 600 !important; margin-left: 6px !important; padding: 1px 7px !important; border-radius: 999px !important; background: rgba(255,255,255,.18) !important; font-size: .75rem !important; }
+html body #va #va-brief .vs-gcreate:disabled { background: var(--q-fill2) !important; border-color: var(--q-fill2) !important; color: var(--q-ink3) !important; cursor: default !important; }
+html body #va #va-brief .vs-gcreate:disabled:hover { background: var(--q-fill2) !important; }
+@media (min-width: 901px) { html body #va #va-brief[data-view="gaps"] .vs-gact { position: sticky !important; bottom: -28px !important; margin: 0 -20px !important; padding: 12px 20px 16px !important; background: var(--q-white) !important; border-top: 1px solid var(--q-line) !important; } }
 /* the other brief views (task set-up, investigation detail) keep their full-width layout */
 html body #va #va-brief .vb-eb { font: 500 .8125rem/1.2 var(--q-font) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--q-ink3) !important; }
 html body #va #va-brief .vb-head h2 { font-family: var(--q-font) !important; font-weight: 600 !important; letter-spacing: -.02em !important; color: var(--q-ink) !important; }

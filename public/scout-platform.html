@@ -858,14 +858,16 @@ function fromGapCtx(raw) {
   if (!g || !g.gap) return;
   newBuilder();
   const country = g.country && COUNTRIES[g.country] ? g.country : (Object.keys(COUNTRIES).find(c => COUNTRIES[c].includes(g.city)) || '');
-  B.gap = g.gap; B.ai = g.gap; B.gapFrom = g.from || ''; B.prepared = true;
+  const gaps = Array.isArray(g.gaps) && g.gaps.length ? g.gaps : [g.gap], kinds = Array.isArray(g.kinds) && g.kinds.length ? g.kinds : [g.kind];
+  B.gap = gaps.join(' '); B.gaps = gaps; B.ai = gaps.length > 1 ? gaps.map(x => '• ' + x).join('\n') : g.gap; B.gapFrom = g.from || ''; B.prepared = true;
   B.country = country; B.regions = country && g.city && COUNTRIES[country].includes(g.city) ? [g.city] : [];
   const prod = (g.product || '').replace(/^our /i, '').trim();
   B.title = ((g.kind || 'Investigation') + (g.city ? ' in ' + g.city : '')).replace(/^Availability and shelf/, (prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Product') + ' availability').replace(/^Price check/, (prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Shelf') + ' prices');
   B.industry = /oil|rice|flour|sugar|noodle|detergent|soap|beer|water|milk|bread/i.test(prod) ? 'Consumer goods' : /solar|lantern|battery|airtime|phone/i.test(prod) ? 'Energy' : /maize|onion|tomato|seed|fertili|cassava|yam|beans/i.test(prod) ? 'Agriculture' : 'Retail';
   B.location = g.city ? 'Main market and neighbourhood shops in ' + g.city : '';
-  B.brief = KIND_BRIEF[g.kind] || KIND_BRIEF['Open observation'];
-  const desc = (prod ? prod + ' ' : '') + (g.kind || '').toLowerCase() + (g.city ? ' in ' + g.city : '') + '. ' + g.gap;
+  B.brief = kinds.map(k => KIND_BRIEF[k]).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(' ') || KIND_BRIEF['Open observation'];
+  if (kinds.length > 1) B.title = ((prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Market') + (g.city ? ' in ' + g.city : '') + ': ' + kinds.map(k => k.toLowerCase().replace('availability and shelf', 'availability').replace('price check', 'prices').replace('retailer interviews', 'distribution').replace('outlet mapping', 'outlets').replace('shopper feedback', 'shoppers')).join(', '));
+  const desc = (prod ? prod + ' ' : '') + kinds.join(', ').toLowerCase() + (g.city ? ' in ' + g.city : '') + '. ' + gaps.join(' ');
   B.questions = templateQs(desc);
   if (SAMPLER) setTimeout(() => { if (B.prepared && B.questions.length <= 8) { B.questions = []; genQuestions(); } }, 50);
 }
@@ -878,8 +880,8 @@ function cBuilder(r) {
   if (B.step === 0) {
     const regs = COUNTRIES[B.country] || [];
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">${B.prepared ? 'Investigate this gap' : 'What do you need to understand?'}</h2><p class="muted" style="margin:2px 0 0">${B.prepared ? 'Verisavo prepared this task from your conversation: the place, the instructions and a first set of evidence questions. Review and change anything before it reaches SavoScouts.' : 'Start from an Intelligence Gap in your Assistant conversations, or describe a new investigation.'}</p></div>
-      ${B.prepared ? `<div class="note gapnote">${ic.info}<span><b>Intelligence Gap</b> ${esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : ''}
+      <div><h2 style="font-size:22px">${B.prepared ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you need to understand?'}</h2><p class="muted" style="margin:2px 0 0">${B.prepared ? 'Verisavo prepared this task from your conversation: the place, the instructions and a first set of evidence questions. Review and change anything before it reaches SavoScouts.' : 'Start from an Intelligence Gap in your Assistant conversations, or describe a new investigation.'}</p></div>
+      ${B.prepared ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : ''}
       ${B.prepared ? '' : `<div class="field"><span class="flabel">Investigate an Intelligence Gap <span class="sample">Sample</span></span><div class="gapc">${GAPS.map((g, i) => `<button class="gap ${B.gap === g.gap ? 'on' : ''}" data-act="usegap" data-v="${i}"><b style="font-weight:500">${esc(g.gap)}</b><small>${esc(g.regions.join(', '))}, ${esc(g.country)} · from your Assistant chat</small></button>`).join('')}</div></div>`}
       <div class="field"><label for="b-ai">Investigation objective</label><textarea class="in" id="b-ai" data-b="ai" placeholder="For example: is cooking oil consistently stocked in Kumasi shops, and at what price?">${esc(B.ai)}</textarea></div>
       <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
