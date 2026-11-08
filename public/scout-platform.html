@@ -844,6 +844,31 @@ function cBilling(r) {
   return shell(r, 'Billing', body);
 }
 function newBuilderPay() {}
+/* An Intelligence Gap arriving from the Assistant: prefill the task and prepare the evidence questions, so the client reviews rather than starts from nothing. */
+const KIND_BRIEF = {
+  'Availability and shelf': 'Visit each shop or kiosk. Record whether the product is on the shelf, which brands are present, and photograph the shelf.',
+  'Price check': 'Record the shelf price of the product and each rival pack. Note any promotion or discount and photograph the price label.',
+  'Outlet mapping': 'Find every outlet in the area that sells the product. Record its name, type and location, and ask how often it reorders.',
+  'Retailer interviews': 'Ask the shopkeeper or distributor, with consent, about delivery timing, which brands they prioritise and why.',
+  'Shopper feedback': 'Ask shoppers at the shelf, with consent, which brand they chose today and what made the difference.',
+  'Open observation': 'Observe the product in the market: stock, price, competition and anything unusual. Photograph what you see.'
+};
+function fromGapCtx(raw) {
+  let g; try { g = JSON.parse(raw); } catch (e) { return; }
+  if (!g || !g.gap) return;
+  newBuilder();
+  const country = g.country && COUNTRIES[g.country] ? g.country : (Object.keys(COUNTRIES).find(c => COUNTRIES[c].includes(g.city)) || '');
+  B.gap = g.gap; B.ai = g.gap; B.gapFrom = g.from || ''; B.prepared = true;
+  B.country = country; B.regions = country && g.city && COUNTRIES[country].includes(g.city) ? [g.city] : [];
+  const prod = (g.product || '').replace(/^our /i, '').trim();
+  B.title = ((g.kind || 'Investigation') + (g.city ? ' in ' + g.city : '')).replace(/^Availability and shelf/, (prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Product') + ' availability').replace(/^Price check/, (prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Shelf') + ' prices');
+  B.industry = /oil|rice|flour|sugar|noodle|detergent|soap|beer|water|milk|bread/i.test(prod) ? 'Consumer goods' : /solar|lantern|battery|airtime|phone/i.test(prod) ? 'Energy' : /maize|onion|tomato|seed|fertili|cassava|yam|beans/i.test(prod) ? 'Agriculture' : 'Retail';
+  B.location = g.city ? 'Main market and neighbourhood shops in ' + g.city : '';
+  B.brief = KIND_BRIEF[g.kind] || KIND_BRIEF['Open observation'];
+  const desc = (prod ? prod + ' ' : '') + (g.kind || '').toLowerCase() + (g.city ? ' in ' + g.city : '') + '. ' + g.gap;
+  B.questions = templateQs(desc);
+  if (SAMPLER) setTimeout(() => { if (B.prepared && B.questions.length <= 8) { B.questions = []; genQuestions(); } }, 50);
+}
 function cBuilder(r) {
   if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
   const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Payment', 'Review and deploy'];
@@ -853,8 +878,9 @@ function cBuilder(r) {
   if (B.step === 0) {
     const regs = COUNTRIES[B.country] || [];
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">What do you need to understand?</h2><p class="muted" style="margin:2px 0 0">Start from an Intelligence Gap in your Assistant conversations, or describe a new investigation.</p></div>
-      <div class="field"><span class="flabel">Investigate an Intelligence Gap <span class="sample">Sample</span></span><div class="gapc">${GAPS.map((g, i) => `<button class="gap ${B.gap === g.gap ? 'on' : ''}" data-act="usegap" data-v="${i}"><b style="font-weight:500">${esc(g.gap)}</b><small>${esc(g.regions.join(', '))}, ${esc(g.country)} · from your Assistant chat</small></button>`).join('')}</div></div>
+      <div><h2 style="font-size:22px">${B.prepared ? 'Investigate this gap' : 'What do you need to understand?'}</h2><p class="muted" style="margin:2px 0 0">${B.prepared ? 'Verisavo prepared this task from your conversation: the place, the instructions and a first set of evidence questions. Review and change anything before it reaches SavoScouts.' : 'Start from an Intelligence Gap in your Assistant conversations, or describe a new investigation.'}</p></div>
+      ${B.prepared ? `<div class="note gapnote">${ic.info}<span><b>Intelligence Gap</b> ${esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : ''}
+      ${B.prepared ? '' : `<div class="field"><span class="flabel">Investigate an Intelligence Gap <span class="sample">Sample</span></span><div class="gapc">${GAPS.map((g, i) => `<button class="gap ${B.gap === g.gap ? 'on' : ''}" data-act="usegap" data-v="${i}"><b style="font-weight:500">${esc(g.gap)}</b><small>${esc(g.regions.join(', '))}, ${esc(g.country)} · from your Assistant chat</small></button>`).join('')}</div></div>`}
       <div class="field"><label for="b-ai">Investigation objective</label><textarea class="in" id="b-ai" data-b="ai" placeholder="For example: is cooking oil consistently stocked in Kumasi shops, and at what price?">${esc(B.ai)}</textarea></div>
       <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
       <div class="field"><label for="b-industry">Industry</label><select class="in" id="b-industry" data-b="industry"><option value="">Select your industry</option>${INDUSTRIES.map(x => `<option ${B.industry === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
@@ -873,7 +899,7 @@ function cBuilder(r) {
     inner = `<div class="narrow" style="max-width:820px">
       <div class="row between"><div><h2 style="font-size:22px">Evidence questions</h2><p class="muted" style="margin:2px 0 0">What SavoScouts answer and photograph on the ground. The Verisavo agent asks these one by one on WhatsApp.</p></div><button class="btn ghost sm" data-act="saveDraft">Save draft</button></div>
       <div class="card stack"><label class="flabel" for="b-ai">Prepare with Verisavo</label><textarea class="in" id="b-ai" data-b="ai" placeholder="Describe what you want to understand about the market. For example: onion prices, availability and supplier sources in Tamale markets.">${esc(B.ai)}</textarea>
-        <div class="row between"><span class="faint" style="font-size:12px">${SAMPLER ? 'Turns your objective into clear questions. Review every question before deploying.' : 'Builds a starter set from your description.'}</span><button class="btn sm" data-act="genq" id="genq">${ic.spark}Prepare questions</button></div></div>
+        <div class="row between"><span class="faint" style="font-size:12px">${B.prepared ? 'Verisavo prepared these from your Intelligence Gap. Edit any question, or prepare a fresh set.' : SAMPLER ? 'Turns your objective into clear questions. Review every question before deploying.' : 'Builds a starter set from your description.'}</span><button class="btn sm" data-act="genq" id="genq">${ic.spark}Prepare questions</button></div></div>
       <div class="row between"><h3 style="font-size:16px">Questions (${B.questions.length} / 20)</h3></div>
       ${B.questions.map((q, i) => qEditor(q, i)).join('') || `<div class="card">${emptyState('clip', 'No questions yet', 'Generate a starter set above or add questions one by one.')}</div>`}
       <div class="row"><button class="btn soft" data-act="addq" ${B.questions.length >= 20 ? 'disabled' : ''}>${ic.plus}Add question</button></div>
@@ -1391,6 +1417,7 @@ async function boot() {
   const use = window.claude && window.claude.use ? window.claude.use.bind(window.claude) : null;
   if (!use) { seed(); dedupe(); }
   if (QS.get('gap') && SIDE !== 'scout') { newBuilder(); B.gap = QS.get('gap'); B.ai = QS.get('gap'); }
+  if (QS.get('gapctx') && SIDE !== 'scout') fromGapCtx(QS.get('gapctx'));
   render();
   if (!use) { S.loaded = true; render(); return; }
   const timer = setTimeout(() => { S.slow = true; render(); }, 10000);
