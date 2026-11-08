@@ -431,6 +431,10 @@ async function put(coll, id, data) {
   S[coll] = {...S[coll], [id]: data}; scheduleRender(true);
   if (DB) { try { await DB.collection(coll).doc(id).set(data); } catch (e) { onWriteError(e); } } else saveLocal();
 }
+async function remove(coll, id) {
+  const next = {...S[coll]}; delete next[id]; S[coll] = next; scheduleRender(true);
+  if (DB) { try { await DB.collection(coll).doc(id).delete(); } catch (e) { onWriteError(e); } } else saveLocal();
+}
 async function patch(coll, id, data) {
   S[coll] = {...S[coll], [id]: {...S[coll][id], ...data}}; scheduleRender(true);
   if (DB) { try { await DB.collection(coll).doc(id).update(data); } catch (e) { onWriteError(e); } } else saveLocal();
@@ -604,7 +608,7 @@ function cSurveys(r) {
     ${list.map(s => { const n = subsOf(s.id).length; return `<tr class="click" data-go="${s.status === 'draft' ? 'c-builder-' + s.id : 'c-survey-' + s.id}"><td style="max-width:260px"><b style="font-weight:500">${esc(s.title)}</b>${SAMPLE(s)}</td>
       <td><div class="row" style="gap:8px;flex-wrap:nowrap"><div class="bar" style="width:70px"><i style="width:${Math.min(100, pct(n, s.target))}%"></i></div><span class="num">${n}/${s.target}</span></div></td>
       <td class="muted">${esc(s.country)}</td><td><div class="tags" style="flex-wrap:nowrap">${(s.regions || []).slice(0, 3).map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div></td>
-      <td>${pill(life(s))}</td><td class="muted" style="white-space:nowrap">${s.status === 'draft' ? '—' : left(s.deadline)}</td><td><span class="iconbtn" aria-hidden="true">${s.status === 'draft' ? ic.build : ic.eye}</span></td></tr>`; }).join('')}
+      <td>${pill(life(s))}</td><td class="muted" style="white-space:nowrap">${s.status === 'draft' ? '—' : left(s.deadline)}</td><td style="white-space:nowrap">${s.status === 'draft' ? (S.ui.confirmDel === s.id ? `<span class="delq"><span class="faint" style="font-size:12.5px">Delete this draft?</span><button class="btn sm danger" data-act="delDraft" data-id="${s.id}">Delete</button><button class="btn ghost sm" data-act="keepDraft">Keep</button></span>` : `<span class="rowacts"><span class="iconbtn" aria-hidden="true">${ic.build}</span><button class="iconbtn del" data-act="askDel" data-id="${s.id}" aria-label="Delete draft ${esc(s.title)}" title="Delete draft">${ic.x}</button></span>`) : `<span class="iconbtn" aria-hidden="true">${ic.eye}</span>`}</td></tr>`; }).join('')}
     </tbody></table></div>` : emptyState('search', sv.length ? 'No investigations match' : 'No investigations yet', sv.length ? 'Try another tab or search term.' : 'Start from an Intelligence Gap or describe what you need to understand.', sv.length ? '' : `<button class="btn" data-go="c-builder">${ic.search}Investigate market</button>`)}
   </div>`;
   return shell(r, 'Market investigations', body);
@@ -1360,6 +1364,9 @@ document.addEventListener('click', async (e) => {
   else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
   else if (a === 'prepare') { const t = $('#b-ai'); if (!prepareFromText(t ? t.value : B.ai)) { toast('Describe what you want to investigate first.'); return; } render(); toast('Task generated. Review the place and instructions, then continue to the questions.'); }
   else if (a === 'manual') { B.manual = true; render(); const t = $('#b-title'); if (t) t.focus(); }
+  else if (a === 'askDel') { S.ui.confirmDel = id; render(); }
+  else if (a === 'keepDraft') { S.ui.confirmDel = null; render(); }
+  else if (a === 'delDraft') { const d = S.surveys[id]; S.ui.confirmDel = null; if (d && d.status === 'draft') { remove('surveys', id); if (B && B.id === id) B = null; toast('Draft deleted.'); } render(); }
   else if (a === 'back-chat') { try { window.parent.postMessage({ vs: 'back-chat' }, '*'); } catch (e) {} }
   else if (a === 'usegap') { const g = GAPS[Number(v)]; prepareFromText(g.gap); Object.assign(B, {title: g.title, industry: g.industry, country: g.country, countries: [g.country], regions: g.regions.slice(), location: g.location, brief: g.brief}); render(); toast('Task prepared from the example. Review and edit before deploying.'); }
   else if (a === 'genbrief') genBrief(id);
@@ -1538,6 +1545,14 @@ button:active:not([disabled]) { transform: scale(.985); }
 .draftrow .dt { grid-area: t; font-weight: 500; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .draftrow .dm { grid-area: m; font-size: 12.5px; color: var(--ink-2); }
 .draftrow .da { grid-area: a; font-size: 13px; font-weight: 500; color: var(--primary-3); }
+/* delete a draft from the list */
+.rowacts { display: inline-flex; align-items: center; gap: 6px; }
+.iconbtn.del { margin-left: 0; color: var(--ink-3); background: none; border: 1px solid transparent; cursor: pointer; }
+tr:hover .iconbtn.del { border-color: var(--line); background: var(--card); }
+.iconbtn.del:hover { color: var(--err); border-color: var(--err); background: var(--err-bg); }
+.delq { display: inline-flex; align-items: center; gap: 8px; }
+.btn.danger { background: var(--err); color: #fff; }
+.btn.danger:hover { background: #A1283F; }
 /* header: one quiet toolbar */
 .htop, .happ.inline .htop { background: var(--bg); border-bottom: 1px solid var(--line); min-height: 56px; }
 .happ.inline .htop { padding: 8px 20px; }
