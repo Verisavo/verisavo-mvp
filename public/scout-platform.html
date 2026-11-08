@@ -1510,9 +1510,9 @@ boot();
 /* Investigations app: same quiet system as the Assistant. Tokens first, then the few shapes the tokens don't reach. */
 :root, :root[data-theme="light"] {
   --primary: #1F273F; --primary-2: #1F273F; --primary-3: #3A5292; --primary-100: #EEF1F6; --primary-200: #DDE3EE;
-  --ink: #1D1D1F; --ink-2: #6E6E73; --ink-3: #8E8E93;
+  --ink: #1D1D1F; --ink-2: #6E6E73; --ink-3: #6E6E73; --ink-4: #8E8E93;
   --bg: #FFFFFF; --paper: #F5F5F7; --card: #FFFFFF; --line: #E5E5EA; --field: #F2F2F4;
-  --ok: #1D7F52; --ok-bg: #E7F5EC; --warn: #A85A0A; --warn-bg: #FFF4E3; --err: #B9304A; --err-bg: #FCEBEE; --info: #3A5292; --info-bg: #EEF1F6;
+  --ok: #17704A; --ok-bg: #E7F5EC; --warn: #A85A0A; --warn-bg: #FFF4E3; --err: #B9304A; --err-bg: #FCEBEE; --info: #3A5292; --info-bg: #EEF1F6;
   --shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 32px -16px rgba(0,0,0,.16);
   --f: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   --r: 10px; --r-lg: 12px;
@@ -1546,14 +1546,14 @@ button:active:not([disabled]) { transform: scale(.985); }
 .delta b { color: var(--ok); }
 
 /* controls */
-.btn { height: 36px; padding: 0 14px; border-radius: var(--r); font-size: 13.5px; font-weight: 600; background: var(--primary); color: #fff; }
+.btn { height: 36px; padding: 0 14px; border-radius: var(--r); font-size: 13px; font-weight: 600; background: var(--primary); color: #fff; }
 .btn:hover { filter: none; background: #2C3656; }
 .btn.ghost { background: var(--card); color: var(--ink); border-color: var(--line); font-weight: 500; }
 .btn.ghost:hover { background: var(--field); }
 .btn.soft { background: var(--primary-100); color: var(--primary); border-color: transparent; }
 .btn.soft:hover { background: var(--primary-200); }
 .btn.okb { background: var(--ok); }
-.btn.sm { height: 30px; padding: 0 10px; border-radius: 8px; font-size: 12.5px; }
+.btn.sm { height: 30px; padding: 0 10px; border-radius: 8px; font-size: 13px; }
 .link { color: var(--primary-3); }
 .pill { height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; }
 .pill.info { background: var(--info-bg); color: var(--info); }
@@ -1565,7 +1565,7 @@ button:active:not([disabled]) { transform: scale(.985); }
 .field label, .flabel { font-size: 13px; font-weight: 500; color: var(--ink); }
 .tabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
 .tabs .cnt { background: var(--field); color: var(--ink-2); border-radius: 5px; }
-th { background: var(--paper); color: var(--ink-2); font-size: 12.5px; font-weight: 500; }
+th { background: var(--paper); color: var(--ink-2); font-size: 13px; font-weight: 500; }
 td { border-top-color: var(--line); }
 .kv { border-bottom-style: solid; border-bottom-color: var(--line); }
 .navlabel { letter-spacing: 0; text-transform: none; font-size: 11px; font-weight: 600; }
@@ -1575,10 +1575,10 @@ td { border-top-color: var(--line); }
 .modal { border-radius: 16px; border: 1px solid var(--line); }
 
 /* stepper */
-.step .dot { background: var(--field); color: var(--ink-3); width: 26px; height: 26px; font-size: 12.5px; }
+.step .dot { background: var(--field); color: var(--ink-3); width: 26px; height: 26px; font-size: 13px; }
 .step.on .dot { background: var(--primary); color: #fff; }
 .step.done .dot { background: var(--primary-100); color: var(--primary); }
-.step { font-size: 12.5px; }
+.step { font-size: 13px; }
 .step.on { font-weight: 500; }
 .step:not(:last-child)::after { background: var(--line); }
 
@@ -1596,7 +1596,7 @@ td { border-top-color: var(--line); }
 .askbox textarea:focus { box-shadow: none; }
 .askbox .askgo { flex: none; height: 36px; border-radius: 10px; padding: 0 12px; gap: 6px; }
 .askbox .askgo svg { width: 15px; height: 15px; }
-.askhint { margin: -6px 0 0; font-size: 12.5px; }
+.askhint { margin: -6px 0 0; font-size: 13px; }
 .askbox, .askhint, .chips.sugg, .asklead { max-width: 680px; }
 .happ.inline .g-main .stack > div:first-child p.muted { max-width: 62ch; }
 .chips.sugg .chipbtn { border-radius: 999px; padding: 7px 13px; height: auto; white-space: normal; text-align: left; line-height: 1.3; font-size: 13px; }
@@ -1615,6 +1615,19 @@ td { border-top-color: var(--line); }
 .happ.inline .kv { padding: 8px 0; font-size: 13px; }
 .happ.inline h2 { font-size: 20px !important; }
 @media (max-width: 640px) { .askbox { padding: 6px 6px 6px 12px; } .askbox .askgo span { display: none; } .askbox .askgo { width: 36px; padding: 0; justify-content: center; } }
+/* craft pass: browser surfaces, press feedback, type scale, touch targets */
+::selection { background: rgba(58,82,146,.18); }
+input, textarea { caret-color: var(--primary); }
+* { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,.18) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; } *::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); border-radius: 8px; border: 2px solid transparent; background-clip: content-box; } *::-webkit-scrollbar-track { background: transparent; }
+button { transition-timing-function: cubic-bezier(.23,1,.32,1); }
+.step .dot { color: var(--ink-2); }
+.faint { color: var(--ink-2); }
+.pill.ok { color: var(--ok); }
+.btn.sm, .hnav button { min-height: 30px; }
+a { text-underline-offset: 2px; }
+.card { border-radius: 12px; }
+@media (max-width: 640px) { .btn.sm, .hnav button, .chipbtn, .lnk, .link { min-height: 40px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }
 /* <<< quiet system v1 */
 </style>
