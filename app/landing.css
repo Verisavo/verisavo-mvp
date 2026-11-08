@@ -1628,7 +1628,7 @@ html body .ln .pb .net-svg .net-cols text.net-colm { font-weight: 700 !important
 html body .ln .pb .net-svg .net-hub { fill: #4362B2; }
 html body .ln .pb .net-svg .net-blk text { font-weight: 500 !important; fill: #1F273F !important; }
 html body .ln .pb .net-svg .net-dot-g { fill: #4362B2 !important; }
-html body .ln .pb .net-svg .net-dot-m { fill: #4362B2 !important; }
+html body .ln .pb .net-svg .net-dot-m { fill: #80AADC !important; }
 @media (max-width: 640px) { html body .ln .pb .net-svg .net-cols text.net-colm { font-size: 19px !important; } }
 html body .ln .pb .net-svg .net-orb { fill: none; stroke: none; }
 html body .ln .pb .net-svg .net-dot-o { fill: #4362B2 !important; stroke: #fff; stroke-width: 1.5; }
@@ -1989,7 +1989,8 @@ html body #pg-community .c2-steps li:first-child .c2-n, html body #pg-use-cases 
 html body #pg-research#pg-research.pg.pg .rs-chip[aria-pressed="true"], html body #pg-careers#pg-careers.pg.pg .ca2-filter button[aria-pressed="true"] { background: #E3EBF8 !important; border-color: #A8C6E8 !important; color: #1F273F !important; }
 html body #pg-careers#pg-careers.pg.pg .ca2-filter button[aria-pressed="true"] i { color: #3A5292 !important; }
 html body #ln .wf-caret { background: #80AADC !important; }
-html body .ln .pb .net-svg circle.net-dot-g, html body .ln .pb .net-svg circle.net-dot-o { fill: #80AADC !important; }
+html body .ln .pb .net-svg circle.net-dot-g { fill: #4362B2 !important; }
+html body .ln .pb .net-svg circle.net-dot-m { fill: #80AADC !important; }
 html body #ln .wf-inv.done { background: #80AADC !important; }
 html body #ln .wf-sc.go .wf-steps li.wf-a i { background: #80AADC !important; border-color: #80AADC !important; }
 html body #ln .wf-bar-f::after { background: #80AADC !important; }
