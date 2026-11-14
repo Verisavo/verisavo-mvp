@@ -2162,3 +2162,8 @@ html body #pg-community.pg .c2-join-txt h2 { color: #1F273F !important; }
 #pg-community .c2-join-art .jp::before { background: var(--c); }
 /* round frames, heads only just over the edge */
 #pg-community .c2-join-art .jp img { height: 110% !important; clip-path: inset(0 round 0 0 50% 50% / 0 0 45.5% 45.5%) !important; }
+/* spacing: breathing room between the task cards, their note and the community band */
+html body #pg-community.pg .c2-join { margin: clamp(72px, 8vw, 120px) 0 0 !important; padding: clamp(56px, 6vw, 88px) clamp(20px, 5vw, 72px) !important; border-radius: 24px !important; border: 1px solid #E3EBF8 !important; }
+html body #pg-community.pg #cm-act .c2-note { margin-top: 20px; }
+@media (max-width: 860px) { html body #pg-community.pg .c2-join { margin-top: 64px !important; border-radius: 18px !important; } }
+html body #pg-community.pg .c2-join { padding: clamp(44px, 4.5vw, 64px) clamp(20px, 5vw, 72px) !important; }
