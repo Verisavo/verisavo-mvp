@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { PDFDocument, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
+import { markdownBlocks } from "@/lib/markdown-text";
 
 // M3.7: a branded PDF of one answer or a whole conversation, drawn with pdf-lib in Verisavo's colours and Poppins, the
 // site's own font (OFL, lib/server/pdf/fonts). next.config.mjs includes the font files in the deployed route.
@@ -132,16 +133,23 @@ export async function buildReport(report: Report): Promise<Uint8Array> {
     gap(10);
     write("ANSWER", { font: semi, size: 8, color: BRAND_800 });
     gap(2);
-    for (const para of item.answer.split(/\n{2,}/)) {
-      for (const raw of para.split("\n")) {
-        const line = raw.trim();
-        if (!line) continue;
-        if (/^Sources:/i.test(line)) { gap(4); write(line, { size: 9.5, color: BRAND_800 }); }
-        else if (/^[-•*]\s+/.test(line)) write(`•  ${line.replace(/^[-•*]\s+/, "")}`, { indent: 6, hang: 11 });
-        else write(line);
-      }
-      gap(6);
+    // the answer is Markdown: headings in the semibold face, lists indented, tables as one entry per row
+    for (const b of markdownBlocks(item.answer)) {
+      if (b.kind === "gap") gap(6);
+      else if (b.kind === "heading") { gap(4); write(b.text, { font: semi, size: 11.5, lead: 16 }); gap(2); }
+      else if (b.kind === "bullet") write(`${b.depth ? "–" : "•"}  ${b.text}`, { indent: 6 + b.depth * 14, hang: 11 });
+      else if (b.kind === "number") write(`${b.n}.  ${b.text}`, { indent: 6 + b.depth * 14, hang: 15 });
+      else if (b.kind === "sources") { gap(4); write(b.text, { size: 9.5, color: BRAND_800 }); }
+      else if (b.kind === "table") {
+        for (const row of b.rows) {
+          write(row[0] ?? "", { font: semi, size: 10 });
+          const rest = row.slice(1).map((v, k) => (b.head[k + 1] ? `${b.head[k + 1]}: ` : "") + v).join("  ·  ");
+          if (rest) write(rest, { size: 9.5, indent: 10, color: BRAND_800 });
+          gap(3);
+        }
+      } else write(b.text);
     }
+    gap(6);
   });
 
   if (report.shortened) { gap(8); write("This conversation is too long for one report, so its later questions were left out. Download single answers for those.", { size: 9.5, color: BRAND_800 }); }

@@ -9,6 +9,7 @@ import { useConfirm } from "../Confirm";
 import DotFloor, { type FloorApi } from "./DotFloor";
 import { ACCEPT, CHIPS, HANDOFF_KEY, MARKETS, MAX_FILES, MAX_MB, MORE_CHIPS } from "./data";
 import * as I from "./icons";
+import { AnswerMarkdown } from "../Markdown";
 
 export type AssistantUser = { id: string; name: string; email: string };
 type BlockReason = "free_exhausted" | "period_exhausted" | "feature_requires_subscription";
@@ -656,14 +657,14 @@ function Message({ item, onPdf }: { item: Item; onPdf?: (messageId: string) => v
           </>
         ) : item.error ? (
           <>
-            {item.answer && <p className={para}>{item.answer}</p>}
+            {item.answer && <AnswerMarkdown text={item.answer} />}
             <span className={`${tag} bg-[#FEF3F2] text-danger dark:bg-[rgba(240,68,56,.15)] dark:text-[#FDA29B]`}>{"Couldn’t answer"}</span>
             <p className={para}>{item.error}</p>
           </>
         ) : item.answer ? (
           <>
             <span className={tag}>{"Answer"}</span>
-            <p className={para}>{item.answer}{item.streaming && <span aria-hidden="true" className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[3px] animate-blink bg-brand-500" />}</p>
+            <AnswerMarkdown text={item.answer} streaming={item.streaming} />
             {onPdf && item.serverId && !item.streaming && (
               <button type="button" onClick={() => onPdf(item.serverId!)}
                 className="mt-1 cursor-pointer justify-self-end rounded-md border-0 bg-transparent px-2 py-1 text-xs font-semibold text-brand-700 hover:bg-brand-100 dark:text-brand-300 dark:hover:bg-[rgba(227,235,248,.08)]">

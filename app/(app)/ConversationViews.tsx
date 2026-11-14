@@ -1,6 +1,7 @@
 import type { ConversationFilters, ConversationRow } from "@/lib/server/assistant/conversations";
 import { fmtDay, fmtWhen } from "./admin/format";
 import { DeleteConversation } from "./dashboard/forms";
+import { AnswerMarkdown } from "./Markdown";
 
 // The conversation list and transcript, shared by the user's pages (their own chats) and the admin's (everyone's)
 
@@ -87,7 +88,7 @@ export function ConversationTable({ rows, base, filtered, showWho = false, canDe
 
 type TranscriptMessage = { id: string; role: "user" | "assistant"; content: string; market: string | null; sources: { title: string }[] | null; createdAt: Date; files: string[]; channel?: string };
 
-// Stored text is shown as plain text, never as HTML
+// Questions are shown as plain text; answers as Markdown, which never renders HTML (see Markdown.tsx)
 export function Transcript({ messages }: { messages: TranscriptMessage[] }) {
   if (!messages.length) return <p className="card text-sm text-brand-800">{"This conversation has no messages."}</p>;
   return (
@@ -102,7 +103,7 @@ export function Transcript({ messages }: { messages: TranscriptMessage[] }) {
           </li>
         ) : (
           <li key={m.id} className="grid gap-1">
-            <div className="rounded-2xl border border-brand-200 bg-white px-4 py-3 text-[15px] leading-[1.6] [overflow-wrap:anywhere] whitespace-pre-wrap">{m.content}</div>
+            <div className="rounded-2xl border border-brand-200 bg-white px-4 py-3.5"><AnswerMarkdown text={m.content} /></div>
             {Boolean(m.sources?.length) && !/^Sources:/im.test(m.content) && <p className="text-[13px] text-brand-800">{`Sources: ${m.sources!.map(s => s.title).join(", ")}`}</p>}
             <p className="text-xs text-brand-800">{meta}</p>
           </li>

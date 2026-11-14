@@ -12,6 +12,8 @@ import { activeConversation, saveAnswer, saveQuestion, undoQuestion } from "@/li
 import { AttachmentError, bindAttachments, recentUnsentIds, releaseAttachments, saveAttachment } from "@/lib/server/assistant/attachments";
 import { describeAiError } from "@/lib/server/ai/providers";
 import { downloadMedia, markRead, sendText } from "./api";
+// answers are Markdown; WhatsApp gets its own *bold* / _italic_ / • bullets
+import { toWhatsApp } from "@/lib/markdown-text";
 import { unlink, unlinkPhone, userForPhone, verifyFromPhone } from "./links";
 
 // Incoming WhatsApp messages (M4.1–M4.5). Channel work only: dedupe, find the user, check the plan, read media, format
@@ -40,12 +42,6 @@ export const WA = {
   empty: "I couldn't put an answer together for that. Please rephrase your question or ask about something more specific."
 };
 
-// The assistant writes plain text with "- " lists and a "Sources:" line; WhatsApp shows • bullets and _italics_
-export const toWhatsApp = (text: string) => text.split("\n").map(line => {
-  if (/^\s*[-*]\s+/.test(line)) return line.replace(/^\s*[-*]\s+/, "• ");
-  if (/^Sources:/i.test(line)) return `_${line.replace(/_/g, "")}_`;
-  return line;
-}).join("\n");
 
 export async function handleWebhook(payload: unknown): Promise<void> {
   const ours = process.env.WHATSAPP_PHONE_NUMBER_ID;
