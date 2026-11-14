@@ -2167,3 +2167,7 @@ html body #pg-community.pg .c2-join { margin: clamp(72px, 8vw, 120px) 0 0 !impor
 html body #pg-community.pg #cm-act .c2-note { margin-top: 20px; }
 @media (max-width: 860px) { html body #pg-community.pg .c2-join { margin-top: 64px !important; border-radius: 18px !important; } }
 html body #pg-community.pg .c2-join { padding: clamp(44px, 4.5vw, 64px) clamp(20px, 5vw, 72px) !important; }
+/* walkthrough steps: room above and below so the circle rings are never clipped by the scrolling row */
+html body #ln .wf-side { padding-top: 10px !important; padding-bottom: 6px !important; }
+html body #ln .wf-side::before { top: 27px !important; }
+@media (max-width: 600px) { html body #ln .wf-side::before { top: 25px !important; } }
