@@ -2174,3 +2174,6 @@ html body #ln .wf-side::before { top: 27px !important; }
 
 /* Customers to Market Memory to bottom line: same dash rhythm as the rest of the network */
 html body .ln .pb .net-card.in .net-svg #pmb { stroke-dasharray: .078 .09 !important; }
+
+/* SavoScouts community: Royal Indigo circles behind the portraits */
+#pg-community .c2-join-art .jp::before { background: #1F273F !important; }
