@@ -2171,3 +2171,6 @@ html body #pg-community.pg .c2-join { padding: clamp(44px, 4.5vw, 64px) clamp(20
 html body #ln .wf-side { padding-top: 10px !important; padding-bottom: 6px !important; }
 html body #ln .wf-side::before { top: 27px !important; }
 @media (max-width: 600px) { html body #ln .wf-side::before { top: 25px !important; } }
+
+/* Customers to Market Memory to bottom line: same dash rhythm as the rest of the network */
+html body .ln .pb .net-card.in .net-svg #pmb { stroke-dasharray: .078 .09 !important; }
