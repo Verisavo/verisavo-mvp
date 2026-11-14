@@ -20,12 +20,13 @@ Never commit real values.
 | `STRIPE_SECRET_KEY` | Stripe secret key: `sk_test_…` locally, `sk_live_…` live | Stripe → Developers → API keys | Payments |
 | `STRIPE_PRICE_MONTHLY` | Price ID (`price_…`) of "Verisavo Monthly" ($5/month) | Stripe → Product catalog | Payments |
 | `STRIPE_WEBHOOK_SECRET` | The webhook endpoint's signing secret (`whsec_…`) | Stripe → Developers → Webhooks (live), or `stripe listen` (local) | Payments |
-| `WHATSAPP_TOKEN` | System User permanent token with `whatsapp_business_messaging` | Meta Business → System users | WhatsApp |
-| `WHATSAPP_PHONE_NUMBER_ID` | The sender's phone number **ID** (not the number) | Meta app → WhatsApp → API setup | WhatsApp |
-| `WHATSAPP_APP_SECRET` | The Meta app secret. Every webhook is signed with it. | Meta app → App settings → Basic | WhatsApp |
-| `WHATSAPP_VERIFY_TOKEN` | A random string you choose and also enter in the Meta webhook settings | You choose | WhatsApp |
-| `WHATSAPP_NUMBER` | Verisavo's WhatsApp number, digits only with country code | Meta | WhatsApp links |
-| `WHATSAPP_GRAPH_VERSION` | Graph API version, e.g. `v23.0` (use the one your Meta app shows) | Meta | WhatsApp |
+| `WHATSAPP_PROVIDER` | `kapso` to send and receive through Kapso (Verisavo's live setup). Empty means Meta directly. | You choose | WhatsApp |
+| `WHATSAPP_TOKEN` | **Kapso:** the Kapso API key. **Meta:** a System User permanent token with `whatsapp_business_messaging`. | Kapso → Developer / Meta Business → System users | WhatsApp |
+| `WHATSAPP_PHONE_NUMBER_ID` | The sender's phone number **ID** (not the number). Verisavo's is `1413171608550151`. | Kapso → Phone numbers / Meta app → API setup | WhatsApp |
+| `WHATSAPP_APP_SECRET` | The secret every webhook is signed with. **Kapso:** a long random string you choose; `scripts/kapso-webhook.mjs` gives it to Kapso. **Meta:** the app secret. | You choose / Meta app → App settings → Basic | WhatsApp |
+| `WHATSAPP_VERIFY_TOKEN` | **Meta only:** a random string you choose and also enter in the Meta webhook settings | You choose | WhatsApp |
+| `WHATSAPP_NUMBER` | Verisavo's WhatsApp number, digits only with country code (`447354613866`) | Kapso / Meta | WhatsApp links |
+| `WHATSAPP_GRAPH_VERSION` | Graph API version. Kapso: `v24.0`. Meta: the one your app shows. | Kapso / Meta | WhatsApp |
 | `WHATSAPP_OTP_TEMPLATE` | Name of the approved **Authentication** template with a copy-code button. Leave it empty until it's approved; users then link by sending "LINK 123456". | WhatsApp Manager → Message templates | WhatsApp linking |
 | `WHATSAPP_OTP_TEMPLATE_LANG` | That template's language code, e.g. `en` | Same | WhatsApp linking |
 | `WHATSAPP_API_BASE` | **Local tests only:** a stand-in for Meta's API. Leave it empty in real use; production builds ignore it anyway. | — | Tests |

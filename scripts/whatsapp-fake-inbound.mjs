@@ -12,6 +12,7 @@
 //   --url <url>       webhook URL  (default http://localhost:3000/api/whatsapp/webhook)
 //   --env <file>      file to read WHATSAPP_APP_SECRET from (default .env.local)
 //   --bad-sig         sign with a wrong secret; the route must answer 401
+//   --kapso           sign like Kapso (X-Webhook-Signature, bare hex). Automatic when WHATSAPP_PROVIDER=kapso.
 import crypto from "node:crypto";
 import fs from "node:fs";
 import { parseArgs } from "node:util";
@@ -24,6 +25,7 @@ const { values } = parseArgs({
     url: { type: "string", default: "http://localhost:3000/api/whatsapp/webhook" },
     env: { type: "string", default: ".env.local" },
     "bad-sig": { type: "boolean", default: false },
+    kapso: { type: "boolean", default: false },
     help: { type: "boolean", default: false },
   },
 });
@@ -67,11 +69,13 @@ const payload = {
 
 const body = JSON.stringify(payload);
 const key = values["bad-sig"] ? "wrong-secret" : secret;
-const signature = "sha256=" + crypto.createHmac("sha256", key).update(body).digest("hex");
+const hex = crypto.createHmac("sha256", key).update(body).digest("hex");
+const kapso = values.kapso || readEnv("WHATSAPP_PROVIDER") === "kapso";
+const signature = kapso ? { "X-Webhook-Signature": hex } : { "X-Hub-Signature-256": "sha256=" + hex };
 
 const res = await fetch(values.url, {
   method: "POST",
-  headers: { "Content-Type": "application/json", "X-Hub-Signature-256": signature },
+  headers: { "Content-Type": "application/json", ...signature },
   body,
 });
 const text = (await res.text()).replace(/\s+/g, " ");

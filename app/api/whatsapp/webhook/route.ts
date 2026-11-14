@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { after } from "next/server";
 import { released } from "@/lib/release";
-import { webhookConfigured } from "@/lib/server/whatsapp/api";
+import { viaKapso, webhookConfigured } from "@/lib/server/whatsapp/api";
 import { handleWebhook } from "@/lib/server/whatsapp/handle";
 
 // The WhatsApp Cloud API webhook (M4.1). Not behind the session proxy (see proxy.ts).
@@ -40,14 +40,23 @@ export async function GET(request: Request) {
   return new Response("Forbidden", { status: 403 });
 }
 
-// POST: messages. Meta signs the raw body with the app secret; anything else is refused before it's read. We answer
-// 200 straight away and write the reply afterwards, because Meta retries slow deliveries.
+// The raw body's signature, keyed with WHATSAPP_APP_SECRET. Meta sends "sha256=<hex>" in X-Hub-Signature-256 (key: the
+// app secret). Kapso forwards Meta's payload unchanged ("Meta webhook" on the number) and sends a bare hex HMAC in
+// X-Webhook-Signature (key: the secret_key we gave that webhook). Only the configured provider's header is accepted.
+function signed(request: Request, raw: Buffer): boolean {
+  const hex = crypto.createHmac("sha256", process.env.WHATSAPP_APP_SECRET!).update(raw).digest("hex");
+  return viaKapso()
+    ? safeEqual((request.headers.get("x-webhook-signature") ?? "").toLowerCase(), hex)
+    : safeEqual(request.headers.get("x-hub-signature-256") ?? "", "sha256=" + hex);
+}
+
+// POST: messages. Anything without a valid signature is refused before it's parsed. We answer 200 straight away and write
+// the reply afterwards, because Meta and Kapso retry slow deliveries (Kapso waits 10 s at most).
 export async function POST(request: Request) {
   if (!released(4) || !webhookConfigured()) return new Response("Not found", { status: 404 });
   const raw = await readCapped(request);
   if (!raw) return new Response("Too large", { status: 413 });
-  const want = "sha256=" + crypto.createHmac("sha256", process.env.WHATSAPP_APP_SECRET!).update(raw).digest("hex");
-  if (!safeEqual(request.headers.get("x-hub-signature-256") ?? "", want)) return new Response("Invalid signature", { status: 401 });
+  if (!signed(request, raw)) return new Response("Invalid signature", { status: 401 });
   let payload: unknown;
   try { payload = JSON.parse(raw.toString("utf8")); } catch { return new Response("Bad JSON", { status: 400 }); }
   after(() => handleWebhook(payload).catch(err => console.error("[whatsapp] webhook failed:", err instanceof Error ? err.name : "error")));

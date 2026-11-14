@@ -3,19 +3,25 @@ import "server-only";
 // The WhatsApp Cloud API (M4, see the verisavo-whatsapp skill): send text, send the code template, mark as read, and
 // download media. WHATSAPP_API_BASE can point at a local stand-in for tests; without WHATSAPP_TOKEN nothing is sent
 // and the message is logged instead (development without Meta).
+//
+// WHATSAPP_PROVIDER=kapso sends everything through Kapso's copy of the Graph API (same request and response shapes),
+// with the Kapso API key in X-API-Key. Kapso forwards Meta's own webhook payload, signed with our secret (see route.ts).
 
 const MAX_TEXT = 4096;   // WhatsApp's limit for one text message
 const MAX_MEDIA_BYTES = 4 * 1024 * 1024;
 
 const GRAPH = "https://graph.facebook.com";
-// the stand-in is for local tests only: a production build always talks to Meta, so the token can't be sent elsewhere
+const KAPSO = "https://api.kapso.ai/meta/whatsapp";
+export const viaKapso = () => process.env.WHATSAPP_PROVIDER === "kapso";
+// the stand-in is for local tests only: a production build always talks to Meta or Kapso, so the token can't be sent elsewhere
 const testBase = () => (process.env.NODE_ENV !== "production" && process.env.WHATSAPP_API_BASE ? process.env.WHATSAPP_API_BASE : "");
 const cfg = () => ({
-  base: (testBase() || GRAPH).replace(/\/$/, ""),
+  base: (testBase() || (viaKapso() ? KAPSO : GRAPH)).replace(/\/$/, ""),
   version: process.env.WHATSAPP_GRAPH_VERSION || "v23.0",
   token: process.env.WHATSAPP_TOKEN ?? "",
   phoneId: process.env.WHATSAPP_PHONE_NUMBER_ID ?? ""
 });
+const auth = (token: string): Record<string, string> => (viaKapso() ? { "X-API-Key": token } : { Authorization: `Bearer ${token}` });
 
 // The webhook can only be trusted with the app secret; sending needs the token and the sender's phone number id
 export const webhookConfigured = () => Boolean(process.env.WHATSAPP_APP_SECRET);
@@ -34,7 +40,7 @@ async function post(payload: object): Promise<boolean> {
   try {
     const r = await fetch(`${base}/${version}/${phoneId}/messages`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      headers: { ...auth(token), "Content-Type": "application/json" },
       body: JSON.stringify({ messaging_product: "whatsapp", ...payload }),
       signal: AbortSignal.timeout(15_000)
     });
@@ -86,26 +92,29 @@ export async function sendCodeTemplate(to: string, code: string): Promise<boolea
 // Blue ticks and a typing indicator while the answer is being written (best effort)
 export const markRead = (messageId: string) => post({ status: "read", message_id: messageId, typing_indicator: { type: "text" } });
 
-// Media sent to us: Meta gives a short-lived URL for the media id; the bearer token is only ever sent to Meta's hosts
-// (or the configured test stand-in)
+// Media sent to us: the media id gives a short-lived download URL. From Meta it needs the bearer token, which is only ever
+// sent to Meta's hosts; Kapso's download_url carries its own one-time token, so no key goes with it. (Or the test stand-in.)
 function trustedMediaHost(url: string): boolean {
   try {
     const u = new URL(url);
     if (testBase() && u.host === new URL(testBase()).host) return true;
-    return u.protocol === "https:" && /(^|\.)(fbsbx\.com|facebook\.com|whatsapp\.net|fbcdn\.net)$/.test(u.hostname);
+    if (u.protocol !== "https:") return false;
+    return viaKapso() ? u.hostname === "api.kapso.ai" : /(^|\.)(fbsbx\.com|facebook\.com|whatsapp\.net|fbcdn\.net)$/.test(u.hostname);
   } catch { return false; }
 }
 
 export async function downloadMedia(mediaId: string): Promise<{ bytes: Uint8Array<ArrayBuffer>; mimeType: string } | { error: string }> {
-  const { base, version, token } = cfg();
+  const { base, version, token, phoneId } = cfg();
   if (!token) return { error: "not_configured" };
   try {
-    const info = await fetch(`${base}/${version}/${encodeURIComponent(mediaId)}`, { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(15_000) });
+    const query = viaKapso() ? `?phone_number_id=${encodeURIComponent(phoneId)}` : "";
+    const info = await fetch(`${base}/${version}/${encodeURIComponent(mediaId)}${query}`, { headers: auth(token), signal: AbortSignal.timeout(15_000) });
     if (!info.ok) return { error: `info_${info.status}` };
-    const meta = await info.json() as { url?: string; mime_type?: string; file_size?: number };
-    if (!meta.url || !trustedMediaHost(meta.url)) return { error: "bad_url" };
-    if ((meta.file_size ?? 0) > MAX_MEDIA_BYTES) return { error: "too_large" };
-    const file = await fetch(meta.url, { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(20_000) });
+    const meta = await info.json() as { url?: string; download_url?: string; mime_type?: string; file_size?: number | string };
+    const url = viaKapso() ? meta.download_url : meta.url;
+    if (!url || !trustedMediaHost(url)) return { error: "bad_url" };
+    if (Number(meta.file_size ?? 0) > MAX_MEDIA_BYTES) return { error: "too_large" };
+    const file = await fetch(url, { headers: viaKapso() ? {} : auth(token), signal: AbortSignal.timeout(20_000) });
     if (!file.ok) return { error: `download_${file.status}` };
     if (Number(file.headers.get("content-length") ?? 0) > MAX_MEDIA_BYTES) return { error: "too_large" };
     const bytes = new Uint8Array(await file.arrayBuffer());

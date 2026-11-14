@@ -123,13 +123,16 @@ export function metaStandIn(media = {}) {
     let body = "";
     req.on("data", c => (body += c));
     req.on("end", () => {
-      if (req.headers.authorization !== `Bearer ${env("WHATSAPP_TOKEN")}`) { res.writeHead(401).end("{}"); return; }
+      // Meta: bearer token on every call. Kapso: X-API-Key, and its download_url carries its own token (so no key there)
+      const kapso = env("WHATSAPP_PROVIDER") === "kapso";
+      const key = kapso ? req.headers["x-api-key"] : req.headers.authorization?.replace(/^Bearer /, "");
+      if (!(kapso && req.url.startsWith("/download/")) && key !== env("WHATSAPP_TOKEN")) { res.writeHead(401).end("{}"); return; }
       if (req.method === "POST" && req.url.endsWith(`/${env("WHATSAPP_PHONE_NUMBER_ID")}/messages`)) {
         const msg = JSON.parse(body); if (!msg.status) sent.push(msg);
         res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ messages: [{ id: "wamid.OUT" + sent.length }] })); return;
       }
-      const info = req.url.match(/^\/v[\d.]+\/(MEDIA_\w+)$/);
-      if (info && media[info[1]]) { res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ url: `http://localhost:4010/download/${info[1]}`, mime_type: media[info[1]].mime, file_size: media[info[1]].bytes.length })); return; }
+      const info = req.url.match(/^\/v[\d.]+\/(MEDIA_\w+)(\?|$)/);
+      if (info && media[info[1]]) { const url = `http://localhost:4010/download/${info[1]}`; res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ url, download_url: url, mime_type: media[info[1]].mime, file_size: media[info[1]].bytes.length })); return; }
       const dl = req.url.match(/^\/download\/(MEDIA_\w+)$/);
       if (dl && media[dl[1]]) { res.writeHead(200, { "content-type": media[dl[1]].mime }).end(media[dl[1]].bytes); return; }
       res.writeHead(404).end("{}");
@@ -155,7 +158,9 @@ export async function whatsappInbound(from, message, { secret = env("WHATSAPP_AP
   const body = JSON.stringify({ object: "whatsapp_business_account", entry: [{ id: "WABA", changes: [{ field: "messages", value: {
     messaging_product: "whatsapp", metadata: { phone_number_id: phoneNumberId }, contacts: [{ wa_id: from }],
     messages: [{ from, id, timestamp: String(Math.floor(Date.now() / 1000) - age), ...message }] } }] }] });
-  const r = await fetch(BASE + "/api/whatsapp/webhook", { method: "POST", headers: { "content-type": "application/json", "x-hub-signature-256": "sha256=" + crypto.createHmac("sha256", secret).update(body).digest("hex") }, body });
+  const hex = crypto.createHmac("sha256", secret).update(body).digest("hex");
+  const signature = env("WHATSAPP_PROVIDER") === "kapso" ? { "x-webhook-signature": hex } : { "x-hub-signature-256": "sha256=" + hex };
+  const r = await fetch(BASE + "/api/whatsapp/webhook", { method: "POST", headers: { "content-type": "application/json", ...signature }, body });
   return { status: r.status, id };
 }
 

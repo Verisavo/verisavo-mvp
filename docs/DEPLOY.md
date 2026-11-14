@@ -42,7 +42,26 @@ The live site runs on **Vercel** with Henry's account, and on the **live Supabas
    - Events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`
    - Copy its signing secret into `STRIPE_WEBHOOK_SECRET`.
 
-### Meta / WhatsApp
+### WhatsApp through Kapso (Verisavo's live setup)
+Henry's number +44 7354 613866 is connected to Kapso (phone number ID `1413171608550151`, WABA `1155007084131609`). Meta bills his card directly.
+1. Kapso → **Developer** → create an API key.
+2. Vercel (Production):
+   - `WHATSAPP_PROVIDER=kapso`
+   - `WHATSAPP_TOKEN=<Kapso API key>`
+   - `WHATSAPP_PHONE_NUMBER_ID=1413171608550151`
+   - `WHATSAPP_NUMBER=447354613866`
+   - `WHATSAPP_GRAPH_VERSION=v24.0`
+   - `WHATSAPP_APP_SECRET=<a new long random string>`, e.g. from `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+   - `WHATSAPP_VERIFY_TOKEN` isn't used with Kapso.
+   Redeploy.
+3. Put the same `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_APP_SECRET` and `APP_URL` in `.env.prod.local` (gitignored, never loaded by Next.js), then:
+   - `node scripts/kapso-webhook.mjs --env .env.prod.local` lists the number's webhooks
+   - `node scripts/kapso-webhook.mjs --env .env.prod.local --create` adds ours as a **Meta webhook**: Kapso forwards Meta's own payload, signed with `WHATSAPP_APP_SECRET` in `X-Webhook-Signature`. Kapso allows one per number.
+4. Create the **Authentication** template (copy-code button) in WhatsApp Manager and submit it. Meta only allows it once the business is verified. When it's approved, set `WHATSAPP_OTP_TEMPLATE` and redeploy; until then linking uses "send LINK code".
+5. Test: link a number from a paid account's dashboard, then ask a question on WhatsApp.
+6. Kapso handles customer messages, so the Privacy Policy must name it before launch.
+
+### Meta / WhatsApp directly (without Kapso)
 1. In Henry's Meta Business account, create an app with the **WhatsApp** product and a business phone number.
 2. Create a **System User** permanent token with `whatsapp_business_messaging` (`WHATSAPP_TOKEN`). Then note:
    - the phone number ID (`WHATSAPP_PHONE_NUMBER_ID`)
@@ -53,6 +72,9 @@ The live site runs on **Vercel** with Henry's account, and on the **live Supabas
    - URL `https://<domain>/api/whatsapp/webhook`
    - verify token = your `WHATSAPP_VERIFY_TOKEN`
    - subscribe to the **messages** field
+   - register the number once: `POST /{phone-number-id}/register` with a 6-digit PIN
+   - connect the app to the WhatsApp account: `POST /{waba-id}/subscribed_apps`, or no messages arrive
+   - switch the app to **Live**
 4. In WhatsApp Manager, create an **Authentication** template with a copy-code button and submit it. When it's approved, put its name in `WHATSAPP_OTP_TEMPLATE` and redeploy. Until then, linking uses the "send LINK code" fallback.
 
 ## 2. Weekly releases (`RELEASE_STAGE`)
