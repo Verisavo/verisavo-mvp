@@ -2176,4 +2176,5 @@ html body #ln .wf-side::before { top: 27px !important; }
 html body .ln .pb .net-card.in .net-svg #pmb { stroke-dasharray: .078 .09 !important; }
 
 /* SavoScouts community: Royal Indigo circles behind the portraits */
-#pg-community .c2-join-art .jp::before { background: #3A5292 !important; }
+#pg-community .c2-join-art .jp::before { background: #CCDDF1 !important; }
+#pg-community .c2-join-art .jp:nth-of-type(odd)::before { background: #1F273F !important; }
