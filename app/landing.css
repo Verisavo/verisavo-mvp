@@ -2157,3 +2157,8 @@ html body #pg-community.pg .c2-join-txt h2 { color: #1F273F !important; }
 #pg-community .c2-join-art .jp { overflow: visible !important; background: none !important; box-shadow: none !important; }
 #pg-community .c2-join-art .jp::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--c); box-shadow: 0 14px 30px -22px rgba(31, 39, 63, .45); }
 #pg-community .c2-join-art .jp img { left: 0; bottom: 0; width: 100%; height: 128%; object-fit: cover; object-position: center top; clip-path: inset(0 round 0 0 50% 50% / 0 0 39% 39%); }
+/* neat honeycomb: equal circles, equal gaps */
+#pg-community .c2-join-art { aspect-ratio: 1 / .98 !important; }
+#pg-community .c2-join-art .jp::before { background: var(--c); }
+/* round frames, heads only just over the edge */
+#pg-community .c2-join-art .jp img { height: 110% !important; clip-path: inset(0 round 0 0 50% 50% / 0 0 45.5% 45.5%) !important; }
