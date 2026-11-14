@@ -2129,3 +2129,27 @@ html body .top .pill .pa-nav { display: none; }
 @media (max-width: 700px) { #pg-community-tasks .cmt-gate { grid-template-columns: 1fr; } }
 #pg-community-tasks:not(.cmt-in) .cmt-main::before { content: "Sample task"; display: inline-block; margin-bottom: 6px; padding: 2px 8px; border-radius: 6px; background: #E3EBF8; color: #3A5292; font: 600 .7rem/1.4 "Inter", sans-serif; }
 .cs-ill { margin: 0; font: 600 .75rem/1.3 "Inter", sans-serif; color: #3A5292; }
+/* Join the SavoScouts community: text beside a cluster of portraits in soft blue circles */
+#pg-community .c2-join { background: #F4F7FC; border-radius: 28px; margin: 0 clamp(12px, 3vw, 32px); }
+#pg-community .c2-join-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 72px); align-items: center; max-width: 1180px; margin: 0 auto; }
+#pg-community .c2-join-txt { display: grid; gap: 16px; justify-items: start; max-width: 520px; }
+html body #pg-community.pg .c2-join-txt h2 { margin: 0 0 4px; font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem) !important; line-height: 1.08 !important; text-align: left; }
+html body #pg-community.pg .c2-join-txt p { margin: 0; font-size: 1rem; line-height: 1.65; color: #3D4559 !important; }
+#pg-community .c2-join-btn { margin-top: 10px; padding: 13px 26px; border-radius: 999px; border: 1.5px solid #1F273F; background: transparent; color: #1F273F; font: 600 .95rem/1 "Inter", var(--sans); cursor: pointer; transition: background-color .2s, color .2s; }
+#pg-community .c2-join-btn:hover { background: #1F273F; color: #fff; }
+#pg-community .c2-join-btn:focus-visible { outline: 2px solid #4362B2; outline-offset: 3px; }
+#pg-community .c2-join-art { position: relative; width: 100%; aspect-ratio: 1 / 1.02; max-width: 560px; justify-self: center; }
+#pg-community .c2-join-art .jp { position: absolute; left: var(--x); top: var(--y); width: var(--s); aspect-ratio: 1; border-radius: 50%; background: var(--c); overflow: hidden; box-shadow: 0 14px 30px -22px rgba(31, 39, 63, .45); }
+#pg-community .c2-join-art .jp img { position: absolute; left: 0; bottom: 0; width: 100%; height: 108%; object-fit: cover; object-position: center top; }
+#pg-community .c2-join-art .jd { position: absolute; left: var(--x); top: var(--y); width: var(--s); aspect-ratio: 1; border-radius: 50%; background: var(--c); }
+@media (max-width: 860px) {
+  #pg-community .c2-join-in { grid-template-columns: 1fr; }
+  #pg-community .c2-join-art { max-width: 440px; }
+}
+#pg-community .c2-join { padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 64px) !important; overflow: visible; }
+#pg-community .c2-join-in { padding: 0 !important; }
+@media (max-width: 860px) { #pg-community .c2-join { margin: 0 12px; border-radius: 22px; } #pg-community .c2-join-art { width: 100%; } }
+/* the community band runs full width, as in the reference */
+#pg-community .c2-join { margin: 0 !important; border-radius: 0 !important; background: #F4F6FA !important; border-top: 1px solid #E3EBF8; border-bottom: 1px solid #E3EBF8; }
+html body #pg-community.pg .c2-join-txt h2 { color: #1F273F !important; }
+@media (max-width: 860px) { #pg-community .c2-join { margin: 0 !important; border-radius: 0 !important; } }
