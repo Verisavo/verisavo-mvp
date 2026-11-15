@@ -16,12 +16,6 @@ export default function Header() {
           </svg>
         </button>
         {" "}
-        <button type="button" className="pa-nav" data-product="">{"Product"}</button>
-        {" "}
-        <button type="button" className="pa-nav" data-page="use-cases">{"Use cases"}</button>
-        {" "}
-        <button type="button" className="pa-ask" data-page="contact" data-topic="Early access">{"Request early access"}</button>
-        {" "}
         <button type="button" className="pa" data-dialog="access">{"Contact us"}</button>
         {" "}
         <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu">
