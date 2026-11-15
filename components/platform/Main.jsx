@@ -25,9 +25,8 @@ export default function Main() {
           {" "}
           <div className="hero-actions">
             {" "}
-            <p className="prev-lab">{"Interactive preview · sample data"}</p>
-            <button type="button" className="btn btn-rect solid" data-open-sample="">{"Explore a sample answer"}</button>
-            <a className="btn btn-rect plain" href="/contact" data-topic="Early access">{"Request early access"}</a>
+            <button type="button" className="btn btn-rect solid" data-open-sample="">{"Ask Verisavo"}</button>
+            <a className="btn btn-rect plain" href="/contact">{"Contact us"}</a>
             {" "}
           </div>
           {" "}
