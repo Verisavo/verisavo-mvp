@@ -466,3 +466,19 @@ html body #ln .net-card.ln-rv { transition-duration: .35s !important; transition
 }
 html body #ln#ln .net-card .net-pinch { display: none; }
 @media (max-width: 40rem) { html body #ln#ln .net-card .net-pinch { display: block; } }
+/* walkthrough step 1: a chart appears once the question is asked */
+html body #ln#ln .wf-sc .wf-chart { display: grid; gap: 4px; max-height: 0; opacity: 0; overflow: hidden; margin-top: -8px; padding: 0 14px; border-width: 0; transition: max-height .5s ease, opacity .4s ease .1s, padding .5s ease, margin .5s ease; }
+html body #ln#ln .wf-sc.asked .wf-chart { max-height: 220px; opacity: 1; margin-top: 0; padding: 12px 14px 10px; border-width: 1px; }
+html body #ln#ln .wf-chart .wf-cw { position: relative; }
+html body #ln#ln .wf-chart svg { display: block; width: 100%; height: 84px; }
+html body #ln#ln .wf-chart .wf-cg { stroke: #E5E5E5; stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; }
+html body #ln#ln .wf-chart .wf-cr { clip-path: inset(0 100% 0 0); transition: clip-path 1.1s ease .3s; }
+html body #ln#ln .wf-sc.asked .wf-chart .wf-cr { clip-path: inset(0 0 0 0); }
+html body #ln#ln .wf-chart .wf-ca { fill: #3B5D8A; opacity: .1; }
+html body #ln#ln .wf-chart .wf-cl { fill: none; stroke: #3B5D8A; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+html body #ln#ln .wf-chart i.wf-cd { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: #fff; border: 2px solid #1F273F; box-sizing: border-box; opacity: 0; transition: opacity .3s ease 1.3s; }
+html body #ln#ln .wf-sc.asked .wf-chart i.wf-cd { opacity: 1; }
+html body #ln#ln .wf-chart .wf-cx { display: flex; justify-content: space-between; margin: 0; font-size: 11px; color: var(--color-muted); }
+html body #ln#ln .wf-chart .wf-cn { margin: 2px 0 0; font-size: 13px; color: var(--color-ink); }
+@media (max-width: 40rem) { html body #ln#ln .wf-chart svg { height: 56px; } html body #ln#ln .wf-sc.asked[data-s="0"] :is(.wf-conn, .wf-chips) { display: none !important; } }
+@media (prefers-reduced-motion: reduce) { html body #ln#ln .wf-chart, html body #ln#ln .wf-chart * { transition: none !important; } }
