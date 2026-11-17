@@ -193,18 +193,22 @@ html body #ln#ln.ln#ln#ln#ln #why .why-in { display: flex !important; flex-direc
 html body #ln#ln.ln#ln#ln#ln #why .why-in > div { display: block !important; }
 html body #ln#ln.ln#ln#ln#ln #why h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) { text-align: center !important; margin-inline: auto !important; max-width: 20ch !important; }
 html body #ln#ln.ln#ln#ln#ln #why .why-p { text-align: center !important; margin: var(--space-md) auto 0 !important; max-width: 56ch !important; justify-self: center !important; }
-#ln .why-src { list-style: none; margin: var(--space-2xl) auto 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--space-md) var(--space-xl); max-width: 860px; position: relative; }
-#ln .why-src li { position: relative; }
-#ln .why-src li:nth-child(1) { transform: translateY(-6px); }
-#ln .why-src li:nth-child(2) { transform: translateY(14px); }
-#ln .why-src li:nth-child(3) { transform: translateY(-2px); }
-#ln .why-src li:nth-child(4) { transform: translateY(18px); }
-#ln .why-src li + li::before { content: ""; position: absolute; top: 50%; right: calc(100% + 10px); width: calc(var(--space-xl) - 20px); border-top: 1px dashed var(--color-b300); }
-#ln .why-src span { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 44px; padding: 0 var(--space-md); border-radius: var(--radius-control); background: var(--color-paper); box-shadow: 0 0 0 1px var(--color-b100), 0 12px 28px -22px rgba(31, 39, 63, 0.35); font: 500 var(--text-sm)/1 var(--font-body); color: var(--color-ink); white-space: nowrap; }
-#ln .why-src span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 0 0 1px var(--color-b500); background: var(--color-paper); }
+
+/* The four places information sits, as loose jigsaw pieces that drift apart */
+#ln .why-src { list-style: none; margin: var(--space-2xl) auto 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-lg) var(--space-xl); max-width: 980px; }
+#ln .why-src li { position: relative; width: 196px; --y: 0px; --r: 0deg; transform: translateY(var(--y)) rotate(var(--r)); animation: why-float 7s var(--ease-in-out) infinite; }
+#ln .why-src li:nth-child(1) { --y: -6px; --r: -4deg; }
+#ln .why-src li:nth-child(2) { --y: 16px; --r: 3deg; animation-duration: 8.5s; animation-delay: -2s; }
+#ln .why-src li:nth-child(3) { --y: -10px; --r: -2deg; animation-duration: 6.5s; animation-delay: -4s; }
+#ln .why-src li:nth-child(4) { --y: 14px; --r: 5deg; animation-duration: 9s; animation-delay: -1s; }
+#ln .why-pz { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 14px 16px rgba(31, 39, 63, 0.12)); }
+#ln .why-pz path { fill: var(--color-paper); stroke: var(--color-b300); stroke-width: 1.5; stroke-linejoin: round; }
+#ln .why-src span { position: absolute; inset: 0 11.2% 0 0; display: grid; place-items: center; font: 500 var(--text-sm)/1.2 var(--font-body); color: var(--color-ink); white-space: nowrap; }
+#ln .why-src .pz-in span { padding-left: 9%; }
+@keyframes why-float { 0%, 100% { transform: translateY(var(--y)) rotate(var(--r)); } 50% { transform: translateY(calc(var(--y) - 9px)) rotate(calc(var(--r) + 1.5deg)); } }
 @media (max-width: 40rem) {
-  #ln .why-src { gap: var(--space-sm); margin-top: var(--space-xl); }
-  #ln .why-src li { transform: none !important; }
-  #ln .why-src li + li::before { display: none; }
+  #ln .why-src { gap: var(--space-lg) var(--space-sm); margin-top: var(--space-xl); }
+  #ln .why-src li { width: min(164px, 46%); }
+  #ln .why-src span { font-size: 0.75rem; }
 }
-#ln .why-src li + li::before { display: none !important; }
+@media (prefers-reduced-motion: reduce) { #ln .why-src li { animation: none; } }
