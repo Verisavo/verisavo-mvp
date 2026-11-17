@@ -534,3 +534,7 @@ html body footer.lf:not(#_a):not(#_b):not(#_c):not(#_d) .lf-brand p, html body .
 /* >>> walkthrough cursor speed */
 html body #ln#ln .wf-cur { transition: transform .45s cubic-bezier(.3,.1,.2,1), opacity .2s !important; }
 /* <<< walkthrough cursor speed */
+
+/* >>> puzzle labels fit on narrow phones */
+@media (max-width: 23.5rem) { html body #ln#ln#ln .pz-in span { font-size: .72rem !important; letter-spacing: -.01em !important; } }
+/* <<< puzzle labels */
