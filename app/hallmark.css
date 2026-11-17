@@ -271,3 +271,39 @@ html body #ln#ln#ln .wf-side { display: none !important; }
 html body #ln#ln#ln .wf-sc::before { content: attr(aria-label); display: block; grid-column: 1 / -1; position: relative; z-index: 3; margin: 0 0 var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--color-rule); font: 600 var(--text-sm)/1.2 var(--font-body); color: var(--color-accent); }
 /* Walkthrough step 3 on phones: only the Market Understanding card, so the screen stays the height of the others */
 @media (max-width: 40rem) { html body #ln#ln#ln .wf-sc[data-s="2"] :is(.wf-tt, .wf-find) { display: none !important; } }
+/* Walkthrough on phones: a compact scale so every step fits the same, shorter box */
+@media (max-width: 40rem) {
+  html body #ln#ln#ln .wf-main { padding: var(--space-md) var(--space-sm) !important; }
+  html body #ln#ln#ln .wf-sc { gap: var(--space-xs) !important; }
+  html body #ln#ln#ln .wf-sc::before { margin-bottom: var(--space-xs) !important; padding-bottom: var(--space-xs) !important; font-size: 0.8125rem !important; }
+  html body #ln#ln#ln .wf-tt { margin-bottom: var(--space-xs) !important; gap: var(--space-xs) !important; }
+  html body #ln#ln#ln .wf-tt h3 { font-size: 1rem !important; line-height: 1.25 !important; }
+  html body #ln#ln#ln .wf-tt p { font-size: 0.8125rem !important; line-height: 1.35 !important; margin-top: 2px !important; }
+  html body #ln#ln#ln .wf-pill { font-size: 0.75rem !important; padding: 4px 9px !important; min-height: 0 !important; }
+  html body #ln#ln#ln .wf-card { padding: var(--space-sm) !important; border-radius: 12px !important; }
+  html body #ln#ln#ln :is(.wf-k, .wf-muh) { font-size: 0.75rem !important; margin-bottom: var(--space-2xs) !important; }
+  html body #ln#ln#ln .wf-muh { font-size: 0.9375rem !important; }
+  html body #ln#ln#ln .wf-type { font-size: 1rem !important; line-height: 1.3 !important; }
+  html body #ln#ln#ln .wf-chips { gap: 6px !important; margin: var(--space-xs) 0 !important; }
+  html body #ln#ln#ln .wf-chips span, html body #ln#ln#ln .wf-conn i { font-size: 0.75rem !important; padding: 4px 9px !important; }
+  html body #ln#ln#ln .wf-conn { gap: 6px !important; margin-bottom: var(--space-xs) !important; font-size: 0.75rem !important; }
+  html body #ln#ln#ln .wf-btn { min-height: 36px !important; padding: 0 14px !important; font-size: 0.8125rem !important; border-radius: 8px !important; }
+  html body #ln#ln#ln .wf-tr { padding: 9px var(--space-sm) !important; font-size: 0.8125rem !important; row-gap: 2px !important; }
+  html body #ln#ln#ln .wf-st { font-size: 0.6875rem !important; padding: 3px 8px !important; }
+  html body #ln#ln#ln .wf-seg { margin: var(--space-xs) 0 !important; }
+  html body #ln#ln#ln .wf-seg span { font-size: 0.8125rem !important; padding: 6px 8px !important; min-height: 0 !important; }
+  html body #ln#ln#ln .wf-hint { font-size: 0.75rem !important; line-height: 1.4 !important; margin-bottom: var(--space-xs) !important; }
+  html body #ln#ln#ln .wf-gopt { padding: 10px !important; gap: 8px !important; }
+  html body #ln#ln#ln .wf-gq { font-size: 0.875rem !important; line-height: 1.3 !important; }
+  html body #ln#ln#ln .wf-ex { font-size: 0.8125rem !important; margin-top: 6px !important; line-height: 1.35 !important; }
+  html body #ln#ln#ln .wf-unk { font-size: 0.6875rem !important; padding: 2px 8px !important; }
+  html body #ln#ln#ln .wf-inv { margin-top: var(--space-xs) !important; }
+  html body #ln#ln#ln .wf-bars > div { padding: 8px var(--space-sm) !important; font-size: 0.8125rem !important; }
+  html body #ln#ln#ln .wf-bars { gap: 6px !important; margin-bottom: var(--space-xs) !important; }
+  html body #ln#ln#ln .wf-res { padding: var(--space-sm) !important; }
+  html body #ln#ln#ln .wf-res p { font-size: 0.8125rem !important; line-height: 1.4 !important; }
+  html body #ln#ln#ln .wf-chg { gap: var(--space-xs) !important; }
+  html body #ln#ln#ln .wf-ans { font-size: 0.9375rem !important; line-height: 1.3 !important; margin: 0 !important; }
+  html body #ln#ln#ln .wf-why { font-size: 0.75rem !important; margin-top: 4px !important; }
+  html body #ln#ln#ln .wf-dec { font-size: 0.8125rem !important; line-height: 1.4 !important; margin: var(--space-xs) 0 !important; }
+}
