@@ -448,3 +448,5 @@ html body .wa-card:not(#x#x#x#x#x#x#x) p { font-size: 15px !important; line-heig
 /* <<< CTA bands */
 /* menu links: no focus box, the underline alone marks the highlighted link */
 html body .mnav :is(a,button):is(:focus,:focus-visible,:active):not(#x#x#x#x) { outline: none !important; box-shadow: none !important; border-color: transparent !important; }
+/* jigsaw outline in Royal Indigo, the same colour as the Menu button and headings; inner seams stay faint */
+html body #ln#ln .why-pz path.pz-out { stroke: #1F273F !important; }
