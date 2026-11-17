@@ -1,7 +1,7 @@
 // Converted from the original static page. Markup only: behaviour lives in lib/platform/.
 export default function AssistantWindow() {
   return (
-    <dialog id="va" className="va" aria-label="Verisavo Intelligence Assistant">
+    <dialog id="va" className="va" aria-label="Verisavo Assistant">
       {" "}
       <div className="va-app">
         {" "}
@@ -165,7 +165,7 @@ export default function AssistantWindow() {
           {" "}
           <div className="va-body" id="va-body">
             {" "}
-            <div className="va-hello" id="va-hello">{" "}<p className="va-hi">{"Verisavo Intelligence Assistant"}</p><h2 id="va-greet">{"What do you need to understand?"}</h2><p className="va-sub">{"Ask about a market, a competitor or a decision. Answers are designed to show their evidence, and what is still unknown."}</p></div>
+            <div className="va-hello" id="va-hello">{" "}<p className="va-hi">{"Verisavo Assistant"}</p><h2 id="va-greet">{"What do you need to understand?"}</h2><p className="va-sub">{"Ask about a market, a competitor or a decision. Answers are designed to show their evidence, and what is still unknown."}</p></div>
             {" "}
             <ol className="va-thread" id="va-thread" aria-live="polite"></ol>
             {" "}

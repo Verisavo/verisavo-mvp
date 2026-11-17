@@ -20,7 +20,7 @@ export default function LegalDialog() {
           <p className="ldate">{"Last updated 1 October 2026"}</p>
           {" "}
           <p>
-            {"Verisavo is a connected intelligence layer for African markets and is currently in private early access. This policy explains what personal information we collect when you use this website, the Verisavo Intelligence Assistant and the early-access programme (together, \"the service\"), why we collect it, how we use and protect it, and the choices you have."}
+            {"Verisavo is a connected intelligence layer for African markets and is currently in private early access. This policy explains what personal information we collect when you use this website, the Verisavo Assistant and the early-access programme (together, \"the service\"), why we collect it, how we use and protect it, and the choices you have."}
           </p>
           {" "}
           <p>
@@ -43,7 +43,7 @@ export default function LegalDialog() {
             {" "}
             <li>
               <b>{"Questions and requests."}</b>
-              {" The market questions you type into the Intelligence Assistant or the question bar, requests to deploy a SavoScout, and any context you add to them."}
+              {" The market questions you type into the Verisavo Assistant or the question bar, requests to deploy a SavoScout, and any context you add to them."}
             </li>
             {" "}
             <li><b>{"Files."}</b>{" Images, documents and other files you attach to a question."}</li>
@@ -68,7 +68,7 @@ export default function LegalDialog() {
             {" "}
             <li>
               <b>{"Browser storage."}</b>
-              {" When you type a question on the homepage and move to the Intelligence Assistant, your question is held briefly in your browser's session storage so it can appear in the question box. It is deleted as soon as it arrives and is never sent to us through this mechanism."}
+              {" When you type a question on the homepage and move to the Verisavo Assistant, your question is held briefly in your browser's session storage so it can appear in the question box. It is deleted as soon as it arrives and is never sent to us through this mechanism."}
             </li>
             {" "}
           </ul>
@@ -198,7 +198,7 @@ export default function LegalDialog() {
           <p className="ldate">{"Last updated 1 October 2026"}</p>
           {" "}
           <p>
-            {"These terms govern your use of the Verisavo website, the Verisavo Intelligence Assistant and the early-access programme (together, \"the service\"). By using the service, you agree to these terms. If you use the service on behalf of an organisation, you confirm that you are authorised to accept these terms for it, and \"you\" includes that organisation."}
+            {"These terms govern your use of the Verisavo website, the Verisavo Assistant and the early-access programme (together, \"the service\"). By using the service, you agree to these terms. If you use the service on behalf of an organisation, you confirm that you are authorised to accept these terms for it, and \"you\" includes that organisation."}
           </p>
           {" "}
           <h4>{"1. Early access"}</h4>

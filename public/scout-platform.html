@@ -751,7 +751,7 @@ function localBrief(s, list) {
   if (!okL.length && use.length) UN.push({text: 'No response has been verified yet. Findings are drawn from responses awaiting review.'});
   if (list.some(x => x.status === 'pending')) NX.push({text: 'Review the responses awaiting verification, then update this briefing.'});
   if (UN.length) NX.push({text: 'Extend coverage to the regions and outlets still missing before making a decision that depends on them.'});
-  NX.push({text: 'Return to the Intelligence Assistant to connect these findings with what Verisavo already knows about this market.'});
+  NX.push({text: 'Return to the Verisavo Assistant to connect these findings with what Verisavo already knows about this market.'});
   return {summary: `Based on ${use.length} ${okL.length ? 'verified' : 'unverified'} SavoScout response${use.length === 1 ? '' : 's'} from ${[...new Set(use.map(x => x.region))].join(', ') || s.country}.`, findings: F, agreements: AG, contradictions: CO, implications: [], unknowns: UN, next: NX, n: list.length, at: Date.now(), by: 'rules'};
 }
 async function genBrief(id) {
@@ -762,7 +762,7 @@ async function genBrief(id) {
     try {
       const qmap = Object.fromEntries((s.questions || []).map(q => [q.id, q.text]));
       const rows = list.filter(x => x.status !== 'rejected').slice(0, 40).map(x => ({id: x.id, region: x.region, status: x.status === 'approved' ? 'verified' : 'awaiting review', answers: Object.fromEntries(Object.entries(x.answers || {}).map(([k, v]) => [qmap[k] || k, v]))}));
-      const out = await SAMPLER.json(`You are the Verisavo Intelligence Assistant writing an investigation briefing for a business. Use only the evidence below. Separate what is supported from what is inferred, and never claim certainty the evidence does not give. British English, plain language, no hype.
+      const out = await SAMPLER.json(`You are the Verisavo Assistant writing an investigation briefing for a business. Use only the evidence below. Separate what is supported from what is inferred, and never claim certainty the evidence does not give. British English, plain language, no hype.
 Investigation: ${s.title}. Objective: ${s.request || s.title}. Place: ${(s.regions || []).join(', ')}, ${s.country}. Planned responses: ${s.target}; received: ${list.length}; not verified: ${list.filter(x => x.status === 'rejected').length}.
 Responses (JSON): ${JSON.stringify(rows)}
 Return JSON only: {"summary": one or two sentences, "findings": [{"text","confidence":"High"|"Medium"|"Low","refs":[response ids]}], "agreements": [{"text","refs"}], "contradictions": [{"text","refs"}], "implications": [{"text"}], "unknowns": [{"text"}], "next": [{"text"}]}. 2 to 5 findings; each list may be empty.`, {modelTier: 'quick'});
@@ -775,7 +775,7 @@ Return JSON only: {"summary": one or two sentences, "findings": [{"text","confid
 function briefView(s, list) {
   const b = s.briefing;
   if (!list.length) return `<div class="card">${emptyState('spark', 'No evidence to brief on yet', 'The AI briefing becomes available once SavoScouts start responding.')}</div>`;
-  if (!b) return `<div class="card">${emptyState('spark', 'Turn responses into a briefing', `The Verisavo Intelligence Assistant reads the ${list.length} response${list.length === 1 ? '' : 's'}, separates verified evidence from what is still awaiting review, and points to the responses behind each finding.`, `<button class="btn" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}Generate AI briefing</button>`)}</div>`;
+  if (!b) return `<div class="card">${emptyState('spark', 'Turn responses into a briefing', `The Verisavo Assistant reads the ${list.length} response${list.length === 1 ? '' : 's'}, separates verified evidence from what is still awaiting review, and points to the responses behind each finding.`, `<button class="btn" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}Generate AI briefing</button>`)}</div>`;
   const sec = (t, a, empty) => `<div><h3>${t}</h3>${(a || []).length ? `<ul>${a.map(o => `<li>${esc(o.text)}${o.confidence ? `<span class="conf ${o.confidence}">${o.confidence} confidence</span>` : ''}${refBtns(o.refs)}</li>`).join('')}</ul>` : `<p class="faint" style="margin:0;font-size:13px">${empty}</p>`}</div>`;
   const stale = list.length !== b.n;
   return `<div class="grid g-main"><div class="card brief">
