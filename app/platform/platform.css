@@ -3060,3 +3060,21 @@ html body #va .va-who.small, html body #va .va-who small { color: var(--q-ink2) 
   html body section#whatsapp.wa-sec { padding-top: 36px !important; padding-bottom: 36px !important; }
   html body footer.foot { padding-top: 40px !important; }
 }
+
+/* >>> dark mode v1 (whole-site, toggled from the header) */
+html[data-vs-theme="dark"] { filter: invert(1) hue-rotate(180deg) contrast(.88); background: #fff !important; }
+html[data-vs-theme="dark"] :is(img, video, picture) { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"] :is(.ln-close .ln-wrap, .cta-band, .ca-apply, .cm-close, .cmt-notify, .wa-card, .mnav, .cx-is, .cx-close) { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"] :is(.ln-close .ln-wrap, .cta-band, .ca-apply, .cm-close, .cmt-notify, .wa-card, .mnav, .cx-is, .cx-close) :is(img, video, picture) { filter: none; }
+.pill .thm svg { width: 16px; height: 16px; }
+.pill .thm .thm-sun, html[data-vs-theme="dark"] .pill .thm .thm-moon { display: none; }
+html[data-vs-theme="dark"] .pill .thm .thm-sun { display: block; }
+/* dark mode: modal dialogs sit outside the page layer, so they get the same treatment */
+html[data-vs-theme="dark"] dialog:modal { filter: invert(1) hue-rotate(180deg) contrast(.88); }
+/* header is already dark here (open menu, dark-header pages): keep it as designed */
+html[data-vs-theme="dark"] body.menu-open .top :is(.logo, .pill),
+html[data-vs-theme="dark"] body.menu-open .top::before,
+html[data-vs-theme="dark"] body.page-open:not(.page-light):not(:has(#pg-pricing.open, #pg-about-us.open, #pg-careers.open, #pg-contact.open)) .top :is(.logo, .pill),
+html[data-vs-theme="dark"] body.page-open:not(.page-light):not(:has(#pg-pricing.open, #pg-about-us.open, #pg-careers.open, #pg-contact.open)) .top::before { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"] .top .pill { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+/* <<< dark mode */

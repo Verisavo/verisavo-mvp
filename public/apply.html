@@ -2,6 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>try{if(localStorage.getItem("verisavo-theme")==="dark")document.documentElement.setAttribute("data-vs-theme","dark")}catch(e){}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-theme-toggle]");if(!b)return;var d=document.documentElement,on=d.getAttribute("data-vs-theme")!=="dark";if(on)d.setAttribute("data-vs-theme","dark");else d.removeAttribute("data-vs-theme");try{localStorage.setItem("verisavo-theme",on?"dark":"light")}catch(e){}document.querySelectorAll("[data-theme-toggle]").forEach(function(x){x.setAttribute("aria-pressed",String(on));var l=on?"Switch to light mode":"Switch to dark mode";x.setAttribute("aria-label",l);x.title=l})});
+document.addEventListener("DOMContentLoaded",function(){if(document.documentElement.getAttribute("data-vs-theme")==="dark")document.querySelectorAll("[data-theme-toggle]").forEach(function(x){x.setAttribute("aria-pressed","true");x.setAttribute("aria-label","Switch to light mode");x.title="Switch to light mode"})});</script>
+<style>
+/* >>> dark mode v1 (whole-site, toggled from the header) */
+html[data-vs-theme="dark"] { filter: invert(1) hue-rotate(180deg) contrast(.88); background: #fff !important; }
+html[data-vs-theme="dark"] :is(img, video, picture) { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"] :is(.ln-close .ln-wrap, .cta-band, .ca-apply, .cm-close, .cmt-notify, .wa-card, .mnav, .cx-is, .cx-close) { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"] :is(.ln-close .ln-wrap, .cta-band, .ca-apply, .cm-close, .cmt-notify, .wa-card, .mnav, .cx-is, .cx-close) :is(img, video, picture) { filter: none; }
+.pill .thm svg { width: 16px; height: 16px; }
+.pill .thm .thm-sun, html[data-vs-theme="dark"] .pill .thm .thm-moon { display: none; }
+html[data-vs-theme="dark"] .pill .thm .thm-sun { display: block; }
+/* dark mode: modal dialogs sit outside the page layer, so they get the same treatment */
+html[data-vs-theme="dark"] dialog:modal { filter: invert(1) hue-rotate(180deg) contrast(.88); }
+/* header is already dark here (open menu, dark-header pages): keep it as designed */
+html[data-vs-theme="dark"] body.menu-open .top :is(.logo, .pill),
+html[data-vs-theme="dark"] body.menu-open .top::before,
+html[data-vs-theme="dark"] body.page-open:not(.page-light):not(:has(#pg-pricing.open, #pg-about-us.open, #pg-careers.open, #pg-contact.open)) .top :is(.logo, .pill),
+html[data-vs-theme="dark"] body.page-open:not(.page-light):not(:has(#pg-pricing.open, #pg-about-us.open, #pg-careers.open, #pg-contact.open)) .top::before { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"] .top .pill { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+/* <<< dark mode */
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Apply to Verisavo</title>
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
