@@ -2813,6 +2813,19 @@ html body #va#va#va#va .va-side .vsn-soon em.glow{animation:vsn-glow 1.4s ease b
 @media (max-width: 40rem){html body #platform#platform .vsx-r, html body #platform#platform .vsx-r:nth-child(2){grid-template-columns:86px minmax(0,1fr) minmax(0,1.22fr) !important;column-gap:7px !important}
 html body #platform#platform .vsx-r > .vsx-v{padding-left:8px !important;padding-right:6px !important}}
 html body #platform#platform .vsx-r:nth-child(2) .vsx-v::before{display:block !important}
+/* answer tiles: build quickly, then hold */
+@keyframes ohStep { 0% { opacity: 0; transform: translateY(10px); } 4% { opacity: 1; transform: none; } 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes ohDraw { 0% { stroke-dashoffset: 1; opacity: 1; } 12% { stroke-dashoffset: 0; } 92% { stroke-dashoffset: 0; opacity: 1; } 97%, 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes ohLate { 0%, 10% { opacity: 0; } 14%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes ohLater { 0%, 13% { opacity: 0; } 17%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes ohBar { 0%, 2% { width: 0; } 12%, 92% { width: calc(var(--w) * 100%); } 97%, 100% { width: 0; } }
+@keyframes ohLink { 0%, 3% { stroke-dashoffset: 1; opacity: 1; } 12%, 92% { stroke-dashoffset: 0; opacity: 1; } 97%, 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes ohPop { 0%, 1% { opacity: 0; } 5%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+html body .oh-tile.in .oh-steps li { animation-duration: 7s, 7s !important; animation-delay: calc(var(--d) * .2s), calc(.15s + var(--d) * .2s) !important; }
+html body .oh-tile.in :is(.oh-ln, .oh-dt, .oh-mk, .oh-pill, .oh-tl, .oh-band, .oh-bt i, .oh-hl, .oh-hp, .oh-w) { animation-duration: 7s !important; }
+html body .oh-tile.in .oh-bt i { animation-delay: calc(var(--d) * .12s) !important; }
+html body .oh-tile.in :is(.oh-hl, .oh-hp) { animation-delay: calc(var(--d) * .1s) !important; }
+html body .oh-tile.in .oh-w { animation-delay: calc(var(--d) * .07s) !important; }
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
