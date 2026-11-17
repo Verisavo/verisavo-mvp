@@ -1,6 +1,6 @@
 /* Hallmark · shape: Map / Diagram (the network as the page's organiser) · genre: modern-minimal · theme: brand · redesign: full · copy: verbatim
- * paper: oklch(100% 0 0) · accent: oklch(47% 0.13 265) · display: Inter · body: Inter · hero: Stage · nav: floating pill (kept) · footer: kept · signature: an answer that labels Fact, Inference and Unknown, beside the question that asked it
- * axes: light/grotesk-sans/cool · posture: Stage · contrast: pass · fold: pass · v2.0.0 */
+ * paper: oklch(100% 0 0) · accent: oklch(47% 0.13 265) · display: Inter · body: Inter · hero: Settled · nav: floating pill (kept) · footer: kept · signature: the Market Intelligence Network
+ * axes: light/grotesk-sans/cool · posture: Settled · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S3 R4 V4 · weakest: S, every section had the same centred head; heads now sit left with the lead beside them */
 @import url("./tokens.css");
 
@@ -159,3 +159,7 @@ html body #ln#ln.ln#ln #why .why-in { align-items: start !important; }
 /* One container on every section: capped and centred, gutters grow at wide screens */
 html body :is(#ln#ln.ln, footer.lf) .ln-wrap { max-width: calc(var(--container) + 2 * var(--gutter)) !important; width: 100% !important; margin-inline: auto !important; padding-inline: var(--gutter) !important; box-sizing: border-box !important; }
 html body #ln#ln.ln#ln .ln-close > .ln-wrap { max-width: calc(var(--container) + 2 * var(--gutter)) !important; }
+/* Hero without the sample answer: one column, the headline set larger */
+html body #ln#ln.ln#ln#ln .v3-hero .hp3-hero-in { grid-template-columns: minmax(0, 1fr) !important; min-height: min(calc(100svh - 200px), 560px); }
+html body #ln#ln.ln#ln#ln .v3-hero h1:not(#_a):not(#_b):not(#_c) { font-size: clamp(2.75rem, 6vw, 5.25rem) !important; max-width: none !important; }
+html body #ln#ln.ln#ln#ln .v3-hero .v3-lede { max-width: 52ch !important; }
