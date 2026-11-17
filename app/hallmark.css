@@ -212,3 +212,8 @@ html body #ln#ln.ln#ln#ln#ln #why .why-p { text-align: center !important; margin
   #ln .why-src span { font-size: 0.75rem; }
 }
 @media (prefers-reduced-motion: reduce) { #ln .why-src li { animation: none; } }
+/* Each piece is itself made of smaller pieces, outlined in pencil blue */
+#ln .why-pz path.pz-fill { fill: var(--color-paper); stroke: none; }
+#ln .why-pz path.pz-out { fill: none; stroke: var(--color-b600); stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round; }
+#ln .why-pz path.pz-seam { fill: none; stroke: var(--color-b400); stroke-width: 0.9; stroke-linecap: round; opacity: 0.75; }
+#ln .why-src span { text-shadow: 0 0 3px var(--color-paper), 0 0 3px var(--color-paper), 0 0 6px var(--color-paper), 0 0 6px var(--color-paper); }
