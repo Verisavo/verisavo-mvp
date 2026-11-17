@@ -2828,6 +2828,9 @@ html body .oh-tile.in :is(.oh-hl, .oh-hp) { animation-delay: calc(var(--d) * .1s
 html body .oh-tile.in .oh-w { animation-delay: calc(var(--d) * .07s) !important; }
 /* light mode depth: greyer second-layer sections, firmer card outlines */
 html body :is(.ax-gal, .ps, footer.foot):not(#x#x#x#x) { background-color: #F2F5F9 !important; }
+/* comparison: the Verisavo column carries the silver highlight */
+html body #platform#platform .vsx-v:not(#x#x) { background-color: #EBF0F6 !important; }
+html body #platform#platform .vsx-r .vsx-v::before { background: #D5DDE8 !important; }
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
