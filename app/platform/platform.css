@@ -2812,6 +2812,7 @@ html body #va#va#va#va .va-side .vsn-soon em.glow{animation:vsn-glow 1.4s ease b
 @media (max-width: 21.5rem){html body [role="row"]:not(#a#b#c#d):has(.vsx-v) p{font-size:11px !important;line-height:1.4 !important;letter-spacing:-.01em !important}}
 @media (max-width: 40rem){html body #platform#platform .vsx-r, html body #platform#platform .vsx-r:nth-child(2){grid-template-columns:86px minmax(0,1fr) minmax(0,1.22fr) !important;column-gap:7px !important}
 html body #platform#platform .vsx-r > .vsx-v{padding-left:8px !important;padding-right:6px !important}}
+html body #platform#platform .vsx-r:nth-child(2) .vsx-v::before{display:block !important}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
