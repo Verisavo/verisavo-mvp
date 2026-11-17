@@ -183,3 +183,8 @@ html body #ln#ln.ln#ln #trust .hp3-cards p { margin: 0 !important; font: 400 0.9
 @media (max-width: 60rem) { html body #ln#ln.ln#ln #trust .hp3-cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
 @media (max-width: 40rem) { html body #ln#ln.ln#ln #trust .hp3-cards { grid-template-columns: minmax(0, 1fr) !important; } }
 html body #ln#ln.ln#ln #trust .hp3-cards article > * { grid-column: 1 !important; grid-row: auto !important; }
+/* Close band centred: heading, line and both actions on one axis */
+html body #ln#ln.ln#ln#ln#ln#ln .ln-close > .ln-wrap { text-align: center !important; }
+html body #ln#ln.ln#ln#ln#ln#ln .ln-close :is(h2, p) { margin-left: auto !important; margin-right: auto !important; text-align: center !important; justify-self: center !important; }
+html body #ln#ln.ln#ln#ln#ln#ln .ln-close h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) { margin-left: auto !important; margin-right: auto !important; text-align: center !important; }
+html body #ln#ln.ln#ln#ln#ln#ln .ln-close .hp2-ctas { justify-content: center !important; margin-left: auto !important; margin-right: auto !important; }
