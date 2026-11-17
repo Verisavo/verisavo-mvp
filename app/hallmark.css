@@ -322,3 +322,5 @@ html body #ln#ln #why .why-in > div, html body #ln#ln #why .why-p { position: re
 /* What you can do: smaller row titles */
 html body #ln#ln.ln#ln#ln .hp2-list h3 { font-size: 1.25rem !important; }
 @media (max-width: 40rem) { html body #ln#ln.ln#ln#ln .hp2-list h3 { font-size: 1.0625rem !important; font-weight: 600 !important; letter-spacing: -0.01em !important; } html body #ln#ln.ln#ln#ln .hp2-list li { padding: var(--space-md) 0 !important; } html body #ln#ln.ln#ln#ln .hp2-list p { font-size: 0.9375rem !important; margin-top: var(--space-2xs) !important; } }
+/* Pricing: every plan card carries the same Royal Indigo frame */
+html body #pg-pricing#pg-pricing.pg.pg .pc-card { box-shadow: 0 0 0 1.5px var(--color-ink), 0 30px 60px -38px rgba(31, 39, 63, 0.5) !important; }
