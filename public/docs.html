@@ -463,26 +463,26 @@ const SIGFIG = `<figure class="figure"><svg class="fig-d" viewBox="0 0 720 422" 
 const ALIAS = {"seven-layers": "how-it-works", "signals": "evidence", "evidence-sources": "evidence", "intelligence-states": "verification", "market-memory": "intelligence-graph", "market-measures": "measures", "reading-charts": "measures", "scout-rewards": "savoscouts", "responsible-use": "privacy", "glossary": "faq"};
 const PAGES = [
  { g: "Get started", id: "introduction", t: "What is Verisavo", ic: "book", crumb: "Get started", body: `
-  <p class="intro">Verisavo is a connected intelligence layer for African markets. It connects scattered market evidence so you can see what is happening, why, and what is still unknown.</p>
-  <div class="cards">${card("quickstart","bolt","Quickstart","Create a free account and ask your first question.")}${card("how-it-works","layers","How it works","Capture, verify, connect, evolve and decide.")}${card("intelligence-states","tag","Intelligence states","Fact, Inference, Hypothesis, Assumption, Unknown.")}${card("savoscouts","pin","SavoScouts","Ground-Level Intelligence when the evidence runs out.")}</div>
+  <p class="intro">Verisavo is the intelligence layer for African markets. It helps you understand what’s happening in your market, what’s changing and what we still don’t know, so you can make better decisions.</p>
+  <div class="cards">${card("quickstart","bolt","Quickstart","Sign up for free and ask your first question.")}${card("how-it-works","layers","How it works","The five steps from a question to a decision.")}${card("intelligence-states","tag","Intelligence states","How sure we are about each finding.")}${card("savoscouts","pin","SavoScouts","People who check things on the ground when we don’t know.")}</div>
   <h2 id="problem">The problem it solves</h2>
-  <p>The information you need usually exists, in company data, public records, digital platforms, research and what traders know. It rarely adds up, and it is hard to tell which pieces are reliable or current.</p>
-  <p>Verisavo connects that evidence, keeps its context and tells you what it cannot answer yet.</p>
+  <p>What you need to know about a market usually exists somewhere: in your company data, public records, digital platforms, research and what traders know. But it sits in different places, and it’s hard to tell which parts are reliable or up to date.</p>
+  <p>Verisavo brings it together, keeps track of where each piece came from, and tells you what it can’t answer yet.</p>
   <h2 id="what-it-does">What you can do</h2>
   <div class="tbl"><table><thead><tr><th>Capability</th><th>What it means for you</th></tr></thead><tbody>
-   <tr><th>Ask</th><td>Ask in plain language in the web Verisavo Assistant. Early access in Lagos, Accra and Nairobi.</td></tr>
-   <tr><th>Evidence</th><td>See the source, place, time and reliability behind an answer. Early access.</td></tr>
-   <tr><th>Gaps</th><td>Unanswered questions are named as Intelligence Gaps. Early access.</td></tr>
-   <tr><th>Investigate</th><td>Choose Investigate this gap and SavoScouts fill the gap with verified Ground-Level Intelligence. Available.</td></tr>
-   <tr><th>Remember</th><td>Market Memory is designed to record how understanding changes. In development.</td></tr>
-   <tr><th>Explore scenarios</th><td>Market Simulator will compare outcomes under stated assumptions. Planned.</td></tr>
+   <tr><th>Ask</th><td>Ask a question in plain language in the Verisavo Assistant. Early access in Lagos, Accra and Nairobi.</td></tr>
+   <tr><th>Evidence</th><td>See where an answer comes from: the source, the place, the date and how reliable it is. Early access.</td></tr>
+   <tr><th>Gaps</th><td>When something can’t be answered yet, Verisavo tells you. We call this an Intelligence Gap. Early access.</td></tr>
+   <tr><th>Investigate</th><td>Choose Investigate this gap, and SavoScouts check it on the ground and send back verified answers. Available.</td></tr>
+   <tr><th>Remember</th><td>Market Memory is designed to keep track of what you know and what changes. In development.</td></tr>
+   <tr><th>Explore scenarios</th><td>Market Simulator will let you test possibilities before you commit. Planned.</td></tr>
   </tbody></table></div>
   ${FLOW}
   <h2 id="who">Who it is for</h2>
-  <p>Businesses deciding where to launch, how to price and why sales are changing; investors checking whether a market opportunity holds up; and diaspora entrepreneurs planning a launch they cannot check in person. <a href="/platform#sample">Explore a sample answer</a> to see how it works.</p>
-  ${note("<b>Decisions stay human.</b> Verisavo brings evidence and uncertainty closer to you. You make the decision.")}` },
+  <p>Business owners who want to know what’s happening in their market. Brands and distributors deciding where to launch, how to price and why sales are changing. Investors checking whether an opportunity holds up. And people in the diaspora planning a business in a market they can’t visit often. <a href="/platform#sample">Explore a sample answer</a> to see how it works.</p>
+  ${note("<b>You make the decision.</b> Verisavo shows you what is known and what isn’t.")}` },
  { g: "Get started", id: "quickstart", t: "Quickstart", ic: "bolt", crumb: "Get started", body: `
-  <p class="intro">Create a free account, ask your first market question and read the answer. It takes about five minutes.</p>
+  <p class="intro">Sign up for free, ask your first question and read the answer. It takes about five minutes.</p>
   <h2 id="preview">Try the web preview</h2>
   <p>Open the <a href="/platform#sample">sample answer</a> without signing up. It uses sample data for cooking oil in Accra, so you can trace a source, open Unknown and preview the task a SavoScout would receive.</p>
   <h2 id="access">Create your account</h2>
@@ -492,11 +492,11 @@ const PAGES = [
    <li><b>Open the Verisavo Assistant</b><p>You land in the Assistant in your browser, ready for your first question.</p></li>
   </ol>
   <h2 id="first-question">Ask your first question</h2>
-  <p>Start with a decision you face, and name the place and time.</p>
+  <p>Start with a decision you need to make, and say where and when.</p>
   ${prompt("Why are enquiries for our solar kits rising in Lugbe, Abuja, while conversion has fallen over the last quarter?")}
   <h2 id="read-answer">Read the answer</h2>
   <p>Answers are being built to show four things. Sources and gaps are in early access, the rest is in development.</p>
-  <ul><li><strong>What the evidence supports</strong>, separate from what is inferred or <a href="#intelligence-states">unknown</a>.</li><li><strong>Where it comes from</strong>: source, place, time and method.</li><li><strong>What conflicts</strong>: disagreeing evidence stays visible.</li><li><strong>What is still unknown</strong>: questions the evidence cannot answer yet.</li></ul>
+  <ul><li><strong>What we know</strong>, kept separate from what is likely and what is <a href="#intelligence-states">unknown</a>.</li><li><strong>Where it comes from</strong>: the source, the place, the date and how it was gathered.</li><li><strong>Where the evidence disagrees</strong>. We don’t hide it.</li><li><strong>What we still don’t know</strong>: the questions the evidence can’t answer yet.</li></ul>
   <h2 id="plans">Early access plans</h2>
   <div class="tbl"><table><thead><tr><th>Plan</th><th>Price</th><th>What you get</th></tr></thead><tbody>
    <tr><th>Free</th><td>$0</td><td>Free to start, with limited questions each month.</td></tr>
@@ -506,32 +506,32 @@ const PAGES = [
   </tbody></table></div>
   <p>Prices are in US dollars. Early access prices may change.</p>
   <h2 id="next">Next steps</h2>
-  <div class="cards">${card("asking-questions","chat","Ask better questions","Frame questions that lead to useful answers.")}${card("intelligence-gaps","info","Intelligence Gaps","What to do when an answer says Unknown.")}</div>` },
+  <div class="cards">${card("asking-questions","chat","Ask better questions","How to ask questions that get useful answers.")}${card("intelligence-gaps","info","Intelligence Gaps","What to do when an answer says Unknown.")}</div>` },
  { g: "Get started", id: "how-it-works", t: "How it works", ic: "layers", crumb: "Get started", body: `
-  <p class="intro">Verisavo is designed to turn scattered market information into connected, evidence-grounded understanding in five steps, and to keep it current as the market changes.</p>
+  <p class="intro">Verisavo is designed to turn scattered market information into a clear picture of your market in five steps, and to keep that picture up to date as things change.</p>
   <h2 id="five-steps">The five steps</h2>
   <ol class="steps">
-   <li><b>Capture: bring market information together</b><p>Verisavo gathers <a href="#signals">Signals</a>, such as a price change or a stockout, from company data, public records, digital platforms, research and local communities. Each is kept as <a href="#evidence">Evidence</a> with its source, place, time and method. SavoScouts are being built to fill critical gaps from the ground.</p></li>
-   <li><b>Verify: establish what can be trusted</b><p><a href="#verification">Verification</a> is designed to check evidence is reliable enough for its purpose, compare sources, flag inconsistencies and keep uncertainty visible.</p></li>
-   <li><b>Connect: show the relationships behind market change</b><p>The <a href="#intelligence-graph">Intelligence Network</a> is being built to link evidence across businesses, products, competitors, prices, places and time, with every finding traceable.</p></li>
-   <li><b>Evolve: keep up with the market</b><p><a href="#market-memory">Market Memory</a> is designed to record what was known, what changed and which evidence changed it, so earlier conclusions can be revisited.</p></li>
-   <li><b>Decide: your team makes the call</b><p>You question it all through the <a href="#asking-questions">Verisavo Assistant</a>, in early access on the web. It explores explanations, names Intelligence Gaps and helps you weigh options. Your team decides.</p></li>
+   <li><b>Gather: bring market information together</b><p>Verisavo gathers <a href="#signals">Signals</a>, such as a price change or a stockout, from company data, public records, digital platforms, research and local communities. Each is kept as <a href="#evidence">Evidence</a> with its source, place, time and method. SavoScouts are being built to fill critical gaps from the ground.</p></li>
+   <li><b>Check: work out what can be trusted</b><p><a href="#verification">Verification</a> is designed to check that evidence is reliable enough for the decision, compare sources, point out where they disagree, and be open about what is uncertain.</p></li>
+   <li><b>Connect: show how things are linked</b><p>The <a href="#intelligence-graph">Intelligence Network</a> is being built to link businesses, products, competitors, prices and places over time, so you can always see where a finding came from.</p></li>
+   <li><b>Keep up: track what changes</b><p><a href="#market-memory">Market Memory</a> is designed to keep track of what was known, what changed and why, so you can look again at earlier conclusions.</p></li>
+   <li><b>Decide: your team makes the call</b><p>You ask about all of this in the <a href="#asking-questions">Verisavo Assistant</a>, in early access on the web. It looks at possible explanations, tells you what’s missing and helps you weigh your options. Your team decides.</p></li>
   </ol>
   ${FLOW}
   <h3 id="principles">Principles</h3>
-  <ul><li><strong>Evidence before assertion.</strong> A fluent answer is not the same as a supported one.</li><li><strong>Context before conclusion.</strong> A price in Lagos in March says little about Kano in May.</li><li><strong>Unknown is a valid answer.</strong> A named gap is more useful than a confident guess.</li><li><strong>Markets change.</strong> Understanding is updated, not filed away.</li></ul>
+  <ul><li><strong>Show the evidence.</strong> An answer that sounds good isn’t the same as one that is supported.</li><li><strong>Context comes first.</strong> A price in Lagos in March says little about Kano in May.</li><li><strong>“We don’t know” is an honest answer.</strong> Knowing what’s missing is more useful than a confident guess.</li><li><strong>Markets change.</strong> What we know is kept up to date, not filed away.</li></ul>
   <h2 id="seven-layers">The seven layers</h2>
   <h3 id="layers">Seven layers of market intelligence</h3>
   <p>Much of what you need to understand African markets already exists, split across many sources. The first six layers each see part of the market. The seventh connects them.</p>
   <div class="tbl"><table><thead><tr><th>Layer</th><th>Intelligence</th><th>What it reveals</th><th>What it misses</th></tr></thead><tbody>
-   <tr><td>01</td><th>Public Intelligence</th><td>Government records, indicators, regulations and demographics.</td><td>Records can be outdated, incomplete or geographically limited.</td></tr><tr><td>02</td><th>Research Intelligence</th><td>Industry reports, surveys and market studies.</td><td>Research captures moments, leaving changes between studies unexplained.</td></tr><tr><td>03</td><th>Digital Intelligence</th><td>Search trends, social conversations and online marketplaces.</td><td>Much offline economic activity leaves few digital traces.</td></tr><tr><td>04</td><th>Business Intelligence</th><td>Sales, customers, inventory and distribution.</td><td>Businesses see what happens inside but not always why the market around them changes.</td></tr><tr><td>05</td><th>Ground-Level Intelligence</th><td>Observations from retailers, consumers and distributors.</td><td>Valuable knowledge often stays informal, fragmented or unverified.</td></tr><tr><td>06</td><th>Artificial Intelligence</th><td>Finds patterns and generates explanations from available information.</td><td>It cannot recover missing facts without new evidence.</td></tr><tr class="hl"><td>07</td><th>Connected Intelligence (Verisavo)</th><td>Designed to connect, verify and relate information across the other layers, keep Market Memory and name gaps to investigate.</td><td>Brings the fragments together into an evolving, evidence-grounded understanding.</td></tr>
+   <tr><td>01</td><th>Public Intelligence</th><td>Government records, indicators, regulations and demographics.</td><td>Records can be outdated, incomplete or geographically limited.</td></tr><tr><td>02</td><th>Research Intelligence</th><td>Industry reports, surveys and market studies.</td><td>Research captures moments, leaving changes between studies unexplained.</td></tr><tr><td>03</td><th>Digital Intelligence</th><td>Search trends, social conversations and online marketplaces.</td><td>Much offline economic activity leaves few digital traces.</td></tr><tr><td>04</td><th>Business Intelligence</th><td>Sales, customers, inventory and distribution.</td><td>Businesses see what happens inside but not always why the market around them changes.</td></tr><tr><td>05</td><th>Ground-Level Intelligence</th><td>Observations from retailers, consumers and distributors.</td><td>Valuable knowledge often stays informal, fragmented or unverified.</td></tr><tr><td>06</td><th>Artificial Intelligence</th><td>Finds patterns and generates explanations from available information.</td><td>It cannot recover missing facts without new evidence.</td></tr><tr class="hl"><td>07</td><th>Connected Intelligence (Verisavo)</th><td>Designed to connect, verify and relate information across the other layers, keep Market Memory and name gaps to investigate.</td><td>Brings the pieces together into a picture of the market that stays up to date.</td></tr>
   </tbody></table></div>
   ${note("This is a storytelling framework, not an industry classification. It does not claim other systems cannot combine these sources.")}
   <h3 id="chapters">Africa's Incomplete Chapters</h3>
   <p>Understanding many African markets is like reading a book with missing chapters. A census may show population growth in Nairobi but not how household buying is changing. Your sales records may show falling revenue in Kumasi but not the competitor winning customers nearby. A digital platform misses transactions in neighbourhood shops and open markets.</p>
   <p>The problem is missing connections as much as missing data.</p>
   <h3 id="seventh">The seventh layer</h3>
-  <p>Verisavo does not add another chapter. It is designed to connect the other six, show how they relate, make uncertainty visible, name what is missing and keep <a href="#market-memory">Market Memory</a> as new evidence arrives. It does not claim to know everything, only to build a clearer understanding one verified piece of evidence at a time.</p>` },
+  <p>Verisavo does not add another chapter. It is designed to connect the other six, show how they relate, make uncertainty visible, name what is missing and keep <a href="#market-memory">Market Memory</a> as new evidence arrives. It doesn’t claim to know everything. It builds a clearer picture, one checked piece of evidence at a time.</p>` },
  { g: "Get started", id: "technical-overview", t: "Technical overview", ic: "graph", crumb: "Get started", body: `
   <p class="intro">How Verisavo is designed to work underneath: the layers, where evidence comes from and what gains value with use. For technical readers and investors.</p>
   ${note("The table gives each layer's current state. The <a href=\"#roadmap\">Roadmap</a> shows what comes next.")}
@@ -539,18 +539,18 @@ const PAGES = [
   <div class="tbl"><table><thead><tr><th>Layer</th><th>What it does</th></tr></thead><tbody>
    <tr><th>Capture</th><td>Brings in Signals from company data, public records, digital platforms, research and Ground-Level Intelligence.</td></tr>
    <tr><th>Evidence</th><td>Keeps each Signal with its source, place, time, scope, method and reliability. Early access.</td></tr>
-   <tr><th>Verification</th><td>Designed to check evidence is fit for purpose through cross-source comparison, contributor reliability and contradiction detection. In development.</td></tr>
+   <tr><th>Verification</th><td>Designed to check that evidence is reliable enough for the decision: comparing sources, weighing how reliable each contributor has been, and spotting where evidence disagrees. In development.</td></tr>
    <tr><th>Intelligence Network</th><td>Being built to link businesses, products, prices, places and events to the evidence behind each link. In development.</td></tr>
    <tr><th>Market Memory</th><td>Designed to record what was known, what changed and which evidence changed it. In development.</td></tr>
    <tr><th>Verisavo Assistant</th><td>Ask questions, explore evidence and see what is unknown. Early access on the web.</td></tr>
    <tr><th>Market Simulator</th><td>Will explore outcomes under stated assumptions. Planned.</td></tr>
   </tbody></table></div>
   <h2 id="sources">Where the evidence comes from</h2>
-  <p>Each source is used within its own terms and keeps its provenance, so you can trace any finding back.</p>
+  <p>Each source is used within its own terms, and we keep a record of where everything came from, so you can trace any finding back.</p>
   <ul>
    <li><strong>Company data</strong> you share, such as orders and sales exports. It stays private to you and never answers anyone else's questions.</li>
    <li><strong>Public records</strong>, such as official statistics, registries and regulatory notices.</li>
-   <li><strong>Digital platforms</strong>, such as public listings, prices and reviews.</li>
+   <li><strong>Digital platforms</strong>: what people say online, such as reviews, discussions and trending topics.</li>
    <li><strong>Research</strong>, such as published market studies, used within their publication terms.</li>
    <li><strong>Ground-Level Intelligence</strong>, to be gathered by <a href="#savoscouts">SavoScouts</a> when other sources cannot answer a question that matters. ${DEV}</li>
   </ul>
@@ -564,7 +564,7 @@ const PAGES = [
   </tbody></table></div>
   ${note("These effects are designed in. They depend on use and coverage in each market.")}
   <h2 id="principles">Design principles</h2>
-  <ul><li><strong>Evidence before assertion.</strong> A conclusion is only as strong as its evidence.</li><li><strong>Unknown is a valid answer.</strong> Verisavo names the gap instead of guessing.</li><li><strong>Client data stays private.</strong> See <a href="#privacy">Privacy and responsible use</a>.</li><li><strong>Decisions stay human.</strong> Verisavo supports the decision. People make it.</li></ul>` },
+  <ul><li><strong>Show the evidence.</strong> A conclusion is only as strong as what supports it.</li><li><strong>“We don’t know” is an honest answer.</strong> Verisavo says what’s missing instead of guessing.</li><li><strong>Your data stays private.</strong> See <a href="#privacy">Privacy and responsible use</a>.</li><li><strong>You make the decision.</strong> Verisavo helps you understand.</li></ul>` },
  { g: "Core concepts", id: "evidence", t: "Signals and evidence", ic: "file", crumb: "Core concepts", body: `
   <p class="intro">A Signal is a first sign that something is happening in a market. It becomes Evidence when its context travels with it. This page explains both, and the five kinds of source Verisavo draws on.</p>
   <h2 id="signals">Signals</h2>
@@ -601,7 +601,7 @@ const PAGES = [
   <div class="ex"><div class="ex-h" role="tablist"><button type="button" class="ex-tab" role="tab" aria-selected="true">Preview</button><button type="button" class="ex-tab" role="tab" aria-selected="false">Context kept</button><span class="ex-l">Illustrative example</span></div><div class="ex-p" role="tabpanel"><div class="evc"><span class="evc-k">Public records</span><p class="evc-s">A new cooking oil brand completed product registration with the national regulator in June.</p><dl class="evc-m"><div><dt>Source</dt><dd>Public register</dd></div><div><dt>Place</dt><dd>Nigeria (national)</dd></div><div><dt>Time</dt><dd>June</dd></div><div><dt>Scope</dt><dd>One brand, one product line</dd></div><div><dt>Method</dt><dd>Official record</dd></div></dl></div></div><div class="ex-p" role="tabpanel" hidden><div class="tbl"><table><thead><tr><th>Field</th><th>Value kept with this evidence</th></tr></thead><tbody><tr><th>Source</th><td>Public register</td></tr><tr><th>Place</th><td>Nigeria (national)</td></tr><tr><th>Time</th><td>June</td></tr><tr><th>Scope</th><td>One brand, one product line</td></tr><tr><th>Method</th><td>Official record</td></tr></tbody></table></div></div></div>
   <dl class="pst"><div><dt>Good for</dt><dd>Rules, registrations and official figures that frame a decision.</dd></div><div><dt>Watch for</dt><dd>Time lags, and national figures that hide differences between cities.</dd></div></dl>
   <h3 id="digital-platforms">Digital platforms</h3>
-  <p>Online listings and reviews are current and easy to compare. They show only the part of the market that trades online.</p>
+  <p>What people say online is current and easy to find. It shows only the part of the market that is online, and what people say is not always what they buy.</p>
   <div class="ex"><div class="ex-h" role="tablist"><button type="button" class="ex-tab" role="tab" aria-selected="true">Preview</button><button type="button" class="ex-tab" role="tab" aria-selected="false">Context kept</button><span class="ex-l">Illustrative example</span></div><div class="ex-p" role="tabpanel"><div class="evc"><span class="evc-k">Digital platforms</span><p class="evc-s">Posts and reviews on social media and community forums increasingly describe a rival 750ml pack as the cheaper option.</p><dl class="evc-m"><div><dt>Source</dt><dd>Social media and forums</dd></div><div><dt>Place</dt><dd>Kano</dd></div><div><dt>Time</dt><dd>2 October</dd></div><div><dt>Scope</dt><dd>64 reviews and posts</dd></div><div><dt>Method</dt><dd>Collected public posts</dd></div></dl></div></div><div class="ex-p" role="tabpanel" hidden><div class="tbl"><table><thead><tr><th>Field</th><th>Value kept with this evidence</th></tr></thead><tbody><tr><th>Source</th><td>Social media and forums</td></tr><tr><th>Place</th><td>Kano</td></tr><tr><th>Time</th><td>2 October</td></tr><tr><th>Scope</th><td>64 reviews and posts</td></tr><tr><th>Method</th><td>Collected public posts</td></tr></tbody></table></div></div></div>
   <dl class="pst"><div><dt>Good for</dt><dd>Current prices, pack sizes and new products.</dd></div><div><dt>Watch for</dt><dd>Online prices may not match what shoppers pay in kiosks and markets.</dd></div></dl>
   <h3 id="research">Research</h3>
@@ -618,7 +618,7 @@ const PAGES = [
   <dl class="pst"><div><dt>Corroborated</dt><dd>Backed by at least one independent source covering the same place and time.</dd></div><div><dt>Single source</dt><dd>Only one source so far. Used with its scope and limits shown.</dd></div><div><dt>Contradicted</dt><dd>Another source points the other way. Both are shown, and the disagreement can become an Intelligence Gap.</dd></div></dl>
   ${note("<b>Next step.</b> See how each piece of evidence is checked in <a href=\"#verification\">Verification</a>.")}` },
  { g: "Core concepts", id: "verification", t: "Verification and intelligence states", ic: "shield", crumb: "Core concepts", body: `
-  <p class="intro">Verification checks whether evidence is reliable enough for its purpose. Intelligence states then describe how firmly each conclusion is supported.</p>
+  <p class="intro">Verification checks whether evidence is reliable enough for the decision. Intelligence states then say how sure we are about each conclusion.</p>
   <h2 id="verification">Verification</h2>
   <p>Verification is being built to decide how much weight a piece of evidence can carry, and so how confidently a conclusion built on it can be stated. ${DEV}</p>
   ${note("<b>Verification is not absolute truth.</b> It is a judgement about fitness for a purpose. Better evidence can still overturn verified evidence, and <a href=\"#market-memory\">Market Memory</a> is designed to record when that happens.", "warn")}
@@ -700,7 +700,7 @@ const PAGES = [
   </tbody></table></div>
   ${note("Evidence carries its date and scope, so an observation from two years ago is read as history, not as today's market.")}` },
  { g: "Core concepts", id: "intelligence-gaps", t: "Intelligence Gaps", ic: "info", crumb: "Core concepts", body: `
-  <p class="intro">An Intelligence Gap is a question the available evidence cannot answer, where the answer could change your decision. ${EA}</p>
+  <p class="intro">An Intelligence Gap is a question the evidence can’t answer yet, where the answer could change your decision. ${EA}</p>
   ${prompt("Who supplies the kiosks near the main bus park, and how often do they reorder?", "Example gap")}
   <h2 id="when">When a gap is raised</h2>
   <p>Verisavo raises a gap when an answer depends on something missing, out of date or contradicted, and filling it would lead you to act differently.</p>
@@ -739,7 +739,7 @@ const PAGES = [
   <p>Your company data stays under your control. Verisavo uses it only to answer your questions and never makes it public.</p>
   ${note("See <a href=\"#privacy\">Privacy and your data</a>.")}` },
  { g: "Use Verisavo", id: "measures", t: "Measures and charts", ic: "layers", crumb: "Use Verisavo", body: `
-  <p class="intro">How Verisavo calculates market measures and marks up charts, so you can read every number in context.</p>
+  <p class="intro">How Verisavo works out its numbers and marks up charts, so you know what each figure means.</p>
   <h2 id="market-measures">Market measures</h2>
   <p>Verisavo is designed to define each measure once, so availability, price and coverage mean the same thing in every answer. Each measure is shown with its scope. ${DEV}</p>
   <h3 id="why-measures">Why define measures</h3>
@@ -772,7 +772,7 @@ const PAGES = [
   <dl class="pst"><div><dt>Shows</dt><dd>What the line cannot show by itself.</dd></div><div><dt>Comes from</dt><dd>Verisavo, when evidence is thin, out of date or in conflict.</dd></div><div><dt>Read it as</dt><dd>A prompt to look closer. An Unknown can become an Intelligence Gap.</dd></div></dl>
   ${note("Every mark on a chart comes from evidence or from something you stated. Hover over a mark to see its source.")}` },
  { g: "Use Verisavo", id: "savoscouts", t: "SavoScouts", ic: "pin", crumb: "Use Verisavo", body: `
-  <p class="intro">SavoScouts gather Ground-Level Intelligence when existing evidence cannot answer your question, and are rewarded only for verified work.</p>
+  <p class="intro">SavoScouts are people on the ground who check things when existing evidence can’t answer your question. They are rewarded only for work that passes verification.</p>
   <h2 id="savoscouts">SavoScouts</h2>
   <p>SavoScouts are Verisavo's network of local contributors. They answer questions such as this week's price of 5-litre cooking oil in three Kumasi markets. ${NOW}</p>
   <h3 id="lifecycle">How an investigation works</h3>
@@ -782,7 +782,7 @@ const PAGES = [
    <li><b>Consent</b><p>Anyone asked a question knows who is asking and can decline.</p></li>
    <li><b>Capture</b><p>Each observation is geo-tagged, time-stamped and recorded with its method.</p></li>
    <li><b>Verification</b><p>Checks compare it with other sources, contributors and earlier findings.</p></li>
-   <li><b>Evidence</b><p>Verified findings join your picture of the market, with provenance intact.</p></li>
+   <li><b>Evidence</b><p>Verified findings are added to your picture of the market, with a record of where each came from.</p></li>
   </ol>
   <h3 id="investigation-pricing">What an investigation costs</h3>
   <p>Each verified SavoScout response costs $1.15, charged separately from your <a href="#quickstart">plan</a>. You pay only for responses that pass verification, and unused responses stay on your account. Brief 40 shelf checks in Accra, 36 pass, and you pay $41.40.</p>
@@ -809,7 +809,7 @@ const PAGES = [
   <p>Only SavoScouts are rewarded. The shopkeepers, traders and customers they speak to are never pressured, know who is asking and can decline.</p>
   ${note("Reward amounts, payment methods and eligibility will vary by country and are still being finalised. A separate SavoScouts guide will cover them.")}` },
  { g: "Use Verisavo", id: "market-simulation", t: "Market Simulator", ic: "layers", crumb: "Use Verisavo", body: `
-  <p class="intro">Market Simulator is designed to help you compare possible outcomes under different assumptions before you commit. ${SOON}</p>
+  <p class="intro">Market Simulator is designed to help you test possibilities and compare what might happen before you commit. ${SOON}</p>
   <h2 id="what">What it will do</h2>
   <ul><li>Compare options, such as launching in one Abuja district or two</li><li>Show the assumptions behind each scenario</li><li>Test how sensitive an outcome is to price, distribution or demand</li></ul>
   <h2 id="how">How a scenario is built</h2>
@@ -822,7 +822,7 @@ const PAGES = [
   </tbody></table></div>
   ${note("<b>Simulation is not prediction.</b> It lets you compare options with every assumption visible. It does not tell you what will happen. The decision stays yours.", "warn")}` },
  { g: "Reference", id: "privacy", t: "Privacy and responsible use", ic: "shield", crumb: "Reference", body: `
-  <p class="intro">How Verisavo protects your company data, and the principles behind responsible use.</p>
+  <p class="intro">How Verisavo keeps your company data private, and how we use information responsibly.</p>
   <h2 id="privacy">Privacy and your data</h2>
   <p>Your company data stays private, protected and under your control. Data, questions and files you share are used only to provide the service to you, and are never shared with other customers.</p>
   <h3 id="two-kinds">Two kinds of intelligence</h3>
@@ -832,7 +832,7 @@ const PAGES = [
    <tr><th>Used to answer others</th><td>Never</td><td>Yes, under governance rules</td></tr>
   </tbody></table></div>
   <h2 id="responsible-use">Responsible use</h2>
-  <ul><li><strong>Decisions stay human.</strong> Verisavo supports your decision. The people responsible make it.</li><li><strong>No false certainty.</strong> Findings show how well the evidence supports them, and unknowns stay visible.</li><li><strong>Markets, not individuals.</strong> Field work favours observations about markets over information about people, and asks for consent first.</li><li><strong>Africa is not one market.</strong> Evidence carries its geography, so a finding from Kumasi is not stretched to cover Ghana, let alone a continent.</li></ul>` },
+  <ul><li><strong>You make the decision.</strong> Verisavo helps you understand. The call stays with you.</li><li><strong>No false certainty.</strong> Findings show how well the evidence supports them, and unknowns stay visible.</li><li><strong>Markets, not individuals.</strong> Field work favours observations about markets over information about people, and asks for consent first.</li><li><strong>Africa is not one market.</strong> Evidence carries its geography, so a finding from Kumasi is not stretched to cover Ghana, let alone a continent.</li></ul>` },
  { g: "Reference", id: "roadmap", t: "Roadmap", ic: "clock", crumb: "Reference", body: `
   <p class="intro">Where each part of Verisavo stands today, so you know what you can use now.</p>
   <h2 id="now">Available and in early access</h2>
