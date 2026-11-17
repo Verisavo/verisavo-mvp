@@ -453,3 +453,7 @@ html body #ln#ln .why-pz path.pz-out { stroke: #1F273F !important; stroke-opacit
 /* more room between the paragraph and the jigsaw */
 html body #ln#ln .why-src { margin-top: 44px !important; }
 @media (min-width: 40.01rem) { html body #ln#ln .why-src { margin-top: 72px !important; } }
+/* network diagram draws in quickly */
+html body .ln .net-e, html body .ln .net-p { transition-duration: .7s !important; }
+html body .ln :is(.net-src,.net-out,.net-gap,.net-n,.net-mem,.net-memt,.net-dot,.net-loop) { transition-duration: .3s !important; }
+html body #ln .net-card.ln-rv { transition-duration: .35s !important; transition-delay: 0ms !important; }
