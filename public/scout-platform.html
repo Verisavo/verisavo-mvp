@@ -1673,6 +1673,13 @@ button { transition-timing-function: cubic-bezier(.23,1,.32,1); }
 a { text-underline-offset: 2px; }
 .card { border-radius: 12px; }
 @media (max-width: 640px) { .btn.sm, .hnav button, .chipbtn, .lnk, .link { min-height: 40px; } }
+/* phone: each section tab is its own outlined button */
+@media (max-width: 520px) {
+  .hnav { background: none; padding: 0; gap: 6px; border-radius: 0; overflow: visible; }
+  .hnav button { background: var(--card); border: 1px solid var(--line); border-radius: 9px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .hnav button.on { border-color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.10), 0 3px 10px rgba(0,0,0,.08); font-weight: 600; }
+}
+
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }
 /* <<< quiet system v1 */
 </style>
