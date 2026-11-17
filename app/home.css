@@ -1,8 +1,8 @@
 /* Layout: a fixed 3D aerial drawing of a market district; scroll flies the camera between chapters. Text sits top-left, a typing question bar and scroll pill sit bottom-centre, labels are pinned to places in the scene. Single light theme by design. */
 :root {
-  --indigo: #39393B; --white: #FFFFFF; --paper: #F9F9F9;
+  --indigo: #1F273F; --white: #FFFFFF; --paper: #F9F9F9;
   --b100: #E6EDF5; --b200: #D1DDEC; --b300: #B1C5DF; --b400: #8CA9D0; --b500: #6D93C4; --b600: #5681BA; --b700: #4774AE; --b800: #3B6091;
-  --dark: rgba(57,57,59,.9);
+  --dark: rgba(31,39,63,.9);
   --sans: "Geist", "Helvetica Neue", Arial, sans-serif;
   --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
   --ease: cubic-bezier(.2,.7,.2,1);
@@ -780,7 +780,7 @@ body.page-open .pill { background: var(--lc-rgba-255-255-255-08); box-shadow: in
 
 /* ===== Research page: light, newsroom-style reading (Apple-like clarity: big type, white tiles, quiet colour) ===== */
 #pg-research, .rs-detail.rd-light {
-  --ap-bg: #F7F7F7; --ap-card: #FFFFFF; --ap-ink: #39393B; --ap-body: #3F3F41; --ap-sub: #6A6A6C; --ap-line: rgba(57,57,59,.1); --ap-accent: #4774AE;
+  --ap-bg: #F7F7F7; --ap-card: #FFFFFF; --ap-ink: #1F273F; --ap-body: #2E3650; --ap-sub: #6A6A6C; --ap-line: rgba(31,39,63,.1); --ap-accent: #4774AE;
   --ap-ease: cubic-bezier(.2,.8,.2,1);
 }
 #pg-research { background: var(--ap-bg); -webkit-backdrop-filter: none; backdrop-filter: none; color: var(--ap-ink); }
@@ -1543,7 +1543,7 @@ html body h3:not(#_a):not(#_b):not(#_c):not(#_d) .acc, html body h3:not(#_a):not
 /* headings on dark indigo panels stay white */
 html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta-band h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ca-apply h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .ln-close .ln-wrap h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span, html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e), html body .cta h1:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) span { color: var(--color-paper) !important; -webkit-text-fill-color: var(--color-paper); }
 /* >>> community page: SavoScouts landing page, light, scoped to #pg-community */
-html body #pg-community.pg { --cm-i: #39393B; --cm-b: #4B4B4D; --cm-m: #6A6A6C; --cm-s: #6A6A6C; --cm-l: #E3EAF2; --cm-a: #4774AE; --cm-t: #F8F8F8; background: var(--color-paper) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; color: var(--cm-i); }
+html body #pg-community.pg { --cm-i: #1F273F; --cm-b: #3D4559; --cm-m: #6A6A6C; --cm-s: #6A6A6C; --cm-l: #E3EAF2; --cm-a: #4774AE; --cm-t: #F8F8F8; background: var(--color-paper) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; color: var(--cm-i); }
 html body #pg-community.pg .pg-in { width: min(1160px, calc(100% - 40px)); gap: clamp(72px, 11vh, 128px); }
 html body #pg-community.pg .pg-back { color: var(--cm-i) !important; }
 html body #pg-community.pg :is(h1, h2, h3) { color: var(--cm-i); }
@@ -1675,7 +1675,7 @@ html body #pg-community.pg .pg-foot .foot-bar { border-top-color: var(--lc-rgba-
 /* community: link to the task board */
 #pg-community .cm-more { display: flex; margin-top: -8px; }
 /* task board (#pg-community-tasks) */
-html body #pg-community-tasks.pg { --cm-i: #39393B; --cm-b: #4B4B4D; --cm-m: #6A6A6C; --cm-s: #6A6A6C; --cm-l: #E3EAF2; --cm-a: #4774AE; --cm-t: #F8F8F8; background: var(--color-paper) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; color: var(--cm-i); }
+html body #pg-community-tasks.pg { --cm-i: #1F273F; --cm-b: #3D4559; --cm-m: #6A6A6C; --cm-s: #6A6A6C; --cm-l: #E3EAF2; --cm-a: #4774AE; --cm-t: #F8F8F8; background: var(--color-paper) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; color: var(--cm-i); }
 html body #pg-community-tasks.pg .pg-in { width: min(1160px, calc(100% - 40px)); gap: clamp(56px, 9vh, 96px); }
 html body #pg-community-tasks.pg .pg-back { color: var(--cm-i) !important; }
 html body #pg-community-tasks.pg p { color: var(--cm-m); }
@@ -1698,7 +1698,7 @@ html body #pg-community-tasks.pg .cmt-gate p { max-width: 40ch; }
 #pg-community-tasks .cm-filter { display: flex; flex-wrap: wrap; gap: 8px; }
 #pg-community-tasks .cm-filter button { min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--lc-dce4f0); background: var(--color-paper); color: var(--cm-i); font: 500 .9rem/1 var(--sans); cursor: pointer; }
 #pg-community-tasks .cm-filter button[aria-pressed="true"] { background: var(--cm-i); border-color: var(--cm-i); color: var(--color-paper); }
-#pg-community-tasks .cmt-city select { min-height: 40px; padding: 0 36px 0 14px; border-radius: 10px; border: 1px solid var(--lc-dce4f0); background: var(--color-paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%2339393B' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center; -webkit-appearance: none; appearance: none; font: 500 .9rem/1 var(--sans); color: var(--cm-i); }
+#pg-community-tasks .cmt-city select { min-height: 40px; padding: 0 36px 0 14px; border-radius: 10px; border: 1px solid var(--lc-dce4f0); background: var(--color-paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%231F273F' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center; -webkit-appearance: none; appearance: none; font: 500 .9rem/1 var(--sans); color: var(--cm-i); }
 html body #pg-community-tasks.pg .cmt-count { font-size: .9rem; color: var(--cm-s); }
 #pg-community-tasks .cmt-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--cm-l); }
 #pg-community-tasks .cmt-list li[hidden] { display: none; }

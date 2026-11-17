@@ -23,7 +23,7 @@ export default function AboutUsPage() {
               {" "}
               <div className="rs-art hl-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <rect width="300" height="200" fill="#39393B"></rect>
+                  <rect width="300" height="200" fill="#1F273F"></rect>
                   <path pathLength="1" d="M80 50 L220 50 L220 140 L80 140 Z" stroke="#FFFFFF" strokeWidth="1.4" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M130 160 L170 160 M150 140 L150 160" stroke="#FFFFFF" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M140 78 L168 95 L140 112 Z" stroke="#FFFFFF" strokeWidth="1.4" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -59,8 +59,8 @@ export default function AboutUsPage() {
               <div className="rs-art hl-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                   <rect width="300" height="200" fill="#FFFFFF"></rect>
-                  <path pathLength="1" d="M138 52 a12 12 0 0 1 24 0 L162 98 a12 12 0 0 1 -24 0 Z" stroke="#39393B" strokeWidth="1.4" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M128 92 a22 22 0 0 0 44 0 M150 114 L150 132 M136 132 L164 132" stroke="#39393B" strokeWidth="1.3" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M138 52 a12 12 0 0 1 24 0 L162 98 a12 12 0 0 1 -24 0 Z" stroke="#1F273F" strokeWidth="1.4" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M128 92 a22 22 0 0 0 44 0 M150 114 L150 132 M136 132 L164 132" stroke="#1F273F" strokeWidth="1.3" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M144 62 h12 M144 70 h12 M144 78 h12" stroke="#5681BA" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M30.0 90.6 L30.0 93.4" stroke="#3B6091" strokeWidth="2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M270.0 90.6 L270.0 93.4" stroke="#3B6091" strokeWidth="2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -172,20 +172,20 @@ export default function AboutUsPage() {
                   <rect width="300" height="200" fill="#FFFFFF"></rect>
                   <path pathLength="1" d="M30 120 L30 92 L50 76 L70 92 L70 120 Z" stroke="#3B6091" strokeWidth="1.1" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M44 120 L44 104 L56 104 L56 120" stroke="#5681BA" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M50 76 L50 62 l8 3 l-8 3" stroke="#39393B" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M50 76 L50 62 l8 3 l-8 3" stroke="#1F273F" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M82 120 L82 92 L102 76 L122 92 L122 120 Z" stroke="#3B6091" strokeWidth="1.1" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M96 120 L96 104 L108 104 L108 120" stroke="#5681BA" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M102 76 L102 62 l8 3 l-8 3" stroke="#39393B" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M102 76 L102 62 l8 3 l-8 3" stroke="#1F273F" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M134 120 L134 92 L154 76 L174 92 L174 120 Z" stroke="#3B6091" strokeWidth="1.1" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M148 120 L148 104 L160 104 L160 120" stroke="#5681BA" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M154 76 L154 62 l8 3 l-8 3" stroke="#39393B" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M154 76 L154 62 l8 3 l-8 3" stroke="#1F273F" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M186 120 L186 92 L206 76 L226 92 L226 120 Z" stroke="#3B6091" strokeWidth="1.1" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M200 120 L200 104 L212 104 L212 120" stroke="#5681BA" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M206 76 L206 62 l8 3 l-8 3" stroke="#39393B" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M206 76 L206 62 l8 3 l-8 3" stroke="#1F273F" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M238 120 L238 92 L258 76 L278 92 L278 120 Z" stroke="#3B6091" strokeWidth="1.1" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M252 120 L252 104 L264 104 L264 120" stroke="#5681BA" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M258 76 L258 62 l8 3 l-8 3" stroke="#39393B" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="22.0" cy="140.0" r="1.8" fill="#39393B"></circle>
+                  <path pathLength="1" d="M258 76 L258 62 l8 3 l-8 3" stroke="#1F273F" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <circle cx="22.0" cy="140.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="32.6" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="43.2" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="53.8" cy="140.0" r="1.8" fill="#3B6091"></circle>
@@ -194,7 +194,7 @@ export default function AboutUsPage() {
                   <circle cx="85.6" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="96.2" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="106.8" cy="140.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="117.4" cy="140.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="117.4" cy="140.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="128.0" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="138.6" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="149.2" cy="140.0" r="1.8" fill="#3B6091"></circle>
@@ -203,7 +203,7 @@ export default function AboutUsPage() {
                   <circle cx="181.0" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="191.6" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="202.2" cy="140.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="212.8" cy="140.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="212.8" cy="140.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="223.4" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="234.0" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="244.6" cy="140.0" r="1.8" fill="#3B6091"></circle>
@@ -212,7 +212,7 @@ export default function AboutUsPage() {
                   <circle cx="276.4" cy="140.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="22.0" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="32.6" cy="152.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="43.2" cy="152.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="43.2" cy="152.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="53.8" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="64.4" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="75.0" cy="152.0" r="1.8" fill="#3B6091"></circle>
@@ -221,7 +221,7 @@ export default function AboutUsPage() {
                   <circle cx="106.8" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="117.4" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="128.0" cy="152.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="138.6" cy="152.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="138.6" cy="152.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="149.2" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="159.8" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="170.4" cy="152.0" r="1.8" fill="#3B6091"></circle>
@@ -230,7 +230,7 @@ export default function AboutUsPage() {
                   <circle cx="202.2" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="212.8" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="223.4" cy="152.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="234.0" cy="152.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="234.0" cy="152.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="244.6" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="255.2" cy="152.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="265.8" cy="152.0" r="1.8" fill="#3B6091"></circle>
@@ -239,7 +239,7 @@ export default function AboutUsPage() {
                   <circle cx="32.6" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="43.2" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="53.8" cy="164.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="64.4" cy="164.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="64.4" cy="164.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="75.0" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="85.6" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="96.2" cy="164.0" r="1.8" fill="#3B6091"></circle>
@@ -248,7 +248,7 @@ export default function AboutUsPage() {
                   <circle cx="128.0" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="138.6" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="149.2" cy="164.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="159.8" cy="164.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="159.8" cy="164.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="170.4" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="181.0" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="191.6" cy="164.0" r="1.8" fill="#3B6091"></circle>
@@ -257,7 +257,7 @@ export default function AboutUsPage() {
                   <circle cx="223.4" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="234.0" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="244.6" cy="164.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="255.2" cy="164.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="255.2" cy="164.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="265.8" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="276.4" cy="164.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="22.0" cy="176.0" r="1.8" fill="#3B6091"></circle>
@@ -266,7 +266,7 @@ export default function AboutUsPage() {
                   <circle cx="53.8" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="64.4" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="75.0" cy="176.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="85.6" cy="176.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="85.6" cy="176.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="96.2" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="106.8" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="117.4" cy="176.0" r="1.8" fill="#3B6091"></circle>
@@ -275,7 +275,7 @@ export default function AboutUsPage() {
                   <circle cx="149.2" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="159.8" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="170.4" cy="176.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="181.0" cy="176.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="181.0" cy="176.0" r="1.8" fill="#1F273F"></circle>
                   <circle cx="191.6" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="202.2" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="212.8" cy="176.0" r="1.8" fill="#3B6091"></circle>
@@ -284,7 +284,7 @@ export default function AboutUsPage() {
                   <circle cx="244.6" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="255.2" cy="176.0" r="1.8" fill="#3B6091"></circle>
                   <circle cx="265.8" cy="176.0" r="1.8" fill="#3B6091"></circle>
-                  <circle cx="276.4" cy="176.0" r="1.8" fill="#39393B"></circle>
+                  <circle cx="276.4" cy="176.0" r="1.8" fill="#1F273F"></circle>
                 </svg>
               </div>
               {" "}
@@ -308,7 +308,7 @@ export default function AboutUsPage() {
               {" "}
               <div className="rs-art hl-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <rect width="300" height="200" fill="#39393B"></rect>
+                  <rect width="300" height="200" fill="#1F273F"></rect>
                   <path pathLength="1" d="M150.0 100.0 m-44.0 0 a44.0 44.0 0 1 0 88.0 0 a44.0 44.0 0 1 0 -88.0 0" stroke="#FFFFFF" strokeWidth="1.4" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M150.0 100.0 m-38.0 0 a38.0 38.0 0 1 0 76.0 0 a38.0 38.0 0 1 0 -76.0 0" stroke="#8CA9D0" strokeWidth="0.6" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M150.1 42.0 m-10.0 0 a10.0 10.0 0 1 0 20.0 0 a10.0 10.0 0 1 0 -20.0 0" stroke="#FFFFFF" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>

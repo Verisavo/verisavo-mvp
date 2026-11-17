@@ -8,7 +8,7 @@ export default function EarlyAccessDialog() {
         <div className="dlg-top">
           {" "}
           <button type="button" className="x" id="x" aria-label="Close">
-            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="#39393B" strokeWidth="1.6" strokeLinecap="round"></path></svg>
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="#1F273F" strokeWidth="1.6" strokeLinecap="round"></path></svg>
           </button>
           {" "}
         </div>
@@ -80,7 +80,7 @@ export default function EarlyAccessDialog() {
           {" "}
           <div className="ok" aria-hidden="true">
             <svg width="26" height="26" viewBox="0 0 30 30">
-              <path d="M8 15.5l4.5 4.5L22 10.5" fill="none" stroke="#39393B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"></path>
+              <path d="M8 15.5l4.5 4.5L22 10.5" fill="none" stroke="#1F273F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"></path>
             </svg>
           </div>
           {" "}

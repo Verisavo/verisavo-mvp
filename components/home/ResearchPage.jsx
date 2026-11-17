@@ -50,12 +50,12 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M102.6 140 L197.4 140" stroke="#5681BA" strokeWidth="0.7" opacity="0.7" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M40 140 C90 60 210 40 270 70" stroke="#3B6091" strokeWidth="1.1" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M30 60 C120 150 220 150 280 120" stroke="#5681BA" strokeWidth="0.8" opacity="0.8" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="88.0" cy="108.0" r="3.2" fill="#39393B"></circle>
-                  <circle cx="150.0" cy="62.0" r="3.2" fill="#39393B"></circle>
-                  <circle cx="205.0" cy="118.0" r="3.2" fill="#39393B"></circle>
-                  <circle cx="118.0" cy="140.0" r="3.2" fill="#39393B"></circle>
-                  <circle cx="232.0" cy="72.0" r="3.2" fill="#39393B"></circle>
-                  <path pathLength="1" d="M88 108 L150 62 L205 118 L118 140 Z" stroke="#39393B" strokeWidth="0.6" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <circle cx="88.0" cy="108.0" r="3.2" fill="#1F273F"></circle>
+                  <circle cx="150.0" cy="62.0" r="3.2" fill="#1F273F"></circle>
+                  <circle cx="205.0" cy="118.0" r="3.2" fill="#1F273F"></circle>
+                  <circle cx="118.0" cy="140.0" r="3.2" fill="#1F273F"></circle>
+                  <circle cx="232.0" cy="72.0" r="3.2" fill="#1F273F"></circle>
+                  <path pathLength="1" d="M88 108 L150 62 L205 118 L118 140 Z" stroke="#1F273F" strokeWidth="0.6" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                 </svg>
               </div>
               {" "}
@@ -73,7 +73,7 @@ export default function ResearchPage() {
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <rect width="300" height="200" fill="#39393B"></rect>
+                  <rect width="300" height="200" fill="#1F273F"></rect>
                   <path pathLength="1" d="M20 0 L20 200" stroke="#8CA9D0" strokeWidth="0.5" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M46 0 L46 200" stroke="#8CA9D0" strokeWidth="0.5" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M72 0 L72 200" stroke="#8CA9D0" strokeWidth="0.5" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -177,8 +177,8 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M189.5 51.2 L241.7 155.0" stroke="#5681BA" strokeWidth="0.5" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M243.7 43.8 L199.3 160.9" stroke="#5681BA" strokeWidth="0.5" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M264.2 70.3 L167.4 170.7" stroke="#5681BA" strokeWidth="0.5" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M150 100 m-16 0 a16 16 0 1 0 32 0 a16 16 0 1 0 -32 0" stroke="#39393B" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="150.0" cy="100.0" r="6" fill="#39393B"></circle>
+                  <path pathLength="1" d="M150 100 m-16 0 a16 16 0 1 0 32 0 a16 16 0 1 0 -32 0" stroke="#1F273F" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <circle cx="150.0" cy="100.0" r="6" fill="#1F273F"></circle>
                 </svg>
               </div>
               {" "}
@@ -237,10 +237,10 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M150 116 L150 98" stroke="#3B6091" strokeWidth="3" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M158 116 L158 86" stroke="#3B6091" strokeWidth="3" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M166 116 L166 80" stroke="#3B6091" strokeWidth="3" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="95.0" cy="45.0" r="4" fill="#39393B"></circle>
-                  <circle cx="205.0" cy="45.0" r="4" fill="#39393B"></circle>
-                  <circle cx="95.0" cy="155.0" r="4" fill="#39393B"></circle>
-                  <circle cx="205.0" cy="155.0" r="4" fill="#39393B"></circle>
+                  <circle cx="95.0" cy="45.0" r="4" fill="#1F273F"></circle>
+                  <circle cx="205.0" cy="45.0" r="4" fill="#1F273F"></circle>
+                  <circle cx="95.0" cy="155.0" r="4" fill="#1F273F"></circle>
+                  <circle cx="205.0" cy="155.0" r="4" fill="#1F273F"></circle>
                 </svg>
               </div>
               {" "}
@@ -258,7 +258,7 @@ export default function ResearchPage() {
               {" "}
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <rect width="300" height="200" fill="#39393B"></rect>
+                  <rect width="300" height="200" fill="#1F273F"></rect>
                   <path pathLength="1" d="M30 170 l26 7 l26 -7 l0 -60 l-26 -7 l-26 -7 Z" stroke="#FFFFFF" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M56 177 l0 -60 M56 117 l26 -7" stroke="#FFFFFF" strokeWidth="0.9" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M34 160 l18 2" stroke="#8CA9D0" strokeWidth="0.6" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -395,9 +395,9 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M77.9 73.0 L62.3 82.0 L46.7 73.0 L46.7 55.0 L62.3 46.0 L77.9 55.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M109.0 73.0 L93.4 82.0 L77.8 73.0 L77.8 55.0 L93.4 46.0 L109.0 55.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M140.1 73.0 L124.6 82.0 L109.0 73.0 L109.0 55.0 L124.6 46.0 L140.1 55.0 Z" stroke="#3B6091" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="124.6" cy="64.0" r="3" fill="#39393B"></circle>
+                  <circle cx="124.6" cy="64.0" r="3" fill="#1F273F"></circle>
                   <path pathLength="1" d="M171.3 73.0 L155.7 82.0 L140.1 73.0 L140.1 55.0 L155.7 46.0 L171.3 55.0 Z" stroke="#3B6091" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="155.7" cy="64.0" r="3" fill="#39393B"></circle>
+                  <circle cx="155.7" cy="64.0" r="3" fill="#1F273F"></circle>
                   <path pathLength="1" d="M202.4 73.0 L186.8 82.0 L171.3 73.0 L171.3 55.0 L186.8 46.0 L202.4 55.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M233.6 73.0 L218.0 82.0 L202.4 73.0 L202.4 55.0 L218.0 46.0 L233.6 55.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M264.7 73.0 L249.1 82.0 L233.5 73.0 L233.5 55.0 L249.1 46.0 L264.7 55.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -409,9 +409,9 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M93.5 100.0 L77.9 109.0 L62.4 100.0 L62.4 82.0 L77.9 73.0 L93.5 82.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M124.7 100.0 L109.1 109.0 L93.5 100.0 L93.5 82.0 L109.1 73.0 L124.7 82.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M155.8 100.0 L140.2 109.0 L124.6 100.0 L124.6 82.0 L140.2 73.0 L155.8 82.0 Z" stroke="#3B6091" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="140.2" cy="91.0" r="3" fill="#39393B"></circle>
+                  <circle cx="140.2" cy="91.0" r="3" fill="#1F273F"></circle>
                   <path pathLength="1" d="M186.9 100.0 L171.4 109.0 L155.8 100.0 L155.8 82.0 L171.4 73.0 L186.9 82.0 Z" stroke="#3B6091" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="171.4" cy="91.0" r="3" fill="#39393B"></circle>
+                  <circle cx="171.4" cy="91.0" r="3" fill="#1F273F"></circle>
                   <path pathLength="1" d="M218.1 100.0 L202.5 109.0 L186.9 100.0 L186.9 82.0 L202.5 73.0 L218.1 82.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M249.2 100.0 L233.6 109.0 L218.1 100.0 L218.1 82.0 L233.6 73.0 L249.2 82.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M280.4 100.0 L264.8 109.0 L249.2 100.0 L249.2 82.0 L264.8 73.0 L280.4 82.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -423,7 +423,7 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M77.9 127.0 L62.3 136.0 L46.7 127.0 L46.7 109.0 L62.3 100.0 L77.9 109.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M109.0 127.0 L93.4 136.0 L77.8 127.0 L77.8 109.0 L93.4 100.0 L109.0 109.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M140.1 127.0 L124.6 136.0 L109.0 127.0 L109.0 109.0 L124.6 100.0 L140.1 109.0 Z" stroke="#3B6091" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="124.6" cy="118.0" r="3" fill="#39393B"></circle>
+                  <circle cx="124.6" cy="118.0" r="3" fill="#1F273F"></circle>
                   <path pathLength="1" d="M171.3 127.0 L155.7 136.0 L140.1 127.0 L140.1 109.0 L155.7 100.0 L171.3 109.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M202.4 127.0 L186.8 136.0 L171.3 127.0 L171.3 109.0 L186.8 100.0 L202.4 109.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M233.6 127.0 L218.0 136.0 L202.4 127.0 L202.4 109.0 L218.0 100.0 L233.6 109.0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -472,245 +472,245 @@ export default function ResearchPage() {
               <div className="rs-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                   <rect width="300" height="200" fill="#E6EDF5"></rect>
-                  <circle cx="150.0" cy="104.0" r="2.6" fill="#39393B"></circle>
+                  <circle cx="150.0" cy="104.0" r="2.6" fill="#1F273F"></circle>
                   <circle cx="145.6" cy="107.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="150.7" cy="97.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="156.3" cy="110.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="138.3" cy="102.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="161.2" cy="98.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="146.2" cy="114.4" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="142.8" cy="93.7" r="2.6" fill="#39393B"></circle>
+                  <circle cx="142.8" cy="93.7" r="2.6" fill="#1F273F"></circle>
                   <circle cx="165.8" cy="108.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="133.5" cy="109.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="158.0" cy="91.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="155.9" cy="117.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="132.2" cy="96.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="170.9" cy="100.6" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="137.2" cy="117.5" r="2.6" fill="#39393B"></circle>
+                  <circle cx="137.2" cy="117.5" r="2.6" fill="#1F273F"></circle>
                   <circle cx="147.0" cy="87.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="168.2" cy="115.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="125.5" cy="104.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="167.9" cy="90.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="148.8" cy="123.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="133.0" cy="88.9" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="177.0" cy="106.7" r="2.6" fill="#39393B"></circle>
+                  <circle cx="177.0" cy="106.7" r="2.6" fill="#1F273F"></circle>
                   <circle cx="127.1" cy="115.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="156.3" cy="83.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="164.5" cy="122.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="121.7" cy="97.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="177.5" cy="94.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="138.1" cy="125.1" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="139.4" cy="82.1" r="2.6" fill="#39393B"></circle>
+                  <circle cx="139.4" cy="82.1" r="2.6" fill="#1F273F"></circle>
                   <circle cx="178.3" cy="115.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="118.5" cy="110.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="167.9" cy="83.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="155.7" cy="128.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="123.0" cy="88.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="184.5" cy="101.9" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="126.1" cy="123.1" r="2.6" fill="#39393B"></circle>
+                  <circle cx="126.1" cy="123.1" r="2.6" fill="#1F273F"></circle>
                   <circle cx="150.2" cy="77.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="174.3" cy="123.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="113.5" cy="101.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="179.5" cy="87.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="143.3" cy="131.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="129.7" cy="80.2" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="187.1" cy="111.5" r="2.6" fill="#39393B"></circle>
+                  <circle cx="187.1" cy="111.5" r="2.6" fill="#1F273F"></circle>
                   <circle cx="115.3" cy="117.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="163.7" cy="76.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="165.0" cy="131.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="113.6" cy="91.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="188.9" cy="95.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="129.2" cy="130.3" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="141.3" cy="73.9" r="2.6" fill="#39393B"></circle>
+                  <circle cx="141.3" cy="73.9" r="2.6" fill="#1F273F"></circle>
                   <circle cx="184.2" cy="122.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="107.9" cy="107.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="177.8" cy="79.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="151.6" cy="136.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="119.4" cy="81.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="194.0" cy="105.7" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="115.7" cy="125.0" r="2.6" fill="#39393B"></circle>
+                  <circle cx="115.7" cy="125.0" r="2.6" fill="#1F273F"></circle>
                   <circle cx="156.2" cy="71.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="175.7" cy="131.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="105.5" cy="96.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="190.0" cy="87.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="135.7" cy="136.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="130.6" cy="72.5" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="193.4" cy="117.6" r="2.6" fill="#39393B"></circle>
+                  <circle cx="193.4" cy="117.6" r="2.6" fill="#1F273F"></circle>
                   <circle cx="105.2" cy="115.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="172.5" cy="72.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="162.1" cy="138.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="109.2" cy="84.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="198.3" cy="98.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="119.6" cy="132.8" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="146.1" cy="67.3" r="2.6" fill="#39393B"></circle>
+                  <circle cx="146.1" cy="67.3" r="2.6" fill="#1F273F"></circle>
                   <circle cx="186.6" cy="129.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="99.6" cy="103.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="187.7" cy="78.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="145.0" cy="141.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="119.1" cy="73.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="200.9" cy="111.0" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="105.8" cy="124.4" r="2.6" fill="#39393B"></circle>
+                  <circle cx="105.8" cy="124.4" r="2.6" fill="#1F273F"></circle>
                   <circle cx="164.1" cy="66.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="173.9" cy="138.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="100.3" cy="90.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="199.6" cy="89.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="126.7" cy="139.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="134.3" cy="65.6" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="196.8" cy="124.6" r="2.6" fill="#39393B"></circle>
+                  <circle cx="196.8" cy="124.6" r="2.6" fill="#1F273F"></circle>
                   <circle cx="96.4" cy="112.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="182.1" cy="70.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="156.6" cy="144.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="107.7" cy="77.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="206.0" cy="102.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="109.7" cy="133.2" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="153.2" cy="62.1" r="2.6" fill="#39393B"></circle>
+                  <circle cx="153.2" cy="62.1" r="2.6" fill="#1F273F"></circle>
                   <circle cx="186.1" cy="136.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="93.3" cy="97.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="197.6" cy="80.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="136.8" cy="145.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="121.5" cy="66.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="205.6" cy="117.6" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="96.4" cy="121.9" r="2.6" fill="#39393B"></circle>
+                  <circle cx="96.4" cy="121.9" r="2.6" fill="#1F273F"></circle>
                   <circle cx="173.3" cy="63.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="169.6" cy="145.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="97.4" cy="83.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="208.2" cy="93.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="116.9" cy="141.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="140.3" cy="59.7" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="197.8" cy="131.9" r="2.6" fill="#39393B"></circle>
+                  <circle cx="197.8" cy="131.9" r="2.6" fill="#1F273F"></circle>
                   <circle cx="89.0" cy="107.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="192.1" cy="70.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="149.1" cy="149.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="108.8" cy="69.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="212.0" cy="108.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="99.8" cy="131.7" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="161.8" cy="58.3" r="2.6" fill="#39393B"></circle>
+                  <circle cx="161.8" cy="58.3" r="2.6" fill="#1F273F"></circle>
                   <circle cx="183.1" cy="143.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="89.0" cy="91.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="206.9" cy="82.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="127.2" cy="148.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="126.3" cy="59.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="208.0" cy="124.9" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="87.9" cy="117.7" r="2.6" fill="#39393B"></circle>
+                  <circle cx="87.9" cy="117.7" r="2.6" fill="#1F273F"></circle>
                   <circle cx="183.4" cy="62.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="163.1" cy="151.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="96.9" cy="75.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="215.4" cy="98.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="106.7" cy="141.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="148.2" cy="54.8" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="196.4" cy="139.5" r="2.6" fill="#39393B"></circle>
+                  <circle cx="196.4" cy="139.5" r="2.6" fill="#1F273F"></circle>
                   <circle cx="83.2" cy="101.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="202.2" cy="72.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="140.1" cy="153.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="112.1" cy="62.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="216.1" cy="115.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="90.3" cy="128.5" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="171.7" cy="55.9" r="2.6" fill="#39393B"></circle>
+                  <circle cx="171.7" cy="55.9" r="2.6" fill="#1F273F"></circle>
                   <circle cx="178.0" cy="150.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="86.7" cy="83.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="215.5" cy="87.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="116.8" cy="149.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="133.2" cy="53.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="208.4" cy="132.7" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="80.6" cy="112.1" r="2.6" fill="#39393B"></circle>
+                  <circle cx="80.6" cy="112.1" r="2.6" fill="#1F273F"></circle>
                   <circle cx="194.0" cy="63.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="154.8" cy="156.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="98.5" cy="67.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="221.3" cy="105.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="96.3" cy="139.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="157.6" cy="51.1" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="192.7" cy="146.9" r="2.6" fill="#39393B"></circle>
+                  <circle cx="192.7" cy="146.9" r="2.6" fill="#1F273F"></circle>
                   <circle cx="79.1" cy="93.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="211.9" cy="76.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="129.8" cy="155.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="117.6" cy="55.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="218.3" cy="123.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="81.6" cy="123.8" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="182.5" cy="55.0" r="2.6" fill="#39393B"></circle>
+                  <circle cx="182.5" cy="55.0" r="2.6" fill="#1F273F"></circle>
                   <circle cx="170.8" cy="156.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="86.5" cy="75.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="223.0" cy="93.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="105.9" cy="148.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="141.8" cy="48.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="206.5" cy="140.7" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="74.6" cy="105.2" r="2.6" fill="#39393B"></circle>
+                  <circle cx="74.6" cy="105.2" r="2.6" fill="#1F273F"></circle>
                   <circle cx="204.6" cy="65.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="145.1" cy="160.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="102.4" cy="60.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="225.4" cy="112.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="86.4" cy="135.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="168.3" cy="48.8" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="187.0" cy="154.0" r="2.6" fill="#39393B"></circle>
+                  <circle cx="187.0" cy="154.0" r="2.6" fill="#1F273F"></circle>
                   <circle cx="76.9" cy="85.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="220.9" cy="80.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="118.7" cy="156.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="125.0" cy="49.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="218.5" cy="131.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="73.9" cy="117.7" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="193.7" cy="55.6" r="2.6" fill="#39393B"></circle>
+                  <circle cx="193.7" cy="55.6" r="2.6" fill="#1F273F"></circle>
                   <circle cx="161.9" cy="161.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="88.4" cy="67.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="229.1" cy="100.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="94.9" cy="146.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="151.9" cy="45.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="202.6" cy="148.6" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="70.4" cy="97.4" r="2.6" fill="#39393B"></circle>
+                  <circle cx="70.4" cy="97.4" r="2.6" fill="#1F273F"></circle>
                   <circle cx="214.9" cy="68.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="134.1" cy="162.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="108.3" cy="52.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="227.7" cy="121.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="77.0" cy="130.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="179.8" cy="47.8" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="179.4" cy="160.4" r="2.6" fill="#39393B"></circle>
+                  <circle cx="179.4" cy="160.4" r="2.6" fill="#1F273F"></circle>
                   <circle cx="76.7" cy="77.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="228.9" cy="87.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="107.0" cy="156.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="134.2" cy="44.0" r="1.5" fill="#3B6091"></circle>
                   <circle cx="216.5" cy="140.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="67.5" cy="110.4" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="205.1" cy="57.9" r="2.6" fill="#39393B"></circle>
+                  <circle cx="205.1" cy="57.9" r="2.6" fill="#1F273F"></circle>
                   <circle cx="151.5" cy="165.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="92.5" cy="59.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="233.6" cy="108.3" r="1.5" fill="#3B6091"></circle>
                   <circle cx="84.2" cy="142.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="163.2" cy="42.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="196.6" cy="156.2" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="67.9" cy="88.8" r="2.6" fill="#39393B"></circle>
+                  <circle cx="67.9" cy="88.8" r="2.6" fill="#1F273F"></circle>
                   <circle cx="224.6" cy="74.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="122.2" cy="163.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="116.1" cy="46.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="228.0" cy="129.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="68.7" cy="124.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="191.7" cy="48.4" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="170.0" cy="166.0" r="2.6" fill="#39393B"></circle>
+                  <circle cx="170.0" cy="166.0" r="2.6" fill="#1F273F"></circle>
                   <circle cx="78.6" cy="68.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="235.6" cy="94.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="95.3" cy="153.8" r="1.5" fill="#3B6091"></circle>
                   <circle cx="144.9" cy="39.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="212.5" cy="148.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="62.7" cy="102.2" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="216.2" cy="61.6" r="2.6" fill="#39393B"></circle>
+                  <circle cx="216.2" cy="61.6" r="2.6" fill="#1F273F"></circle>
                   <circle cx="139.8" cy="168.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="98.5" cy="51.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="236.3" cy="117.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="74.2" cy="137.5" r="1.5" fill="#3B6091"></circle>
                   <circle cx="175.4" cy="41.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="188.6" cy="163.2" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="67.4" cy="79.7" r="2.6" fill="#39393B"></circle>
+                  <circle cx="67.4" cy="79.7" r="2.6" fill="#1F273F"></circle>
                   <circle cx="233.3" cy="80.6" r="1.5" fill="#3B6091"></circle>
                   <circle cx="109.9" cy="163.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="125.7" cy="40.2" r="1.5" fill="#3B6091"></circle>
                   <circle cx="226.3" cy="138.9" r="1.5" fill="#3B6091"></circle>
                   <circle cx="61.7" cy="116.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="203.9" cy="50.5" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="159.0" cy="170.5" r="2.6" fill="#39393B"></circle>
+                  <circle cx="159.0" cy="170.5" r="2.6" fill="#1F273F"></circle>
                   <circle cx="82.5" cy="59.4" r="1.5" fill="#3B6091"></circle>
                   <circle cx="240.7" cy="103.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="83.8" cy="150.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="156.8" cy="36.7" r="1.5" fill="#3B6091"></circle>
                   <circle cx="206.4" cy="157.1" r="1.5" fill="#3B6091"></circle>
                   <circle cx="59.8" cy="93.1" r="1.5" fill="#3B6091"></circle>
-                  <circle cx="226.7" cy="66.8" r="2.6" fill="#39393B"></circle>
+                  <circle cx="226.7" cy="66.8" r="2.6" fill="#1F273F"></circle>
                   <circle cx="127.3" cy="169.9" r="1.5" fill="#3B6091"></circle>
                   <path pathLength="1" d="M150 104 m-40 0 a40 30 0 1 0 81 0 a40 30 0 1 0 -81 0" stroke="#5681BA" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M150 104 m-78 0 a78 58 0 1 0 157 0 a78 58 0 1 0 -157 0" stroke="#5681BA" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -765,14 +765,14 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M70.0 150.0 m-132.0 0 a132.0 132.0 0 1 0 264.0 0 a132.0 132.0 0 1 0 -264.0 0" stroke="#5681BA" strokeWidth="1" opacity="0.52" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M70.0 150.0 m-154.0 0 a154.0 154.0 0 1 0 308.0 0 a154.0 154.0 0 1 0 -308.0 0" stroke="#3B6091" strokeWidth="1" opacity="0.43999999999999995" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M70.0 150.0 m-176.0 0 a176.0 176.0 0 1 0 352.0 0 a176.0 176.0 0 1 0 -352.0 0" stroke="#5681BA" strokeWidth="1" opacity="0.36" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="150.0" cy="90.0" r="3.5" fill="#39393B"></circle>
-                  <path pathLength="1" d="M70 150 L150 90" stroke="#39393B" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="210.0" cy="60.0" r="3.5" fill="#39393B"></circle>
-                  <path pathLength="1" d="M70 150 L210 60" stroke="#39393B" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="190.0" cy="140.0" r="3.5" fill="#39393B"></circle>
-                  <path pathLength="1" d="M70 150 L190 140" stroke="#39393B" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="250.0" cy="110.0" r="3.5" fill="#39393B"></circle>
-                  <path pathLength="1" d="M70 150 L250 110" stroke="#39393B" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <circle cx="150.0" cy="90.0" r="3.5" fill="#1F273F"></circle>
+                  <path pathLength="1" d="M70 150 L150 90" stroke="#1F273F" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <circle cx="210.0" cy="60.0" r="3.5" fill="#1F273F"></circle>
+                  <path pathLength="1" d="M70 150 L210 60" stroke="#1F273F" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <circle cx="190.0" cy="140.0" r="3.5" fill="#1F273F"></circle>
+                  <path pathLength="1" d="M70 150 L190 140" stroke="#1F273F" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <circle cx="250.0" cy="110.0" r="3.5" fill="#1F273F"></circle>
+                  <path pathLength="1" d="M70 150 L250 110" stroke="#1F273F" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                 </svg>
               </div>
               {" "}
@@ -796,7 +796,7 @@ export default function ResearchPage() {
               {" "}
               <div className="rs-art ar-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <rect width="300" height="200" fill="#39393B"></rect>
+                  <rect width="300" height="200" fill="#1F273F"></rect>
                   <path pathLength="1" d="M40 40 L230 40" stroke="#FFFFFF" strokeWidth="6" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M28.0 40.0 m-5.0 0 a5.0 5.0 0 1 0 10.0 0 a5.0 5.0 0 1 0 -10.0 0" stroke="#FFFFFF" strokeWidth="1" opacity="0.9" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M40 68 L190 68" stroke="#8CA9D0" strokeWidth="4" opacity="0.7" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -849,8 +849,8 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M150.0 110.0 m-60.0 0 a60.0 60.0 0 1 0 120.0 0 a60.0 60.0 0 1 0 -120.0 0" stroke="#5681BA" strokeWidth="0.8" opacity="0.4545454545454546" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M150.0 110.0 m-80.0 0 a80.0 80.0 0 1 0 160.0 0 a80.0 80.0 0 1 0 -160.0 0" stroke="#5681BA" strokeWidth="0.8" opacity="0.2727272727272727" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M150 110 L211.2 58.5" stroke="#3B6091" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M150 98 C150 98 136 84 136 74 a14 14 0 1 1 28 0 C164 84 150 98 150 98 Z" stroke="#39393B" strokeWidth="1.4" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <path pathLength="1" d="M150.0 74.0 m-5.0 0 a5.0 5.0 0 1 0 10.0 0 a5.0 5.0 0 1 0 -10.0 0" stroke="#39393B" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M150 98 C150 98 136 84 136 74 a14 14 0 1 1 28 0 C164 84 150 98 150 98 Z" stroke="#1F273F" strokeWidth="1.4" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path pathLength="1" d="M150.0 74.0 m-5.0 0 a5.0 5.0 0 1 0 10.0 0 a5.0 5.0 0 1 0 -10.0 0" stroke="#1F273F" strokeWidth="1.2" opacity="1" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <circle cx="98.0" cy="140.0" r="2.8" fill="#3B6091"></circle>
                   <circle cx="205.0" cy="150.0" r="2.8" fill="#3B6091"></circle>
                   <circle cx="212.0" cy="88.0" r="2.8" fill="#3B6091"></circle>
@@ -957,32 +957,32 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M104.6 65.8 L111.1 39.9" stroke="#3B6091" strokeWidth="0.7" opacity="0.7" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M104.6 65.8 L141.3 54.4" stroke="#3B6091" strokeWidth="0.7" opacity="0.7" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M104.6 65.8 L68.6 48.8" stroke="#3B6091" strokeWidth="0.7" opacity="0.7" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="184.4" cy="143.5" r="2.4" fill="#39393B"></circle>
-                  <circle cx="232.7" cy="179.6" r="2.4" fill="#39393B"></circle>
-                  <circle cx="217.2" cy="176.0" r="2.4" fill="#39393B"></circle>
-                  <circle cx="18.1" cy="93.8" r="2.4" fill="#39393B"></circle>
-                  <circle cx="274.1" cy="126.8" r="2.4" fill="#39393B"></circle>
-                  <circle cx="262.3" cy="30.4" r="2.4" fill="#39393B"></circle>
-                  <circle cx="141.3" cy="54.4" r="2.4" fill="#39393B"></circle>
-                  <circle cx="162.3" cy="113.3" r="2.4" fill="#39393B"></circle>
-                  <circle cx="13.7" cy="49.0" r="2.4" fill="#39393B"></circle>
-                  <circle cx="88.3" cy="174.9" r="2.4" fill="#39393B"></circle>
-                  <circle cx="224.4" cy="38.7" r="2.4" fill="#39393B"></circle>
-                  <circle cx="233.2" cy="35.0" r="2.4" fill="#39393B"></circle>
-                  <circle cx="182.9" cy="32.8" r="2.4" fill="#39393B"></circle>
-                  <circle cx="10.5" cy="166.9" r="2.4" fill="#39393B"></circle>
-                  <circle cx="68.6" cy="48.8" r="2.4" fill="#39393B"></circle>
-                  <circle cx="285.1" cy="167.0" r="2.4" fill="#39393B"></circle>
-                  <circle cx="91.0" cy="183.1" r="2.4" fill="#39393B"></circle>
-                  <circle cx="161.0" cy="132.0" r="2.4" fill="#39393B"></circle>
-                  <circle cx="67.3" cy="179.4" r="2.4" fill="#39393B"></circle>
-                  <circle cx="203.4" cy="184.0" r="2.4" fill="#39393B"></circle>
-                  <circle cx="260.2" cy="63.8" r="2.4" fill="#39393B"></circle>
-                  <circle cx="111.1" cy="39.9" r="2.4" fill="#39393B"></circle>
-                  <circle cx="50.8" cy="21.7" r="2.4" fill="#39393B"></circle>
-                  <circle cx="94.4" cy="118.6" r="2.4" fill="#39393B"></circle>
-                  <circle cx="10.9" cy="132.0" r="2.4" fill="#39393B"></circle>
-                  <circle cx="104.6" cy="65.8" r="2.4" fill="#39393B"></circle>
+                  <circle cx="184.4" cy="143.5" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="232.7" cy="179.6" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="217.2" cy="176.0" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="18.1" cy="93.8" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="274.1" cy="126.8" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="262.3" cy="30.4" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="141.3" cy="54.4" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="162.3" cy="113.3" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="13.7" cy="49.0" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="88.3" cy="174.9" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="224.4" cy="38.7" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="233.2" cy="35.0" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="182.9" cy="32.8" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="10.5" cy="166.9" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="68.6" cy="48.8" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="285.1" cy="167.0" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="91.0" cy="183.1" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="161.0" cy="132.0" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="67.3" cy="179.4" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="203.4" cy="184.0" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="260.2" cy="63.8" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="111.1" cy="39.9" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="50.8" cy="21.7" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="94.4" cy="118.6" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="10.9" cy="132.0" r="2.4" fill="#1F273F"></circle>
+                  <circle cx="104.6" cy="65.8" r="2.4" fill="#1F273F"></circle>
                 </svg>
               </div>
               {" "}
@@ -1006,7 +1006,7 @@ export default function ResearchPage() {
               {" "}
               <div className="rs-art ar-art">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <rect width="300" height="200" fill="#39393B"></rect>
+                  <rect width="300" height="200" fill="#1F273F"></rect>
                   <path pathLength="1" d="M30 66 L270 66" stroke="#8CA9D0" strokeWidth="1" opacity="0.8" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M36 43 l16 0 l0 22 l-16 0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M59 43 l16 0 l0 22 l-16 0 Z" stroke="#8CA9D0" strokeWidth="0.7" opacity="0.6" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -1088,7 +1088,7 @@ export default function ResearchPage() {
                   <path pathLength="1" d="M50 20 L50 185" stroke="#8CA9D0" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M150 20 L150 185" stroke="#8CA9D0" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
                   <path pathLength="1" d="M250 20 L250 185" stroke="#8CA9D0" strokeWidth="0.6" opacity="0.5" fill="none" strokeLinecap="round" strokeLinejoin="round"></path>
-                  <circle cx="150.0" cy="104.0" r="4" fill="#39393B"></circle>
+                  <circle cx="150.0" cy="104.0" r="4" fill="#1F273F"></circle>
                 </svg>
               </div>
               {" "}

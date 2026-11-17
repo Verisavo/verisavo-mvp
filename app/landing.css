@@ -1,5 +1,5 @@
 /* ===== Verisavo homepage (landing) ===== */
-.ln, .lf { --i9: #39393B; --i10: #39393B; --pap: #F9F9F9; --serif: "Newsreader", "Iowan Old Style", Georgia, serif; --lnw: 1200px; }
+.ln, .lf { --i9: #1F273F; --i10: #1F273F; --pap: #F9F9F9; --serif: "Newsreader", "Iowan Old Style", Georgia, serif; --lnw: 1200px; }
 body.ln-on { background: var(--color-paper); }
 .ln { display: block; color: var(--indigo); background: var(--color-paper); }
 .ln-wrap { max-width: var(--lnw); margin: 0 auto; padding-inline: clamp(20px, 4vw, 40px); }
@@ -1051,7 +1051,7 @@ html body .ln .v3-hero::after { display: none !important; animation: none !impor
 .ln .v3-n { font: 600 .875rem/1 var(--sans) !important; color: var(--b500); }
 .ln .v3-n::after { content: " ·"; }
 .ln .net-svg text { font-family: var(--sans) !important; letter-spacing: 0 !important; }
-.ln { --body: #4B4B4D; }
+.ln { --body: #3D4559; }
 .ln .ln-sub, .ln .v3-lede, .ln .hm-b p, .ln .v3-net-note, .ln .v3-trust p:not(.ln-eb) { color: var(--body) !important; font-weight: 400 !important; }
 .ln .ln-sub, .ln .v3-lede { font-size: clamp(1.08rem, 1rem + .35vw, 1.25rem) !important; line-height: 1.65 !important; }
 .ln .hm-b p, .ln .v3-trust p:not(.ln-eb) { font-size: 1.0625rem !important; line-height: 1.7 !important; }
@@ -1237,7 +1237,7 @@ html body #pg-pricing .pc-fine { margin: 28px auto 0; max-width: 64ch; text-alig
 @media (max-width: 640px) { html body #pg-pricing .pc { --pcw: calc(100vw - 32px); } }
 html body #pg-pricing .pc-price .pc-soon { align-self: center; margin-left: 4px; padding: 6px 10px; border-radius: 999px; font: 600 .78rem/1 var(--sans); letter-spacing: 0; color: var(--color-b800); background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-b200); white-space: nowrap; }
 /* >>> fx flow: How intelligence moves through Verisavo, Collar-style: a pinned textured card that changes as five statements scroll past */
-html body .ln .fx { --fx-i: #39393B; --fx-l: #E6ECF4; --fx-m: #6A6A6C; --fx-s: #6A6A6C; margin: clamp(40px, 6vw, 96px) auto 0; max-width: 1240px; font-family: "Inter", var(--sans); font-optical-sizing: auto; color: var(--fx-i); }
+html body .ln .fx { --fx-i: #1F273F; --fx-l: #E6ECF4; --fx-m: #6A6A6C; --fx-s: #6A6A6C; margin: clamp(40px, 6vw, 96px) auto 0; max-width: 1240px; font-family: "Inter", var(--sans); font-optical-sizing: auto; color: var(--fx-i); }
 html body .ln .fx-head { text-align: center; }
 html body .ln .fx-head .v3-net-t { margin-inline: auto; }
 html body .ln .fx-head .v3-net-note { margin-inline: auto !important; text-align: center !important; }
@@ -1355,7 +1355,7 @@ html body .ln .fx-loop svg { width: 15px; height: 15px; flex: none; }
 }
 @media (prefers-reduced-motion: reduce) { html body .ln .fx *, html body .ln .fx.js .fx-vis, html body .ln .fx.js .fx-txt { transition: none !important; animation: none !important; } }
 /* >>> homepage refine: Neomatter-style text lists, a "Connects" line under the hero, two-column trust — homepage only (#ln) */
-#ln { --h2-i: #39393B; --h2-l: #E6ECF4; --h2-m: #6A6A6C; --h2-s: #6A6A6C; }
+#ln { --h2-i: #1F273F; --h2-l: #E6ECF4; --h2-m: #6A6A6C; --h2-s: #6A6A6C; }
 /* hero: the sources line */
 #ln .hp2-src { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: clamp(40px, 4.4vw, 64px); padding-top: 22px; border-top: 1px solid var(--h2-l); max-width: 760px; }
 #ln .hp2-src p { margin: 0; font: 500 .74rem/1 "Inter", var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--h2-s); }
@@ -1409,7 +1409,7 @@ html body .ln .fx-loop svg { width: 15px; height: 15px; flex: none; }
 #ln .ln-close .hp2-cta2:hover { background: var(--lc-rgba-255-255-255-08); box-shadow: inset 0 0 0 1px var(--lc-rgba-255-255-255-7); }
 @media (max-width: 640px) { #ln .ln-close .hp2-ctas { display: grid; width: 100%; max-width: 360px; } }
 /* >>> homepage sim: a short product walkthrough under How intelligence moves (homepage only) */
-#ln .sim { --s-i: #39393B; --s-b: #4B4B4D; --s-m: #6A6A6C; --s-s: #6A6A6C; --s-l: #E3EAF2; --s-a: #4774AE; --s-t: #F8F8F8; display: grid; gap: 14px; justify-items: center; margin-top: clamp(36px, 5vw, 64px); }
+#ln .sim { --s-i: #1F273F; --s-b: #3D4559; --s-m: #6A6A6C; --s-s: #6A6A6C; --s-l: #E3EAF2; --s-a: #4774AE; --s-t: #F8F8F8; display: grid; gap: 14px; justify-items: center; margin-top: clamp(36px, 5vw, 64px); }
 #ln .sim-win { width: 100%; min-width: 0; border-radius: 20px; background: var(--color-paper); box-shadow: 0 0 0 1px var(--lc-e1e8f2), 0 40px 80px -48px var(--lc-rgba-31-39-63-45); overflow: hidden; font-family: "Inter", var(--sans); text-align: left; }
 #ln .sim-bar { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--s-l); font-size: .88rem; color: var(--s-i); }
 #ln .sim-bar b { font-weight: 600; }
