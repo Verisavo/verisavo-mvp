@@ -1673,6 +1673,9 @@ button { transition-timing-function: cubic-bezier(.23,1,.32,1); }
 a { text-underline-offset: 2px; }
 .card { border-radius: 12px; }
 @media (max-width: 640px) { .btn.sm, .hnav button, .chipbtn, .lnk, .link { min-height: 40px; } }
+/* the step bar stays in view while the task scrolls */
+.card > .stepper { position: sticky; top: var(--htop-h, 0px); z-index: 6; background: var(--card); padding-top: 12px; padding-bottom: 10px; margin-top: -12px; box-shadow: 0 1px 0 var(--line); }
+.chips.sugg .chipbtn { height: auto !important; max-height: none !important; min-height: 40px; border-radius: 14px; padding: 9px 13px; }
 /* phone: each section tab is its own outlined button */
 @media (max-width: 520px) {
   .hnav { background: none; padding: 0; gap: 6px; border-radius: 0; overflow: visible; }
@@ -1683,4 +1686,5 @@ a { text-underline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }
 /* <<< quiet system v1 */
 </style>
+<script>(function(){function u(){var h=document.querySelector('.htop');var v=0;if(h){var c=getComputedStyle(h).position;if(c==='sticky'||c==='fixed')v=h.offsetHeight;}document.documentElement.style.setProperty('--htop-h',v+'px');}u();addEventListener('resize',u);addEventListener('hashchange',function(){setTimeout(u,50)});setInterval(u,700);})();</script>
 </body></html>
