@@ -2739,6 +2739,7 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main{--sans:"Red Hat Text", "Geist", "Helvetica Neue", Arial, sans-serif;--q-font:"Red Hat Text", "Geist", "Helvetica Neue", Arial, sans-serif}
 #va .va-main, #va .va-main :is(p,span,div,li,a,button,input,textarea,label,small,strong,b,em,td,th,h1,h2,h3,h4,h5,figcaption){font-family:"Red Hat Text", "Geist", "Helvetica Neue", Arial, sans-serif !important}
 #va .va-main :is(h1,h2,h3){font-family:"Red Hat Display", "Red Hat Text", "Geist", "Helvetica Neue", Arial, sans-serif !important;letter-spacing:0 !important}
+#va .va-main .vapx p.fu-h{font-weight:600 !important;color:var(--px-ink) !important}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
