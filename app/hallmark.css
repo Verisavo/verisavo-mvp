@@ -525,3 +525,8 @@ html body .rs-detail:not(#x#x#x#x#x#x) .cx-close h2 { font-size: 1.375rem !impor
 /* >>> footer tagline: two clean lines */
 html body footer.lf:not(#_a):not(#_b):not(#_c):not(#_d) .lf-brand p, html body .pg-foot:not(#_a):not(#_b):not(#_c):not(#_d) .foot-brand > span, html body footer.foot:not(#_a):not(#_b):not(#_c):not(#_d) .foot-brand > span { max-width: none !important; }
 /* <<< footer tagline */
+
+/* >>> walkthrough cursor back on phones */
+@media (max-width: 40rem) { html body #ln#ln .wf-cur { display: block !important; z-index: 9 !important; } }
+@media (prefers-reduced-motion: reduce) { html body #ln#ln .wf-cur { display: none !important; } }
+/* <<< walkthrough cursor */
