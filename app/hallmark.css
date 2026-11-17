@@ -238,3 +238,16 @@ html body #ln#ln.ln#ln#ln#ln #why .why-p { text-align: center !important; margin
   90% { transform: translateY(calc(var(--y) - 8px)) rotate(var(--r)); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
   100% { opacity: 1; transform: translateY(var(--y)) rotate(var(--r)); }
 }
+/* Network diagram on phones: a portrait version that fits one screen, no swiping or zoom */
+html body #ln#ln .net-scroll .net-svg.net-mob { display: none !important; }
+@media (max-width: 40rem) {
+  html body #ln#ln .net-scroll .net-svg:not(.net-mob) { display: none !important; }
+  html body #ln#ln .net-scroll .net-svg.net-mob { display: block !important; width: 100% !important; min-width: 0 !important; max-width: 420px !important; height: auto !important; margin: 0 auto !important; }
+  html body #ln#ln .net-card :is(.net-hint, .net-fade) { display: none !important; }
+  html body #ln#ln .net-scroll { overflow: visible !important; }
+  html body #ln#ln .net-card { padding: var(--space-md) var(--space-xs) !important; }
+  html body #ln#ln .net-scroll .net-svg.net-mob text { font-size: 13.5px !important; }
+  html body #ln#ln .net-scroll .net-svg.net-mob .net-cols text { font-size: 15px !important; font-weight: 600 !important; }
+  html body #ln#ln .net-scroll .net-svg.net-mob .net-n text { font-size: 12.5px !important; }
+  html body #ln#ln .net-scroll .net-svg.net-mob :is(.net-stage, .net-gap, .net-blk) text { font-size: 13.5px !important; }
+}
