@@ -1676,6 +1676,7 @@ html body .wa-btn svg { width: 22px !important; height: 22px !important; }
 html body .wa-eb { gap: 0 !important; }
 html body .wa-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 html body a.wa-btn { text-decoration: none; }
+@media (max-width: 640px) { html body .wa-sec .wa-ctas { display: flex !important; flex-wrap: nowrap !important; justify-content: center !important; gap: 8px !important; width: auto !important; max-width: none !important; } html body .wa-sec .wa-ctas .wa-btn { width: auto !important; flex: 0 1 auto !important; height: 46px !important; padding: 0 16px !important; font-size: .9375rem !important; white-space: nowrap !important; } }
 html body .wa-btn2 { background: transparent !important; color: #FFFFFF !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
 html body .wa-btn2:hover { background: rgba(255,255,255,.08) !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
 html body .wa-btn { padding: 0 24px !important; }
