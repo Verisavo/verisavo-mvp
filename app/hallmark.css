@@ -221,3 +221,20 @@ html body #ln#ln.ln#ln#ln#ln #why .why-p { text-align: center !important; margin
 #ln .why-pz path.pz-out { stroke: var(--color-b400); stroke-width: 1.1; }
 #ln .why-pz path.pz-seam { stroke: var(--color-b300); stroke-width: 0.8; opacity: 0.45; }
 #ln .why-src span { font-weight: 600; text-shadow: 0 0 2px var(--color-paper), 0 0 4px var(--color-paper), 0 0 6px var(--color-paper), 0 0 8px var(--color-paper), 0 0 10px var(--color-paper); }
+
+/* Pieces drop in from above on scroll, bounce, then float. Visible by default; the wait state is set by script only */
+#ln .why-src.pz-wait li { opacity: 0; animation: none; }
+#ln .why-src.pz-go li { animation: pz-drop 1.1s both, why-float 7s var(--ease-in-out) infinite; animation-delay: var(--d, 0s), calc(var(--d, 0s) + 1.1s); }
+#ln .why-src.pz-go li:nth-child(1) { --d: 0s; }
+#ln .why-src.pz-go li:nth-child(2) { --d: 0.14s; animation-duration: 1.1s, 8.5s; }
+#ln .why-src.pz-go li:nth-child(3) { --d: 0.28s; animation-duration: 1.1s, 6.5s; }
+#ln .why-src.pz-go li:nth-child(4) { --d: 0.42s; animation-duration: 1.1s, 9s; }
+@keyframes pz-drop {
+  0% { opacity: 0; transform: translateY(calc(var(--y) - 280px)) rotate(calc(var(--r) - 10deg)); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  12% { opacity: 1; }
+  50% { opacity: 1; transform: translateY(var(--y)) rotate(var(--r)); animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1); }
+  66% { transform: translateY(calc(var(--y) - 26px)) rotate(calc(var(--r) + 2deg)); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  80% { transform: translateY(var(--y)) rotate(var(--r)); animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1); }
+  90% { transform: translateY(calc(var(--y) - 8px)) rotate(var(--r)); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  100% { opacity: 1; transform: translateY(var(--y)) rotate(var(--r)); }
+}
