@@ -1991,6 +1991,27 @@ html body #va-scope-menu .mk-done { background: #1F273F; color: #fff; }
   #platform .vsx-v .vsx-k { color: #4362B2; }
   #platform .vsx-g .vsx-i, #platform .vsx-v .vsx-i { grid-row: 1 / span 2; }
 }
+/* Comparison on phones: the original three-column table, in a smaller type size */
+@media (max-width: 820px) {
+  #platform .vsx { padding: 6px 6px 6px 12px !important; border-radius: 18px !important; }
+  #platform .vsx-hr { display: grid !important; align-items: end; }
+  #platform .vsx-r, #platform .vsx-r:nth-child(2) { grid-template-columns: minmax(0, 1fr) minmax(0, .95fr) minmax(0, 1.1fr) !important; column-gap: 8px !important; row-gap: 0 !important; padding: 0 !important; border-top: 0 !important; }
+  #platform .vsx-hr > div { padding: 0 0 8px !important; font-size: .6875rem !important; }
+  #platform .vsx-hr .vsx-g { font-size: .75rem !important; }
+  #platform .vsx-hr .vsx-v { padding: 12px 10px 8px !important; border-radius: 14px 14px 0 0 !important; font-size: .75rem !important; }
+  #platform .vsx-q, #platform .vsx-g { padding: 12px 0 !important; border-top: 1px solid #E8E8ED !important; }
+  #platform .vsx-q { font-size: .78rem !important; line-height: 1.3 !important; letter-spacing: -.01em !important; max-width: none !important; overflow-wrap: break-word; text-wrap: wrap !important; }
+  #platform .vsx-v, #platform .vsx-r:last-child .vsx-v { padding: 12px 10px !important; border-radius: 0 !important; }
+  #platform .vsx-r:last-child .vsx-v { border-radius: 0 0 14px 14px !important; }
+  #platform .vsx-r:not(.vsx-hr) .vsx-v::before { display: block !important; left: 10px !important; right: 10px !important; }
+  #platform .vsx-r:nth-child(2) .vsx-v::before { display: none !important; }
+  #platform .vsx-g, #platform .vsx-v { grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; }
+  #platform .vsx-hr .vsx-g, #platform .vsx-hr .vsx-v { display: block !important; }
+  #platform .vsx-k, #platform .vsx-i { display: none !important; }
+  #platform .vsx-g p, #platform .vsx-v p { font-size: .75rem !important; line-height: 1.4 !important; letter-spacing: 0 !important; }
+  #platform .vsx-g p { font-weight: 400 !important; color: #4F5B78 !important; }
+}
+
 /* <<< beyond the answer */
 
 
