@@ -389,7 +389,7 @@ html body #pg-careers#pg-careers#pg-careers .ca-addr { position: absolute !impor
 }
 
 /* >>> homepage neutral theme v1: the chat's font and colours on the homepage and its footer */
-#ln, footer.lf {
+:root {
   --color-ink: #3A3A3C; --color-ink-2: #3B5D8A; --color-muted: #6D6C71;
   --color-paper-2: #F5F5F5; --color-paper-3: #EAEAEA; --color-rule: #E5E5E5; --color-rule-2: #D3D3D3;
   --color-accent: #3F74B5; --color-focus: #3F74B5;
@@ -402,4 +402,22 @@ html body #ln#ln, html body #ln#ln :is(p,span,a,li,button,input,small,strong,b,e
 html body #ln#ln :is(h1,h2,h3,h4), html body #ln#ln svg text { font-family: "Red Hat Display", "Red Hat Text", "Inter", ui-sans-serif, system-ui, sans-serif !important; }
 html body #ln#ln#ln#ln#ln#ln .v3-btn-d, html body #ln#ln#ln#ln#ln#ln .wf-btn { background: #3B5D8A !important; border-color: #3B5D8A !important; color: #fff !important; }
 html body #ln#ln#ln#ln#ln#ln .v3-btn-d:hover { background: #335179 !important; }
+html body :is(.top,.mnav,.pg,.rs-detail), html body :is(.top,.mnav,.pg,.rs-detail) :is(p,span,a,li,button,input,textarea,select,small,strong,b,em,dt,dd,figcaption,label,div,td,th,blockquote,time) { font-family: "Red Hat Text", "Inter", ui-sans-serif, system-ui, sans-serif !important; }
+html body :is(.top,.mnav,.pg,.rs-detail) :is(h1,h2,h3,h4,h5), html body .top .logo, html body :is(.pg,.rs-detail) svg text { font-family: "Red Hat Display", "Red Hat Text", "Inter", ui-sans-serif, system-ui, sans-serif !important; }
 /* <<< homepage neutral theme v1 */
+
+/* >>> landing custom props neutral: page-level colour variables, same mapping as the tokens */
+:root{--indigo:#39393B !important;--paper:#F9F9F9 !important;--b100:#E6EDF5 !important;--b200:#D1DDEC !important;--b300:#B1C5DF !important;--b400:#8CA9D0 !important;--b500:#6D93C4 !important;--b600:#5681BA !important;--b700:#4774AE !important;--b800:#3B6091 !important;--dark:rgba(57,57,59,.9) !important}
+#pg-research, .rs-detail.rd-light{--ap-bg:#F7F7F7 !important;--ap-ink:#39393B !important;--ap-body:#3F3F41 !important;--ap-sub:#6A6A6C !important;--ap-line:rgba(57,57,59,.1) !important;--ap-accent:#4774AE !important}
+#pg-about-us, #pg-careers, #pg-contact{--body-d:#C9D5E4 !important}
+.ln, .lf{--i9:#39393B !important;--i10:#39393B !important;--pap:#F9F9F9 !important}
+.v3{--rule:#E6EDF5 !important}
+.ln{--body:#4B4B4D !important}
+html body .ln .fx{--fx-i:#39393B !important;--fx-l:#E6ECF4 !important;--fx-m:#6A6A6C !important;--fx-s:#6A6A6C !important}
+#ln{--h2-i:#39393B !important;--h2-l:#E6ECF4 !important;--h2-m:#6A6A6C !important;--h2-s:#6A6A6C !important}
+#ln .sim{--s-i:#39393B !important;--s-b:#4B4B4D !important;--s-m:#6A6A6C !important;--s-s:#6A6A6C !important;--s-l:#E3EAF2 !important;--s-a:#4774AE !important;--s-t:#F8F8F8 !important}
+html body #pg-community.pg{--cm-i:#39393B !important;--cm-b:#4B4B4D !important;--cm-m:#6A6A6C !important;--cm-s:#6A6A6C !important;--cm-l:#E3EAF2 !important;--cm-a:#4774AE !important;--cm-t:#F8F8F8 !important}
+html body #pg-community-tasks.pg{--cm-i:#39393B !important;--cm-b:#4B4B4D !important;--cm-m:#6A6A6C !important;--cm-s:#6A6A6C !important;--cm-l:#E3EAF2 !important;--cm-a:#4774AE !important;--cm-t:#F8F8F8 !important}
+html body :is(.pc-btn.pc-solid,.obtn.solid,.cm-btn.cm-wa,.sx-btn.sx-solid,.ct3-btn,.ix-read,.cm-filter button.on,.cm-filter button[aria-pressed="true"]):not(#x#x#x#x#x#x) { background: #3B5D8A !important; border-color: #3B5D8A !important; color: #fff !important; }
+html body .top .pill:not(#x#x#x#x) { background: rgba(59,93,138,.94) !important; }
+/* <<< landing custom props neutral */
