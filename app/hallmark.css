@@ -341,3 +341,13 @@ html body #pg-pricing#pg-pricing.pg.pg .pc-card { box-shadow: 0 0 0 1.5px var(--
   html body #pg-research#pg-research#pg-research.pg.pg .ar-row { grid-template-columns: minmax(0, 1fr) 96px !important; column-gap: var(--space-xs) !important; }
   html body #pg-research#pg-research#pg-research.pg.pg .ar-row .ar-art { width: 80px !important; height: 80px !important; margin: var(--space-md) var(--space-md) 0 0 !important; }
 }
+/* Insights on phones: medium pictures, a full-width band about two-thirds the old height */
+@media (max-width: 40rem) {
+  html body #pg-research#pg-research#pg-research#pg-research.pg.pg .ar-row { display: flex !important; flex-direction: column !important; }
+  html body #pg-research#pg-research#pg-research#pg-research.pg.pg .ar-row .ar-art { order: -1 !important; width: auto !important; height: 150px !important; aspect-ratio: auto !important; margin: var(--space-xs) var(--space-xs) 0 !important; border-radius: 14px !important; align-self: stretch !important; }
+  html body #pg-research#pg-research#pg-research#pg-research.pg.pg .rs-card { display: flex !important; flex-direction: column !important; }
+  html body #pg-research#pg-research#pg-research#pg-research.pg.pg .rs-card > .rs-art { width: 100% !important; height: 150px !important; aspect-ratio: auto !important; border-radius: 14px !important; margin-bottom: var(--space-xs) !important; }
+  html body #pg-research#pg-research#pg-research#pg-research.pg.pg .ix-art { height: 180px !important; }
+  html body #pg-research#pg-research#pg-research#pg-research.pg.pg :is(.ar-art, .rs-card > .rs-art, .ix-art) svg { width: 100% !important; height: 100% !important; }
+}
+@media (max-width: 40rem) { html body #pg-research#pg-research#pg-research#pg-research#pg-research.pg.pg .ar-row .ar-art { margin: var(--space-sm) var(--space-sm) var(--space-sm) !important; } }
