@@ -457,3 +457,9 @@ html body #ln#ln .why-src { margin-top: 44px !important; }
 html body .ln .net-e, html body .ln .net-p { transition-duration: .7s !important; }
 html body .ln :is(.net-src,.net-out,.net-gap,.net-n,.net-mem,.net-memt,.net-dot,.net-loop) { transition-duration: .3s !important; }
 html body #ln .net-card.ln-rv { transition-duration: .35s !important; transition-delay: 0ms !important; }
+/* phone diagram: pinch to zoom */
+html body #ln#ln .net-scroll .net-svg.net-mob { touch-action: pan-y; will-change: transform; }
+html body #ln#ln .net-scroll.net-zoomed { overflow: hidden !important; border-radius: 12px; }
+html body #ln#ln .net-scroll.net-zoomed .net-svg.net-mob { touch-action: none; }
+html body #ln#ln .net-card .net-pinch { display: none; }
+@media (max-width: 40rem) { html body #ln#ln .net-card .net-pinch { display: block; margin: 10px 0 0; text-align: center; font-size: 12.5px; color: var(--color-muted); } }
