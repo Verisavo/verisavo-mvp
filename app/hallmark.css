@@ -314,3 +314,8 @@ html body #ln#ln#ln .net-svg :is(.net-gap, .net-scout) rect { stroke-dasharray: 
 html body #ln#ln #why .why-in > div, html body #ln#ln #why .why-p { position: relative; z-index: 2; }
 #ln .why-src { position: relative; z-index: 1; }
 #ln .why-src li { -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+/* Phone: the two hero actions sit side by side, as do the two in the closing band */
+@media (max-width: 40rem) {
+  html body #ln#ln.ln#ln#ln#ln#ln .v3-hero .v3-ctas, html body #ln#ln.ln#ln#ln#ln#ln .ln-close .hp2-ctas { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: var(--space-xs) !important; width: auto !important; max-width: none !important; }
+  html body #ln#ln.ln#ln#ln#ln#ln :is(.v3-hero .v3-ctas, .ln-close .hp2-ctas) .ln-btn { width: auto !important; flex: 0 1 auto !important; padding: 0 16px !important; min-height: 46px !important; font-size: 0.9375rem !important; white-space: nowrap !important; }
+}
