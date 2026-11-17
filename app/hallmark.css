@@ -634,3 +634,7 @@ html body #pg-community .c2-join-art .jd { animation: jpFloatB 6s ease-in-out in
 html body #pg-community .c2-join-art .jd:nth-of-type(2) { animation-delay: -3s; }
 @media (prefers-reduced-motion: reduce) { html body #pg-community .c2-join-art :is(.jp, .jd) { animation: none !important; } }
 /* <<< SavoScouts portraits float */
+
+/* >>> network diagram: SavoScouts box matches Market Memory */
+html body .net-svg.net-mob:not(#x#x#x#x#x) .net-scout.net-stage rect { fill: rgb(230, 238, 247) !important; stroke: rgb(205, 221, 239) !important; }
+/* <<< network diagram SavoScouts box */
