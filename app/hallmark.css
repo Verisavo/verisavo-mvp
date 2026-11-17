@@ -511,3 +511,13 @@ html body #pg-community#pg-community .c2-ctas .cm-btn{height:44px !important;min
   html body #pg-community#pg-community .c2-ctas .cm-btn{padding:0 14px !important;font-size:14.5px !important}
 }
 /* <<< community hero buttons */
+
+/* >>> article detail type tidy v1 */
+html body .rs-detail:not(#x#x#x#x#x#x) .rs-meta { font-size: .8125rem !important; line-height: 1.45 !important; color: #3B5D8A !important; text-wrap: balance; }
+html body .rs-detail:not(#x#x#x#x#x#x) figcaption, html body .rs-detail:not(#x#x#x#x#x#x) figcaption .cx-ext { font-size: .9375rem !important; line-height: 1.35 !important; font-weight: 600 !important; color: #1F273F !important; letter-spacing: 0 !important; text-transform: none !important; }
+html body .rs-detail:not(#x#x#x#x#x#x) :is(.cx-edges, .cx-path, .cx-mem) li b { font-size: 1rem !important; line-height: 1.4 !important; }
+html body .rs-detail:not(#x#x#x#x#x#x) :is(.cx-edges, .cx-path, .cx-mem, .cx-lab) li span:not(.cx-k):not(.cx-n):not(.cx-st), html body .rs-detail:not(#x#x#x#x#x#x) .cx-fig span:not(.cx-k) { font-size: .9375rem !important; line-height: 1.5 !important; }
+html body .rs-detail:not(#x#x#x#x#x#x) :is(.cx-small, .cx-k) { font-size: .8125rem !important; line-height: 1.5 !important; letter-spacing: 0 !important; text-transform: none !important; }
+html body .rs-detail:not(#x#x#x#x#x#x) .cx-src a { color: #3B5D8A !important; }
+html body .rs-detail:not(#x#x#x#x#x#x) .cx-close h2 { font-size: 1.375rem !important; line-height: 1.2 !important; }
+/* <<< article detail type tidy */

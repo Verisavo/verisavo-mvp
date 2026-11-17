@@ -738,14 +738,14 @@ export default function ResearchPage() {
           {" "}
           <div className="ar-list" id="ar-list">
             {" "}
-            <article className="ar-row" tabIndex="0" role="button" aria-label="Why we are building a connected intelligence layer, open article">
+            <article className="ar-row" tabIndex="0" role="button" aria-label="Why we are building an intelligence layer for African markets, open article">
               {" "}
               <div className="hl-body ar-body">
                 {" "}
-                <h3>{"Why we are building a connected intelligence layer"}</h3>
+                <h3>{"Why we are building an intelligence layer for African markets"}</h3>
                 {" "}
                 <p>
-                  {"Market information in Africa is not missing, it is scattered. Henry explains why Verisavo starts by connecting evidence rather than collecting more of it."}
+                  {"The information businesses need about African markets is not missing. It is scattered. Henry explains why Verisavo starts by connecting what exists."}
                 </p>
                 {" "}
                 <p className="rs-meta">{"By Henry O. · September 2026 · 5 min read"}</p>
@@ -778,14 +778,14 @@ export default function ResearchPage() {
               {" "}
             </article>
             {" "}
-            <article className="ar-row" tabIndex="0" role="button" aria-label="Fact, inference, hypothesis: labelling what we know, open article">
+            <article className="ar-row" tabIndex="0" role="button" aria-label="How sure are we? Labelling what we know, open article">
               {" "}
               <div className="hl-body ar-body">
                 {" "}
-                <h3>{"Fact, inference, hypothesis: labelling what we know"}</h3>
+                <h3>{"How sure are we? Labelling what we know"}</h3>
                 {" "}
                 <p>
-                  {"How the research team separates what the evidence supports from what it only suggests, and why an honest Unknown is part of a good answer."}
+                  {"How we separate what the evidence shows from what it only suggests, and why saying “not known yet” is part of a good answer."}
                 </p>
                 {" "}
                 <p className="rs-meta">{"By Angel O. · September 2026 · 4 min read"}</p>
@@ -825,14 +825,14 @@ export default function ResearchPage() {
               {" "}
             </article>
             {" "}
-            <article className="ar-row" tabIndex="0" role="button" aria-label="Designing SavoScouts around trust, open article">
+            <article className="ar-row" tabIndex="0" role="button" aria-label="Building SavoScouts on trust, open article">
               {" "}
               <div className="hl-body ar-body">
                 {" "}
-                <h3>{"Designing SavoScouts around trust"}</h3>
+                <h3>{"Building SavoScouts on trust"}</h3>
                 {" "}
                 <p>
-                  {"The operating principles behind our contributor network: targeted questions, clear consent, and observations that are geo-tagged, time-stamped and verified."}
+                  {"How our contributor network is designed: clear questions, consent first, and reports that carry their place and time and are checked before use."}
                 </p>
                 {" "}
                 <p className="rs-meta">{"By Ifeanyi I. · August 2026 · 4 min read"}</p>
@@ -867,7 +867,7 @@ export default function ResearchPage() {
                 <h3>{"Reading the informal market"}</h3>
                 {" "}
                 <p>
-                  {"Notes on why so much everyday commerce goes uncounted in official data, and what it takes to see it clearly."}
+                  {"Why so much everyday trade never shows up in official figures, and what it takes to see it clearly."}
                 </p>
                 {" "}
                 <p className="rs-meta">{"By Angel O. · August 2026 · 4 min read"}</p>
@@ -988,14 +988,14 @@ export default function ResearchPage() {
               {" "}
             </article>
             {" "}
-            <article className="ar-row" tabIndex="0" role="button" aria-label="What a single stockout can tell you, open article">
+            <article className="ar-row" tabIndex="0" role="button" aria-label="What one empty shelf can tell you, open article">
               {" "}
               <div className="hl-body ar-body">
                 {" "}
-                <h3>{"What a single stockout can tell you"}</h3>
+                <h3>{"What one empty shelf can tell you"}</h3>
                 {" "}
                 <p>
-                  {"One empty shelf is a signal, not a conclusion. A short walk through how one observation becomes evidence, and when it is worth investigating."}
+                  {"An empty shelf is a clue, not a conclusion. A short walk through how one thing you notice becomes evidence, and when it is worth looking into."}
                 </p>
                 {" "}
                 <p className="rs-meta">{"By Henry O. · July 2026 · 4 min read"}</p>
@@ -1066,7 +1066,7 @@ export default function ResearchPage() {
                 <h3>{"Market Memory: understanding that builds over time"}</h3>
                 {" "}
                 <p>
-                  {"Why market knowledge should not live in one-off reports, and how each question and investigation can strengthen the next decision."}
+                  {"Why what you learn about a market should not sit in one-off reports, and how each question can make the next decision easier."}
                 </p>
                 {" "}
                 <p className="rs-meta">{"By Ifeanyi I. · July 2026 · 4 min read"}</p>
