@@ -2804,6 +2804,11 @@ html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) :is(.foot-brand > 
 html body footer :is(.foot-bar,.lf-bar) .foot-mail{display:none !important}
 html body #va#va#va .va-side .vsn-soon > span{flex:0 0 auto !important}
 html body #va#va#va .va-side .vsn-soon em{margin-left:-3px !important;margin-right:auto !important;font-size:9px !important;letter-spacing:0 !important;line-height:1 !important;padding:3px 4px !important;flex:0 0 auto !important;border-radius:999px !important;white-space:nowrap !important}
+html body #va#va#va .va-side .vsn-soon{cursor:pointer !important}
+@keyframes vsn-glow{0%{box-shadow:0 0 0 0 rgba(59,93,138,0);background:#EAEAEA;color:#6D6C71}25%{box-shadow:0 0 0 3px rgba(59,93,138,.22),0 0 14px 2px rgba(59,93,138,.55);background:#3B5D8A;color:#fff}70%{box-shadow:0 0 0 3px rgba(59,93,138,.22),0 0 14px 2px rgba(59,93,138,.55);background:#3B5D8A;color:#fff}100%{box-shadow:0 0 0 0 rgba(59,93,138,0);background:#EAEAEA;color:#6D6C71}}
+html body #va#va#va .va-side .vsn-soon em{transition:background-color .25s,color .25s}
+html body #va#va#va#va .va-side .vsn-soon em.glow{animation:vsn-glow 1.4s ease both !important;background:#3B5D8A !important;color:#fff !important}
+@media (prefers-reduced-motion: reduce){html body #va#va#va .va-side .vsn-soon em.glow{animation:none !important;background:#3B5D8A !important;color:#fff !important}}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
