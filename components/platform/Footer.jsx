@@ -10,12 +10,12 @@ export default function Footer() {
           {" "}
           <a className="logo" href="/" aria-label="Verisavo home"><span>{"Verisavo"}</span></a>
           {" "}
-          <span>{"The connected intelligence layer for African markets."}</span>
+          <span>{"The intelligence layer for African markets."}<br />{"Connect. Understand. Decide."}</span>
           {" "}
         </div>
         {" "}
         {" "}
-        <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><a href="/use-cases">{"Use cases"}</a><a href="/pricing">{"Pricing"}</a><a href="/insights">{"Insights"}</a><a href="/docs">{"Docs"}</a><a href="/about">{"About us"}</a><a href="/careers">{"Careers"}</a><a href="/community">{"Become a SavoScout"}</a><a href="/contact">{"Contact us"}</a></nav>
+        <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><a href="/use-cases">{"Use cases"}</a><a href="/pricing">{"Pricing"}</a><a href="/insights">{"Insights"}</a><a href="/docs">{"Docs"}</a><a href="/about">{"About us"}</a><a href="/careers">{"Careers"}</a><a href="/community">{"Community"}</a><a href="/contact">{"Contact us"}</a></nav>
         <div className="foot-bar">
           {" "}
           <span>{"© "}<span id="year">{"2026"}</span>{" Verisavo. All rights reserved. "}<a className="foot-mail" href="mailto:hello@verisavo.com">{"hello@verisavo.com"}</a></span>
