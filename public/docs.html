@@ -310,7 +310,7 @@ dl.gloss dd { color: var(--body); }
 @media (min-width: 641px) { .figure svg.fig-d { min-width: 0 !important; width: 100% !important; height: auto !important; } .figure:has(.fig-d) { overflow: visible !important; } }
 /* docs: tables stack on phones; panels fit; every diagram scales on tablets */
 @media (max-width: 640px) {
-  .ex-p { overflow-x: hidden !important; }
+  .ex-p { overflow-x: auto !important; overscroll-behavior-x: contain; }
   .tbl:has(table.stk) { overflow: visible !important; }
   .tbl table.stk thead { display: none; }
   .tbl table.stk, .tbl table.stk tbody, .tbl table.stk tr, .tbl table.stk td { display: block; width: auto !important; }
@@ -509,8 +509,7 @@ const PAGES = [
   <div class="cards">${card("asking-questions","chat","Ask better questions","Frame questions that lead to useful answers.")}${card("intelligence-gaps","info","Intelligence Gaps","What to do when an answer says Unknown.")}</div>` },
  { g: "Get started", id: "how-it-works", t: "How it works", ic: "layers", crumb: "Get started", body: `
   <p class="intro">Verisavo is designed to turn scattered market information into connected, evidence-grounded understanding in five steps, and to keep it current as the market changes.</p>
-  <h2 id="how-it-works">How it works</h2>
-  <h3 id="five-steps">The five steps</h3>
+  <h2 id="five-steps">The five steps</h2>
   <ol class="steps">
    <li><b>Capture: bring market information together</b><p>Verisavo gathers <a href="#signals">Signals</a>, such as a price change or a stockout, from company data, public records, digital platforms, research and local communities. Each is kept as <a href="#evidence">Evidence</a> with its source, place, time and method. SavoScouts are being built to fill critical gaps from the ground.</p></li>
    <li><b>Verify: establish what can be trusted</b><p><a href="#verification">Verification</a> is designed to check evidence is reliable enough for its purpose, compare sources, flag inconsistencies and keep uncertainty visible.</p></li>
@@ -918,7 +917,7 @@ function render(id, anchor) {
   side.querySelectorAll("a").forEach(a => { if (a.dataset.id === p.id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   const hs = [...doc.querySelectorAll("h2")];
   toc.innerHTML = hs.length ? `<h5>On this page</h5>` + hs.map(h => `<a href="#${p.id}" data-h="${h.id}">${h.textContent}</a>`).join("") : "";
-  toc.querySelectorAll("a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); document.getElementById(a.dataset.h).scrollIntoView({ behavior: "smooth" }); }));
+  toc.querySelectorAll("a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); const t = document.getElementById(a.dataset.h); if (t) t.scrollIntoView({ behavior: "smooth" }); }));
   doc.querySelectorAll(".h-anchor").forEach(a => a.addEventListener("click", e => { e.preventDefault(); a.parentElement.scrollIntoView({ behavior: "smooth" }); }));
   doc.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => {
     const t = b.closest(".prompt").querySelector(".prompt-b").textContent;
@@ -939,6 +938,23 @@ function spy(hs) {
 }
 const route = () => render(location.hash.slice(1) || "introduction");
 addEventListener("hashchange", route);
+// Route in-page links by script: inside an embedded frame (the single-file site, the artifact viewer)
+// a bare "#page" link resolves against the parent's address and leaves the docs.
+function openDoc(id) {
+  const base = id.split("--")[0];
+  if (!byId[base] && !ALIAS[base]) return false;
+  try { history.pushState(null, "", "#" + base); } catch (err) {}
+  render(base);
+  return true;
+}
+addEventListener("popstate", route);
+document.addEventListener("click", (e) => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || a.closest("#toc") || a.classList.contains("h-anchor") || a.closest(".glance")) return;
+  const id = a.getAttribute("href").slice(1);
+  if (id && openDoc(id)) e.preventDefault();
+});
 route();
 
 // search
@@ -959,7 +975,7 @@ function search() {
   res.hidden = false;
   res.querySelectorAll("a").forEach(a => a.addEventListener("click", e => { e.preventDefault(); go(+a.dataset.i); }));
 }
-function go(i) { const h = hits[i]; if (!h) return; res.hidden = true; q.value = ""; q.blur(); if (location.hash.slice(1) === h.id) render(h.id, h.a); else { location.hash = h.id; if (h.a) setTimeout(() => render(h.id, h.a), 0); } }
+function go(i) { const h = hits[i]; if (!h) return; res.hidden = true; q.value = ""; q.blur(); if (location.hash.slice(1) === h.id) render(h.id, h.a); else { try { history.pushState(null, "", "#" + h.id); } catch (err) {} render(h.id, h.a); } }
 q.addEventListener("input", search);
 q.addEventListener("keydown", e => {
   if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); sel = (sel + (e.key === "ArrowDown" ? 1 : -1) + hits.length) % Math.max(1, hits.length); res.querySelectorAll("a").forEach((a, i) => a.classList.toggle("on", i === sel)); }
