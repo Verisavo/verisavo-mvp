@@ -538,3 +538,9 @@ html body #ln#ln .wf-cur { transition: transform .45s cubic-bezier(.3,.1,.2,1), 
 /* >>> puzzle labels fit on narrow phones */
 @media (max-width: 23.5rem) { html body #ln#ln#ln .pz-in span { font-size: .72rem !important; letter-spacing: -.01em !important; } }
 /* <<< puzzle labels */
+
+/* >>> footer links: homepage text style, smaller */
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,button){font:400 .90625rem/1.5 "Red Hat Text","Inter",sans-serif !important;color:#6D6C71 !important;letter-spacing:0 !important}
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,button):hover{color:#1F273F !important}
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min{gap:12px 24px !important}
+/* <<< footer links */

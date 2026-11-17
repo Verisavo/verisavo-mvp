@@ -2797,6 +2797,9 @@ html body .wa-card:not(#x#x#x#x#x#x#x) p { font-size: 15px !important; line-heig
 /* menu links: no focus box, the underline alone marks the highlighted link */
 html body .mnav :is(a,button):is(:focus,:focus-visible,:active):not(#x#x#x#x) { outline: none !important; box-shadow: none !important; border-color: transparent !important; }
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-brand > span{max-width:none !important}
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,button){font:400 .90625rem/1.5 "Red Hat Text","Inter",sans-serif !important;color:#6D6C71 !important;letter-spacing:0 !important}
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,button):hover{color:#1F273F !important}
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min{gap:12px 24px !important}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
