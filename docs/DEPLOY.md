@@ -57,7 +57,7 @@ Henry's number +44 7354 613866 is connected to Kapso (phone number ID `141317160
 3. Put the same `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_APP_SECRET` and `APP_URL` in `.env.prod.local` (gitignored, never loaded by Next.js), then:
    - `node scripts/kapso-webhook.mjs --env .env.prod.local` lists the number's webhooks
    - `node scripts/kapso-webhook.mjs --env .env.prod.local --create` adds ours as a **Meta webhook**: Kapso forwards Meta's own payload, signed with `WHATSAPP_APP_SECRET` in `X-Webhook-Signature`. Kapso allows one per number.
-4. Create the **Authentication** template (copy-code button) in WhatsApp Manager and submit it. Meta only allows it once the business is verified. When it's approved, set `WHATSAPP_OTP_TEMPLATE` and redeploy; until then linking uses "send LINK code".
+4. Once Meta has verified the business, submit the code template: add `WHATSAPP_WABA_ID=1155007084131609` to `.env.prod.local` and run `node scripts/kapso-template.mjs --env .env.prod.local --create`. Run it again without `--create` to see the status. When it says **APPROVED**, set `WHATSAPP_OTP_TEMPLATE=verisavo_link_code` and `WHATSAPP_OTP_TEMPLATE_LANG=en` in Vercel and redeploy; until then linking uses "send LINK code".
 5. Test: link a number from a paid account's dashboard, then ask a question on WhatsApp.
 6. Kapso handles customer messages, so the Privacy Policy must name it before launch.
 
