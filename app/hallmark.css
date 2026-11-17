@@ -482,3 +482,5 @@ html body #ln#ln .wf-chart .wf-cx { display: flex; justify-content: space-betwee
 html body #ln#ln .wf-chart .wf-cn { margin: 2px 0 0; font-size: 13px; color: var(--color-ink); }
 @media (max-width: 40rem) { html body #ln#ln .wf-chart svg { height: 56px; } html body #ln#ln .wf-sc.asked[data-s="0"] :is(.wf-conn, .wf-chips) { display: none !important; } }
 @media (prefers-reduced-motion: reduce) { html body #ln#ln .wf-chart, html body #ln#ln .wf-chart * { transition: none !important; } }
+/* page titles receive focus on navigation for screen readers; no visible frame needed */
+html body :is(h1,h2)[tabindex="-1"]:focus, html body :is(.pg,.rs-detail) h1:focus { outline: none !important; box-shadow: none !important; }
