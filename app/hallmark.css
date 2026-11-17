@@ -447,3 +447,5 @@ html body .wa-card:not(#x#x#x#x#x#x#x) > * { margin-top: 0 !important; }
 html body .wa-card:not(#x#x#x#x#x#x#x) :is(h2,h3) { font-size: clamp(1.6rem, 1.1rem + 2vw, 2.4rem) !important; line-height: 1.1 !important; margin: 0 0 12px !important; }
 html body .wa-card:not(#x#x#x#x#x#x#x) p { font-size: 15px !important; line-height: 1.5 !important; margin: 0 0 20px !important; max-width: 46ch; }
 /* <<< CTA bands */
+/* menu links: no focus box, the underline alone marks the highlighted link */
+html body .mnav :is(a,button):is(:focus,:focus-visible,:active):not(#x#x#x#x) { outline: none !important; box-shadow: none !important; border-color: transparent !important; }
