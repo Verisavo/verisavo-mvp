@@ -307,3 +307,6 @@ html body #ln#ln#ln .wf-sc::before { content: attr(aria-label); display: block; 
   html body #ln#ln#ln .wf-why { font-size: 0.75rem !important; margin-top: 4px !important; }
   html body #ln#ln#ln .wf-dec { font-size: 0.8125rem !important; line-height: 1.4 !important; margin: var(--space-xs) 0 !important; }
 }
+/* Diagram: Ground evidence, Intelligence Gap and Investigate with SavoScouts use the same solid box as the rest */
+html body #ln#ln#ln .net-svg :is(.net-gap, .net-scout) rect { stroke-dasharray: none !important; stroke: #E6ECF4 !important; fill: var(--color-paper) !important; }
+@media (max-width: 40rem) { html body #ln#ln#ln .net-scroll .net-svg.net-mob .net-scout.net-blk text { font-size: 11px !important; } }
