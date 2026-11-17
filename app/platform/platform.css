@@ -2741,6 +2741,10 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main :is(h1,h2,h3){font-family:"Red Hat Display", "Red Hat Text", "Geist", "Helvetica Neue", Arial, sans-serif !important;letter-spacing:0 !important}
 #va .va-main .vapx p.fu-h{font-weight:600 !important;color:var(--px-ink) !important}
 #va .va-main .vapx .kx-row.kx-empty{cursor:default;border-style:dashed;background:var(--px-canvas)}#va .va-main .vapx .kx-row.kx-empty .kx-t{color:var(--px-muted);font-weight:500}#va .va-main .vapx .kx-row.kx-empty .kx-ico{background:var(--px-press);color:var(--px-muted)}
+#va .va-main .sheet .seg.srctabs{margin:0 0 16px;overflow-x:auto;scrollbar-width:none}#va .va-main .sheet .seg.srctabs button{flex:1 1 auto;padding:0 6px;font-size:13px}#va .va-main .sheet .seg.srctabs i{font-style:normal;color:var(--px-faint);margin-left:2px}
+#va .va-main .sheet .srcitems{list-style:none;margin:0;padding:0;display:grid;gap:10px}#va .va-main .sheet .srcitems li{padding:14px 16px;border:1px solid var(--px-line);border-radius:var(--px-r-l);background:#fff}#va .va-main .sheet .srcitems li.on{border-color:var(--px-blue-300)}
+#va .va-main .sheet .srcitems .srcfind{margin:0 0 6px;padding:0;border:0}#va .va-main .sheet .srcitems .srchow{margin:0}#va .va-main .sheet .srcitems .kx-link{margin-top:8px;padding:0}
+#va .va-main .sheet .srck{display:block;font-size:12.5px;font-weight:600;color:var(--px-muted);margin-bottom:4px}#va .va-main .sheet .srcfoot{margin-top:14px}#va .va-main .sheet .srcnone{padding:18px 16px;border:1px dashed var(--px-line);border-radius:var(--px-r-l);background:var(--px-canvas);color:var(--px-muted);font-size:14px;font-weight:500}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
