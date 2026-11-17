@@ -521,3 +521,7 @@ html body .rs-detail:not(#x#x#x#x#x#x) :is(.cx-small, .cx-k) { font-size: .8125r
 html body .rs-detail:not(#x#x#x#x#x#x) .cx-src a { color: #3B5D8A !important; }
 html body .rs-detail:not(#x#x#x#x#x#x) .cx-close h2 { font-size: 1.375rem !important; line-height: 1.2 !important; }
 /* <<< article detail type tidy */
+
+/* >>> footer tagline: two clean lines */
+html body footer.lf:not(#_a):not(#_b):not(#_c):not(#_d) .lf-brand p, html body .pg-foot:not(#_a):not(#_b):not(#_c):not(#_d) .foot-brand > span, html body footer.foot:not(#_a):not(#_b):not(#_c):not(#_d) .foot-brand > span { max-width: none !important; }
+/* <<< footer tagline */
