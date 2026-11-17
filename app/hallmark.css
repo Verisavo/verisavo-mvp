@@ -368,3 +368,5 @@ html body #pg-about-us#pg-about-us#pg-about-us .a2-beliefs .a2-ic svg { width: 1
 /* Careers habits: the same icon treatment */
 html body #pg-careers#pg-careers#pg-careers .k2-habits li > span.a2-ic { display: grid !important; place-items: center !important; width: 36px !important; height: 36px !important; border-radius: 50% !important; background: var(--color-paper) !important; color: var(--color-ink) !important; box-shadow: 0 0 0 1px var(--color-b200), 0 0 0 5px var(--color-paper-2) !important; font-size: 0 !important; margin: 0 0 var(--space-sm) !important; padding: 0 !important; }
 html body #pg-careers#pg-careers#pg-careers .k2-habits .a2-ic svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+/* Careers: the address is not shown; Copy email and Email us still carry it */
+html body #pg-careers#pg-careers#pg-careers .ca-addr { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important; margin: 0 !important; padding: 0 !important; }
