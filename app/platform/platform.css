@@ -2800,6 +2800,8 @@ html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-brand > span
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,button){font:400 .90625rem/1.5 "Red Hat Text","Inter",sans-serif !important;color:#6D6C71 !important;letter-spacing:0 !important}
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,button):hover{color:#1F273F !important}
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min{gap:12px 24px !important}
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) :is(.foot-brand > span, .lf-brand p){font-size:.875rem !important;line-height:1.5 !important}
+html body footer :is(.foot-bar,.lf-bar) .foot-mail{display:none !important}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */

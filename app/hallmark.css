@@ -544,3 +544,8 @@ html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,bu
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,button):hover{color:#1F273F !important}
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min{gap:12px 24px !important}
 /* <<< footer links */
+
+/* >>> footer tagline small, no email */
+html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) :is(.foot-brand > span, .lf-brand p){font-size:.875rem !important;line-height:1.5 !important}
+html body footer :is(.foot-bar,.lf-bar) .foot-mail{display:none !important}
+/* <<< footer tagline small */
