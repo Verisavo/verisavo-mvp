@@ -370,3 +370,20 @@ html body #pg-careers#pg-careers#pg-careers .k2-habits li > span.a2-ic { display
 html body #pg-careers#pg-careers#pg-careers .k2-habits .a2-ic svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 /* Careers: the address is not shown; Copy email and Email us still carry it */
 html body #pg-careers#pg-careers#pg-careers .ca-addr { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important; margin: 0 !important; padding: 0 !important; }
+
+/* Phones: tighter vertical spacing across the site */
+@media (max-width: 40rem) {
+  html body #ln#ln.ln#ln#ln#ln#ln .v3-hero { padding-top: 104px !important; padding-bottom: var(--space-xl) !important; }
+  html body #ln#ln.ln#ln#ln#ln#ln .v3-hero .hp3-hero-in { min-height: 0 !important; }
+  html body #ln#ln.ln#ln#ln > section:not(.v3-hero) { padding-block: 48px !important; }
+  html body #ln#ln.ln#ln#ln#ln#ln .ln-close { padding-block: var(--space-lg) !important; }
+  html body #ln#ln.ln#ln#ln#ln#ln .ln-close > .ln-wrap { padding: var(--space-xl) var(--space-lg) !important; }
+  html body #ln#ln.ln#ln#ln :is(.why-in, .wf-head, .pb-head, #trust .v3-tr2-head) { margin-bottom: var(--space-lg) !important; }
+  html body #ln#ln.ln#ln#ln #why .why-in { margin-bottom: 0 !important; }
+  #ln .why-src { margin-top: var(--space-lg) !important; }
+  html body :is(#pg-pricing#pg-pricing#pg-pricing, #pg-research#pg-research#pg-research, #pg-about-us#pg-about-us#pg-about-us, #pg-careers#pg-careers#pg-careers, #pg-community#pg-community#pg-community, #pg-contact#pg-contact#pg-contact, #pg-use-cases#pg-use-cases#pg-use-cases, #pg-community-tasks#pg-community-tasks#pg-community-tasks).pg.pg :is(.a2-sec, .c2-sec, .u2-sec, .k2-sec, .cm-close) { margin-top: 44px !important; }
+  html body :is(#pg-pricing#pg-pricing#pg-pricing, #pg-research#pg-research#pg-research, #pg-about-us#pg-about-us#pg-about-us, #pg-careers#pg-careers#pg-careers, #pg-community#pg-community#pg-community, #pg-contact#pg-contact#pg-contact, #pg-use-cases#pg-use-cases#pg-use-cases, #pg-community-tasks#pg-community-tasks#pg-community-tasks).pg.pg :is(.c2-band, .u2-band, .k2-band, .c2-join) { padding-block: 40px !important; }
+  html body :is(#pg-pricing#pg-pricing#pg-pricing, #pg-research#pg-research#pg-research, #pg-about-us#pg-about-us#pg-about-us, #pg-careers#pg-careers#pg-careers, #pg-community#pg-community#pg-community, #pg-contact#pg-contact#pg-contact, #pg-use-cases#pg-use-cases#pg-use-cases, #pg-community-tasks#pg-community-tasks#pg-community-tasks).pg.pg :is(.cm-close) { padding-block: 36px !important; }
+  html body :is(#pg-pricing#pg-pricing#pg-pricing, #pg-research#pg-research#pg-research, #pg-about-us#pg-about-us#pg-about-us, #pg-careers#pg-careers#pg-careers, #pg-community#pg-community#pg-community, #pg-contact#pg-contact#pg-contact, #pg-use-cases#pg-use-cases#pg-use-cases, #pg-community-tasks#pg-community-tasks#pg-community-tasks).pg.pg .ct3-head { padding-bottom: var(--space-lg) !important; }
+  html body :is(#pg-pricing#pg-pricing#pg-pricing, #pg-research#pg-research#pg-research, #pg-about-us#pg-about-us#pg-about-us, #pg-careers#pg-careers#pg-careers, #pg-community#pg-community#pg-community, #pg-contact#pg-contact#pg-contact, #pg-use-cases#pg-use-cases#pg-use-cases, #pg-community-tasks#pg-community-tasks#pg-community-tasks).pg.pg .pg-foot, html body footer.lf { padding-top: 40px !important; }
+}
