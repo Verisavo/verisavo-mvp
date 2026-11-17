@@ -251,3 +251,12 @@ html body #ln#ln .net-scroll .net-svg.net-mob { display: none !important; }
   html body #ln#ln .net-scroll .net-svg.net-mob .net-n text { font-size: 12.5px !important; }
   html body #ln#ln .net-scroll .net-svg.net-mob :is(.net-stage, .net-gap, .net-blk) text { font-size: 13.5px !important; }
 }
+/* Phone diagram: smaller, crisper type; node labels get a solid underlay instead of a stroked outline */
+@media (max-width: 40rem) {
+  html body #ln#ln#ln .net-scroll .net-svg.net-mob text { font-size: 12px !important; }
+  html body #ln#ln#ln .net-scroll .net-svg.net-mob :is(.net-stage, .net-gap, .net-blk) text { font-size: 12px !important; }
+  html body #ln#ln#ln .net-scroll .net-svg.net-mob .net-cols text { font-size: 14px !important; }
+  html body #ln#ln#ln .net-scroll .net-svg.net-mob .net-n text { font-size: 11px !important; font-weight: 600 !important; letter-spacing: 0.01em; }
+  html body #ln#ln#ln .net-scroll .net-svg.net-mob .net-n text.net-lab { stroke: none !important; stroke-width: 0 !important; paint-order: normal !important; fill: var(--color-ink) !important; }
+  html body #ln#ln#ln .net-scroll .net-svg.net-mob .net-n text.net-halo { fill: var(--color-paper-2) !important; stroke: var(--color-paper-2) !important; stroke-width: 4px !important; stroke-linejoin: round; paint-order: normal !important; }
+}
