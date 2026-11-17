@@ -1,0 +1,161 @@
+/* Hallmark · shape: Map / Diagram (the network as the page's organiser) · genre: modern-minimal · theme: brand · redesign: full · copy: verbatim
+ * paper: oklch(100% 0 0) · accent: oklch(47% 0.13 265) · display: Inter · body: Inter · hero: Stage · nav: floating pill (kept) · footer: kept · signature: an answer that labels Fact, Inference and Unknown, beside the question that asked it
+ * axes: light/grotesk-sans/cool · posture: Stage · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S3 R4 V4 · weakest: S, every section had the same centred head; heads now sit left with the lead beside them */
+@import url("./tokens.css");
+
+/* ---------- Floor, sitewide ---------- */
+html, body { overflow-x: clip !important; }
+:is(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 2px solid var(--color-focus) !important; outline-offset: 2px !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- Homepage ---------- */
+html body #ln#ln.ln { color: var(--color-ink); background: var(--color-paper); font-family: var(--font-body); }
+html body #ln#ln.ln > section { padding-block: var(--section-gap) !important; }
+
+/* Heads sit left; the lead takes the right column */
+html body #ln#ln.ln :is(.why-in, .wf-head, .pb-head) {
+  display: grid !important; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) !important;
+  column-gap: var(--gap-columns) !important; row-gap: var(--space-md) !important;
+  align-items: end !important; justify-items: start !important; text-align: left !important;
+  margin: 0 0 var(--space-2xl) !important;
+}
+html body #ln#ln.ln :is(.why-in, .pb-head) > div { display: block !important; }
+html body #ln#ln.ln .why-in { margin: 0 !important; }
+html body #ln#ln.ln :is(#why, #workflow, #problem, #can, #trust, #start) h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) {
+  font: 500 var(--text-section)/1.04 var(--font-display) !important; letter-spacing: var(--tracking-display) !important;
+  color: var(--color-ink) !important; text-align: left !important; max-width: 18ch !important; margin: 0 !important;
+}
+html body #ln#ln.ln#ln :is(.why-p, .wf-lead, .pb-lead, .hp2-l > p, .v3-tr2-head .ln-sub) {
+  margin: 0 !important; max-width: 46ch !important; text-align: left !important;
+  font: 400 var(--text-lead)/1.55 var(--font-body) !important; color: var(--color-muted) !important;
+}
+html body #ln#ln.ln .wf-head h2 { grid-column: 1; }
+html body #ln#ln.ln .wf-head .wf-lead { grid-column: 2; }
+
+/* Hero: the headline and the question it answers, side by side */
+html body #ln#ln.ln .v3-hero { padding-block: var(--space-2xl) var(--space-3xl) !important; background: var(--color-paper) !important; }
+html body #ln#ln.ln .v3-hero .hp3-hero-in {
+  display: grid !important; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) !important;
+  column-gap: var(--gap-columns) !important; align-items: center !important;
+  justify-items: stretch !important; text-align: left !important;
+  min-height: min(calc(100svh - 160px), 620px); padding: 0 var(--gutter) !important;
+}
+html body #ln#ln.ln .hp3-hero-copy { min-width: 0; }
+html body #ln#ln.ln .v3-hero h1:not(#_a):not(#_b):not(#_c) {
+  font: 600 clamp(2.5rem, 4vw, 3.5rem)/1.02 var(--font-display) !important; letter-spacing: -0.045em !important;
+  color: var(--color-ink) !important; text-align: left !important; max-width: none !important; margin: 0 !important;
+}
+html body #ln#ln.ln .v3-hero h1 span { color: inherit !important; }
+html body #ln#ln.ln .v3-hero .v3-lede {
+  margin: var(--space-lg) 0 0 !important; max-width: 44ch !important; text-align: left !important;
+  font: 400 var(--text-lead)/1.55 var(--font-body) !important; color: var(--color-muted) !important;
+}
+html body #ln#ln.ln .v3-hero .v3-ctas { display: flex !important; justify-content: flex-start !important; gap: var(--space-sm) !important; margin-top: var(--space-xl) !important; width: auto !important; }
+
+/* Buttons: one filled primary, the rest outlined */
+html body #ln#ln.ln .ln-btn, html body #ln#ln.ln .ln-close .ln-btn {
+  min-height: 48px !important; padding: 0 22px !important; border-radius: var(--radius-control) !important;
+  font: 500 var(--text-md)/1 var(--font-body) !important; letter-spacing: 0 !important;
+  transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out) !important;
+}
+html body #ln#ln.ln :is(.v3-btn-d, .hp2-cta) { background: var(--color-ink) !important; color: var(--color-paper) !important; box-shadow: none !important; }
+html body #ln#ln.ln :is(.v3-btn-d, .hp2-cta):hover { background: var(--color-ink-2) !important; }
+html body #ln#ln.ln :is(.v3-btn-d, .hp2-cta):active { background: var(--color-night-2) !important; }
+html body #ln#ln.ln .ln-btn-o2 { background: var(--color-paper) !important; color: var(--color-ink) !important; box-shadow: inset 0 0 0 1px var(--color-rule-2) !important; }
+html body #ln#ln.ln .ln-btn-o2:hover { box-shadow: inset 0 0 0 1px var(--color-ink) !important; }
+
+/* The sample answer */
+.hp3-ans { margin: 0; min-width: 0; background: var(--color-paper-2); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); padding: var(--space-lg); }
+.hp3-q { font: 600 var(--text-lg)/1.3 var(--font-body); color: var(--color-ink); letter-spacing: -0.01em; }
+.hp3-ctx { margin-top: var(--space-2xs) !important; font: 400 var(--text-sm)/1.4 var(--font-body); color: var(--color-muted); }
+.hp3-rows { list-style: none; margin: var(--space-lg) 0 0; padding: 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.hp3-rows li { display: grid; grid-template-columns: 84px minmax(0, 1fr); column-gap: var(--space-md); row-gap: var(--space-3xs); padding: var(--space-md) 0; border-bottom: var(--rule-hair) solid var(--color-rule); }
+.hp3-rows span { grid-column: 2; font: 500 var(--text-md)/1.4 var(--font-body); color: var(--color-ink); }
+.hp3-rows em { grid-column: 2; font: 400 var(--text-sm)/1.4 var(--font-body); font-style: normal; color: var(--color-muted); }
+.hp3-tag { grid-row: 1 / span 2; align-self: start; justify-self: start; padding: var(--space-2xs) var(--space-xs); border-radius: 6px; font: 500 var(--text-xs)/1.2 var(--font-body); background: var(--color-ink); color: var(--color-paper); }
+.hp3-tag-i { background: var(--color-paper-3); color: var(--color-ink-2); }
+.hp3-tag-u { background: var(--color-paper); color: var(--color-ink-2); box-shadow: inset 0 0 0 1px var(--color-b500); }
+.hp3-ans figcaption { margin-top: var(--space-md); font: 400 var(--text-xs)/1.4 var(--font-body); color: var(--color-muted); }
+
+/* The problem: a plain band, head left */
+html body #ln#ln.ln #why.why { background: var(--color-paper-2) !important; border-block: var(--rule-hair) solid var(--color-rule) !important; }
+
+/* Walkthrough labels in the body face */
+html body #ln#ln.ln :is(.wf-k, .wf-conn > span, .wf-muh, .wf-tag, .wf-unk, .wf-pill, .wf-st, .wf-bl, .chip-s, .st) { text-transform: none !important; letter-spacing: 0 !important; font-family: var(--font-body) !important; }
+
+/* The network: the page's centrepiece, full width */
+html body #ln#ln.ln #problem { background: var(--color-paper) !important; }
+html body #ln#ln.ln #problem .v3-net-src { text-align: left !important; margin-top: var(--space-md) !important; font: 400 var(--text-sm)/1.4 var(--font-body) !important; color: var(--color-muted) !important; }
+
+/* What you can do: rows, not numbered steps */
+html body #ln#ln.ln .hp2-split { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) !important; gap: var(--gap-columns) !important; }
+html body #ln#ln.ln .hp2-l { display: block !important; text-align: left !important; position: sticky; top: 120px; }
+html body #ln#ln.ln#ln#ln .hp2-l > p { margin-top: var(--space-lg) !important; }
+html body #ln#ln.ln .hp2-list li { display: block !important; padding: var(--space-lg) 0 !important; border-top: var(--rule-hair) solid var(--color-rule) !important; }
+html body #ln#ln.ln .hp2-list li:last-child { border-bottom: var(--rule-hair) solid var(--color-rule) !important; }
+html body #ln#ln.ln .hp2-list h3 { font: 500 var(--text-xl)/1.2 var(--font-display) !important; letter-spacing: -0.02em !important; color: var(--color-ink) !important; }
+html body #ln#ln.ln .hp2-list p { margin-top: var(--space-xs) !important; font: 400 var(--text-md)/1.6 var(--font-body) !important; color: var(--color-muted) !important; max-width: 52ch; }
+
+/* Built on trust: a table of commitments */
+html body #ln#ln.ln #trust { background: var(--color-paper-2) !important; border-top: var(--rule-hair) solid var(--color-rule); }
+html body #ln#ln.ln #trust .v3-tr2-head {
+  display: grid !important; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) !important; column-gap: var(--gap-columns) !important;
+  align-items: end !important; justify-items: start !important; text-align: left !important; margin: 0 0 var(--space-2xl) !important; max-width: none !important;
+}
+html body #ln#ln.ln #trust .v3-tr2-head > * { margin: 0 !important; grid-column: auto !important; }
+html body #ln#ln.ln #trust .hp3-trust { display: block !important; max-width: none !important; margin: 0 !important; border-top: var(--rule-hair) solid var(--color-ink); }
+html body #ln#ln.ln #trust .hp3-trust article {
+  display: grid !important; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) !important; column-gap: var(--gap-columns) !important;
+  padding: var(--space-lg) 0 !important; background: none !important; border: 0 !important; border-bottom: var(--rule-hair) solid var(--color-rule) !important;
+  border-radius: 0 !important; box-shadow: none !important; transform: none !important; min-height: 0 !important;
+}
+html body #ln#ln.ln #trust .hp3-trust h3 { font: 500 var(--text-title)/1.3 var(--font-display) !important; letter-spacing: -0.01em !important; color: var(--color-ink) !important; margin: 0 !important; }
+html body #ln#ln.ln #trust .hp3-trust p { margin: 0 !important; font: 400 var(--text-md)/1.6 var(--font-body) !important; color: var(--color-muted) !important; max-width: 52ch; }
+
+/* Close: the ask, once more, left-aligned on Royal Indigo */
+html body #ln#ln.ln .ln-close { padding-block: var(--space-3xl) !important; }
+html body #ln#ln.ln .ln-close > .ln-wrap { text-align: left !important; display: block !important; background: var(--color-night) !important; color: var(--color-night-ink) !important; border-radius: var(--radius-card) !important; padding: var(--space-2xl) !important; }
+html body #ln#ln.ln .ln-close h2:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) { color: var(--color-night-ink) !important; max-width: 16ch !important; }
+html body #ln#ln.ln .ln-close p { margin: var(--space-md) 0 0 !important; max-width: 46ch !important; text-align: left !important; color: var(--color-night-muted) !important; font: 400 var(--text-lead)/1.55 var(--font-body) !important; }
+html body #ln#ln.ln .ln-close .hp2-ctas { display: flex !important; justify-content: flex-start !important; gap: var(--space-sm) !important; margin-top: var(--space-xl) !important; }
+html body #ln#ln.ln .ln-close .hp2-cta { background: var(--color-paper) !important; color: var(--color-ink) !important; }
+html body #ln#ln.ln .ln-close .hp2-cta:hover { background: var(--color-b100) !important; }
+html body #ln#ln.ln .ln-close .hp2-cta2 { background: transparent !important; color: var(--color-night-ink) !important; box-shadow: inset 0 0 0 1px var(--color-b400) !important; }
+html body #ln#ln.ln .ln-close .hp2-cta2:hover { box-shadow: inset 0 0 0 1px var(--color-night-ink) !important; }
+
+/* Below 60rem: one column, still left-aligned */
+@media (max-width: 60rem) {
+  html body #ln#ln.ln > section { padding-block: var(--space-3xl) !important; }
+  html body #ln#ln.ln :is(.why-in, .wf-head, .pb-head, #trust .v3-tr2-head),
+  html body #ln#ln.ln .v3-hero .hp3-hero-in,
+  html body #ln#ln.ln .hp2-split,
+  html body #ln#ln.ln #trust .hp3-trust article { grid-template-columns: minmax(0, 1fr) !important; row-gap: var(--space-md) !important; }
+  html body #ln#ln.ln .v3-hero .hp3-hero-in { min-height: 0; row-gap: var(--space-2xl) !important; }
+  html body #ln#ln.ln .wf-head .wf-lead { grid-column: 1; }
+  html body #ln#ln.ln .hp2-l { position: static; }
+  html body #ln#ln.ln :is(#why, #workflow, #problem, #can, #trust, #start) h2 br { display: none; }
+  html body #ln#ln.ln #trust .hp3-trust article { row-gap: var(--space-xs) !important; }
+}
+@media (max-width: 40rem) {
+  html body #ln#ln.ln > section { padding-block: var(--space-2xl) !important; }
+  html body #ln#ln.ln .v3-hero h1:not(#_a):not(#_b):not(#_c) { font-size: clamp(2.375rem, 10vw, 2.75rem) !important; }
+  html body #ln#ln.ln .v3-hero .v3-ctas { flex-direction: column !important; align-items: stretch !important; }
+  .hp3-ans { padding: var(--space-md); }
+  .hp3-rows li { grid-template-columns: 1fr; }
+  .hp3-tag, .hp3-rows span, .hp3-rows em { grid-column: 1; grid-row: auto; }
+  .hp3-rows span { margin-top: var(--space-xs); }
+}
+
+/* Heads and the close band: every child starts at the left edge */
+html body #ln#ln.ln#ln#ln#ln :is(#why, #workflow, #problem, #can, #trust, #start) :is(h2, .why-p, .wf-lead, .pb-lead, .ln-sub, .hp2-ctas, .ln-close p) { justify-self: start !important; margin-left: 0 !important; margin-right: 0 !important; }
+html body #ln#ln.ln#ln#ln#ln .ln-close .hp2-ctas { justify-content: flex-start !important; }
+html body #ln#ln.ln#ln #why .why-in { align-items: start !important; }
+@media (max-width: 60rem) {
+  html body #ln#ln.ln#ln .v3-hero { padding-top: var(--space-3xl) !important; }
+}
+/* One container on every section: capped and centred, gutters grow at wide screens */
+html body :is(#ln#ln.ln, footer.lf) .ln-wrap { max-width: calc(var(--container) + 2 * var(--gutter)) !important; width: 100% !important; margin-inline: auto !important; padding-inline: var(--gutter) !important; box-sizing: border-box !important; }
+html body #ln#ln.ln#ln .ln-close > .ln-wrap { max-width: calc(var(--container) + 2 * var(--gutter)) !important; }

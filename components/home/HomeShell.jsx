@@ -1,5 +1,6 @@
 import "@/app/home.css";
 import "@/app/landing.css";
+import "@/app/hallmark.css";
 import Header from "@/components/home/Header";
 import Menu from "@/components/home/Menu";
 import AboutUsPage from "@/components/home/AboutUsPage";
