@@ -319,3 +319,6 @@ html body #ln#ln #why .why-in > div, html body #ln#ln #why .why-p { position: re
   html body #ln#ln.ln#ln#ln#ln#ln .v3-hero .v3-ctas, html body #ln#ln.ln#ln#ln#ln#ln .ln-close .hp2-ctas { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: var(--space-xs) !important; width: auto !important; max-width: none !important; }
   html body #ln#ln.ln#ln#ln#ln#ln :is(.v3-hero .v3-ctas, .ln-close .hp2-ctas) .ln-btn { width: auto !important; flex: 0 1 auto !important; padding: 0 16px !important; min-height: 46px !important; font-size: 0.9375rem !important; white-space: nowrap !important; }
 }
+/* What you can do: smaller row titles */
+html body #ln#ln.ln#ln#ln .hp2-list h3 { font-size: 1.25rem !important; }
+@media (max-width: 40rem) { html body #ln#ln.ln#ln#ln .hp2-list h3 { font-size: 1.0625rem !important; font-weight: 600 !important; letter-spacing: -0.01em !important; } html body #ln#ln.ln#ln#ln .hp2-list li { padding: var(--space-md) 0 !important; } html body #ln#ln.ln#ln#ln .hp2-list p { font-size: 0.9375rem !important; margin-top: var(--space-2xs) !important; } }
