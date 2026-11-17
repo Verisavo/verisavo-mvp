@@ -916,6 +916,33 @@ function prepareFromText(desc) {
   B.ai = desc; B.gapFrom = ''; B.typed = true;
   return true;
 }
+let OPEN_GAPS = [], GAPSEL = {};
+function gapPicker() {
+  const n = OPEN_GAPS.filter((g, i) => GAPSEL[i]).length;
+  return `<div class="field gaps-field"><span class="flabel">Intelligence gaps from your chat</span><p class="muted" style="margin:0 0 8px">What the evidence can’t answer yet. Tick what you want SavoScouts to look into.</p><div class="gapscroll" tabindex="0">${OPEN_GAPS.map((g, i) => `<label class="gaprow"><input type="checkbox" data-gapsel="${i}"${GAPSEL[i] ? ' checked' : ''}><span class="gbody"><b>${esc(g.q)}</b>${g.why ? `<small>Why it matters: ${esc(g.why)}</small>` : ''}${g.from ? `<small class="gfrom">From “${esc(g.from)}”</small>` : ''}</span></label>`).join('')}</div><div class="row" style="margin-top:12px"><button type="button" class="btn primary" data-gapgo${n ? '' : ' disabled'}>${n > 1 ? 'Investigate these gaps (' + n + ')' : 'Investigate this gap'}</button></div></div>`;
+}
+if (INLINE) {
+  const askGaps = () => { try { parent.postMessage({ vs: 'gaps-request' }, '*'); } catch (e) {} };
+  window.addEventListener('message', e => {
+    if (!e.data || e.data.vs !== 'open-gaps') return;
+    const items = Array.isArray(e.data.items) ? e.data.items : [];
+    if (JSON.stringify(items) === JSON.stringify(OPEN_GAPS)) return;
+    OPEN_GAPS = items; GAPSEL = {};
+    if (route().page === 'builder' && typeof B !== 'undefined' && B && !B.prepared && !B.id && B.step === 0) render();
+  });
+  window.addEventListener('hashchange', askGaps); askGaps(); setTimeout(askGaps, 600);
+  document.addEventListener('click', e => {
+    const c = e.target.closest && e.target.closest('[data-gapsel]');
+    if (c) { GAPSEL[+c.dataset.gapsel] = c.checked; const n = OPEN_GAPS.filter((g, i) => GAPSEL[i]).length, b = document.querySelector('[data-gapgo]'); if (b) { b.disabled = !n; b.textContent = n > 1 ? 'Investigate these gaps (' + n + ')' : 'Investigate this gap'; } return; }
+    if (e.target.closest && e.target.closest('[data-gapgo]')) {
+      const sel = OPEN_GAPS.filter((g, i) => GAPSEL[i]); if (!sel.length) return;
+      const kinds = sel.map(g => g.kind).filter((v, i, a) => v && a.indexOf(v) === i);
+      const ctx = { gaps: sel.map(g => g.q), gap: sel.map(g => g.q).join(' '), from: sel[0].from || '', kind: sel[0].kind || 'Retailer interviews', kinds, city: sel[0].city || '', country: sel[0].country || '', product: sel[0].product || '' };
+      try { parent.postMessage({ vs: 'gaps-picked', gaps: ctx.gaps }, '*'); } catch (x) {}
+      fromGapCtx(JSON.stringify(ctx)); GAPSEL = {}; render(); window.scrollTo(0, 0);
+    }
+  });
+}
 function fromGapCtx(raw) {
   let g; try { g = JSON.parse(raw); } catch (e) { return; }
   if (!g || !g.gap) return;
@@ -953,7 +980,7 @@ function cBuilder(r) {
       <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Generate task again' : 'Generate task'}">${ic.spark}<span>${B.prepared ? 'Generate again' : 'Generate task'}</span></button></div>
       ${B.prepared ? `<p class="faint askhint">Task generated below. Change the description and generate again if needed.</p>` : ''}
       ${(() => { const dr = B.prepared || B.id ? [] : surveys().filter(x => x.status === 'draft' && !x.sample); return dr.length ? `<div class="field drafts-field"><span class="flabel faint" style="font-weight:400">Your drafts</span><div class="drafts">${dr.slice(0, 5).map(x => `<button type="button" class="draftrow" data-go="c-builder-${x.id}"><span class="dt">${esc(x.title)}</span><span class="dm">${x.questions ? x.questions.length + ' question' + (x.questions.length === 1 ? '' : 's') + ' · ' : ''}saved ${ago(x.updatedAt || x.createdAt)}</span><span class="da">Continue</span></button>`).join('')}</div><p class="faint" style="font-size:12.5px;margin:6px 0 0">All drafts are also under Manage investigations → Draft.</p></div>` : ''; })()}
-      ${B.prepared ? '' : `<div class="field sugg-field"><span class="flabel faint" style="font-weight:400">Try one of these</span><div class="chips sugg">${GAPS.map((g, i) => `<button type="button" class="chipbtn" data-act="usegap" data-v="${i}">${esc(g.gap)}</button>`).join('')}</div></div>`}`}
+      ${B.prepared ? '' : (INLINE && OPEN_GAPS.length && !B.id) ? gapPicker() : `<div class="field sugg-field"><span class="flabel faint" style="font-weight:400">Try one of these</span><div class="chips sugg">${GAPS.map((g, i) => `<button type="button" class="chipbtn" data-act="usegap" data-v="${i}">${esc(g.gap)}</button>`).join('')}</div></div>`}`}
       ${showDetails ? `
       ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Task generated.</b> Verisavo read your description and filled in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
       <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
@@ -1677,6 +1704,17 @@ a { text-underline-offset: 2px; }
 /* the step bar stays in view while the task scrolls */
 .card > .stepper { position: sticky; top: var(--htop-h, 0px); z-index: 6; background: var(--card); padding-top: 12px; padding-bottom: 10px; margin-top: -12px; box-shadow: 0 1px 0 var(--line); }
 .chips.sugg .chipbtn { height: auto !important; max-height: none !important; min-height: 40px; border-radius: 14px; padding: 9px 13px; }
+.gapscroll { max-height: 320px; overflow-y: scroll; border: 1px solid var(--line); border-radius: 12px; background: var(--card); scrollbar-width: thin; scrollbar-color: #B9B9BC transparent; -webkit-overflow-scrolling: touch; }
+.gapscroll::-webkit-scrollbar { width: 7px; -webkit-appearance: none; }
+.gapscroll::-webkit-scrollbar-thumb { background: #B9B9BC; border-radius: 4px; }
+.gapscroll::-webkit-scrollbar-track { background: var(--field); border-radius: 4px; }
+.gaprow { display: flex; gap: 12px; align-items: flex-start; padding: 13px 14px; cursor: pointer; }
+.gaprow + .gaprow { border-top: 1px solid var(--line); }
+.gaprow input { width: 18px; height: 18px; margin: 2px 0 0; flex: none; accent-color: var(--primary); }
+.gaprow .gbody { display: grid; gap: 4px; min-width: 0; }
+.gaprow b { font-weight: 500; color: var(--ink); line-height: 1.4; }
+.gaprow small { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.gaprow small.gfrom { color: var(--ink-4); }
 /* phone: section tabs as one segmented control */
 .hnav .s { display: none; }
 @media (max-width: 520px) {
@@ -1693,6 +1731,7 @@ a { text-underline-offset: 2px; }
   .card > .stepper::after { content: ""; position: absolute; left: -100vmax; right: -100vmax; bottom: 0; height: 1px; background: var(--line); }
   .step-now { margin-top: 2px; }
   .happ { overflow-x: clip; }
+  .happ.inline .content > .card:has(> .stepper) { margin-top: -22px; border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
 }
 /* neutral theme v1: same colours, font and text size as the Assistant chat */
 :root, :root[data-theme="light"] {
