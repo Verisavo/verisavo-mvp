@@ -634,7 +634,7 @@ function track(s, list) {
   const eligible = Math.max(new Set(list.map(x => x.scoutId)).size, arr('scouts').filter(c => c.country === s.country && (!(s.regions || []).length || s.regions.includes(c.city))).length);
   const ok = list.filter(x => x.status === 'approved').length, pend = list.filter(x => x.status === 'pending').length;
   return `<div class="card stack">
-    <div class="stepper life">${names.map((t, i) => `<div class="step ${i < cur || (cur === 4 && i === 4) ? 'done' : i === cur ? 'on' : ''}"><span class="dot">${i < cur || cur === 4 ? ic.check : i + 1}</span>${t}</div>`).join('')}</div>
+    <div class="stepper life">${names.map((t, i) => `<div class="step ${i < cur || (cur === 4 && i === 4) ? 'done' : i === cur ? 'on' : ''}"><span class="dot">${i < cur || cur === 4 ? ic.check : i + 1}</span><span class="lab">${t}</span></div>`).join('')}</div><p class="step-now"><span>Step ${Math.min(cur, names.length - 1) + 1} of ${names.length}</span><b>${names[Math.min(cur, names.length - 1)]}</b></p>
     <div class="funnel"><div>Sent to SavoScouts<b class="num">${s.status === 'draft' ? '—' : eligible}</b>via the Verisavo agent</div><div>Responses submitted<b class="num">${list.length}<span class="faint" style="font-size:13px"> / ${s.target}</span></b>${pct(list.length, s.target)}% of coverage</div><div>Awaiting review<b class="num">${pend}</b>${pend ? 'needs your team' : 'nothing waiting'}</div><div>Verified<b class="num">${ok}</b>VeriPoints released</div></div>
     ${s.status !== 'draft' ? (() => { const c = costOf(s, list); return `<div class="costrow"><div><span>Charged so far</span><b class="num">${money(c.charged)}</b><small>${c.ok} verified × ${money(c.rate)}</small></div><div><span>Awaiting review</span><b class="num">${money(c.pending)}</b><small>Charged only if verified</small></div><div><span>Authorised up to</span><b class="num">${money(c.cap)}</b><small>${esc(payName(s.billing && s.billing.method))}</small></div><button class="link" data-go="c-billing">Billing ${ic.arrow}</button></div>`; })() : ''}
     ${s.gap ? `<div class="note">${ic.info}<span><b>Intelligence Gap.</b> ${esc(s.gap)}</span></div>` : ''}
@@ -939,7 +939,7 @@ function fromGapCtx(raw) {
 function cBuilder(r) {
   if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
   const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Payment', 'Review and deploy'];
-  const stepper = `<div class="stepper">${steps.map((t, i) => `<div class="step ${i < B.step ? 'done' : i === B.step ? 'on' : ''}"><span class="dot">${i < B.step ? ic.check : i + 1}</span>${t}</div>`).join('')}</div>`;
+  const stepper = `<div class="stepper">${steps.map((t, i) => `<div class="step ${i < B.step ? 'done' : i === B.step ? 'on' : ''}"><span class="dot">${i < B.step ? ic.check : i + 1}</span><span class="lab">${t}</span></div>`).join('')}</div><p class="step-now"><span>Step ${Math.min(B.step, steps.length - 1) + 1} of ${steps.length}</span><b>${steps[Math.min(B.step, steps.length - 1)]}</b></p>`;
   const P = pricing(B.responses, B.timeframe);
   let inner = '';
   if (B.step === 0) {
@@ -1604,6 +1604,16 @@ td { border-top-color: var(--line); }
 .modal { border-radius: 16px; border: 1px solid var(--line); }
 
 /* stepper */
+.step-now { display: none; }
+@media (max-width: 640px) {
+  .stepper { overflow: visible; padding: 2px 0 0; }
+  .step { min-width: 0; flex: 1; }
+  .step .lab { display: none; }
+  .step:not(:last-child)::after { top: 13px; }
+  .step-now { display: grid; gap: 2px; justify-items: center; text-align: center; margin: -6px 0 0; }
+  .step-now span { font-size: 12.5px; color: var(--ink-3); }
+  .step-now b { font-size: 15px; font-weight: 600; color: var(--ink); }
+}
 .step .dot { background: var(--field); color: var(--ink-3); width: 26px; height: 26px; font-size: 13px; }
 .step.on .dot { background: var(--primary); color: #fff; }
 .step.done .dot { background: var(--primary-100); color: var(--primary); }
