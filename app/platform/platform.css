@@ -2745,6 +2745,7 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main .sheet .srcitems{list-style:none;margin:0;padding:0;display:grid;gap:10px}#va .va-main .sheet .srcitems li{padding:14px 16px;border:1px solid var(--px-line);border-radius:var(--px-r-l);background:#fff}#va .va-main .sheet .srcitems li.on{border-color:var(--px-blue-300)}
 #va .va-main .sheet .srcitems .srcfind{margin:0 0 6px;padding:0;border:0}#va .va-main .sheet .srcitems .srchow{margin:0}#va .va-main .sheet .srcitems .kx-link{margin-top:8px;padding:0}
 #va .va-main .sheet .srck{display:block;font-size:12.5px;font-weight:600;color:var(--px-muted);margin-bottom:4px}#va .va-main .sheet .srcfoot{margin-top:14px}#va .va-main .sheet .srcnone{padding:18px 16px;border:1px dashed var(--px-line);border-radius:var(--px-r-l);background:var(--px-canvas);color:var(--px-muted);font-size:14px;font-weight:500}
+#va .va-main .vapx .tiles{flex-wrap:nowrap;gap:6px}#va .va-main .vapx .tile{flex:1 1 0;min-width:0;padding:10px 10px 9px;border-radius:var(--px-r-s)}#va .va-main .vapx .tile .v{font-size:17px;margin-top:2px}#va .va-main .vapx .tile .small{font-size:12px;line-height:1.3}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
