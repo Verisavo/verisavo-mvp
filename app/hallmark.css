@@ -217,3 +217,7 @@ html body #ln#ln.ln#ln#ln#ln #why .why-p { text-align: center !important; margin
 #ln .why-pz path.pz-out { fill: none; stroke: var(--color-b600); stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round; }
 #ln .why-pz path.pz-seam { fill: none; stroke: var(--color-b400); stroke-width: 0.9; stroke-linecap: round; opacity: 0.75; }
 #ln .why-src span { text-shadow: 0 0 3px var(--color-paper), 0 0 3px var(--color-paper), 0 0 6px var(--color-paper), 0 0 6px var(--color-paper); }
+/* Quieter lining so the labels lead */
+#ln .why-pz path.pz-out { stroke: var(--color-b400); stroke-width: 1.1; }
+#ln .why-pz path.pz-seam { stroke: var(--color-b300); stroke-width: 0.8; opacity: 0.45; }
+#ln .why-src span { font-weight: 600; text-shadow: 0 0 2px var(--color-paper), 0 0 4px var(--color-paper), 0 0 6px var(--color-paper), 0 0 8px var(--color-paper), 0 0 10px var(--color-paper); }
