@@ -2802,6 +2802,8 @@ html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min :is(a,bu
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) .foot-min{gap:12px 24px !important}
 html body footer:not(#_a):not(#_b):not(#_c):not(#_d):not(#_e) :is(.foot-brand > span, .lf-brand p){font-size:.875rem !important;line-height:1.5 !important}
 html body footer :is(.foot-bar,.lf-bar) .foot-mail{display:none !important}
+html body #va#va#va .va-side .vsn-soon > span{flex:0 0 auto !important}
+html body #va#va#va .va-side .vsn-soon em{margin-left:-3px !important;margin-right:auto !important;font-size:9px !important;letter-spacing:0 !important;line-height:1 !important;padding:3px 4px !important;flex:0 0 auto !important;border-radius:999px !important;white-space:nowrap !important}
 /* <<< neutral theme v1 */
 /* <<< assistant prototype v1 */
 /* >>> quiet system v1 */
