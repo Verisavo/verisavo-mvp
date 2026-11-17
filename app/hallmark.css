@@ -391,7 +391,7 @@ html body #pg-careers#pg-careers#pg-careers .ca-addr { position: absolute !impor
 /* >>> homepage neutral theme v1: the chat's font and colours on the homepage and its footer */
 :root {
   --color-ink: #1F273F; --color-ink-2: #3B5D8A; --color-muted: #6D6C71;
-  --color-paper-2: #F1F1F3; --color-paper-3: #EAEAEA; --color-rule: #E5E5E5; --color-rule-2: #D3D3D3;
+  --color-paper-2: #EFF2F6; --color-paper-3: #EAEAEA; --color-rule: #E5E5E5; --color-rule-2: #D3D3D3;
   --color-accent: #3F74B5; --color-focus: #3F74B5;
   --color-night: #3B5D8A; --color-night-2: #335179; --color-night-muted: #DCE6F2;
   --color-b100: #E6EEF7; --color-b200: #CDDDEF; --color-b300: #A5C0DF; --color-b400: #7AA0CE; --color-b500: #5B88C0; --color-b600: #4A7DBB; --color-b700: #3F74B5; --color-b800: #3B5D8A;
@@ -610,9 +610,9 @@ html body #pg-community#pg-community#pg-community .c2-me ~ .c2-msg:not(.c2-me):n
 
 /* >>> light mode depth v1: greyer second-layer surfaces, firmer card outlines */
 :root {
-  --color-paper-2: #F2F2F4; --color-rule: #D9D9DE;
-  --lc-ebeff5:#E7EBF1; --lc-edf1f6:#E9EDF2; --lc-edf1f8:#E9EEF4; --lc-eef1f6:#EAEDF2; --lc-eef2f7:#EAEEF3; --lc-eef2f8:#EAEEF4; --lc-eef3fb:#F0F0F0; --lc-eff3f9:#F0F0F0; --lc-f0f2f6:#EFEFEF; --lc-f1f3f8:#F0F0F0; --lc-f1f4f9:#F1F1F1; --lc-f2f5fa:#F2F2F2; --lc-f3f4f7:#F1F1F1; --lc-f3f6fa:#F2F2F2; --lc-f3f6fb:#F3F3F3; --lc-f3f7fc:#F4F4F4; --lc-f4f6fa:#F3F3F3; --lc-f4f7fb:#F4F4F4; --lc-f4f7fc:#F4F4F4; --lc-f5f7fb:#F4F4F4; --lc-f6f8fb:#F4F4F4; --lc-f6f8fc:#F5F5F5; --lc-f7f9fc:#F6F6F6; --lc-f7f9fd:#F6F6F6; --lc-f8fafd:#F7F7F7; --lc-f9fafc:#F7F7F7; --lc-f9fbfd:#F7F7F7; --lc-fafbfd:#F8F8F8; --lc-fafbfe:#F8F8F8; --lc-fbfcfe:#F8F8F8; --lc-fcfdfe:#F9F9F9;
+  --color-paper-2: #F0F3F7; --color-rule: #D9D9DE;
+  --lc-ebeff5:#E9ECF0; --lc-edf1f6:#EAEDF1; --lc-edf1f8:#EBEEF2; --lc-eef1f6:#EBEEF2; --lc-eef2f7:#EBEEF2; --lc-eef2f8:#ECEFF3; --lc-eef3fb:#EDF0F4; --lc-eff3f9:#EDF0F4; --lc-f0f2f6:#ECEFF3; --lc-f1f3f8:#EDF0F4; --lc-f1f4f9:#EEF1F5; --lc-f2f5fa:#EFF2F6; --lc-f3f4f7:#EEF1F5; --lc-f3f6fa:#EFF2F6; --lc-f3f6fb:#F0F3F7; --lc-f3f7fc:#F1F4F8; --lc-f4f6fa:#F0F3F7; --lc-f4f7fb:#F1F4F8; --lc-f4f7fc:#F1F4F8; --lc-f5f7fb:#F1F4F8; --lc-f6f8fb:#F1F4F8; --lc-f6f8fc:#F2F5F9; --lc-f7f9fc:#F3F6FA; --lc-f7f9fd:#F3F6FA; --lc-f8fafd:#F4F7FB; --lc-f9fafc:#F4F7FB; --lc-f9fbfd:#F4F7FB; --lc-fafbfd:#F5F8FC; --lc-fafbfe:#F5F8FC; --lc-fbfcfe:#F5F8FC; --lc-fcfdfe:#F6F9FD;
   --lc-d3dce9:#C6D0DC; --lc-d5dce8:#D1D1D1; --lc-d6e2f2:#CCD5E2; --lc-dce4ef:#CFD7E2; --lc-dce4f0:#CFD8E3; --lc-dce6f4:#D1DAE5; --lc-dce6f6:#D3DBE5; --lc-e1e8f2:#D4DBE5; --lc-e3e8f0:#D6DCE3; --lc-e3e9f2:#D6DDE5; --lc-e3e9f3:#D6DDE6; --lc-e4eaf3:#D7DEE6; --lc-e6ecf4:#D9DFE7; --lc-e6edf8:#DBE1E9; --lc-e8edf4:#DBE0E7; --lc-e9edf3:#E1E1E1;
 }
-html body #pg-community.pg, html body #pg-community-tasks.pg { --cm-t: #F3F3F5 !important; --cm-l: #D6DDE6 !important; }
+html body #pg-community.pg, html body #pg-community-tasks.pg { --cm-t: #F1F4F8 !important; --cm-l: #D6DDE6 !important; }
 /* <<< light mode depth */
