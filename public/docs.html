@@ -24,6 +24,11 @@ html[data-vs-theme="dark"] body.page-open:not(.page-light):not(:has(#pg-pricing.
 html[data-vs-theme="dark"] .top .pill { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 /* <<< dark mode */
 </style>
+<style>/* dark mode toggle icon */
+.thm svg{width:16px;height:16px}
+.thm .thm-sun,html[data-vs-theme="dark"] .thm .thm-moon{display:none}
+html[data-vs-theme="dark"] .thm .thm-sun{display:block}
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Verisavo Docs</title>
 <meta name="description" content="How Verisavo works: signals and evidence, verification, intelligence states, Intelligence Gaps, SavoScouts, Market Memory and privacy.">
@@ -406,6 +411,7 @@ body.nav-open .side { box-shadow: 20px 0 50px -30px rgba(0,0,0,.5) !important; }
     <a class="tlink" href="/">Home</a>
     <a class="tlink" href="/platform">Product</a>
     <a class="tlink" href="#faq">FAQ</a>
+    <button class="icon-btn thm" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="thm-moon" d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z"/><g class="thm-sun"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.6v1.5M8 12.9v1.5M1.6 8h1.5M12.9 8h1.5M3.5 3.5l1 1M11.5 11.5l1 1M3.5 12.5l1-1M11.5 4.5l1-1"/></g></svg></button>
     <button class="icon-btn" id="theme" type="button" aria-label="Switch light or dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg></button>
     <a class="cta" href="#quickstart">Get started</a>
   </div>

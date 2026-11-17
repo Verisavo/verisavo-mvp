@@ -3102,3 +3102,8 @@ html[data-vs-theme="dark"] body.page-open:not(.page-light):not(:has(#pg-pricing.
 html[data-vs-theme="dark"] body.page-open:not(.page-light):not(:has(#pg-pricing.open, #pg-about-us.open, #pg-careers.open, #pg-contact.open)) .top::before { filter: invert(1) hue-rotate(180deg); }
 html[data-vs-theme="dark"] .top .pill { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 /* <<< dark mode */
+
+/* dark mode toggle icon */
+.thm svg{width:16px;height:16px}
+.thm .thm-sun,html[data-vs-theme="dark"] .thm .thm-moon{display:none}
+html[data-vs-theme="dark"] .thm .thm-sun{display:block}
