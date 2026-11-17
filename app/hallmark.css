@@ -434,3 +434,18 @@ html body .mnav {
   --indigo: #1F273F !important; --b100: #E3EBF8 !important; --b200: #CCDDF1 !important; --b300: #A8C6E8 !important; --b400: #80AADC !important; --b500: #618CD0 !important; --b600: #4D74C3 !important; --b700: #4362B2 !important; --b800: #3A5292 !important;
 }
 /* <<< menu screen original background */
+
+/* >>> CTA bands: original Royal Indigo, buttons on one line, one height */
+html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) { background: #1F273F !important; background-image: none !important; border-color: #1F273F !important; min-height: 340px; display: flex !important; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-sizing: border-box; }
+html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) :is(h2,h3) { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) :is(p,small,span):not(a *):not(button *) { color: #CCDDF1 !important; }
+html body :is(.hp2-ctas,.acts,.ca-mail,.u2-acts,.wa-ctas):not(#x#x#x#x#x#x#x) { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; justify-content: center !important; align-items: center !important; gap: 10px !important; width: auto !important; }
+html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) :is(a,button):is(.ln-btn,.obtn,.cm-btn,.u2-btn,.wa-btn) { flex: 0 1 auto !important; width: auto !important; min-width: 0 !important; white-space: nowrap !important; height: 44px !important; min-height: 44px !important; padding: 0 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 600 !important; background: transparent !important; border: 1px solid rgba(255,255,255,.55) !important; color: #fff !important; box-shadow: none !important; }
+html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) :is(a,button):is(.hp2-cta,.obtn.solid,.cm-wa,.u2-solid,.wa-btn:not(.wa-btn2)) { background: #fff !important; border-color: #fff !important; color: #1F273F !important; }
+html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) :is(a,button):is(.ln-btn,.obtn,.cm-btn,.u2-btn,.wa-btn) :is(span,b,svg) { color: inherit !important; }
+@media (max-width: 40rem) { html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) { padding: 36px 20px !important; } html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) :is(a,button):is(.ln-btn,.obtn,.cm-btn,.u2-btn,.wa-btn) { padding: 0 14px !important; font-size: 14.5px !important; } }
+@media (min-width: 40.01rem) { html body :is(.ln-close .ln-wrap,.cta-band,.ca-apply,.cm-close,.cmt-notify,.wa-card):not(#x#x#x#x#x#x#x) { min-height: 384px; padding-top: 48px !important; padding-bottom: 48px !important; } }
+html body .wa-card:not(#x#x#x#x#x#x#x) > * { margin-top: 0 !important; }
+html body .wa-card:not(#x#x#x#x#x#x#x) :is(h2,h3) { font-size: clamp(1.6rem, 1.1rem + 2vw, 2.4rem) !important; line-height: 1.1 !important; margin: 0 0 12px !important; }
+html body .wa-card:not(#x#x#x#x#x#x#x) p { font-size: 15px !important; line-height: 1.5 !important; margin: 0 0 20px !important; max-width: 46ch; }
+/* <<< CTA bands */
