@@ -324,3 +324,20 @@ html body #ln#ln.ln#ln#ln .hp2-list h3 { font-size: 1.25rem !important; }
 @media (max-width: 40rem) { html body #ln#ln.ln#ln#ln .hp2-list h3 { font-size: 1.0625rem !important; font-weight: 600 !important; letter-spacing: -0.01em !important; } html body #ln#ln.ln#ln#ln .hp2-list li { padding: var(--space-md) 0 !important; } html body #ln#ln.ln#ln#ln .hp2-list p { font-size: 0.9375rem !important; margin-top: var(--space-2xs) !important; } }
 /* Pricing: every plan card carries the same Royal Indigo frame */
 html body #pg-pricing#pg-pricing.pg.pg .pc-card { box-shadow: 0 0 0 1.5px var(--color-ink), 0 30px 60px -38px rgba(31, 39, 63, 0.5) !important; }
+/* Insights on phones: article and research pictures become small thumbnails beside the text */
+@media (max-width: 40rem) {
+  html body #pg-research#pg-research#pg-research.pg.pg .ar-row { display: grid !important; grid-template-columns: minmax(0, 1fr) 92px !important; column-gap: var(--space-md) !important; align-items: start !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .ar-row .ar-art { grid-column: 2 !important; grid-row: 1 !important; width: 92px !important; height: 92px !important; min-height: 0 !important; aspect-ratio: 1 !important; margin: 0 !important; border-radius: 12px !important; overflow: hidden !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .ar-row .ar-body { grid-column: 1 !important; grid-row: 1 !important; min-width: 0 !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .rs-card { display: grid !important; grid-template-columns: 92px minmax(0, 1fr) !important; column-gap: var(--space-md) !important; row-gap: var(--space-2xs) !important; align-items: start !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .rs-card > .rs-art { grid-column: 1 !important; grid-row: 1 / span 3 !important; width: 92px !important; height: 92px !important; min-height: 0 !important; aspect-ratio: 1 !important; margin: 0 !important; border-radius: 12px !important; overflow: hidden !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .rs-card > :is(.rs-meta, h3, .rs-sub) { grid-column: 2 !important; margin-top: 0 !important; min-width: 0 !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .rs-card > .rs-cta { grid-column: 1 / -1 !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg :is(.ar-art, .rs-card > .rs-art) svg { width: 100% !important; height: 100% !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .ix-art { height: 150px !important; min-height: 0 !important; aspect-ratio: auto !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .ix-art svg { width: 100% !important; height: 100% !important; }
+}
+@media (max-width: 40rem) {
+  html body #pg-research#pg-research#pg-research.pg.pg .ar-row { grid-template-columns: minmax(0, 1fr) 96px !important; column-gap: var(--space-xs) !important; }
+  html body #pg-research#pg-research#pg-research.pg.pg .ar-row .ar-art { width: 80px !important; height: 80px !important; margin: var(--space-md) var(--space-md) 0 0 !important; }
+}
