@@ -961,4 +961,19 @@ html body #ln #why .pz-in span:not(#a#b#c#d#e#f#g#h#i) { color: #1F273F !importa
 html body #ln .hv1:not(#a#b#c#d#e#f#g#h#i) { padding-bottom: clamp(20px, 3vw, 36px) !important; }
 html[data-vs-theme="dark"] #ln #why { filter: invert(1) hue-rotate(180deg); }
 @media (max-width: 760px) { html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i) { border-radius: 30px; } }
+/* hero: pencil market overview, text at the foot of a light card */
+html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i) { background: #F5F8FD !important; align-items: flex-end !important; min-height: clamp(600px, 54vw, 760px); }
+html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i) { object-position: 50% 35% !important; }
+html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(245,248,253,0) 0%, rgba(245,248,253,0) 34%, rgba(245,248,253,.88) 62%, #F5F8FD 82%) !important; }
+html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i) { padding: 0 clamp(24px, 4.5vw, 64px) clamp(28px, 4vw, 56px) !important; max-width: 860px; }
+html body #ln #ln-h1#ln-h1:not(#a#b#c#d#e#f#g#h#i) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; max-width: 14ch; }
+html body #ln .hv1 .hv-lead:not(#a#b#c#d#e#f#g#h#i) { color: #414A5E !important; -webkit-text-fill-color: #414A5E !important; }
+html body #ln .hv1 .hv-b1:not(#a#b#c#d#e#f#g#h#i) { background: #1F273F !important; color: #fff !important; -webkit-text-fill-color: #fff !important; }
+html body #ln .hv1 .hv-b2:not(#a#b#c#d#e#f#g#h#i) { background: rgba(255,255,255,.7) !important; border-color: #1F273F !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
+@media (max-width: 760px) {
+  html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i) { height: 680px; min-height: 0; }
+  html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i) { object-position: 50% 0 !important; height: 62% !important; }
+  html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(245,248,253,0) 0%, rgba(245,248,253,0) 30%, rgba(245,248,253,.92) 52%, #F5F8FD 62%) !important; }
+}
+@media (min-width: 761px) { html body #ln .hv1 .hv-card::after { background: radial-gradient(ellipse 62% 78% at 0% 100%, #F5F8FD 0%, rgba(245,248,253,.96) 55%, rgba(245,248,253,0) 100%), linear-gradient(180deg, rgba(245,248,253,0) 40%, rgba(245,248,253,.9) 78%, #F5F8FD 100%) !important; } }
 /* <<< home v1 */
