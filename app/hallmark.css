@@ -1099,3 +1099,9 @@ html body #pg-portal .pt-band h2:not(#a#b#c#d#e#f#g#h#i#j#k#l) { color: #A8C6E8 
 html body #pg-portal .pt-band .pt-btn:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #A8C6E8 !important; border-color: #A8C6E8 !important; color: #141A2C !important; -webkit-text-fill-color: #141A2C !important; }
 @media (max-width: 760px) { html body #pg-portal .pt-band:not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-radius: 28px !important; } }
 /* <<< portal job pages v2 */
+
+/* >>> portal tabs: each tab its own capsule inside the bar */
+html body #pg-portal .pt-tabs:not(#a#b#c#d#e#f#g#h#i#j#k#l) { gap: 6px !important; padding: 5px !important; border-radius: 999px !important; background: #F0F3F7 !important; }
+html body #pg-portal .pt-tabs button:not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-radius: 999px !important; padding: 0 16px !important; border: 1px solid #D3DAE4 !important; background: transparent !important; }
+html body #pg-portal .pt-tabs button[aria-pressed="true"]:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #fff !important; border-color: #fff !important; color: #1F273F !important; box-shadow: 0 1px 3px rgba(31,39,63,.14) !important; }
+/* <<< portal tabs */
