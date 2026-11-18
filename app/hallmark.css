@@ -976,4 +976,9 @@ html body #ln .hv1 .hv-b2:not(#a#b#c#d#e#f#g#h#i) { background: rgba(255,255,255
   html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(245,248,253,0) 0%, rgba(245,248,253,0) 30%, rgba(245,248,253,.92) 52%, #F5F8FD 62%) !important; }
 }
 @media (min-width: 761px) { html body #ln .hv1 .hv-card::after { background: radial-gradient(ellipse 62% 78% at 0% 100%, #F5F8FD 0%, rgba(245,248,253,.96) 55%, rgba(245,248,253,0) 100%), linear-gradient(180deg, rgba(245,248,253,0) 40%, rgba(245,248,253,.9) 78%, #F5F8FD 100%) !important; } }
+html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i#j) { background: #F5F8FD !important; }
+html body #ln #why h2:not(#a#b#c#d#e#f#g#h#i#j) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
+html body #ln #why .why-p:not(#a#b#c#d#e#f#g#h#i#j) { color: #414A5E !important; -webkit-text-fill-color: #414A5E !important; }
+html body #ln #why .why-pz:not(#a#b#c#d#e#f#g#h#i#j) { filter: drop-shadow(0 14px 16px rgba(31,39,63,.14)) !important; }
+html body #ln #why .why-pz path.pz-out:not(#a#b#c#d#e#f#g#h#i#j) { stroke: #1F273F !important; stroke-opacity: .45 !important; }
 /* <<< home v1 */
