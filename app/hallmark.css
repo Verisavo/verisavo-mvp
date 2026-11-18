@@ -823,3 +823,10 @@ html body #pg-portal.pg .pt-wa-steps :is(.pt-wa-t b, .pt-wa-line .pt-wa-num) { f
 html body #pg-portal.pg .pt-wa-copy:not([data-shown]) { font-weight: 500; }
 html body #pg-portal.pg .pt-wa-steps :is(.pt-wa-t b, .pt-wa-line .pt-wa-num, .pt-wa-copy:not([data-shown])) { font-size: .9375rem !important; }
 /* <<< SavoScout opportunities portal */
+
+/* >>> community closing band: second button v1 */
+.c2-close-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+html body .c2-close .c2-close-ctas .cm-btn { margin: 0 !important; }
+html body .c2-close .cm-btn.c2-close-ghost { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,.55) !important; box-shadow: none !important; }
+html body .c2-close .cm-btn.c2-close-ghost:hover { background: rgba(255,255,255,.1) !important; border-color: #fff !important; }
+/* <<< community closing band: second button */
