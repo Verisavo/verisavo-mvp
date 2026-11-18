@@ -886,4 +886,5 @@ html body #pg-community.pg .cm2 > .c3-talk { margin-top: 0 !important; }
 
 /* >>> community join: phone in place of portraits v1 */
 html body #pg-community .c2-join .c2-phone { justify-self: center; width: 100%; }
+@media (max-width: 860px) { html body #pg-community .c2-join .c2-phone { order: -1; margin-bottom: 8px; } }
 /* <<< community join: phone */
