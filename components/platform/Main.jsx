@@ -19,7 +19,7 @@ export default function Main() {
               <span className="tone">{"See what’s behind every answer."}</span>
             </h1>
             {" "}
-            <p className="sub">{"Ask the Verisavo Assistant about your market. It brings together your company data, public records, research and evidence from the ground, and tells you what it still doesn&rsquo;t know."}</p>
+            <p className="sub">{"Ask the Verisavo Assistant about your market. It brings together your company data, public records, research and evidence from the ground, and tells you what it still doesn’t know."}</p>
             {" "}
           </div>
           {" "}
