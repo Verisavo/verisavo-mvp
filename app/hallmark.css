@@ -888,3 +888,67 @@ html body #pg-community.pg .cm2 > .c3-talk { margin-top: 0 !important; }
 html body #pg-community .c2-join .c2-phone { justify-self: center; width: 100%; }
 @media (max-width: 860px) { html body #pg-community .c2-join .c2-phone { order: -1; margin-bottom: 8px; } }
 /* <<< community join: phone */
+
+/* >>> home v1: indigo stage, photo card hero, plain header */
+html body:not(:has(.pg.open)):not(.menu-open) .top::before { display: block !important; opacity: 1 !important; background: #1F273F !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top .logo { color: #fff !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top .pill { background: transparent !important; box-shadow: none !important; border: 0 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; gap: 6px; }
+html body:not(:has(.pg.open)):not(.menu-open) .top .pill > button { background: transparent !important; border: 0 !important; box-shadow: none !important; color: #fff !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top .pill > button::before, html body:not(:has(.pg.open)):not(.menu-open) .top .pill > button::after { display: none !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top #menu-lab { display: none !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top #menu-btn svg { width: 30px !important; height: 30px !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top .pa { display: none !important; }
+html body #ln .hv { background: #1F273F; color: #fff; padding: clamp(84px, 9vw, 120px) clamp(12px, 3vw, 40px) clamp(28px, 5vw, 64px); margin: 0; }
+html body #ln .hv-in { max-width: 1360px; margin: 0 auto; }
+html body #ln .hv h1 { margin: 0; font: 500 clamp(2.625rem, 5.2vw, 4.75rem)/1.02 "Red Hat Display", sans-serif; letter-spacing: -.03em; text-wrap: balance; text-align: left; -webkit-text-fill-color: currentColor !important; }
+html body #ln .hv-lead { margin: 22px 0 0; font: 400 clamp(1.0625rem, 1.5vw, 1.3125rem)/1.45 "Red Hat Text", sans-serif; color: rgba(255,255,255,.94) !important; -webkit-text-fill-color: rgba(255,255,255,.94) !important; max-width: 32ch; text-align: left; }
+html body #ln .hv-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+html body #ln .hv-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 26px; border-radius: 999px; font: 600 1rem/1 "Red Hat Text", sans-serif; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
+html body #ln .hv-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+/* shared section restyle */
+html body #ln :is(.ln-btn) { border-radius: 999px !important; }
+html body #ln #why { display: none !important; }
+html body #ln #start { background: transparent !important; padding: clamp(40px, 6vw, 88px) clamp(12px, 3vw, 40px) !important; }
+html body #ln #start > .ln-wrap { background: #1F273F !important; border-radius: 36px; padding: clamp(44px, 7vw, 96px) clamp(22px, 5vw, 72px) !important; text-align: center; max-width: 1360px; }
+html body #ln #start h2 { color: var(--ver-accent) !important; -webkit-text-fill-color: var(--ver-accent) !important; }
+html body #ln #start p { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+html body #ln #start .hp2-ctas { justify-content: center; }
+html body #ln #start .hp2-cta { background: var(--ver-accent) !important; color: #141A2C !important; -webkit-text-fill-color: #141A2C !important; border-color: var(--ver-accent) !important; }
+html body #ln #start .hp2-cta2 { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,.6) !important; }
+html[data-vs-theme="dark"] #ln .hv, html[data-vs-theme="dark"] #ln #start > .ln-wrap { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"]:not(#x#x) #ln .hv img { filter: none !important; }
+
+html body #ln .hv { padding-top: clamp(104px, 10vw, 132px); }
+html body #ln #start#start .ln-btn { border-radius: 999px !important; min-height: 52px; padding: 0 26px !important; }
+html body #ln #start#start .ln-btn.hp2-cta { background: var(--ver-accent) !important; color: #141A2C !important; -webkit-text-fill-color: #141A2C !important; border: 1px solid var(--ver-accent) !important; }
+html body #ln #start#start .ln-btn.hp2-cta2 { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,.6) !important; }
+html body #ln #problem .net-card { border-radius: 36px !important; }
+
+html body #ln .hv:not(#a#b#c#d#e#f#g#h#i) { padding-top: clamp(96px, 9vw, 128px) !important; }
+html body #ln #start .ln-btn:not(#a#b#c#d#e#f#g#h#i) { border-radius: 999px !important; min-height: 52px !important; padding: 0 26px !important; }
+html body #ln #start .ln-btn.hp2-cta:not(#a#b#c#d#e#f#g#h#i) { background: var(--ver-accent) !important; color: #141A2C !important; -webkit-text-fill-color: #141A2C !important; border: 1px solid var(--ver-accent) !important; box-shadow: none !important; }
+html body #ln #start .ln-btn.hp2-cta2:not(#a#b#c#d#e#f#g#h#i) { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,.6) !important; box-shadow: none !important; }
+html body #ln #start h2:not(#a#b#c#d#e#f#g#h#i) { color: var(--ver-accent) !important; -webkit-text-fill-color: var(--ver-accent) !important; }
+/* ---- version 1: photo card ---- */
+:root { --ver-accent: #A8C6E8; }
+html body #ln .hv1 .hv-card { position: relative; border-radius: 36px; overflow: hidden; min-height: clamp(540px, 50vw, 700px); display: flex; align-items: center; isolation: isolate; background: #2A3350; }
+html body #ln .hv1 .hv-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 74% 30%; z-index: -2; }
+html body #ln .hv1 .hv-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(52,64,98,.86) 0%, rgba(40,50,80,.7) 38%, rgba(31,39,63,.18) 66%, rgba(31,39,63,.05) 100%); }
+html body #ln .hv1 .hv-txt { padding: clamp(28px, 5.5vw, 80px); max-width: 820px; }
+html body #ln .hv1 h1 { color: #A8C6E8 !important; max-width: 13ch; }
+html body #ln .hv1 .hv-b1 { background: #A8C6E8; color: #1F273F; } html body #ln .hv1 .hv-b2 { border-color: rgba(255,255,255,.6); color: #fff; }
+html body #ln .hv1 .hv-tag { margin: 22px 0 0; text-align: center; color: rgba(255,255,255,.72) !important; -webkit-text-fill-color: rgba(255,255,255,.72) !important; font: 400 .9375rem/1.4 "Red Hat Text", sans-serif; }
+@media (max-width: 760px) {
+  html body #ln .hv1 .hv-card { align-items: flex-end; min-height: 0; height: 640px; border-radius: 30px; }
+  html body #ln .hv1 .hv-ph { object-position: 78% 20%; }
+  html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(31,39,63,.3) 0%, rgba(31,39,63,.3) 26%, rgba(31,39,63,.82) 60%, rgba(31,39,63,.95) 100%); }
+  html body #ln .hv1 .hv-txt { padding: 0 24px 28px; } html body #ln .hv1 h1 { font-size: 2.625rem; max-width: none; }
+  html body #ln .hv1 .hv-lead { font-size: 1.0625rem; max-width: none; margin-top: 14px; } html body #ln .hv-ctas { margin-top: 22px; } html body #ln .hv-btn { min-height: 48px; padding: 0 22px; }
+}
+
+html body #ln #ln-h1#ln-h1 { color: #A8C6E8 !important; -webkit-text-fill-color: #A8C6E8 !important; }
+html body #ln #problem { background: #F0F3F7 !important; }
+html body #ln #problem .net-card { background: #fff !important; }
+
+html[data-vs-theme="dark"]:not(#x#x) body:not(:has(.pg.open)):not(.menu-open) .top::before, html[data-vs-theme="dark"]:not(#x#x) body:not(:has(.pg.open)):not(.menu-open) .top :is(.logo, .pill) { filter: invert(1) hue-rotate(180deg) !important; }
+/* <<< home v1 */
