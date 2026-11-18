@@ -830,3 +830,56 @@ html body .c2-close .c2-close-ctas .cm-btn { margin: 0 !important; }
 html body .c2-close .cm-btn.c2-close-ghost { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,.55) !important; box-shadow: none !important; }
 html body .c2-close .cm-btn.c2-close-ghost:hover { background: rgba(255,255,255,.1) !important; border-color: #fff !important; }
 /* <<< community closing band: second button */
+
+/* >>> community hero v3: photo card with chat pieces */
+.c3-hero { position: relative; display: flex; align-items: center; min-height: clamp(520px, 52vw, 680px); border-radius: 32px; overflow: hidden; background: #1F273F; color: #fff; isolation: isolate; }
+.c3-hero .c3-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 68% 30%; z-index: -2; }
+.c3-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(31,39,63,.93) 0%, rgba(31,39,63,.74) 34%, rgba(31,39,63,.12) 68%, rgba(31,39,63,.04) 100%); }
+.c3-txt { padding: clamp(28px, 5vw, 64px); max-width: 800px; }
+html body #pg-community.pg .c3-txt h1 { margin: 0; font: 500 clamp(2.5rem, 4.8vw, 4rem)/1.03 "Red Hat Display", sans-serif; letter-spacing: -.025em; color: #fff !important; -webkit-text-fill-color: #fff !important; text-align: left; }
+html body #pg-community.pg .c3-lead { margin: 20px 0 0; max-width: 32ch; font: 400 1.125rem/1.5 "Red Hat Text", sans-serif; color: rgba(255,255,255,.9) !important; -webkit-text-fill-color: rgba(255,255,255,.9) !important; text-align: left; }
+.c3-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.c3-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border-radius: 999px; font: 600 1rem/1 "Red Hat Text", sans-serif; cursor: pointer; }
+.c3-b1 { background: #fff; color: #1F273F; border: 1px solid #fff; }
+.c3-b2 { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.6); }
+.c3-b1:hover { background: #E3EBF8; } .c3-b2:hover { background: rgba(255,255,255,.12); border-color: #fff; }
+.c3-btn:focus-visible { outline: 2px solid #A8C6E8; outline-offset: 3px; }
+.c3-fl { position: absolute; inset: 0; pointer-events: none; }
+.c3-b { position: absolute; background: #fff; color: #1F273F; border-radius: 14px; padding: 10px 14px; font: 400 .875rem/1.35 "Red Hat Text", sans-serif; box-shadow: 0 8px 28px rgba(15,20,40,.22); }
+.c3-b small { display: block; margin-top: 2px; font-size: .6875rem; color: #6D7588; text-align: right; }
+.c3-b b { font-weight: 600; }
+.c3-me { background: #DDE8F8; }
+.c3-task { width: 250px; padding: 14px 16px; }
+.c3-task p { margin: 0; } .c3-task .c3-k { font-size: .75rem; font-weight: 600; color: #4D74C3; } .c3-task .c3-tt { margin: 2px 0 8px; font-weight: 600; font-size: .9375rem; }
+.c3-task dl { display: flex; gap: 14px; margin: 0; font-size: .75rem; color: #6D7588; } .c3-task dd { margin: 0; font-weight: 600; font-size: .8125rem; color: #1F273F; }
+.c3-grp { display: flex; align-items: center; gap: 10px; border-radius: 999px; padding: 6px 14px 6px 6px; }
+.c3-grp span { display: flex; } .c3-grp img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; margin-left: -9px; object-fit: cover; } .c3-grp img:first-child { margin-left: 0; }
+.c3-pts { background: #1F273F; color: #fff; border-radius: 999px; font-weight: 600; padding: 9px 16px; }
+.c3-g { right: 3%; top: 15%; } .c3-t { right: 2.5%; top: 34%; } .c3-m { right: 4%; top: 66%; } .c3-p { right: 7%; top: 81%; }
+.c3-facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; list-style: none; margin: 16px 0 0; padding: 0; font: 400 .9375rem/1.4 "Red Hat Text", sans-serif; color: #5B6478; }
+.c3-facts li::before { content: "\2713"; margin-right: 7px; color: #4D74C3; }
+.c3-talk { padding: clamp(56px, 8vw, 104px) 0 clamp(8px, 2vw, 24px); text-align: center; }
+.c3-st { position: relative; height: 250px; max-width: 340px; margin: 0 auto; }
+.c3-av { position: absolute; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; box-shadow: 0 6px 18px rgba(31,39,63,.18); }
+.c3-bb { position: absolute; background: #fff; border-radius: 14px; padding: 8px 12px; font: 400 .875rem/1.35 "Red Hat Text", sans-serif; color: #1F273F; box-shadow: 0 4px 14px rgba(31,39,63,.12); white-space: nowrap; }
+.c3-bb small { margin-left: 6px; font-size: .6875rem; color: #8A93A5; } .c3-bme { background: #DDE8F8; }
+html body #pg-community.pg .c3-talk h2 { margin: 28px auto 0; max-width: 24ch; font: 500 clamp(1.75rem, 3.6vw, 2.75rem)/1.14 "Red Hat Display", sans-serif; letter-spacing: -.02em; color: #1F273F; text-wrap: balance; }
+@media (max-width: 760px) {
+  .c3-hero { align-items: flex-end; height: 600px; min-height: 0; border-radius: 28px; }
+  .c3-hero .c3-ph { object-position: 66% 30%; }
+  .c3-hero::after { background: linear-gradient(180deg, rgba(31,39,63,0) 0%, rgba(31,39,63,.1) 32%, rgba(31,39,63,.78) 62%, rgba(31,39,63,.94) 100%); }
+  .c3-fl { display: none; }
+  .c3-txt { padding: 0 22px 26px; }
+  html body #pg-community.pg .c3-txt h1 { font-size: 2.5rem; line-height: 1.02; }
+  html body #pg-community.pg .c3-lead { margin-top: 12px; max-width: none; font-size: 1rem; }
+  .c3-ctas { margin-top: 20px; } .c3-btn { min-height: 48px; padding: 0 22px; }
+  .c3-facts { gap: 6px 12px; font-size: .75rem; margin-top: 14px; } .c3-facts li::before { margin-right: 5px; }
+}
+html[data-vs-theme="dark"] .c3-hero { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"]:not(#x#x) .c3-hero img { filter: none !important; }
+html body #pg-community.pg .c3-txt h1 { max-width: 15ch; text-wrap: balance; }
+html body #pg-community.pg .cm2 > .c3-hero { margin-top: clamp(-64px, -4vw, -40px) !important; }
+html body #pg-community.pg .cm2 > .c3-facts { margin-top: 16px !important; }
+html body #pg-community.pg .cm2 > .c3-talk { margin-top: 0 !important; }
+@media (max-width: 1000px) { .c3-t, .c3-m { display: none; } }
+/* <<< community hero v3 */
