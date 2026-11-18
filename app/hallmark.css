@@ -914,7 +914,7 @@ html body #ln #start p { color: #fff !important; -webkit-text-fill-color: #fff !
 html body #ln #start .hp2-ctas { justify-content: center; }
 html body #ln #start .hp2-cta { background: var(--ver-accent) !important; color: #141A2C !important; -webkit-text-fill-color: #141A2C !important; border-color: var(--ver-accent) !important; }
 html body #ln #start .hp2-cta2 { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,.6) !important; }
-html[data-vs-theme="dark"] #ln .hv, html[data-vs-theme="dark"] #ln #start > .ln-wrap { filter: invert(1) hue-rotate(180deg); }
+html[data-vs-theme="dark"] #ln #start > .ln-wrap { filter: invert(1) hue-rotate(180deg); }
 html[data-vs-theme="dark"]:not(#x#x) #ln .hv img { filter: none !important; }
 
 html body #ln .hv { padding-top: clamp(104px, 10vw, 132px); }
@@ -949,7 +949,6 @@ html body #ln #ln-h1#ln-h1 { color: #A8C6E8 !important; -webkit-text-fill-color:
 html body #ln #problem { background: #F0F3F7 !important; }
 html body #ln #problem .net-card { background: #fff !important; }
 
-html[data-vs-theme="dark"]:not(#x#x) body:not(:has(.pg.open)):not(.menu-open) .top::before, html[data-vs-theme="dark"]:not(#x#x) body:not(:has(.pg.open)):not(.menu-open) .top :is(.logo, .pill) { filter: invert(1) hue-rotate(180deg) !important; }
 html body #ln #why:not(#a#b#c#d#e#f#g#h#i) { display: block !important; background: #1F273F !important; border: 0 !important; padding: clamp(24px, 4vw, 56px) clamp(12px, 3vw, 40px) clamp(56px, 8vw, 104px) !important; margin: 0 !important; }
 html body #ln #why::before, html body #ln #why::after { display: none !important; }
 html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i) { max-width: 1360px !important; margin: 0 auto !important; padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 72px) clamp(28px, 4vw, 56px) !important; border-radius: 36px; background: #2A3350 !important; }
@@ -959,12 +958,11 @@ html body #ln #why .why-pz:not(#a#b#c#d#e#f#g#h#i) { filter: drop-shadow(0 16px 
 html body #ln #why .why-pz path.pz-out:not(#a#b#c#d#e#f#g#h#i) { stroke: #A8C6E8 !important; stroke-opacity: .9 !important; }
 html body #ln #why .pz-in span:not(#a#b#c#d#e#f#g#h#i) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; font-family: "Red Hat Text", sans-serif !important; font-weight: 600 !important; }
 html body #ln .hv1:not(#a#b#c#d#e#f#g#h#i) { padding-bottom: clamp(20px, 3vw, 36px) !important; }
-html[data-vs-theme="dark"] #ln #why { filter: invert(1) hue-rotate(180deg); }
 @media (max-width: 760px) { html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i) { border-radius: 30px; } }
 /* hero: pencil market overview, text at the foot of a light card */
 html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i) { background: #F5F8FD !important; align-items: flex-end !important; min-height: clamp(600px, 54vw, 760px); }
 html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i) { object-position: 50% 35% !important; }
-html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(245,248,253,0) 0%, rgba(245,248,253,0) 34%, rgba(245,248,253,.88) 62%, #F5F8FD 82%) !important; }
+html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(242,245,250,0) 0%, rgba(242,245,250,0) 34%, rgba(242,245,250,.88) 62%, #F2F5FA 82%) !important; }
 html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i) { padding: 0 clamp(24px, 4.5vw, 64px) clamp(28px, 4vw, 56px) !important; max-width: 860px; }
 html body #ln #ln-h1#ln-h1:not(#a#b#c#d#e#f#g#h#i) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; max-width: 14ch; }
 html body #ln .hv1 .hv-lead:not(#a#b#c#d#e#f#g#h#i) { color: #414A5E !important; -webkit-text-fill-color: #414A5E !important; }
@@ -973,12 +971,19 @@ html body #ln .hv1 .hv-b2:not(#a#b#c#d#e#f#g#h#i) { background: rgba(255,255,255
 @media (max-width: 760px) {
   html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i) { height: 680px; min-height: 0; }
   html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i) { object-position: 50% 0 !important; height: 62% !important; }
-  html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(245,248,253,0) 0%, rgba(245,248,253,0) 30%, rgba(245,248,253,.92) 52%, #F5F8FD 62%) !important; }
+  html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(242,245,250,0) 0%, rgba(242,245,250,0) 30%, rgba(242,245,250,.92) 52%, #F2F5FA 62%) !important; }
 }
-@media (min-width: 761px) { html body #ln .hv1 .hv-card::after { background: radial-gradient(ellipse 62% 78% at 0% 100%, #F5F8FD 0%, rgba(245,248,253,.96) 55%, rgba(245,248,253,0) 100%), linear-gradient(180deg, rgba(245,248,253,0) 40%, rgba(245,248,253,.9) 78%, #F5F8FD 100%) !important; } }
+@media (min-width: 761px) { html body #ln .hv1 .hv-card::after { background: radial-gradient(ellipse 62% 78% at 0% 100%, #F2F5FA 0%, rgba(242,245,250,.96) 55%, rgba(242,245,250,0) 100%), linear-gradient(180deg, rgba(242,245,250,0) 40%, rgba(242,245,250,.9) 78%, #F2F5FA 100%) !important; } }
 html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i#j) { background: #F5F8FD !important; }
 html body #ln #why h2:not(#a#b#c#d#e#f#g#h#i#j) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
 html body #ln #why .why-p:not(#a#b#c#d#e#f#g#h#i#j) { color: #414A5E !important; -webkit-text-fill-color: #414A5E !important; }
 html body #ln #why .why-pz:not(#a#b#c#d#e#f#g#h#i#j) { filter: drop-shadow(0 14px 16px rgba(31,39,63,.14)) !important; }
 html body #ln #why .why-pz path.pz-out:not(#a#b#c#d#e#f#g#h#i#j) { stroke: #1F273F !important; stroke-opacity: .45 !important; }
+/* light stage: no dark layer behind the opening cards */
+html body #ln .hv:not(#a#b#c#d#e#f#g#h#i#j), html body #ln #why:not(#a#b#c#d#e#f#g#h#i#j) { background: #fff !important; }
+html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j), html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i#j) { background: #F2F5FA !important; box-shadow: inset 0 0 0 1px #E1E6EE; }
+html body #ln .hv1 .hv-tag:not(#a#b#c#d#e#f#g#h#i#j) { color: #5B6478 !important; -webkit-text-fill-color: #5B6478 !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top::before { background: rgba(255,255,255,.96) !important; box-shadow: 0 1px 0 rgba(31,39,63,.08) !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top .logo { color: #1F273F !important; }
+html body:not(:has(.pg.open)):not(.menu-open) .top .pill > button { color: #1F273F !important; }
 /* <<< home v1 */
