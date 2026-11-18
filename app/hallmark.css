@@ -819,4 +819,6 @@ html body #pg-portal.pg .pt-wa h2 + p { margin-top: 14px !important; max-width: 
 .pt-wa-copy[data-shown] { min-height: 30px; padding: 0 12px; border-radius: 999px; background: #E3EBF8; color: #1F273F; font-size: .8125rem; text-decoration: none; }
 .pt-wa-copy[data-shown]:hover { background: #CCDDF1; }
 .pt-wa-line { align-items: center; }
+html body #pg-portal.pg .pt-wa-steps :is(.pt-wa-t b, .pt-wa-line .pt-wa-num) { font-weight: 500 !important; }
+html body #pg-portal.pg .pt-wa-copy:not([data-shown]) { font-weight: 500; }
 /* <<< SavoScout opportunities portal */
