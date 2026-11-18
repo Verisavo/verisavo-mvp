@@ -1105,3 +1105,16 @@ html body #pg-portal .pt-tabs:not(#a#b#c#d#e#f#g#h#i#j#k#l) { gap: 6px !importan
 html body #pg-portal .pt-tabs button:not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-radius: 999px !important; padding: 0 16px !important; border: 1px solid #D3DAE4 !important; background: transparent !important; }
 html body #pg-portal .pt-tabs button[aria-pressed="true"]:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #fff !important; border-color: #fff !important; color: #1F273F !important; box-shadow: 0 1px 3px rgba(31,39,63,.14) !important; }
 /* <<< portal tabs */
+
+/* >>> walkthrough evidence rows: each row its own capsule card, livelier entrance */
+html body #ln .wf-table:not(#a#b#c#d#e#f#g#h#i#j) { display: grid !important; gap: 8px !important; border: 0 !important; border-radius: 0 !important; overflow: visible !important; background: transparent !important; }
+html body #ln .wf-table .wf-tr:not(#a#b#c#d#e#f#g#h#i#j) { border: 1px solid #E1E6EE !important; border-radius: 16px !important; background: #fff !important; box-shadow: 0 1px 2px rgba(31,39,63,.05), 0 6px 16px -10px rgba(31,39,63,.22) !important; }
+html body #ln .wf-table .wf-tr > span:nth-child(2):not(#a#b#c#d#e#f#g#h#i#j) { white-space: nowrap; }
+html body #ln .wf-table .wf-tr.wf-a:not(#a#b#c#d#e#f#g#h#i#j) { opacity: 0; transform: translateY(16px) scale(.97); transition: opacity .45s ease, transform .6s cubic-bezier(.2,1.25,.35,1); }
+html body #ln .wf-sc.go .wf-table .wf-tr.wf-a:not(#a#b#c#d#e#f#g#h#i#j) { opacity: 1; transform: none; transition-delay: var(--d, 0s); }
+html body #ln .wf-table .wf-st.wf-a:not(#a#b#c#d#e#f#g#h#i#j) { opacity: 0; transform: scale(.55); transition: opacity .3s ease, transform .5s cubic-bezier(.3,1.6,.45,1); }
+html body #ln .wf-sc.go .wf-table .wf-st.wf-a:not(#a#b#c#d#e#f#g#h#i#j) { opacity: 1; transform: none; transition-delay: var(--d, 0s); animation: wfStRing 1.2s ease-out both; animation-delay: calc(var(--d, 0s) + .25s); }
+@keyframes wfStRing { 0% { box-shadow: 0 0 0 0 rgba(77,116,195,.45); } 70% { box-shadow: 0 0 0 8px rgba(77,116,195,0); } 100% { box-shadow: 0 0 0 0 rgba(77,116,195,0); } }
+html body #ln .wf-sc.go .wf-pill.wf-a:not(#a#b#c#d#e#f#g#h#i#j) { animation: wfStRing 1.2s ease-out both; animation-delay: calc(var(--d, 0s) + .25s); }
+@media (prefers-reduced-motion: reduce) { html body #ln .wf-table :is(.wf-tr, .wf-st):not(#a#b#c#d#e#f#g#h#i#j) { transition: none !important; animation: none !important; transform: none !important; } }
+/* <<< walkthrough evidence rows */
