@@ -994,4 +994,34 @@ html body #ln .hv1 .hv-cv { position: absolute; left: 0; top: 0; width: 100%; he
 html body #ln .hv1 .hv-card.ms-off .hv-cv { display: none; }
 html body #ln .hv1 .hv-card.ms-off:not(#a#b#c#d#e#f#g#h#i#j) { background: #F2F5FA !important; }
 @media (max-width: 760px) { html body #ln .hv1 .hv-cv { height: 62%; } }
+/* scattered pieces: six smaller, lighter pieces set apart so none look joined */
+html body #ln #why .why-src:not(#a#b#c#d#e#f#g#h#i#j#k#l) { max-width: 860px !important; gap: 44px 64px !important; margin-top: 64px !important; }
+html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: 150px !important; }
+html body #ln #why .why-src li:nth-child(1):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --y: -10px; --r: -9deg; }
+html body #ln #why .why-src li:nth-child(2):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --y: 22px; --r: 7deg; }
+html body #ln #why .why-src li:nth-child(3):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --y: -4px; --r: -3deg; }
+html body #ln #why .why-src li:nth-child(4):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --y: 18px; --r: 11deg; }
+html body #ln #why .why-src li:nth-child(5):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --y: -14px; --r: -12deg; animation-duration: 7.5s; animation-delay: -3s; }
+html body #ln #why .why-src li:nth-child(6):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --y: 12px; --r: 5deg; animation-duration: 8s; animation-delay: -5s; }
+html body #ln #why .why-src.pz-go li:nth-child(5):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --d: .56s; animation-duration: 1.1s, 7.5s; }
+html body #ln #why .why-src.pz-go li:nth-child(6):not(#a#b#c#d#e#f#g#h#i#j#k#l) { --d: .7s; animation-duration: 1.1s, 8s; }
+html body #ln #why .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l) { font-weight: 500 !important; font-size: .75rem !important; letter-spacing: 0 !important; text-shadow: 0 0 3px #fff, 0 0 6px #fff !important; }
+@media (max-width: 760px) {
+  html body #ln #why .why-src:not(#a#b#c#d#e#f#g#h#i#j#k#l) { gap: 34px 26px !important; margin-top: 44px !important; }
+  html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: min(132px, 40%) !important; }
+  html body #ln #why .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l) { font-size: .6875rem !important; }
+}
+/* realistic pieces: single die-cut pieces with a card edge, each with its own tabs */
+html body #ln #why .why-src:not(#a#b#c#d#e#f#g#h#i#j#k#l) { max-width: 660px !important; gap: 40px 56px !important; }
+html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: 176px !important; }
+html body #ln #why .why-pz.pz2:not(#a#b#c#d#e#f#g#h#i#j#k#l) { filter: drop-shadow(0 10px 12px rgba(31,39,63,.16)) drop-shadow(0 2px 2px rgba(31,39,63,.10)) !important; }
+html body #ln #why .pz2-edge { fill: #CBD3DF; stroke: none; }
+html body #ln #why .pz2-face { stroke: #B9C3D2; stroke-width: .9; stroke-linejoin: round; }
+html body #ln #why .pz2-hi { fill: none; stroke: rgba(255,255,255,.9); stroke-width: 1.1; stroke-linejoin: round; }
+html body #ln #why .why-src .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l) { inset: 19.7% 13.4% 19.7% 13.4% !important; padding: 0 !important; display: grid !important; place-items: center !important; text-align: center; white-space: normal !important; line-height: 1.2 !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; text-shadow: none !important; }
+@media (max-width: 760px) {
+  html body #ln #why .why-src:not(#a#b#c#d#e#f#g#h#i#j#k#l) { gap: 30px 22px !important; }
+  html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: min(150px, 42%) !important; }
+}
+html[data-vs-theme="dark"] #ln #why .why-src { filter: none; }
 /* <<< home v1 */
