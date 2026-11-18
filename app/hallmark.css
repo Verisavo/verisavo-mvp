@@ -989,4 +989,9 @@ html body:not(:has(.pg.open)):not(.menu-open) .top .pill > button { color: #1F27
 /* scattered section: full-width band in the Built on trust colour */
 html body #ln #why:not(#a#b#c#d#e#f#g#h#i#j#k) { background: var(--why-band, #F0F3F7) !important; padding: clamp(56px, 8vw, 104px) 0 !important; border-top: 1px solid #E1E6EE !important; border-bottom: 1px solid #E1E6EE !important; margin-top: clamp(20px, 3vw, 40px) !important; }
 html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i#j#k) { background: transparent !important; box-shadow: none !important; border-radius: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+/* hero: the live pencil market (three.js) sits over the still drawing */
+html body #ln .hv1 .hv-cv { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; z-index: -2; }
+html body #ln .hv1 .hv-card.ms-off .hv-cv { display: none; }
+html body #ln .hv1 .hv-card.ms-off:not(#a#b#c#d#e#f#g#h#i#j) { background: #F2F5FA !important; }
+@media (max-width: 760px) { html body #ln .hv1 .hv-cv { height: 62%; } }
 /* <<< home v1 */
