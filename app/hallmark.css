@@ -1037,3 +1037,16 @@ html body #ln #why .pz2-seam { fill: none; stroke: #C3CCDA; stroke-width: .9; st
 html body #ln #why .why-src .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 6px #fff, 0 0 8px #fff !important; }
 html body #ln #why .why-src .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { white-space: nowrap !important; line-height: 1.15 !important; }
 /* <<< home v1 */
+
+/* >>> community talk: no times, shorter capsules, gentle float */
+html body #pg-community .c3-bb { padding: 6px 11px !important; font-size: .8125rem !important; border-radius: 999px !important; }
+@keyframes c3Bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+html body #pg-community :is(.c3-av, .c3-bb) { animation: c3Bob 4.8s ease-in-out infinite; }
+html body #pg-community .c3-st > :nth-child(1) { animation-delay: -.4s; }
+html body #pg-community .c3-st > :nth-child(2) { animation-delay: -.4s; }
+html body #pg-community .c3-st > :nth-child(3) { animation-delay: -1.9s; animation-duration: 5.6s; }
+html body #pg-community .c3-st > :nth-child(4) { animation-delay: -1.9s; animation-duration: 5.6s; }
+html body #pg-community .c3-st > :nth-child(5) { animation-delay: -3.1s; animation-duration: 5.2s; }
+html body #pg-community .c3-st > :nth-child(6) { animation-delay: -3.1s; animation-duration: 5.2s; }
+@media (prefers-reduced-motion: reduce) { html body #pg-community :is(.c3-av, .c3-bb) { animation: none; } }
+/* <<< community talk */
