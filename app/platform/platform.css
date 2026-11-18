@@ -2838,17 +2838,6 @@ html body .top .vmenu:not(#a#b#c#d#e#f#g#h) { background: transparent !important
 html body .top .vmenu #vmenu-lab:not(#a#b#c#d#e#f#g#h) { display: none !important; }
 html body .top .vmenu svg:not(#a#b#c#d#e#f#g#h) { width: 28px !important; height: 28px !important; }
 html body .top .login:not(#a#b#c#d#e#f#g#h) { display: none !important; }
-/* hero: rounded silver card with the pencil market, text at the foot */
-html body .hero:not(#a#b#c#d#e#f#g#h) { background: #fff !important; padding: clamp(80px, 9vw, 108px) clamp(12px, 3vw, 40px) 20px !important; min-height: 0 !important; }
-html body .hero #net:not(#a#b#c#d#e#f#g#h) { display: none !important; }
-html body .hero .hero-grid:not(#a#b#c#d#e#f#g#h) { position: relative; isolation: isolate; overflow: hidden; max-width: 1360px !important; margin: 0 auto !important; min-height: clamp(560px, 52vw, 720px) !important; border-radius: 36px; background: #F2F5FA !important; box-shadow: inset 0 0 0 1px #E1E6EE; display: flex !important; flex-direction: column !important; justify-content: flex-end !important; align-items: flex-start !important; gap: 0 !important; padding: clamp(28px, 4.5vw, 64px) !important; text-align: left !important; }
-html body .hero .hero-grid::before { content: ""; position: absolute; inset: 0; z-index: -2; background: url("/scouts/home-market.webp") 50% 30% / cover no-repeat; }
-html body .hero .hero-grid::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse 62% 78% at 0% 100%, #F2F5FA 0%, rgba(242,245,250,.96) 55%, rgba(242,245,250,0) 100%), linear-gradient(180deg, rgba(242,245,250,0) 40%, rgba(242,245,250,.9) 78%, #F2F5FA 100%); }
-html body .hero .hero-title:not(#a#b#c#d#e#f#g#h) { text-align: left !important; max-width: 760px !important; margin: 0 !important; }
-html body .hero h1:not(#a#b#c#d#e#f#g#h) { text-align: left !important; font: 500 clamp(2.5rem, 5vw, 4.5rem)/1.03 "Red Hat Display", sans-serif !important; letter-spacing: -.03em !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; max-width: 16ch; }
-html body .hero h1 .tone:not(#a#b#c#d#e#f#g#h) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
-html body .hero .sub:not(#a#b#c#d#e#f#g#h) { text-align: left !important; margin: 20px 0 0 !important; max-width: 46ch !important; font-size: clamp(1.0625rem, 1.5vw, 1.25rem) !important; line-height: 1.5 !important; color: #414A5E !important; -webkit-text-fill-color: #414A5E !important; }
-html body .hero .hero-actions:not(#a#b#c#d#e#f#g#h) { justify-content: flex-start !important; margin-top: 28px !important; gap: 12px !important; }
 /* pill buttons everywhere on the page */
 html body :is(.btn, .wa-btn):not(#a#b#c#d#e#f#g#h) { border-radius: 999px !important; min-height: 50px !important; padding: 0 24px !important; font-weight: 600 !important; }
 html body .btn.solid:not(#a#b#c#d#e#f#g#h) { background: #1F273F !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border-color: #1F273F !important; }
@@ -2861,17 +2850,8 @@ html body .wa-card h2:not(#a#b#c#d#e#f#g#h) { color: #A8C6E8 !important; -webkit
 html body .wa-btn:not(.wa-btn2):not(#a#b#c#d#e#f#g#h) { background: #A8C6E8 !important; color: #141A2C !important; -webkit-text-fill-color: #141A2C !important; border-color: #A8C6E8 !important; }
 html body .wa-btn.wa-btn2:not(#a#b#c#d#e#f#g#h) { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,.6) !important; }
 @media (max-width: 760px) {
-  html body .hero .hero-grid:not(#a#b#c#d#e#f#g#h) { min-height: 0 !important; height: 640px !important; border-radius: 28px; padding: 0 24px 28px !important; }
-  html body .hero .hero-grid::before { bottom: 38%; background-position: 50% 0; }
-  html body .hero .hero-grid::after { background: linear-gradient(180deg, rgba(242,245,250,0) 0%, rgba(242,245,250,0) 30%, rgba(242,245,250,.92) 52%, #F2F5FA 62%); }
-  html body .hero h1:not(#a#b#c#d#e#f#g#h) { font-size: 2.5rem !important; max-width: none; }
-  html body .hero .sub:not(#a#b#c#d#e#f#g#h) { font-size: 1rem !important; margin-top: 14px !important; }
   html body .wa-card:not(#a#b#c#d#e#f#g#h) { border-radius: 28px !important; }
 }
-html[data-vs-theme="dark"] .hero .hero-grid::before { filter: invert(1) hue-rotate(180deg); }
-html body .hero .hero-title:not(#a#b#c#d#e#f#g#h) { display: flex !important; flex-direction: column !important; align-items: flex-start !important; }
-html body .hero h1:not(#a#b#c#d#e#f#g#h) { width: auto !important; }
-@media (min-width: 761px) { html body .hero .hero-grid::after { background: linear-gradient(90deg, #F2F5FA 0%, rgba(242,245,250,.94) 38%, rgba(242,245,250,.55) 58%, rgba(242,245,250,0) 78%), linear-gradient(180deg, rgba(242,245,250,0) 50%, rgba(242,245,250,.85) 100%); } }
 /* <<< product v2 */
 
 /* <<< assistant prototype v1 */
