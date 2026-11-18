@@ -10,6 +10,7 @@ import PricingPage from "@/components/home/PricingPage";
 import CareersPage from "@/components/home/CareersPage";
 import CommunityPage from "@/components/home/CommunityPage";
 import CommunityTasksPage from "@/components/home/CommunityTasksPage";
+import PortalPage from "@/components/home/PortalPage";
 import ContactPage from "@/components/home/ContactPage";
 import UseCasesPage from "@/components/home/UseCasesPage";
 import ScoutPage from "@/components/home/ScoutPage";
@@ -36,6 +37,7 @@ export default function HomeShell({ start = "" }) {
       <CareersPage />
       <CommunityPage />
       <CommunityTasksPage />
+      <PortalPage />
       <ScoutPage />
       <ContactPage />
       <Main />

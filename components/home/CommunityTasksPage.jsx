@@ -17,7 +17,7 @@ export default function CommunityTasksPage() {
             {" "}
           </div>
           {" "}
-          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><button type="button" data-page="research" data-tab="research">{"Insights"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="community-tasks">{"Open tasks"}</button><button type="button" data-page="contact">{"Contact us"}</button><button type="button" data-page="community">{"Become a SavoScout"}</button></nav>
+          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><button type="button" data-page="research" data-tab="research">{"Insights"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="community-tasks">{"Open tasks"}</button><button type="button" data-page="contact">{"Contact us"}</button><button type="button" data-page="portal">{"Portal"}</button><button type="button" data-page="community">{"Become a SavoScout"}</button></nav>
           <div className="foot-bar">
             {" "}
             <span>{"© 2026 Verisavo. All rights reserved."}</span>
