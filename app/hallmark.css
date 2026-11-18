@@ -1024,4 +1024,13 @@ html body #ln #why .why-src .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l) { inset: 1
   html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: min(150px, 42%) !important; }
 }
 html[data-vs-theme="dark"] #ln #why .why-src { filter: none; }
+/* phone: all six pieces in two rows of three */
+@media (max-width: 760px) {
+  html body #ln #why:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { padding-bottom: 48px !important; }
+  html body #ln #why .why-src:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { gap: 22px 10px !important; margin-top: 34px !important; max-width: 360px !important; }
+  html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { width: calc((100% - 20px) / 3) !important; }
+  html body #ln #why .why-src .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { font-size: .5625rem !important; line-height: 1.15 !important; inset: 19.7% 15% !important; }
+  html body #ln #why .why-src li:nth-child(odd):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --y: -4px; }
+  html body #ln #why .why-src li:nth-child(even):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --y: 8px; }
+}
 /* <<< home v1 */
