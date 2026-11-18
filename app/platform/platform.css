@@ -2852,6 +2852,9 @@ html body .wa-btn.wa-btn2:not(#a#b#c#d#e#f#g#h) { background: transparent !impor
 @media (max-width: 760px) {
   html body .wa-card:not(#a#b#c#d#e#f#g#h) { border-radius: 28px !important; }
 }
+/* sign-in dialog: pill buttons (portal and sign-in v2) */
+html body #auth :is(.btn, .a-google, .btn-dark):not(#a#b#c#d#e#f#g#h) { border-radius: 999px !important; }
+html body #auth .btn-dark:not(#a#b#c#d#e#f#g#h) { background: #1F273F !important; border-color: #1F273F !important; color: #fff !important; }
 /* <<< product v2 */
 
 /* <<< assistant prototype v1 */
