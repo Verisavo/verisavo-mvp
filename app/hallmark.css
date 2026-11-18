@@ -1081,3 +1081,21 @@ html[data-vs-theme="dark"] :is(#pg-about-us, #pg-research, #pg-use-cases, #pg-ca
 html body #auth :is(.btn, .a-google, .btn-dark):not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-radius: 999px !important; }
 html body #auth .btn-dark:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #1F273F !important; border-color: #1F273F !important; color: #fff !important; }
 /* <<< sign-in v2 */
+
+/* >>> portal job pages v2: same header, labels, pill buttons and closing card as the other pages (job pages only) */
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top:not(#a#b#c#d#e#f#g#h#i#j#k#l)::before { display: block !important; opacity: 1 !important; background: rgba(255,255,255,.96) !important; box-shadow: 0 1px 0 rgba(31,39,63,.08) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top .logo:not(#a#b#c#d#e#f#g#h#i#j#k#l) { color: #1F273F !important; }
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top .pill:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: transparent !important; box-shadow: none !important; border: 0 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; gap: 6px; }
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top .pill > button:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: transparent !important; border: 0 !important; box-shadow: none !important; color: #1F273F !important; }
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top .pill > button::before, html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top .pill > button::after { display: none !important; }
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top #menu-lab:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: none !important; }
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top #menu-btn svg:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: 30px !important; height: 30px !important; }
+html body:has(#pg-portal.open .pt-head-job):not(.menu-open) .top .pa:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: none !important; }
+html body #pg-portal .pt:has(.pt-head-job) .pt-head-job .pt-eb:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: none !important; }
+html body #pg-portal .pt:has(.pt-head-job) .pt-btn:not(#a#b#c#d#e#f#g#h#i#j#k#l), html body .pt-dlg .pt-btn:not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-radius: 999px !important; min-height: 48px !important; padding: 0 22px !important; }
+html body #pg-portal .pt:has(.pt-head-job) .pt-btn.pt-btn-main:not(#a#b#c#d#e#f#g#h#i#j#k#l), html body .pt-dlg .pt-btn.pt-btn-main:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #1F273F !important; border-color: #1F273F !important; color: #fff !important; }
+html body #pg-portal .pt:has(.pt-head-job) .pt-band:not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-radius: 36px !important; background: #1F273F !important; }
+html body #pg-portal .pt:has(.pt-head-job) .pt-band h2:not(#a#b#c#d#e#f#g#h#i#j#k#l) { color: #A8C6E8 !important; -webkit-text-fill-color: #A8C6E8 !important; }
+html body #pg-portal .pt:has(.pt-head-job) .pt-band .pt-btn:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #A8C6E8 !important; border-color: #A8C6E8 !important; color: #141A2C !important; -webkit-text-fill-color: #141A2C !important; }
+@media (max-width: 760px) { html body #pg-portal .pt:has(.pt-head-job) .pt-band:not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-radius: 28px !important; } }
+/* <<< portal job pages v2 */
