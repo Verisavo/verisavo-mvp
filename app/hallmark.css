@@ -1035,4 +1035,5 @@ html[data-vs-theme="dark"] #ln #why .why-src { filter: none; }
 }
 html body #ln #why .pz2-seam { fill: none; stroke: #C3CCDA; stroke-width: .9; stroke-linecap: round; stroke-linejoin: round; opacity: .85; }
 html body #ln #why .why-src .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 6px #fff, 0 0 8px #fff !important; }
+html body #ln #why .why-src .pz-in span:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { white-space: nowrap !important; line-height: 1.15 !important; }
 /* <<< home v1 */
