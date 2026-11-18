@@ -883,3 +883,7 @@ html body #pg-community.pg .cm2 > .c3-facts { margin-top: 16px !important; }
 html body #pg-community.pg .cm2 > .c3-talk { margin-top: 0 !important; }
 @media (max-width: 1000px) { .c3-t, .c3-m { display: none; } }
 /* <<< community hero v3 */
+
+/* >>> community join: phone in place of portraits v1 */
+html body #pg-community .c2-join .c2-phone { justify-self: center; width: 100%; }
+/* <<< community join: phone */
