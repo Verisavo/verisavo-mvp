@@ -986,4 +986,7 @@ html body #ln .hv1 .hv-tag:not(#a#b#c#d#e#f#g#h#i#j) { color: #5B6478 !important
 html body:not(:has(.pg.open)):not(.menu-open) .top::before { background: rgba(255,255,255,.96) !important; box-shadow: 0 1px 0 rgba(31,39,63,.08) !important; }
 html body:not(:has(.pg.open)):not(.menu-open) .top .logo { color: #1F273F !important; }
 html body:not(:has(.pg.open)):not(.menu-open) .top .pill > button { color: #1F273F !important; }
+/* scattered section: full-width band in the Built on trust colour */
+html body #ln #why:not(#a#b#c#d#e#f#g#h#i#j#k) { background: var(--why-band, #F0F3F7) !important; padding: clamp(56px, 8vw, 104px) 0 !important; border-top: 1px solid #E1E6EE !important; border-bottom: 1px solid #E1E6EE !important; margin-top: clamp(20px, 3vw, 40px) !important; }
+html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i#j#k) { background: transparent !important; box-shadow: none !important; border-radius: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
 /* <<< home v1 */
