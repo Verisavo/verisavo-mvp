@@ -2114,7 +2114,7 @@ html body section.hero h1#hero-title :is(.l1, .tone) { display: block !important
   html body section.hero h1#hero-title :is(.l1, .tone) { white-space: nowrap; }
 }
 /* big menu links: closer word spacing */
-html body .mnav-big :is(a, button) { word-spacing: -.32em; }
+html body .mnav-big :is(a, button) { word-spacing: .12em; }
 /* <<< product alignment v2 */
 /* >>> soft accents v1 */
 html body .ps-steps li:first-child .ps-n { background: #fff !important; color: #1F273F !important; box-shadow: 0 0 0 1px #D1DDEC, 0 0 0 5px #F8F8F8 !important; }
