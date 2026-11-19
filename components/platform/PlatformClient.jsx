@@ -19,6 +19,7 @@ export default function PlatformClient() {
       (await import("@/lib/platform/context")).default();
       (await import("@/lib/platform/company")).default();
       (await import("@/lib/platform/sidenav")).default();
+      (await import("@/lib/platform/profile")).default();
       (await import("@/lib/platform/vapx")).default();
       (await import("@/lib/platform/answer")).default();
       (await import("@/lib/platform/model")).default();
