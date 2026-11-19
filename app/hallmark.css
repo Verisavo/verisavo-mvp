@@ -1118,3 +1118,27 @@ html body #ln .wf-sc.go .wf-table .wf-st.wf-a:not(#a#b#c#d#e#f#g#h#i#j) { opacit
 html body #ln .wf-sc.go .wf-pill.wf-a:not(#a#b#c#d#e#f#g#h#i#j) { animation: wfStRing 1.2s ease-out both; animation-delay: calc(var(--d, 0s) + .25s); }
 @media (prefers-reduced-motion: reduce) { html body #ln .wf-table :is(.wf-tr, .wf-st):not(#a#b#c#d#e#f#g#h#i#j) { transition: none !important; animation: none !important; transform: none !important; } }
 /* <<< walkthrough evidence rows */
+
+/* >>> scattered pieces: all six fly in, each from its own side (never from below), overshoot and settle, then float */
+html body #ln #why:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { overflow-x: clip !important; }
+@keyframes pz-fly {
+  0% { opacity: 0; transform: translate(var(--fx), calc(var(--y) + var(--fy))) rotate(calc(var(--r) + var(--fr))); animation-timing-function: cubic-bezier(.2,.7,.3,1); }
+  15% { opacity: 1; }
+  62% { transform: translate(calc(var(--fx) * -.05), calc(var(--y) + var(--fy) * -.05)) rotate(calc(var(--r) - var(--fr) * .12)); animation-timing-function: ease-in-out; }
+  82% { transform: translate(calc(var(--fx) * .015), calc(var(--y) + var(--fy) * .015)) rotate(calc(var(--r) + var(--fr) * .04)); animation-timing-function: ease-in-out; }
+  100% { opacity: 1; transform: translate(0, var(--y)) rotate(var(--r)); }
+}
+html body #ln #why .why-src.pz-go li:nth-child(1):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: -300px; --fy: -220px; --fr: -24deg; animation: pz-fly 1.25s both, why-float 7s ease-in-out infinite; animation-delay: 0s, calc(0s + 1.25s); }
+html body #ln #why .why-src.pz-go li:nth-child(2):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 0px; --fy: -300px; --fr: 14deg; animation: pz-fly 1.25s both, why-float 8.5s ease-in-out infinite; animation-delay: .12s, calc(.12s + 1.25s); }
+html body #ln #why .why-src.pz-go li:nth-child(3):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 300px; --fy: -220px; --fr: 22deg; animation: pz-fly 1.25s both, why-float 6.5s ease-in-out infinite; animation-delay: .24s, calc(.24s + 1.25s); }
+html body #ln #why .why-src.pz-go li:nth-child(4):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: -340px; --fy: 0px; --fr: -20deg; animation: pz-fly 1.25s both, why-float 9s ease-in-out infinite; animation-delay: .36s, calc(.36s + 1.25s); }
+html body #ln #why .why-src.pz-go li:nth-child(5):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 0px; --fy: -320px; --fr: -16deg; animation: pz-fly 1.25s both, why-float 7.5s ease-in-out infinite; animation-delay: .48s, calc(.48s + 1.25s); }
+html body #ln #why .why-src.pz-go li:nth-child(6):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 340px; --fy: 0px; --fr: 18deg; animation: pz-fly 1.25s both, why-float 8s ease-in-out infinite; animation-delay: .6s, calc(.6s + 1.25s); }
+@media (max-width: 760px) { html body #ln #why .why-src.pz-go li:nth-child(1):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: -220px; } }
+@media (max-width: 760px) { html body #ln #why .why-src.pz-go li:nth-child(2):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 0px; } }
+@media (max-width: 760px) { html body #ln #why .why-src.pz-go li:nth-child(3):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 220px; } }
+@media (max-width: 760px) { html body #ln #why .why-src.pz-go li:nth-child(4):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: -220px; } }
+@media (max-width: 760px) { html body #ln #why .why-src.pz-go li:nth-child(5):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 0px; } }
+@media (max-width: 760px) { html body #ln #why .why-src.pz-go li:nth-child(6):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 220px; } }
+@media (prefers-reduced-motion: reduce) { html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { animation: none !important; opacity: 1 !important; } }
+/* <<< scattered pieces fly-in */
