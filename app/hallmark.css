@@ -1142,3 +1142,17 @@ html body #ln #why .why-src.pz-go li:nth-child(6):not(#a#b#c#d#e#f#g#h#i#j#k#l#m
 @media (max-width: 760px) { html body #ln #why .why-src.pz-go li:nth-child(6):not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { --fx: 220px; } }
 @media (prefers-reduced-motion: reduce) { html body #ln #why .why-src li:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { animation: none !important; opacity: 1 !important; } }
 /* <<< scattered pieces fly-in */
+
+/* >>> insights: plain text tabs and filters with an underline, no bubbles */
+html body #pg-research :is(.rx-tabs, .rs-chips):not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: flex !important; flex-wrap: wrap !important; gap: 4px 30px !important; padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; }
+html body #pg-research :is(.rx-tab, .rs-chip):not(#a#b#c#d#e#f#g#h#i#j#k#l) { position: relative; background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 8px 0 10px !important; min-height: 0 !important; font: 400 1rem/1.2 "Red Hat Text", sans-serif !important; color: #414A5E !important; -webkit-text-fill-color: #414A5E !important; cursor: pointer; }
+html body #pg-research :is(.rx-tab, .rs-chip)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: #4D74C3; transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+html body #pg-research :is(.rx-tab, .rs-chip):hover:not(#a#b#c#d#e#f#g#h#i#j#k#l) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
+html body #pg-research :is(.rx-tab[aria-selected="true"], .rs-chip[aria-pressed="true"]):not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: none !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; font-weight: 500 !important; }
+html body #pg-research :is(.rx-tab[aria-selected="true"], .rs-chip[aria-pressed="true"])::after { transform: scaleX(1); }
+html body #pg-research :is(.rx-tab, .rs-chip):focus-visible:not(#a#b#c#d#e#f#g#h#i#j#k#l) { outline: 2px solid #4D74C3 !important; outline-offset: 4px; border-radius: 4px !important; }
+html body #pg-research .rx-tab .rx-n:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: none !important; padding: 0 !important; color: #8A93A5 !important; }
+html body #pg-research .ix-type:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: none !important; padding: 0 !important; border-radius: 0 !important; letter-spacing: 0 !important; text-transform: none !important; font: 500 .875rem/1.2 "Red Hat Text", sans-serif !important; color: #4D74C3 !important; -webkit-text-fill-color: #4D74C3 !important; }
+@media (max-width: 760px) { html body #pg-research .rs-chips:not(#a#b#c#d#e#f#g#h#i#j#k#l) { flex-wrap: nowrap !important; overflow-x: auto; gap: 0 24px !important; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); } html body #pg-research .rs-chips::-webkit-scrollbar { display: none; } html body #pg-research .rs-chip:not(#a#b#c#d#e#f#g#h#i#j#k#l) { flex: none; white-space: nowrap; } }
+html body #pg-research .rs-card[hidden]:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { display: none !important; }
+/* <<< insights tabs */
