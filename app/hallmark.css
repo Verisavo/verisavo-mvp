@@ -1181,3 +1181,28 @@ html body #pg-portal .pt-card2 .pt-more2 svg { width: 16px; height: 16px; fill: 
 html body #pg-portal .pt-card2:hover .pt-more2 svg { transform: translateX(3px); }
 @media (max-width: 760px) { html body #pg-portal .pt-list:not(#a#b#c#d#e#f#g#h#i#j#k#l) { grid-template-columns: 1fr !important; gap: 16px !important; } html body #pg-portal .pt-card.pt-card2:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding: 24px !important; } }
 /* <<< portal cards v2 */
+
+/* >>> portal WhatsApp code step: shown in the same box after a number is entered */
+html body #pg-portal .pt-wa-form.pt-wa-step:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding: 26px 24px 22px !important; }
+html body #pg-portal .pt-otp h3:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: flex; align-items: center; gap: 12px; margin: 0 !important; font: 500 1.5rem/1.2 "Red Hat Display", sans-serif !important; letter-spacing: -.015em; color: #1F273F !important; }
+html body #pg-portal .pt-otp .pt-otp-logo { width: 30px; height: 30px; flex: none; }
+html body #pg-portal .pt-otp .pt-otp-sub:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 10px 0 0 !important; font: 400 .9375rem/1.5 "Red Hat Text", sans-serif !important; color: #6D7588 !important; -webkit-text-fill-color: #6D7588 !important; max-width: none !important; }
+html body #pg-portal .pt-otp .pt-otp-sub b { font-weight: 500; color: #1F273F; -webkit-text-fill-color: #1F273F; white-space: nowrap; }
+html body #pg-portal .pt-otp-boxes:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: grid; grid-template-columns: repeat(6, minmax(0, 52px)); gap: 8px; margin-top: 22px; }
+html body #pg-portal .pt-otp-boxes input:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: 100%; height: 60px; padding: 0 !important; margin: 0 !important; border: 1px solid #E1E6EE !important; border-radius: 12px !important; background: #fff !important; box-shadow: none !important; text-align: center; font: 500 1.375rem/1 "Red Hat Display", sans-serif !important; color: #1F273F !important; caret-color: #1F273F; transition: border-color .15s, box-shadow .15s; }
+html body #pg-portal .pt-otp-boxes input:focus:not(#a#b#c#d#e#f#g#h#i#j#k#l) { outline: none !important; border-color: #A8B3C4 !important; box-shadow: 0 0 0 3px #E3EBF8 !important; }
+html body #pg-portal .pt-otp .pt-msg:empty { display: none; }
+html body #pg-portal .pt-otp .pt-msg:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 12px 0 0 !important; font-size: .875rem !important; color: #3A5292 !important; -webkit-text-fill-color: #3A5292 !important; }
+html body #pg-portal .pt-otp-help:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: inline-flex; align-items: center; gap: 6px; margin-top: 22px; padding: 0 !important; border: 0 !important; background: none !important; font: 400 .9375rem/1.3 "Red Hat Text", sans-serif !important; color: #6D7588 !important; cursor: pointer; }
+html body #pg-portal .pt-otp-help svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+html body #pg-portal .pt-otp-help[aria-expanded="true"] svg { transform: rotate(90deg); }
+html body #pg-portal .pt-otp-help:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l) { color: #1F273F !important; }
+html body #pg-portal .pt-otp-more:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+html body #pg-portal .pt-otp-more[hidden] { display: none !important; }
+html body #pg-portal .pt-otp-more button:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding: 9px 16px !important; border: 1px solid #DCE2EA !important; border-radius: 999px !important; background: #fff !important; font: 500 .875rem/1.2 "Red Hat Text", sans-serif !important; color: #1F273F !important; cursor: pointer; }
+html body #pg-portal .pt-otp-more button:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l) { border-color: #A8B3C4 !important; }
+html body #pg-portal .pt-otp:not(#a#b#c#d#e#f#g#h#i#j#k#l) { animation: pt-otp-in .35s ease both; }
+@keyframes pt-otp-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { html body #pg-portal .pt-otp:not(#a#b#c#d#e#f#g#h#i#j#k#l) { animation: none; } }
+@media (max-width: 420px) { html body #pg-portal .pt-otp-boxes:not(#a#b#c#d#e#f#g#h#i#j#k#l) { gap: 6px; } html body #pg-portal .pt-otp-boxes input:not(#a#b#c#d#e#f#g#h#i#j#k#l) { height: 52px; } html body #pg-portal .pt-wa-form.pt-wa-step:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding: 22px 18px 20px !important; } }
+/* <<< portal WhatsApp code step */
