@@ -1156,3 +1156,10 @@ html body #pg-research .ix-type:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: none
 @media (max-width: 760px) { html body #pg-research .rs-chips:not(#a#b#c#d#e#f#g#h#i#j#k#l) { flex-wrap: nowrap !important; overflow-x: auto; gap: 0 24px !important; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); } html body #pg-research .rs-chips::-webkit-scrollbar { display: none; } html body #pg-research .rs-chip:not(#a#b#c#d#e#f#g#h#i#j#k#l) { flex: none; white-space: nowrap; } }
 html body #pg-research .rs-card[hidden]:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { display: none !important; }
 /* <<< insights tabs */
+
+/* >>> community join: WhatsApp sign-up button */
+html body #pg-community .c2-join .c2-join-wa:not(#a#b#c#d#e#f#g#h#i) { display: inline-flex !important; align-items: center; gap: 10px; min-height: 50px; padding: 0 24px !important; border-radius: 999px !important; background: #1F273F !important; border: 1px solid #1F273F !important; color: #fff !important; -webkit-text-fill-color: #fff !important; font: 600 1rem/1 "Red Hat Text", sans-serif !important; box-shadow: none !important; cursor: pointer; margin-top: 8px; }
+html body #pg-community .c2-join .c2-join-wa svg { width: 20px; height: 20px; flex: none; }
+html body #pg-community .c2-join .c2-join-wa:hover { background: #2C375A !important; }
+html body #pg-community .c2-join .c2-join-wa:focus-visible { outline: 2px solid #4D74C3; outline-offset: 3px; }
+/* <<< community join: WhatsApp */
