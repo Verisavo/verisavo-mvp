@@ -15,6 +15,7 @@ export default function HomeClient() {
       (await import("@/lib/home/site")).default();
       (await import("@/lib/home/community")).default();
       (await import("@/lib/home/portal")).default();
+      (await import("@/lib/telpick")).default();
       (await import("@/lib/home/pricing")).default();
       (await import("@/lib/scoutplatform")).default();
       (await import("@/lib/platform/mnavbg")).default();
