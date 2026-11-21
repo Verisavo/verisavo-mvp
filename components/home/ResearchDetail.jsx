@@ -26,9 +26,9 @@ export default function ResearchDetail() {
             {"This study is in preparation. Want to hear when it is published, or have a question it should answer?"}
           </p>
           {" "}
-          <div className="acts" id="rd-acts">
-            <button type="button" className="obtn solid" data-dialog="access">{"Contact us"}</button>
-            <button type="button" className="obtn" data-ask="">{"Request a demo"}</button>
+          <div className="acts acts-pair" id="rd-acts">
+            <button type="button" className="obtn solid" data-ask="">{"Request a demo"}</button>
+            <button type="button" className="obtn" data-page="contact">{"Contact us"}</button>
           </div>
           {" "}
         </div>

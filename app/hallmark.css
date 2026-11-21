@@ -1345,3 +1345,7 @@ html body #pg-pricing .pc-after .pa-list{margin:0;padding:0;list-style:none;disp
 html body #pg-pricing .pc-after .pa-list li{position:relative;padding-left:22px;color:#3D4559;font:400 1rem/1.55 "Red Hat Text",system-ui,sans-serif}
 html body #pg-pricing .pc-after .pa-list li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:#A8C6E8}
 html body #pg-pricing .pc-after .pa-cta{justify-self:start;margin-top:8px}
+/* Request a demo + Contact us, side by side and centred */
+html body .acts.acts-pair:not(#a#b#c#d#e#f),html body .u2-acts.acts-pair:not(#a#b#c#d#e#f),html body .hp2-ctas:not(#a#b#c#d#e#f){display:flex!important;flex-wrap:wrap;justify-content:center!important;align-items:center;gap:12px!important}
+html body #pg-pricing .pc-after .pa-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:8px}
+html body #pg-pricing .pc-after .pa-ctas .pa-cta{justify-self:auto;margin:0}

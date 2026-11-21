@@ -1104,8 +1104,9 @@ export default function ResearchPage() {
           {" "}
           <h2 id="rs-cta-h">{"Have a market question "}<span className="acc">{"of your own?"}</span></h2>
           {" "}
-          <div className="acts">
+          <div className="acts acts-pair">
             <button type="button" className="obtn solid" data-ask="">{"Request a demo"}</button>
+            <button type="button" className="obtn" data-page="contact">{"Contact us"}</button>
           </div>
           {" "}
         </section>
