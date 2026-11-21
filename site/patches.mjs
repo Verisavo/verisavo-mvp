@@ -67,7 +67,7 @@ const SIGNIN_HOME = `  /* ---------- Sign in / Sign up: real accounts (site/live
   const signedUser = () => VSLive.cachedUser();
   const toApp = () => { location.href = "/assistant"; };
   const auth = $("#auth");
-  const liveAuth = VSLive.setupAuth({ onSignedIn: toApp, googleNext: "/assistant" });
+  const liveAuth = VSLive.setupAuth({ navigates: true, googleNext: "/assistant" });
   const openAuth = (mode, lead) => { if (liveAuth) liveAuth.open(mode || "in", lead); };
   const closeAuth = () => { if (liveAuth) liveAuth.close(); };
   $$("[data-login]").forEach(b => b.addEventListener("click", () => signedUser() ? toApp() : openAuth("in")));
@@ -104,7 +104,8 @@ export const patches = [
     replace: 'const arrive = location.hash.slice(1) || (location.pathname === "/assistant" ? "app" : "");' },
   { page: "assistant.html", name: "platform: #app needs an account",
     find: 'else if (arrive === "app") setTimeout(() => window.vaOpen(savedUser || { name: "", email: "" }, carried), 80);',
-    replace: 'else if (arrive === "app") setTimeout(() => VSLive.me().then(u => u ? window.vaOpen(u, carried) : openAuth("in", "Sign in to open the Verisavo Assistant.")), 80);' },
+    // opens as soon as the client's assistant script has run (window.vapxAsk), not when the whole page has loaded
+    replace: 'else if (arrive === "app") { const whenReady = fn => { const go = () => (window.vapxAsk ? fn() : setTimeout(go, 30)); go(); }; const cu = VSLive.cachedUser(); if (cu) whenReady(() => window.vaOpen(cu, carried)); else VSLive.me().then(u => whenReady(() => u ? window.vaOpen(u, carried) : openAuth("in", "Sign in to open the Verisavo Assistant."))); }' },
   { page: "assistant.html", name: "platform: follow the server session",
     find: 'if (savedUser && savedUser.role !== "scout" && window.vaRestore) window.vaRestore(savedUser);',
     replace: 'if (savedUser && window.vaRestore) window.vaRestore(savedUser);\n  VSLive.me().then(u => { if (u && window.vaRestore) window.vaRestore(u); else if (!u && window.vaForget) window.vaForget(); });' },
@@ -113,7 +114,7 @@ export const patches = [
     replace: "window.vaSignedIn = () => !!state.user;\n    window.vaForget = () => { state.user = null; };" },
   { page: "assistant.html", name: "platform: sign out for real",
     find: 'state.user = null; state.convs = []; try { sessionStorage.removeItem("verisavo-user"); } catch (e) {} newConv(); closePops(); closeVa();',
-    replace: "state.user = null; closePops(); closeVa(); VSLive.signOut();" },
+    replace: "state.user = null; closePops(); VSLive.signOut();" },
   // the client's assistant module: real answers, conversations, uploads, PDF (site/inject/assistant-live.js)
   { page: "assistant.html", name: "assistant: live layer",
     find: "  CUR = null; S = blank('New question');\n  window.vapxAsk",
@@ -135,6 +136,10 @@ export const patches = [
     replace: `'<p class="vsn-h">Company</p><ul>' + vsSoonItem("Company knowledge", "db", "knowledge") + "</ul>"` },
   { page: "assistant.html", name: "company knowledge from the menu", find: 'if (t.closest("#kb-nav")) { e.preventDefault(); open(!get()); return; }',
     replace: 'if (t.closest("#kb-nav")) { e.preventDefault(); e.stopPropagation(); VSLive.soon("knowledge"); return; }' },
+
+  { page: "assistant.html", name: "sidebar: plan under the name",
+    find: 'if (sub) sub.textContent = "Verisavo plan";',
+    replace: 'if (sub) sub.textContent = VSLive.planName(VSLive.usageNow());' },
 
   /* ---------- profile panel: real account, plan and billing ---------- */
   { page: "assistant.html", name: "profile: plan card",

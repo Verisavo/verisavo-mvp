@@ -82,12 +82,29 @@
   VS.live = function () { return liveFlag !== false; };
   VS.me();
 
+  /* ---------- smooth page changes ----------
+     A plain cover (html::after) hides the page while it changes hands, so nothing flashes:
+     - /assistant: covered until the Assistant window is open (or sign-in opens), so the product page never shows first
+     - signing out: the cover fades in over everything, then the homepage loads */
+  var root = document.documentElement;
+  // /assistant always opens the app; /platform#app does when this tab already knows the user
+  if (location.pathname === "/assistant" || (location.hash === "#app" && VS.cachedUser())) { root.setAttribute("data-vs-cover", "Opening your Assistant…"); root.classList.add("vs-cover"); }
+  VS.uncover = function () { root.classList.remove("vs-cover"); };
+  VS.cover = function (text) { root.setAttribute("data-vs-cover", text || ""); root.classList.add("vs-cover"); };
+  setTimeout(VS.uncover, 10000);   // never leave a page covered
+  ready(function () {
+    if (!root.classList.contains("vs-cover")) return;
+    var watch = function () { var open = document.querySelector("#va[open], #auth[open]"); if (open) { VS.uncover(); mo.disconnect(); } };
+    var mo = new MutationObserver(watch); mo.observe(document.body, { subtree: true, attributes: true, attributeFilter: ["open"] }); watch();
+  });
+
   VS.signOut = function () {
-    return VS.post("/api/auth/logout").catch(function () {}).then(function () {
-      store(null);
-      try { ["verisavo-q", "verisavo-ask", "vs-usage"].forEach(function (k) { sessionStorage.removeItem(k); }); } catch (e) {}
-      location.href = "/";
-    });
+    VS.cover("Signing out…");
+    store(null);
+    try { ["verisavo-q", "verisavo-ask", "vs-usage"].forEach(function (k) { sessionStorage.removeItem(k); }); } catch (e) {}
+    // the open Assistant window would sit above the cover (it's in the top layer), so it closes once the cover is in
+    setTimeout(function () { var va = document.querySelector("#va[open]"); if (va && va.close) va.close(); }, 220);
+    return VS.post("/api/auth/logout").catch(function () {}).then(function () { location.replace("/"); });
   };
 
   /* ---------- plan and billing ---------- */
@@ -230,15 +247,18 @@
       if (mode !== "forgot" && !password) return fail("Enter your password.", "password");
       if (mode === "up" && (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password))) return fail("Use at least 8 characters, with letters and numbers.", "password");
       var label = submit.textContent; submit.disabled = true; submit.textContent = "One moment…";
-      var done = function () { submit.disabled = false; submit.textContent = label; };
+      var leaving = false;
+      var done = function () { if (leaving) return; submit.disabled = false; submit.textContent = label; };
       var p;
       if (mode === "in") p = VS.post("/api/auth/login", { email: email, password: password }).then(function (r) {
         if (r.data.error === "email_not_confirmed") { sentTo = email; return showSent("Confirm your email", "Open the link we sent to " + email + " to finish creating your account.", true); }
         if (!r.ok || !r.data.user) return fail(r.data.message || "We couldn't sign you in. Please try again.", "password");
         field("password").value = ""; store(r.data.user); mePromise = Promise.resolve(r.data.user); usageCache = null;
         document.dispatchEvent(new CustomEvent("vs:user", { detail: r.data.user }));
+        // going to another page: the dialog stays up (no flash of this page) until the next page loads
+        if (opts.navigates || !opts.onSignedIn) { leaving = true; submit.textContent = "Opening your Assistant…"; location.href = "/assistant"; return; }
         auth.dataset.handoff = "1"; close();
-        if (opts.onSignedIn) opts.onSignedIn(r.data.user); else location.href = "/assistant";
+        opts.onSignedIn(r.data.user);
       });
       else if (mode === "up") p = VS.post("/api/auth/signup", { email: email, password: password, name: name, organisation: organisation }).then(function (r) {
         if (!r.ok) return fail(r.data.message || "We couldn't create your account. Please try again.");
@@ -500,6 +520,10 @@
     /* profile panel: entries for features that are not built yet */
     ".vp-i[data-vp-nav=\"Knowledge Base\"],.vp-i[data-vp-nav=Investigations],.vp-i[data-vp-nav=Overview],.vp-i[data-vp-nav=\"Create a task\"],.vp-i[data-ws-open]{display:none!important}",
     "html.vs-admin [data-admin]:not(#a#b#c#d#e#f#g#h#i#j#k){display:inline-flex!important}",
+    /* the page-change cover (see "smooth page changes") */
+    "html::after{content:attr(data-vs-cover);position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;background:#F2F5FA;color:#5B6478;font:500 15px/1.4 'Red Hat Text',system-ui,sans-serif;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility 0s .2s}",
+    "html.vs-cover::after{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .2s}",
+    "html[data-vs-theme=dark]::after{background:#151B2D;color:#A8B3C4}",
     "#auth .a-pw[hidden],#auth .a-forgot[hidden],#auth .a-up[hidden],#a-google-wrap[hidden],#a-resend[hidden]{display:none!important}",
     "#auth .a-forgot{justify-self:start;margin:-6px 0 0;border:0;background:none;padding:0;color:#3A5292;font:500 .9375rem/1.4 'Red Hat Text',system-ui,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}",
     "#auth .a-hint{margin:6px 0 0;font-size:.8125rem;color:#6D6C71}#auth .a-google svg{width:18px;height:18px;flex:none}",
