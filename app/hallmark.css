@@ -1237,3 +1237,12 @@ html body #pg-portal .pt-card2 > p:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin-top:
 html body #pg-portal .pt-card2 dl:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin-top: 28px !important; gap: 12px !important; }
 @media (max-width: 760px) { html body #pg-portal .pt-tabs:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { gap: 22px !important; margin-top: 28px !important; overflow-x: auto; } html body #pg-portal .pt-tabs button:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { white-space: nowrap; font-size: 1rem !important; } html body #pg-portal .pt-card.pt-card2:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { padding: 24px !important; } }
 /* <<< portal list v3 */
+
+/* >>> dark mode: navy instead of black. The page is inverted in dark mode, so a light blue
+   layer blended with "darken" before the inversion turns black surfaces into #192234. */
+html[data-vs-theme="dark"] body::after { content: ""; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #E0EBFF; mix-blend-mode: darken; }
+html[data-vs-theme="dark"] dialog:not(#access)::after, html[data-vs-theme="dark"] #access .dlg::after, html[data-vs-theme="dark"] .tp-pop::after { content: ""; position: absolute; inset: 0; z-index: 2147483646; pointer-events: none; background: #E0EBFF; mix-blend-mode: darken; border-radius: inherit; }
+html[data-vs-theme="dark"] #access .dlg { position: relative; }
+html[data-vs-theme="dark"] .tp-pop { isolation: isolate; }
+html[data-vs-theme="dark"] { background: #fff !important; }
+/* <<< dark mode navy */
