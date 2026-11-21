@@ -467,6 +467,16 @@
     var s = document.querySelector("#va-side .va-user .va-who small"); if (s && e.detail) s.textContent = VS.planName(e.detail);
   });
 
+  // Admins: the client's footer "Admin" buttons (hidden by their CSS) appear and open the real admin dashboard.
+  // Only a shortcut: /admin checks the admin role on the server for every page.
+  function markAdmin(u) { ready(function () { document.documentElement.classList.toggle("vs-admin", !!(u && (u.admin || u.role === "admin"))); }); }
+  markAdmin(VS.cachedUser());
+  document.addEventListener("vs:user", function (e) { markAdmin(e.detail ? VS.cachedUser() : null); });
+  window.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-admin]"); if (!b) return;
+    e.preventDefault(); e.stopImmediatePropagation(); location.href = "/admin";
+  }, true);
+
   /* ---------- styles for what this runtime adds ---------- */
   var css = document.createElement("style");
   css.textContent = [
@@ -489,6 +499,7 @@
     ".vs-err{padding:12px 14px;border-radius:12px;background:rgba(220,60,60,.07);border:1px solid rgba(220,60,60,.25)}",
     /* profile panel: entries for features that are not built yet */
     ".vp-i[data-vp-nav=\"Knowledge Base\"],.vp-i[data-vp-nav=Investigations],.vp-i[data-vp-nav=Overview],.vp-i[data-vp-nav=\"Create a task\"],.vp-i[data-ws-open]{display:none!important}",
+    "html.vs-admin [data-admin]:not(#a#b#c#d#e#f#g#h#i#j#k){display:inline-flex!important}",
     "#auth .a-pw[hidden],#auth .a-forgot[hidden],#auth .a-up[hidden],#a-google-wrap[hidden],#a-resend[hidden]{display:none!important}",
     "#auth .a-forgot{justify-self:start;margin:-6px 0 0;border:0;background:none;padding:0;color:#3A5292;font:500 .9375rem/1.4 'Red Hat Text',system-ui,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}",
     "#auth .a-hint{margin:6px 0 0;font-size:.8125rem;color:#6D6C71}#auth .a-google svg{width:18px;height:18px;flex:none}",
