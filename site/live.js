@@ -529,6 +529,12 @@
     "#auth .a-hint{margin:6px 0 0;font-size:.8125rem;color:#6D6C71}#auth .a-google svg{width:18px;height:18px;flex:none}",
     "#auth #a-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;cursor:pointer}",
     "#auth .a-sent{display:grid;gap:8px}#auth .a-sent p{margin:0}#auth #a-sent[hidden],#auth #a-form[hidden],#auth .a-tabs[hidden]{display:none!important}",
+    /* answer extras in the Assistant: chart from the answer's table, and its sources */
+    ".vs-chart{margin:4px 0 14px;padding:16px 18px;border:1px solid rgba(127,140,170,.25);border-radius:14px}.vs-chart figcaption{display:grid;gap:2px;margin-bottom:12px}.vs-chart figcaption b{font-weight:600}.vs-chart figcaption span{font-size:.82em;opacity:.7}",
+    ".vs-bars{display:grid;gap:8px}.vs-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:.9em}.vs-bl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+    ".vs-bt{height:10px;border-radius:999px;background:rgba(127,140,170,.15);overflow:hidden}.vs-bt i{display:block;height:100%;border-radius:inherit;background:#4D74C3}.vs-bv{font-variant-numeric:tabular-nums;opacity:.85}",
+    ".vs-srclist{margin:2px 0 12px;padding:12px 16px;border:1px solid rgba(127,140,170,.25);border-radius:14px}.vs-srclist p{margin:0 0 8px;font-size:.78em;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.7}",
+    ".vs-srclist ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}.vs-srclist li{display:flex;align-items:center;gap:8px;font-size:.92em}.vs-srclist li svg{width:14px;height:14px;flex:none;opacity:.6;fill:none;stroke:currentColor;stroke-width:1.8}",
     ".vs-qf{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:.8em;opacity:.75}.vs-qf svg{width:13px;height:13px}",
     /* pricing plans (index #pg-pricing) */
     ".vs-plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:0 0 40px}",

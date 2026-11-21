@@ -133,7 +133,7 @@ export const patches = [
   { page: "assistant.html", name: "sidebar: Investigations", find: 'item("c-surveys", "Investigations", "clip") + item("c-builder", "Create a task", "task")', replace: 'vsSoonItem("Investigations", "clip", "investigations") + vsSoonItem("Create a task", "task", "investigations")' },
   { page: "assistant.html", name: "sidebar: company Knowledge Base",
     find: `'<p class="vsn-h">Company</p><ul><li><button type="button" class="va-nav vsn-i" id="vsn-kb">' + svg("db") + "<span>Knowledge Base</span></button></li></ul>"`,
-    replace: `'<p class="vsn-h">Company</p><ul>' + vsSoonItem("Company knowledge", "db", "knowledge") + "</ul>"` },
+    replace: `'<p class="vsn-h">Company</p><ul>' + vsSoonItem("Company data", "db", "knowledge") + "</ul>"` },
   { page: "assistant.html", name: "company knowledge from the menu", find: 'if (t.closest("#kb-nav")) { e.preventDefault(); open(!get()); return; }',
     replace: 'if (t.closest("#kb-nav")) { e.preventDefault(); e.stopPropagation(); VSLive.soon("knowledge"); return; }' },
 

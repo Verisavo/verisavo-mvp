@@ -24,6 +24,49 @@
       return 'All markets';
     }
     function nearBottom() { return BODY.scrollHeight - BODY.scrollTop - BODY.clientHeight < 140; }
+
+    /* The client's answer features, filled with real data only (phase 2 adds the rest):
+       - follow-up questions: suggestions built from the question's market (questions, not claims)
+       - market tag: the market the question searched
+       - Sources: the answer's real sources
+       - Show chart: only when the answer has a table of numbers, charted from those numbers */
+    function marketOf(a) {
+      if (a.market && a.market !== 'All markets') return a.market;
+      var named = namedMarkets(a.q || '').map(function (n) { return LV.market(CITY_IN[n] || n); }).filter(Boolean);
+      return named[0] || null;
+    }
+    function followUps(a) {
+      var m = marketOf(a);
+      var list = m
+        ? ['What are the biggest risks for this in ' + m + '?', 'How does ' + m + ' compare with its neighbouring markets?', 'What should we check before making a decision in ' + m + '?']
+        : ['Which African markets does this matter most in?', 'What are the biggest risks here?', 'What should we check before making a decision?'];
+      return list.map(function (q) { return [q, 'ask']; });
+    }
+    // the first Markdown table with a numeric column → { title, unit, rows: [[label, value, text]] }
+    function tableChart(md) {
+      var lines = String(md || '').split('\n'), i, head = null, rows = [];
+      for (i = 0; i < lines.length - 1; i++) {
+        if (/^\s*\|.*\|\s*$/.test(lines[i]) && /^\s*\|?\s*:?-{2,}/.test(lines[i + 1])) {
+          var cells = function (l) { return l.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map(function (c) { return c.replace(/\*+/g, '').trim(); }); };
+          head = cells(lines[i]); i += 2;
+          while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(cells(lines[i++]));
+          break;
+        }
+      }
+      if (!head || rows.length < 2) return null;
+      var num = function (s) { var m = String(s).replace(/,/g, '').match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : null; };
+      for (var c = 1; c < head.length; c++) {
+        var vals = rows.map(function (r) { return num(r[c]); });
+        if (vals.every(function (v) { return v !== null && v >= 0; }))
+          return { title: head[c], label: head[0], unit: rows.some(function (r) { return /%/.test(r[c]); }) ? '%' : '', rows: rows.map(function (r, k) { return [r[0], vals[k], r[c]]; }) };
+      }
+      return null;
+    }
+    function chartFigure(ch) {
+      var max = Math.max.apply(null, ch.rows.map(function (r) { return r[1]; })) || 1;
+      return '<figure class="vc vs-chart"><figcaption><b>' + esc(ch.title) + '</b><span>By ' + esc(ch.label.toLowerCase()) + ', from the table in this answer</span></figcaption><div class="vs-bars">' +
+        ch.rows.map(function (r) { return '<div class="vs-bar"><span class="vs-bl">' + esc(r[0]) + '</span><span class="vs-bt"><i style="width:' + Math.max(2, Math.round(r[1] / max * 100)) + '%"></i></span><span class="vs-bv">' + esc(r[2]) + '</span></div>'; }).join('') + '</div></figure>';
+    }
     var isNew = function (k) { return !k || /^new-/.test(k); };
 
     ask = function (q, mode) {
@@ -33,10 +76,11 @@
       if (!S.answers.length && !CUR) { CUR = 'new-' + Date.now(); S.title = trunc(q, 40); RECENT.unshift({ k: CUR, t: S.title }); }
       var files = (S.files || []).filter(function (f) { return f.id; });
       var a = { id: 'a' + (counter++), q: q, live: true, md: '', status: 'typing', intent: 'general', ev: [], assumptions: [], fu: [], gap: null, chart: null, tiles: null, table: null, at: Date.now(), files: files.map(function (f) { return f.name; }) };
+      a.market = marketFor();
       S.answers.push(a); S.active = a.id; S.files = [];
       $('ask').value = ''; autosize(); render(); scrollEnd();
       var key = CUR, mine = S;
-      LV.ask({ question: q, market: marketFor(), conversationId: isNew(key) ? null : key, attachmentIds: files.map(function (f) { return f.id; }) }, {
+      LV.ask({ question: q, market: a.market, conversationId: isNew(key) ? null : key, attachmentIds: files.map(function (f) { return f.id; }) }, {
         start: function (m) {
           if (!m.conversationId || m.conversationId === key) return;
           var r = ttlFind(key); if (r) r.k = m.conversationId;
@@ -45,7 +89,7 @@
           key = m.conversationId;
         },
         delta: function (t) { var follow = nearBottom(); a.md += t; a.status = 'stream'; if (S === mine) { renderConvo(); if (follow) BODY.scrollTop = BODY.scrollHeight; } },
-        done: function (m) { a.status = 'done'; a.serverId = m.messageId; a.convId = key; if (S === mine) render(); },
+        done: function (m) { a.status = 'done'; a.serverId = m.messageId; a.convId = key; a.fu = followUps(a); if (S === mine) { render(); if (nearBottom()) scrollEnd(); } },
         error: function (msg) { a.status = 'done'; a.error = msg; if (!a.md) a.md = ''; if (S === mine) render(); },
         blocked: function (reason, usage) { a.status = 'done'; a.paywall = { reason: reason, usage: usage }; if (S === mine) { render(); scrollEnd(); } }
       });
@@ -59,9 +103,19 @@
       h += '<article class="ans' + fx('a-' + a.id) + '" aria-label="Verisavo answer">';
       if (a.status === 'typing') return h + '<div class="typing"><div class="dots"><span></span><span></span><span></span></div>Connecting the evidence…</div></article>';
       if (a.paywall) return h + LV.paywallHtml(a.paywall.reason, a.paywall.usage) + '</article>';
-      if (a.md) h += LV.answerHtml(a.md, a.status !== 'done');
+      if (a.status !== 'done') return h + (a.md ? LV.answerHtml(a.md, true) : '') + '</article>';
+      var parts = LV.splitSources(a.md);
+      if (parts.body.trim()) h += '<div class="vs-md">' + LV.md(parts.body) + '</div>';
       if (a.error) return h + '<div class="vs-err">' + esc(a.error) + '</div></article>';
-      if (a.status === 'done') h += '<div class="quiet"><button class="lnk mute" data-act="liveCopy" data-arg="' + a.id + '">' + ic('copy', 's') + 'Copy</button>' +
+      var ch = a.chartData === undefined ? (a.chartData = tableChart(parts.body)) : a.chartData;
+      if (ch && a.showChart) h += chartFigure(ch); else unsee('chart-' + a.id);
+      if (a.showSrc && parts.sources.length) h += '<div class="vs-srclist"><p>What this answer rests on</p><ul>' + parts.sources.map(function (s) { return '<li>' + ic('layers', 's') + '<span>' + esc(s) + '</span></li>'; }).join('') + '</ul></div>';
+      var m = marketOf(a);
+      h += '<div class="quiet">' +
+        (m ? '<span class="scopewrap"><span class="scopetag" title="This answer searched ' + esc(m) + '">' + ic('pin', 's') + '<span>' + esc(m) + '</span></span></span>' : '') +
+        (parts.sources.length ? '<button type="button" class="lnk mute srcbtn" data-act="liveSrc" data-arg="' + a.id + '" aria-expanded="' + !!a.showSrc + '">' + ic('layers', 's') + 'Sources</button>' : '') +
+        (ch ? '<button class="lnk mute" data-act="chart" data-arg="' + a.id + '">' + ic('chart', 's') + (a.showChart ? 'Hide chart' : 'Show chart') + '</button>' : '') +
+        '<button class="lnk mute" data-act="liveCopy" data-arg="' + a.id + '">' + ic('copy', 's') + 'Copy</button>' +
         (a.serverId && a.convId ? '<button class="lnk mute" data-act="livePdf" data-arg="' + a.id + '">' + ic('save', 's') + 'Download PDF</button>' : '') + '</div>';
       return h + '</article>';
     };
@@ -81,7 +135,8 @@
           var m = msgs[i]; if (m.role !== 'user') continue;
           var n = msgs[i + 1] && msgs[i + 1].role === 'assistant' ? msgs[++i] : null;
           out.push({ id: 'a' + (counter++), q: m.content, live: true, md: n ? n.content : '', status: 'done', error: n ? null : 'No answer was saved for this question.',
-            serverId: n && n.id, convId: k, ev: [], assumptions: [], fu: [], gap: null, at: Date.parse(m.createdAt) || Date.now(), files: m.files || [], wa: m.channel === 'whatsapp' });
+            serverId: n && n.id, convId: k, ev: [], assumptions: [], fu: [], gap: null, at: Date.parse(m.createdAt) || Date.now(), files: m.files || [], wa: m.channel === 'whatsapp', market: m.market || null });
+          out[out.length - 1].fu = followUps(out[out.length - 1]);
         }
         target.answers = out; target.title = c.title || target.title;
         if (target === S) { render(); BODY.scrollTop = BODY.scrollHeight; }
@@ -149,6 +204,7 @@
         else if (r === 'error') notify('The PDF couldn’t be made. Please try again.');
       });
     }
+    ACT.liveSrc = function (id) { var a = A(id); if (!a) return; a.showSrc = !a.showSrc; render(); };
     ACT.liveCopy = function (id) { var a = A(id); if (a) LV.copy(LV.plainText(a.md)); };
     ACT.livePdf = function (id) { var a = A(id); if (a && a.convId) pdf(a.convId, a.serverId); };
     ACT.liveCopyAll = function () { set({ more: false }); LV.copy(convText()); };
