@@ -1,0 +1,59 @@
+/* Homepage layout changes on top of the client's design (appended last by scripts/build-site.mjs).
+   The client's rules use :not(#a#b...#j) and !important to win, so these go one step higher. */
+
+/* Hero: the drawing fills the whole screen, edge to edge, with no card, gaps or rounded corners; the headline sits
+   near the top. Same on wide screens (7xl and beyond) and phones. */
+html body #ln .hv1:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { padding: 0 !important; margin: 0 !important; background: #F2F5FA !important; }
+html body #ln .hv1 .hv-in:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { max-width: none !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) {
+  width: 100% !important; max-width: none !important; margin: 0 !important;
+  height: 100vh !important; height: 100svh !important; min-height: 600px !important; max-height: none !important;
+  border-radius: 0 !important; box-shadow: none !important;
+  align-items: flex-start !important; background: #F2F5FA !important;
+}
+html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: 50% 45% !important; transform: none !important; }
+html body #ln .hv1 .hv-cv:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { inset: 0 !important; width: 100% !important; height: 100% !important; }
+/* a soft light wash behind the text (top left) so it reads over the drawing */
+html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::after {
+  background:
+    radial-gradient(ellipse 70% 75% at 0% 20%, rgba(242,245,250,.95) 0%, rgba(242,245,250,.82) 40%, rgba(242,245,250,0) 100%),
+    linear-gradient(180deg, rgba(242,245,250,0) 75%, rgba(242,245,250,.85) 100%) !important;
+}
+html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) {
+  max-width: min(1180px, 100%) !important;
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(120px, 17vh, 220px)) clamp(20px, 6vw, 140px) 0 !important;
+}
+html body #ln .hv1 h1:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { font-size: clamp(2.5rem, 5.4vw, 7rem) !important; max-width: 14ch !important; }
+html body #ln .hv1 .hv-lead:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { font-size: clamp(1.0625rem, 1.25vw, 1.5rem) !important; max-width: 34em !important; }
+html body #ln .hv1 .hv-tag:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin: 0 !important; padding: 22px 16px !important; background: #fff; }
+
+/* phones: the text starts just under the header and the drawing shows below it */
+@media (max-width: 720px) {
+  html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { min-height: 560px !important; }
+  html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { object-position: 62% 60% !important; }
+  html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::after {
+    background: linear-gradient(180deg, rgba(242,245,250,.96) 0%, rgba(242,245,250,.9) 45%, rgba(242,245,250,.2) 75%, rgba(242,245,250,.6) 100%) !important;
+  }
+  html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { padding: calc(env(safe-area-inset-top, 0px) + 104px) 20px 0 !important; }
+  html body #ln .hv1 h1:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { font-size: clamp(2.25rem, 10vw, 3rem) !important; }
+}
+
+/* Hero text: centred in the screen's height, and inside the same centred box as the header (1540px wide, at least
+   40px from the edge; 20px on phones), so the headline lines up with the logo at every width */
+html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { align-items: center !important; }
+html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) {
+  box-sizing: border-box !important; width: 100% !important; max-width: none !important;
+  padding: 88px max(40px, calc((100vw - 1540px) / 2)) 40px !important;
+}
+html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) > * { max-width: 900px; }
+html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::after {
+  background:
+    radial-gradient(ellipse 75% 80% at 0% 50%, rgba(242,245,250,.95) 0%, rgba(242,245,250,.8) 42%, rgba(242,245,250,0) 100%),
+    linear-gradient(180deg, rgba(242,245,250,0) 78%, rgba(242,245,250,.85) 100%) !important;
+}
+@media (max-width: 720px) {
+  html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { padding: 84px 20px 32px !important; }
+  html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::after {
+    background: linear-gradient(180deg, rgba(242,245,250,.35) 0%, rgba(242,245,250,.92) 28%, rgba(242,245,250,.92) 72%, rgba(242,245,250,.35) 100%) !important;
+  }
+}

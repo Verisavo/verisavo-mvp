@@ -9,3 +9,6 @@ next-env.d.ts
 
 # dev test account sign-ins (npm run seed:test-users)
 test-accounts.local.md
+
+# the public website, built from site/source by npm run site:build
+/public/site/

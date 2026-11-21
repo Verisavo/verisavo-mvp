@@ -39,12 +39,28 @@ const nextConfig = {
   },
   async redirects() {
     // old static file names, and tidy paths for the pages that open over the homepage scene
-    const pages = ["about-us", "research", "contact", "pricing", "careers"];
+    const pages = ["about-us", "research", "contact", "pricing", "careers", "community", "use-cases", "demo"];
     return [
       { source: "/index.html", destination: "/", permanent: true },
       { source: "/assistant.html", destination: "/platform", permanent: true },
+      { source: "/docs.html", destination: "/docs", permanent: true },
+      { source: "/apply.html", destination: "/apply", permanent: true },
       ...pages.map(p => ({ source: `/${p}`, destination: `/#${p}`, permanent: false }))
     ];
+  },
+  async rewrites() {
+    // The public website is the client's design, built into public/site/ by scripts/build-site.mjs (npm run site:build).
+    // beforeFiles, so these win over the old React landing pages. The proxy still runs first, so /assistant stays
+    // sign-in only. The app pages (/dashboard, /admin, /auth, /reset-password) and the APIs are untouched.
+    return {
+      beforeFiles: [
+        { source: "/", destination: "/site/index.html" },
+        { source: "/platform", destination: "/site/assistant.html" },
+        { source: "/assistant", destination: "/site/assistant.html" },
+        { source: "/docs", destination: "/site/docs.html" },
+        { source: "/apply", destination: "/site/apply.html" }
+      ]
+    };
   }
 };
 export default nextConfig;
