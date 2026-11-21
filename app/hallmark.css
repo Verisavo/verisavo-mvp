@@ -1222,3 +1222,18 @@ html body #pg-community .c3-fl .c3-p:not(#a#b#c) { animation-duration: 4.2s; ani
 html body #pg-community .c3-fl .c3-pts:not(#a#b#c) { background: #fff !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F; }
 @media (prefers-reduced-motion: reduce) { html body #pg-community .c3-fl .c3-b:not(#a#b#c) { animation: none; } }
 /* <<< community hero floats */
+
+/* >>> portal list v3: plain text tabs with an underline, cards like the reference */
+html body #pg-portal .pt-tabs:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { display: flex !important; gap: 34px !important; padding: 0 !important; margin-top: 40px !important; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
+html body #pg-portal .pt-tabs button:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { position: relative; height: auto !important; min-height: 0 !important; padding: 0 0 10px !important; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; font: 400 1.0625rem/1.3 "Red Hat Text", sans-serif !important; color: #3A4466 !important; -webkit-text-fill-color: #3A4466 !important; cursor: pointer; }
+html body #pg-portal .pt-tabs button span:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin-left: 3px; font-size: .9375rem !important; color: #8A93A5 !important; -webkit-text-fill-color: #8A93A5 !important; background: none !important; padding: 0 !important; }
+html body #pg-portal .pt-tabs button[aria-pressed="true"]:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
+html body #pg-portal .pt-tabs button[aria-pressed="true"]::after { content: ""; position: absolute; left: 0; bottom: 0; width: 18px; height: 2px; border-radius: 2px; background: #4D74C3; }
+html body #pg-portal .pt-tabs button:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
+html body #pg-portal .pt-list:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin-top: 28px !important; gap: 24px !important; }
+html body #pg-portal .pt-card.pt-card2:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { padding: 30px !important; border-color: #E4E8EF !important; }
+html body #pg-portal .pt-card2 h3:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin-top: 12px !important; font-size: 1.3125rem !important; line-height: 1.3 !important; letter-spacing: -.01em !important; }
+html body #pg-portal .pt-card2 > p:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin-top: 8px !important; font-size: .9875rem !important; line-height: 1.6 !important; }
+html body #pg-portal .pt-card2 dl:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin-top: 28px !important; gap: 12px !important; }
+@media (max-width: 760px) { html body #pg-portal .pt-tabs:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { gap: 22px !important; margin-top: 28px !important; overflow-x: auto; } html body #pg-portal .pt-tabs button:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { white-space: nowrap; font-size: 1rem !important; } html body #pg-portal .pt-card.pt-card2:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { padding: 24px !important; } }
+/* <<< portal list v3 */
