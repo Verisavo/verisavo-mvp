@@ -12,6 +12,7 @@ import CommunityPage from "@/components/home/CommunityPage";
 import CommunityTasksPage from "@/components/home/CommunityTasksPage";
 import PortalPage from "@/components/home/PortalPage";
 import ContactPage from "@/components/home/ContactPage";
+import DemoPage from "@/components/home/DemoPage";
 import UseCasesPage from "@/components/home/UseCasesPage";
 import ScoutPage from "@/components/home/ScoutPage";
 import Main from "@/components/home/Main";
@@ -40,6 +41,7 @@ export default function HomeShell({ start = "" }) {
       <PortalPage />
       <ScoutPage />
       <ContactPage />
+      <DemoPage />
       <Main />
       <Footer />
       <ComingSoonDialog />

@@ -1105,8 +1105,7 @@ export default function ResearchPage() {
           <h2 id="rs-cta-h">{"Have a market question "}<span className="acc">{"of your own?"}</span></h2>
           {" "}
           <div className="acts">
-            <button type="button" className="obtn solid" data-ask="">{"Ask Verisavo"}</button>
-            <button type="button" className="obtn" data-page="contact">{"Talk to our team"}</button>
+            <button type="button" className="obtn solid" data-ask="">{"Request a demo"}</button>
           </div>
           {" "}
         </section>
