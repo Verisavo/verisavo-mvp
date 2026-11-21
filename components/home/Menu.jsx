@@ -6,7 +6,7 @@ export default function Menu() {
         <ul className="mnav-big">
           <li style={{ "--i": "0" }}><a href="/platform">{"Product"}</a></li>
           <li style={{ "--i": "1" }}><button type="button" data-page="use-cases">{"Use cases"}</button></li>
-          <li style={{ "--i": "2" }}><button type="button" data-page="pricing">{"Pricing"}</button></li>
+          <li style={{ "--i": "2" }}><button type="button" data-page="demo">{"Request a demo"}</button></li>
           <li style={{ "--i": "3" }}><button type="button" data-page="research">{"Insights"}</button></li>
           <li style={{ "--i": "4" }}><button type="button" data-page="community">{"Community"}</button></li>
         </ul>
@@ -15,7 +15,7 @@ export default function Menu() {
           <li style={{ "--i": "7" }}><a href="/docs.html">{"Docs"}</a></li>
           <li style={{ "--i": "8" }}><button type="button" data-page="careers">{"Careers"}</button></li>
           <li style={{ "--i": "9" }}><button type="button" data-page="contact">{"Contact us"}</button></li>
-          <li style={{ "--i": "10" }}><button type="button" data-dialog="signin">{"Sign in"}</button></li>
+          <li style={{ "--i": "10" }}><button type="button" data-dialog="signin">{"Client sign in"}</button></li>
         </ul>
       </div>
       <div className="mnav-foot">

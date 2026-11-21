@@ -25,6 +25,7 @@ export default function Header() {
         {" "}
         <button type="button" className="pa" data-dialog="access">{"Contact us"}</button>
         {" "}
+        <button type="button" className="hdemo" data-page="demo">{"Request a demo"}</button>
         <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu">
           <span id="menu-lab">{"Menu"}</span>
           {" "}

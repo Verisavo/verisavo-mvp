@@ -38,6 +38,7 @@ export default function Header() {
           {" "}
           <button type="button" className="login" data-login="">{"Sign in"}</button>
           {" "}
+          <a className="hdemo" href="/demo">{"Request a demo"}</a>
           <button type="button" className="vmenu" id="vmenu-btn" aria-expanded="false" aria-controls="vmenu">
             <span id="vmenu-lab">{"Menu"}</span>
             {" "}

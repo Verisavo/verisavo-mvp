@@ -1338,3 +1338,10 @@ html body :is(#pg-demo) :is(.cta-band, .ca-apply, .u2-close) :is(.obtn:not(.soli
 @media (max-width: 760px){html body :is(#pg-demo) :is(.cta-band, .ca-apply, .u2-close):not(#a#b#c#d#e#f#g#h#i#j#k#l){ border-radius: 28px !important; }}
 html[data-vs-theme="dark"] :is(#pg-demo) :is(.cta-band, .ca-apply, .u2-close){ filter: invert(1) hue-rotate(180deg); }
 
+/* Pricing: shared after the demo */
+html body #pg-pricing .pc-after .pa-body{width:min(640px,100%);margin:clamp(32px,5vw,56px) auto 0;padding:clamp(24px,4vw,36px);border:1px solid #E3E8F0;border-radius:20px;background:#fff;display:grid;gap:16px}
+html body #pg-pricing .pc-after .pa-h2{margin:0;color:#1F273F;font:600 1rem/1.35 "Red Hat Text",system-ui,sans-serif;letter-spacing:0}
+html body #pg-pricing .pc-after .pa-list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+html body #pg-pricing .pc-after .pa-list li{position:relative;padding-left:22px;color:#3D4559;font:400 1rem/1.55 "Red Hat Text",system-ui,sans-serif}
+html body #pg-pricing .pc-after .pa-list li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:#A8C6E8}
+html body #pg-pricing .pc-after .pa-cta{justify-self:start;margin-top:8px}
