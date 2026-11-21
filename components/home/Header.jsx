@@ -14,14 +14,6 @@ export default function Header() {
           </svg>
         </button>
         {" "}
-        <button type="button" className="snd" data-sound-toggle="" aria-pressed="false" aria-label="Turn sound on" title="Turn sound on">
-          <svg className="snd-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M2.5 6h2.2L8 3.2v9.6L4.7 10H2.5z"></path>
-            <path className="snd-w1" d="M10.4 6.2a2.6 2.6 0 0 1 0 3.6"></path>
-            <path className="snd-w2" d="M12.3 4.4a5.1 5.1 0 0 1 0 7.2"></path>
-            <path className="snd-x" d="M10.6 6.3l3.4 3.4M14 6.3l-3.4 3.4"></path>
-          </svg>
-        </button>
         {" "}
         <button type="button" className="pa" data-dialog="access">{"Contact us"}</button>
         {" "}

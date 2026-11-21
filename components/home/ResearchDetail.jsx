@@ -28,7 +28,7 @@ export default function ResearchDetail() {
           {" "}
           <div className="acts acts-pair" id="rd-acts">
             <button type="button" className="obtn solid" data-ask="">{"Request a demo"}</button>
-            <button type="button" className="obtn" data-page="contact">{"Contact us"}</button>
+            <button type="button" className="obtn" data-page="use-cases">{"Explore use cases"}</button>
           </div>
           {" "}
         </div>

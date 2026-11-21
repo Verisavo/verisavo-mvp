@@ -1106,7 +1106,7 @@ export default function ResearchPage() {
           {" "}
           <div className="acts acts-pair">
             <button type="button" className="obtn solid" data-ask="">{"Request a demo"}</button>
-            <button type="button" className="obtn" data-page="contact">{"Contact us"}</button>
+            <button type="button" className="obtn" data-tab-go="cases">{"Discover case studies"}</button>
           </div>
           {" "}
         </section>

@@ -8,7 +8,6 @@ export default function Menu() {
         <ul className="mnav-big">
           <li style={{ "--i": "0" }}><button type="button" data-mn="platform">{"Product"}</button></li>
           <li style={{ "--i": "1" }}><a href="/use-cases">{"Use cases"}</a></li>
-          <li style={{ "--i": "2" }}><a href="/demo">{"Request a demo"}</a></li>
           <li style={{ "--i": "3" }}><a href="/insights">{"Insights"}</a></li>
           <li style={{ "--i": "4" }}><a href="/community">{"Community"}</a></li>
         </ul>
@@ -17,7 +16,6 @@ export default function Menu() {
           <li style={{ "--i": "6" }}><a href="/docs.html">{"Docs"}</a></li>
           <li style={{ "--i": "7" }}><a href="/careers">{"Careers"}</a></li>
           <li style={{ "--i": "8" }}><a href="/contact">{"Contact us"}</a></li>
-          <li style={{ "--i": "9" }}><button type="button" data-login="">{"Client sign in"}</button></li>
         </ul>
         {" "}
       </div>

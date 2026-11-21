@@ -1349,3 +1349,6 @@ html body #pg-pricing .pc-after .pa-cta{justify-self:start;margin-top:8px}
 html body .acts.acts-pair:not(#a#b#c#d#e#f),html body .u2-acts.acts-pair:not(#a#b#c#d#e#f),html body .hp2-ctas:not(#a#b#c#d#e#f){display:flex!important;flex-wrap:wrap;justify-content:center!important;align-items:center;gap:12px!important}
 html body #pg-pricing .pc-after .pa-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:8px}
 html body #pg-pricing .pc-after .pa-ctas .pa-cta{justify-self:auto;margin:0}
+/* Request a demo on dark sections: white with dark text */
+html body :is(#ln, .pg) :is(.hp2-cta, .cta-band .obtn.solid, .ca-apply .obtn.solid, .u2-close .u2-btn.u2-solid):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n){background:#fff!important;border-color:#fff!important;color:#1F273F!important;-webkit-text-fill-color:#1F273F!important}
+html body :is(#ln, .pg) :is(.hp2-cta, .cta-band .obtn.solid, .ca-apply .obtn.solid, .u2-close .u2-btn.u2-solid):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n):hover{background:#E3EBF8!important;border-color:#E3EBF8!important}
