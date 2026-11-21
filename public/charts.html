@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verisavo chart library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600&family=Red+Hat+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --ink: #1F273F; --text: #3A3A3C; --muted: #6D6C71; --rule: #E5E5E5; --bg: #F7F9FC; --card: #fff; --accent: #3B5D8A; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #F7F9FC; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 15px/1.55 "Red Hat Text", system-ui, sans-serif; }
+header { max-width: 1240px; margin: 0 auto; padding: 56px 24px 8px; }
+h1 { margin: 0; font: 400 clamp(2rem, 1.6rem + 1.6vw, 2.75rem)/1.1 "Red Hat Display", sans-serif; letter-spacing: -.03em; color: var(--ink); }
+.lead { max-width: 62ch; margin: 14px 0 0; color: var(--muted); font-size: 1.0625rem; }
+.rules { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 22px 0 0; padding: 0; list-style: none; font-size: .875rem; color: var(--muted); }
+.rules li { display: flex; align-items: center; gap: 8px; }
+.rules i { width: 10px; height: 10px; border-radius: 2px; }
+nav { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--rule); }
+nav div { max-width: 1240px; margin: 0 auto; padding: 18px 24px 0; display: flex; gap: 28px; overflow-x: auto; }
+nav button { position: relative; flex: none; padding: 0 0 12px; border: 0; background: none; font: 400 1rem/1.3 "Red Hat Text", sans-serif; color: #3A4466; cursor: pointer; }
+nav button span { color: #8A93A5; font-size: .875rem; margin-left: 3px; }
+nav button[aria-pressed="true"] { color: var(--ink); }
+nav button[aria-pressed="true"]::after { content: ""; position: absolute; left: 0; bottom: -1px; width: 18px; height: 2px; border-radius: 2px; background: var(--accent); }
+nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+main { max-width: 1240px; margin: 0 auto; padding: 28px 24px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(520px, 100%), 1fr)); gap: 20px; }
+.card { background: var(--card); border: 1px solid #E4E8EF; border-radius: 16px; padding: 22px 24px 18px; min-width: 0; }
+.card[hidden] { display: none; }
+.meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.meta h2 { margin: 0; font: 500 1.125rem/1.3 "Red Hat Display", sans-serif; color: var(--ink); letter-spacing: -.01em; }
+.meta code { font: 500 .75rem/1 ui-monospace, Menlo, monospace; color: #8A93A5; }
+.use { margin: 6px 0 4px; font-size: .9375rem; color: var(--muted); }
+.card .vc { margin-top: 14px; }
+@media (max-width: 560px) { header { padding-top: 36px; } main { padding: 20px 16px 60px; } header, nav div { padding-left: 16px; padding-right: 16px; } .card { padding: 18px 16px 14px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Chart library</h1>
+  <p class="lead">The chart templates the Verisavo Assistant chooses from. Each one has one job, a title that states the finding, and the same quiet style. The examples use illustrative data.</p>
+  <ul class="rules" aria-label="Colour rules">
+    <li><i style="background:#3B5D8A"></i>What the answer is about</li>
+    <li><i style="background:#A8BFDC"></i>Context and comparison</li>
+    <li><i style="background:#D3D3D8"></i>Other</li>
+    <li><i style="background:repeating-linear-gradient(135deg,#fff 0 3px,#C9C8CD 3px 5px);box-shadow:inset 0 0 0 1px #C9C8CD"></i>Unknown</li>
+  </ul>
+</header>
+<nav aria-label="Filter charts"><div id="tabs"></div></nav>
+<main id="lib"></main>
+<script src="vchart.js"></script>
+<script>
+(function () {
+  var V = window.VChart, T = V.TEMPLATES, groups = ["All"];
+  T.forEach(function (t) { if (groups.indexOf(t.group) < 0) groups.push(t.group); });
+  var lib = document.getElementById("lib"), tabs = document.getElementById("tabs");
+  lib.innerHTML = T.map(function (t, i) {
+    return '<article class="card" data-g="' + t.group + '"><div class="meta"><h2>' + t.name + '</h2><code>' + t.id + '</code></div><p class="use">' + t.use + '</p>' +
+      V.figure(Object.assign({ kind: t.id, src: "Source: illustrative data" }, t.sample), i + 1) + "</article>";
+  }).join("");
+  function count(g) { return g === "All" ? T.length : T.filter(function (t) { return t.group === g; }).length; }
+  tabs.innerHTML = groups.map(function (g, k) { return '<button type="button" aria-pressed="' + (k === 0) + '" data-g="' + g + '">' + g + "<span>" + count(g) + "</span></button>"; }).join("");
+  tabs.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return; var g = b.dataset.g;
+    [].forEach.call(tabs.children, function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    [].forEach.call(lib.children, function (c) { c.hidden = g !== "All" && c.dataset.g !== g; });
+    V.animate(lib);
+  });
+  V.animate(lib);
+})();
+</script>
+</body>
+</html>
