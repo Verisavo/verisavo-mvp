@@ -1127,6 +1127,7 @@ export default function ResearchPage() {
             {" "}
             <nav aria-label="Legal">
               <button type="button" data-admin="">{"Admin"}</button>
+            <button type="button" data-orig-signin="">{"Sign in"}</button>
               <button type="button" data-legal="terms">{"Terms of Service"}</button>
               <button type="button" data-legal="privacy">{"Privacy Policy"}</button>
             </nav>

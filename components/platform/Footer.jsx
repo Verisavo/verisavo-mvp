@@ -22,6 +22,7 @@ export default function Footer() {
           {" "}
           <nav aria-label="Legal">
             <button type="button" data-admin="">{"Admin"}</button>
+            <button type="button" data-orig-signin="" data-login="">{"Sign in"}</button>
             <button type="button" data-legal="terms">{"Terms of Service"}</button>
             <button type="button" data-legal="privacy">{"Privacy Policy"}</button>
             <button type="button" className="foot-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>{"Back to top ↑"}</button>
