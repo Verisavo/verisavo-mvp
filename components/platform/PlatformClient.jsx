@@ -23,6 +23,7 @@ export default function PlatformClient() {
       (await import("@/lib/telpick")).default();
       (await import("@/lib/vsbar")).default();
       (await import("@/lib/vsgate")).default();
+      (await import("@/lib/vsws")).default();
       (await import("@/lib/vchart")).default();
       (await import("@/lib/platform/vapx")).default();
       (await import("@/lib/platform/answer")).default();
