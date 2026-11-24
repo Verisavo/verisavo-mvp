@@ -1356,3 +1356,6 @@ html body :is(#ln, .pg) :is(.hp2-cta, .cta-band .obtn.solid, .ca-apply .obtn.sol
 /* Contact: tighter space between the introduction and the form */
 html body #pg-contact#pg-contact#pg-contact.pg.pg .ct3-head:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding-bottom: 36px !important; }
 html body #pg-contact#pg-contact#pg-contact.pg.pg .ct3-form:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: 36px !important; }
+
+/* the light/dark switch icon is removed from headers; the appearance choice stays in the profile settings */
+[data-theme-toggle] { display: none !important; }
