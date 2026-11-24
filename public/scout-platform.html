@@ -275,6 +275,12 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .refs{display:inline-flex;gap:4px;flex-wrap:wrap;margin-left:6px;vertical-align:middle}
 .refs button{border:1px solid var(--line);background:var(--paper);border-radius:6px;font-size:11px;padding:0 6px;height:20px;color:var(--primary)}
 .conf{font-size:11px;border-radius:6px;padding:1px 6px;margin-left:6px;background:var(--field);color:var(--ink-2);white-space:nowrap}
+.wiz{max-width:760px}.wiz .field{gap:8px}
+.wiz-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wiz-set{border:0;margin:0;padding:0;min-width:0}.wiz-set legend{padding:0;margin-bottom:6px}
+.wiz-hint{margin:-2px 0 6px;font-size:12.5px}.gapscroll.wiz-list{max-height:none;overflow:visible}
+.manual-alt{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border:1px dashed var(--line);border-radius:12px;font-size:13.5px}
+@media (max-width:560px){.wiz-two{grid-template-columns:1fr}}
 .fu{display:grid;gap:12px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
 .fu-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
 .fu-item{display:grid;gap:8px}
@@ -1014,9 +1020,58 @@ if (INLINE) {
       const kinds = sel.map(g => g.kind).filter((v, i, a) => v && a.indexOf(v) === i);
       const ctx = { gaps: sel.map(g => g.q), gap: sel.map(g => g.q).join(' '), from: sel[0].from || '', kind: sel[0].kind || 'Retailer interviews', kinds, city: sel[0].city || '', country: sel[0].country || '', product: sel[0].product || '' };
       try { parent.postMessage({ vs: 'gaps-picked', gaps: ctx.gaps }, '*'); } catch (x) {}
-      fromGapCtx(JSON.stringify(ctx)); GAPSEL = {}; render(); window.scrollTo(0, 0);
+      openWizard(ctx, 'gaps'); GAPSEL = {}; render(); window.scrollTo(0, 0);
     }
   });
+}
+/* ---------- Survey Wizard: a few questions before Verisavo builds the survey ----------
+   Used for a typed description (direct) and for Intelligence Gaps; both end in fromGapCtx, the existing gap-aware builder. */
+const DECISIONS = [['enter', 'Whether to enter or expand in this market'], ['price', 'How to price'], ['distribution', 'How to fix distribution or stock'], ['launch', 'Whether to launch a new product or pack'], ['rival', 'How to respond to a competitor'], ['other', 'Something else']];
+const KIND_LABEL = {'Availability and shelf': ['Shelf availability', 'Whether it is on the shelf, and which rivals sit next to it'], 'Price check': ['Prices', 'Shelf prices against rival packs, and any promotions'], 'Retailer interviews': ['Supply and sellers', 'How outlets are supplied, in the sellers’ own words'], 'Shopper feedback': ['Shoppers', 'Which brand shoppers choose, and why'], 'Outlet mapping': ['Outlets', 'Which outlets exist in the area and what they sell']};
+const DECISION_KINDS = {enter: ['Outlet mapping', 'Availability and shelf'], price: ['Price check', 'Shopper feedback'], distribution: ['Retailer interviews', 'Availability and shelf'], launch: ['Availability and shelf', 'Shopper feedback'], rival: ['Price check', 'Availability and shelf']};
+const PLACES = [['Kiosks', 'Kiosk'], ['Small shops', 'Small shop'], ['Open-market stalls', 'Open-market stall'], ['Supermarkets', 'Supermarket'], ['Wholesalers', 'Wholesaler']];
+function ctxFromText(desc) {
+  desc = (desc || '').replace(/\s+/g, ' ').trim(); const low = desc.toLowerCase();
+  let city = '', country = '';
+  Object.keys(COUNTRIES).forEach(c => { if (low.includes(c.toLowerCase())) country = country || c; COUNTRIES[c].forEach(ct => { if (low.includes(ct.toLowerCase())) { city = city || ct; country = country || c; } }); });
+  const pm = desc.match(PRODUCT_RX), kinds = kindsFromGaps([desc], []);
+  return {gap: desc, gaps: [desc], from: '', kind: kinds[0] || 'Open observation', kinds, city, country, product: pm ? pm[0].toLowerCase() : ''};
+}
+function openWizard(ctx, mode) {
+  const prev = B && B.wizAns && B.wizAns.mode === mode ? B.wizAns : null;
+  const country = ctx.country && COUNTRIES[ctx.country] ? ctx.country : (Object.keys(COUNTRIES).find(c => COUNTRIES[c].includes(ctx.city)) || '');
+  const kinds = (ctx.kinds || [ctx.kind]).filter(k => KIND_LABEL[k]);
+  newBuilder(); B.ai = mode === 'direct' ? ctx.gap : '';
+  B.wiz = {mode, ctx, decision: prev ? prev.decision : '', product: (ctx.product || '').replace(/^(our|your|my|the) /i, ''), country, city: country && COUNTRIES[country].includes(ctx.city) ? ctx.city : '',
+    kinds, auto: !kinds.length, places: prev ? prev.places.slice() : ['Kiosks', 'Small shops', 'Open-market stalls'], known: prev ? prev.known : ''};
+}
+function wizView() {
+  const w = B.wiz, gaps = w.ctx.gaps && w.ctx.gaps.length ? w.ctx.gaps : [w.ctx.gap], cities = COUNTRIES[w.country] || [], ok = !!(w.country && w.city && w.kinds.length);
+  const box = (key, i, on, t, d) => `<label class="gaprow"><input type="checkbox" id="${key}-${i}" data-${key}="${i}"${on ? ' checked' : ''}><span class="gbody"><b>${t}</b>${d ? `<small>${d}</small>` : ''}</span></label>`;
+  return `<div class="narrow wiz"><div class="stack">
+    <div><h2 style="font-size:22px">A few questions first</h2><p class="muted" style="margin:2px 0 0">${w.mode === 'gaps' ? 'Verisavo has filled in what your conversation already says. Check the answers and add what is missing, so the survey fits the decision ahead.' : 'So Verisavo can tailor the survey to your decision. Answers are filled in where your description already says it.'}</p></div>
+    <div class="note gapnote">${ic.info}<span><b>${w.mode === 'gaps' ? (gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap') : 'What you want to investigate'}</b> ${gaps.length > 1 ? '<ul class="gaplist">' + gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(gaps[0])}${w.ctx.from ? `<br><span class="faint">From: ${esc(w.ctx.from)}</span>` : ''}</span></div>
+    <div class="field"><label for="w-dec">1. What decision will this evidence support?</label><select class="in" id="w-dec" data-w="decision"><option value="">Choose a decision</option>${DECISIONS.map(d => `<option value="${d[0]}"${w.decision === d[0] ? ' selected' : ''}>${d[1]}</option>`).join('')}</select></div>
+    <div class="field"><label for="w-prod">2. Which product or category?</label><input class="in" id="w-prod" data-w="product" placeholder="For example, cooking oil" value="${esc(w.product)}"></div>
+    <div class="field"><span class="flabel" id="w-where">3. Where should SavoScouts work?</span><div class="wiz-two"><select class="in" id="w-country" data-w="country" aria-labelledby="w-where"><option value="">Country</option>${Object.keys(COUNTRIES).map(c => `<option${w.country === c ? ' selected' : ''}>${c}</option>`).join('')}</select><select class="in" id="w-city" data-w="city" aria-label="City"${cities.length ? '' : ' disabled'}><option value="">${cities.length ? 'City' : 'Choose a country first'}</option>${cities.map(c => `<option${w.city === c ? ' selected' : ''}>${c}</option>`).join('')}</select></div></div>
+    <fieldset class="field wiz-set"><legend class="flabel">4. What should SavoScouts find out?</legend><p class="faint wiz-hint">${w.kinds.length ? 'Ticked from ' + (w.mode === 'gaps' ? 'the gap' + (gaps.length > 1 ? 's' : '') : 'your description') + (w.decision ? ' and your decision' : '') + '. Change as needed.' : 'Tick at least one.'}</p><div class="gapscroll wiz-list">${Object.keys(KIND_LABEL).map((k, i) => box('wk', i, w.kinds.includes(k), KIND_LABEL[k][0], KIND_LABEL[k][1])).join('')}</div></fieldset>
+    <fieldset class="field wiz-set"><legend class="flabel">5. Which places should they visit?</legend><div class="gapscroll wiz-list">${PLACES.map((p, i) => box('wp', i, w.places.includes(p[0]), p[0], '')).join('')}</div></fieldset>
+    <div class="field"><label for="w-known">6. Anything Verisavo should know? <span class="faint" style="font-weight:400">Optional</span></label><textarea class="in" id="w-known" data-w="known" placeholder="For example, the rival brand to watch, or what you already know">${esc(w.known)}</textarea></div>
+  </div></div>`;
+}
+function wizGenerate() {
+  const w = B.wiz; if (!w || !w.country || !w.city || !w.kinds.length) return;
+  const gaps = w.ctx.gaps && w.ctx.gaps.length ? w.ctx.gaps : [w.ctx.gap], ai = B.ai, prod = w.product.trim();
+  fromGapCtx(JSON.stringify({...w.ctx, gaps, gap: gaps.join(' '), kinds: w.kinds, kind: w.kinds[0], city: w.city, country: w.country, product: prod, exact: true}));
+  if (w.mode === 'direct') { B.ai = ai; B.typed = true; B.gapFrom = ''; }
+  const P = prod || 'the product', one = PLACES.filter(p => w.places.includes(p[0]));
+  if (one.length && B.questions[0]) B.questions[0].options = one.map(p => p[1]).concat(one.length < PLACES.length ? ['Other'] : []);
+  if (one.length) { const l = one.map(p => p[0].toLowerCase()); B.location = (l.length > 1 ? l.slice(0, -1).join(', ') + ' and ' + l[l.length - 1] : l[0]).replace(/^./, c => c.toUpperCase()) + ' in ' + w.city; }
+  const dq = {enter: newQ('paragraph', `In the seller’s view, is there room for another brand of ${P} here? Why?`), price: newQ('single', `How do shoppers react when the price of ${P} goes up?`, ['Keep buying the same brand', 'Switch to a cheaper brand', 'Buy a smaller pack', 'Buy less often', 'Seller not sure']), distribution: newQ('single', `In the last month, how often did this outlet run short of ${P}?`, ['Never', 'Once', 'Two or three times', 'Most weeks']), launch: newQ('single', `Would the seller stock a new pack or variant of ${P}?`, ['Yes', 'Maybe, if the margin is right', 'No', 'Not sure']), rival: newQ('paragraph', 'What has the leading rival changed recently: price, promotion, pack or supply?')}[w.decision];
+  if (dq && B.questions.length < 20 && !B.questions.some(q => q.text === dq.text)) B.questions.push(dq);
+  const dec = (DECISIONS.find(d => d[0] === w.decision) || [])[1];
+  B.brief = (dec && w.decision !== 'other' ? 'Purpose: this evidence will help decide ' + dec.charAt(0).toLowerCase() + dec.slice(1) + '. ' : '') + B.brief + (one.length ? ' Visit: ' + one.map(p => p[0].toLowerCase()).join(', ') + '.' : '') + (w.known.trim() ? ' Background from the client: ' + w.known.trim() : '');
+  B.wizAns = {mode: w.mode, decision: w.decision, places: w.places.slice(), known: w.known}; B.wiz = null;
 }
 function fromGapCtx(raw) {
   let g; try { g = JSON.parse(raw); } catch (e) { return; }
@@ -1033,7 +1088,7 @@ function fromGapCtx(raw) {
   B.brief = kinds.map(k => KIND_BRIEF[k]).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(' ') || KIND_BRIEF['Open observation'];
   if (kinds.length > 1) B.title = ((prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Market') + (g.city ? ' in ' + g.city : '') + ': ' + kinds.map(k => k.toLowerCase().replace('availability and shelf', 'availability').replace('price check', 'prices').replace('retailer interviews', 'distribution').replace('outlet mapping', 'outlets').replace('shopper feedback', 'shoppers')).join(', '));
   const desc = (prod ? prod + ' ' : '') + kinds.join(', ').toLowerCase() + (g.city ? ' in ' + g.city : '') + '. ' + gaps.join(' ');
-  B.kinds = kindsFromGaps(gaps, kinds.filter(k => k && k !== 'Open observation'));
+  B.kinds = g.exact && kinds.filter(k => k && k !== 'Open observation').length ? kinds.filter(k => k && k !== 'Open observation') : kindsFromGaps(gaps, kinds.filter(k => k && k !== 'Open observation'));
   B.brief = B.kinds.map(k => KIND_BRIEF[k]).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(' ') || B.brief;
   if (B.kinds.length > 1) B.title = (prod ? prod.charAt(0).toUpperCase() + prod.slice(1) : 'Market') + (g.city ? ' in ' + g.city : '') + ': ' + B.kinds.map(k => k.toLowerCase().replace('availability and shelf', 'availability').replace('price check', 'prices').replace('retailer interviews', 'distribution').replace('outlet mapping', 'outlets').replace('shopper feedback', 'shoppers')).join(', ');
   B.questions = gapQs(gaps, B.kinds, prod, g.city);
@@ -1043,6 +1098,8 @@ function cBuilder(r) {
   if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
   const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Payment', 'Review and deploy'];
   const stepper = `<div class="stepper">${steps.map((t, i) => `<div class="step ${i < B.step ? 'done' : i === B.step ? 'on' : ''}"><span class="dot">${i < B.step ? ic.check : i + 1}</span><span class="lab">${t}</span></div>`).join('')}</div><p class="step-now"><span>Step ${Math.min(B.step, steps.length - 1) + 1} of ${steps.length}</span><b>${steps[Math.min(B.step, steps.length - 1)]}</b></p>`;
+  if (B.wiz) { const ok = !!(B.wiz.country && B.wiz.city && B.wiz.kinds.length);
+    return shell(r, 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${wizView()}<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px"><button class="btn ghost" data-act="wizback">Back</button><button class="btn" data-act="wizgo"${ok ? '' : ' disabled'}>${ic.spark}Generate survey</button></div>${ok ? '' : '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a country, a city and at least one thing to find out.</p>'}</div>`); }
   const P = pricing(B.responses, B.timeframe);
   let inner = '';
   if (B.step === 0) {
@@ -1050,21 +1107,21 @@ function cBuilder(r) {
     const showDetails = B.prepared || B.manual || !!(B.title || cs.length);
     const fromChat = B.prepared && !B.typed;
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation: the place, the instructions and survey questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Describe it in plain words. Verisavo turns it into a task for SavoScouts: the place, the instructions and the evidence questions.'}</p></div>
+      <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation: the place, the instructions and survey questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Describe it in plain words. Verisavo asks a few questions about your decision, then builds the task for SavoScouts: the place, the instructions and the evidence questions.'}</p></div>
       ${fromChat ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : `
-      <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Generate task again' : 'Generate task'}">${ic.spark}<span>${B.prepared ? 'Generate again' : 'Generate task'}</span></button></div>
-      ${B.prepared ? `<p class="faint askhint">Task generated below. Change the description and generate again if needed.</p>` : ''}
+      <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Start again from this description' : 'Continue'}">${ic.spark}<span>${B.prepared ? 'Start again' : 'Continue'}</span></button></div>
+      ${B.prepared ? `<p class="faint askhint">Survey generated below. Change the description and start again if needed.</p>` : ''}
       ${(() => { const dr = B.prepared || B.id ? [] : surveys().filter(x => x.status === 'draft' && !x.sample); return dr.length ? `<div class="field drafts-field"><span class="flabel faint" style="font-weight:400">Your drafts</span><div class="drafts">${dr.slice(0, 5).map(x => `<button type="button" class="draftrow" data-go="c-builder-${x.id}"><span class="dt">${esc(x.title)}</span><span class="dm">${x.questions ? x.questions.length + ' question' + (x.questions.length === 1 ? '' : 's') + ' · ' : ''}saved ${ago(x.updatedAt || x.createdAt)}</span><span class="da">Continue</span></button>`).join('')}</div><p class="faint" style="font-size:12.5px;margin:6px 0 0">All drafts are also under Manage investigations → Draft.</p></div>` : ''; })()}
       ${B.prepared ? '' : (INLINE && OPEN_GAPS.length && !B.id) ? gapPicker() : `<div class="field sugg-field"><span class="flabel faint" style="font-weight:400">Try one of these</span><div class="chips sugg">${GAPS.map((g, i) => `<button type="button" class="chipbtn" data-act="usegap" data-v="${i}">${esc(g.gap)}</button>`).join('')}</div></div>`}`}
       ${showDetails ? `
-      ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Task generated.</b> Verisavo read your description and filled in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
+      ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Survey generated.</b> Verisavo used your description${B.wizAns ? ' and answers' : ''} to fill in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
       <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
       <div class="field"><label for="b-industry">Industry</label><select class="in" id="b-industry" data-b="industry"><option value="">Select your industry</option>${INDUSTRIES.map(x => `<option ${B.industry === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
       <div class="field"><label for="b-country">Target country</label><select class="in" id="b-country" data-b="country" data-rerender="1"><option value="">Select your target country</option>${Object.keys(COUNTRIES).map(x => `<option ${cs[0] === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
       <div class="field"><span class="flabel">Target regions or cities</span>${cs.length ? `<div class="chips">${(COUNTRIES[cs[0]] || []).map(x => `<button type="button" class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div>` : '<span class="faint" style="font-size:13px">Choose a country to see its regions.</span>'}</div>
       <div class="field"><label for="b-location">Main collection point</label><input class="in" id="b-location" data-b="location" placeholder="For example, Tamale Central Market" value="${esc(B.location)}"></div>
       <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea></div>
-      <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<p class="faint" style="font-size:13px">Prefer to fill in the details yourself? <button type="button" class="link" data-act="manual" style="font:inherit;background:none;border:0;padding:0;cursor:pointer">Set up the task manually</button></p>`}
+      <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<div class="manual-alt"><span class="muted">Prefer to build the survey yourself?</span><button type="button" class="btn ghost sm" data-act="manual">Build it manually</button></div>`}
     </div>
     ${showDetails ? `<div class="card" style="align-self:start"><div class="head"><h2 style="font-size:16px">Coverage summary</h2></div>
       <div class="kv"><span>Target country</span><b>${esc(cs[0] || '—')}</b></div><div class="kv"><span>Selected regions</span><b class="num">${B.regions.length}</b></div>
@@ -1121,7 +1178,7 @@ function cBuilder(r) {
   const foot = `<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px">
     ${B.step ? `<button class="btn ghost" data-act="bstep" data-v="${B.step - 1}">Back</button>` : `<button class="btn ghost" data-go="c-surveys">Cancel</button>`}
     ${B.step < 4 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
-    ${!can && B.step === 0 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">' + ((B.prepared || B.manual || B.title || bCountries().length) ? 'Add an investigation name, a country and at least one region to continue.' : 'Describe what you want to investigate and generate the task, or set it up manually.') + '</p>' : ''}
+    ${!can && B.step === 0 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">' + ((B.prepared || B.manual || B.title || bCountries().length) ? 'Add an investigation name, a country and at least one region to continue.' : 'Describe what you want to investigate and continue, or build the survey manually.') + '</p>' : ''}
     ${!can && B.step === 1 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add at least one question, and give every question a statement.</p>' : ''}
     ${!can && B.step === 3 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a payment method, add a billing email and authorise the maximum cost to continue.</p>' : ''}`;
   return shell(r, B.id ? 'Edit investigation' : 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${inner}${foot}</div>`);
@@ -1465,18 +1522,20 @@ document.addEventListener('click', async (e) => {
   else if (a === 'setstatus') { await patch('surveys', id, {status: v}); toast('Investigation ' + (v === 'active' ? 'resumed' : v) + '.'); }
   /* builder */
   else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
-  else if (a === 'prepare') { const t = $('#b-ai'); if (!prepareFromText(t ? t.value : B.ai)) { toast('Describe what you want to investigate first.'); return; } render(); toast('Task generated. Review the place and instructions, then continue to the questions.'); }
-  else if (a === 'manual') { B.manual = true; render(); const t = $('#b-title'); if (t) t.focus(); }
+  else if (a === 'prepare') { const t = $('#b-ai'), d = (t ? t.value : B.ai || '').trim(); if (!d) { toast('Describe what you want to investigate first.'); return; } openWizard(ctxFromText(d), 'direct'); render(); window.scrollTo(0, 0); const f = $('#w-dec'); if (f) f.focus({preventScroll: true}); }
+  else if (a === 'wizgo') { wizGenerate(); render(); window.scrollTo(0, 0); toast('Survey generated. Review the place and instructions, then continue to the questions.'); }
+  else if (a === 'wizback') { const w = B.wiz; B.wiz = null; if (w && w.mode === 'direct') B.ai = w.ctx.gap; else if (w && !(INLINE && OPEN_GAPS.length)) B.ai = (w.ctx.gaps || [w.ctx.gap]).join(' '); render(); window.scrollTo(0, 0); }
+  else if (a === 'manual') { B.manual = true; B.wiz = null; render(); const t = $('#b-title'); if (t) t.focus(); }
   else if (a === 'askDel') { S.ui.confirmDel = id; render(); }
   else if (a === 'keepDraft') { S.ui.confirmDel = null; render(); }
   else if (a === 'delDraft') { const d = S.surveys[id]; S.ui.confirmDel = null; if (d && d.status === 'draft') { remove('surveys', id); if (B && B.id === id) B = null; toast('Draft deleted.'); } render(); }
   else if (a === 'back-chat') { try { window.parent.postMessage({ vs: 'back-chat' }, '*'); } catch (e) {} }
-  else if (a === 'usegap') { const g = GAPS[Number(v)]; prepareFromText(g.gap); Object.assign(B, {title: g.title, industry: g.industry, country: g.country, countries: [g.country], regions: g.regions.slice(), location: g.location, brief: g.brief}); render(); toast('Task prepared from the example. Review and edit before deploying.'); }
+  else if (a === 'usegap') { const g = GAPS[Number(v)], c = ctxFromText(g.gap); c.country = g.country; c.city = g.regions[0]; openWizard(c, 'direct'); render(); window.scrollTo(0, 0); }
   else if (a === 'genbrief') genBrief(id);
-  else if (a === 'fuinv') { const s = S.surveys[id], m = s && (s.followups || [])[Number(v)]; if (!m) return; newBuilder(); prepareFromText((m.a && m.a.ask) || m.q); Object.assign(B, {country: s.country, countries: s.country ? [s.country] : [], regions: (s.regions || []).slice()}); go('c-builder'); }
+  else if (a === 'fuinv') { const s = S.surveys[id], m = s && (s.followups || [])[Number(v)]; if (!m) return; const c = ctxFromText((m.a && m.a.ask) || m.q); if (!c.city) { c.country = s.country; c.city = (s.regions || [])[0] || ''; } c.from = 'Follow-up on ' + s.title; openWizard(c, 'gaps'); go('c-builder'); }
   else if (a === 'ref') openSub(id);
   else if (a === 'toggleregion') { B.regions = B.regions.includes(v) ? B.regions.filter(x => x !== v) : [...B.regions, v]; render(); }
-  else if (a === 'bstep') { B.step = Number(v); render(); window.scrollTo(0, 0); }
+  else if (a === 'bstep') { if (Number(v) === 1 && B.manual && !B.prepared && !(B.ai || '').trim()) B.ai = [B.title, B.regions.length && !B.regions.some(x => B.title.includes(x)) ? 'in ' + B.regions.join(', ') + (bCountries()[0] ? ', ' + bCountries()[0] : '') : '', B.brief ? '. ' + B.brief : ''].filter(Boolean).join(' ').replace(/ \. /, '. ').trim(); B.step = Number(v); render(); window.scrollTo(0, 0); }
   else if (a === 'settf') { B.timeframe = v; render(); }
   else if (a === 'addq') { B.questions.push(newQ()); render(); const ins = document.querySelectorAll('[data-q$=":text"]'); ins[ins.length - 1]?.focus(); }
   else if (a === 'delq') { B.questions.splice(Number(v), 1); render(); }
@@ -1508,6 +1567,11 @@ document.addEventListener('input', (e) => {
   const t = e.target, d = t.dataset;
   if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
+  if (d.w && B && B.wiz) { const w = B.wiz; w[d.w] = t.value;
+    if (d.w === 'decision' && w.auto && DECISION_KINDS[t.value]) w.kinds = DECISION_KINDS[t.value].slice();
+    if (d.w === 'decision' && !w.auto && DECISION_KINDS[t.value]) DECISION_KINDS[t.value].forEach(k => { if (!w.kinds.includes(k) && !w.cleared) w.kinds.push(k); });
+    if (d.w === 'country') w.city = (COUNTRIES[t.value] || []).length === 1 ? COUNTRIES[t.value][0] : '';
+    if (t.tagName === 'SELECT') render(); return; }
   if (t.id === 'fu-in') { const f = t.closest('form'); if (f) S.ui.fuDraft = {...(S.ui.fuDraft || {}), [f.dataset.id]: t.value}; t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 160) + 'px'; return; }
   if (d.pay) { B.pay[d.pay] = t.type === 'checkbox' ? t.checked : t.value; if (t.type === 'checkbox') render(); else softRender(); return; }
   if (d.b === 'ai' && t.tagName === 'TEXTAREA' && t.closest('.askbox')) { t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 160) + 'px'; }
@@ -1519,6 +1583,10 @@ document.addEventListener('input', (e) => {
 document.addEventListener('change', (e) => {
   const t = e.target;
   if (t.dataset.b || t.dataset.q) { if (t.tagName === 'SELECT') render(); }
+  if ((t.dataset.wk || t.dataset.wp) && B && B.wiz) { const w = B.wiz;
+    if (t.dataset.wk) { const k = Object.keys(KIND_LABEL)[+t.dataset.wk]; w.kinds = t.checked ? [...w.kinds, k].filter((v, i, a) => a.indexOf(v) === i) : w.kinds.filter(x => x !== k); w.auto = false; if (!t.checked) w.cleared = true; }
+    else { const p = PLACES[+t.dataset.wp][0]; w.places = t.checked ? [...w.places, p] : w.places.filter(x => x !== p); }
+    render(); return; }
   if (t.id === 'j-file' && t.files[0]) { J.idFile = t.files[0].name; render(); }
   if (t.id === 'wa-file' && t.files[0]) { if (!typing) waPhoto(t.files[0]); t.value = ''; }
 });
@@ -1604,7 +1672,7 @@ async function boot() {
   const use = window.claude && window.claude.use ? window.claude.use.bind(window.claude) : null;
   if (!use) { seed(); dedupe(); }
   if (QS.get('gap') && SIDE !== 'scout') { newBuilder(); B.gap = QS.get('gap'); B.ai = QS.get('gap'); }
-  if (QS.get('gapctx') && SIDE !== 'scout') fromGapCtx(QS.get('gapctx'));
+  if (QS.get('gapctx') && SIDE !== 'scout') { let g = null; try { g = JSON.parse(QS.get('gapctx')); } catch (e) {} if (g && g.gap) openWizard(g, 'gaps'); }
   render();
   if (!use) { S.loaded = true; render(); return; }
   const timer = setTimeout(() => { S.slow = true; render(); }, 10000);
