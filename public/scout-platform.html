@@ -412,7 +412,7 @@ const hashN = (s) => { let h = 0; for (const c of String(s)) h = (h * 31 + c.cha
 const STATUS = {
   active: ['info', 'Active', 'clock'], draft: ['', 'Draft', 'build'], paused: ['warn', 'Paused', 'clock'], completed: ['ok', 'Completed', 'checkc'],
   pending: ['warn', 'Awaiting review', 'clock'], approved: ['ok', 'Verified', 'checkc'], rejected: ['err', 'Not verified', 'xc'],
-  deployed: ['pri', 'Deployed', 'send'], gathering: ['info', 'Gathering evidence', 'clock'], review: ['warn', 'Under review', 'eye'],
+  deployed: ['pri', 'Deployed', 'send'], gathering: ['info', 'Live', 'clock'], review: ['warn', 'Under review', 'eye'],
   completedTx: ['ok', 'Completed', 'checkc'], failed: ['err', 'Failed', 'xc'],
 };
 const pill = (k) => { const [c, t, i] = STATUS[k] || ['', k, 'info']; return `<span class="pill ${c}">${ic[i]}${t}</span>`; };
@@ -600,11 +600,11 @@ function cOverview(r) {
       <div class="grid g2">
         ${kpi('Verification rate', (ok + rej ? pct(ok, ok + rej) : 0) + '%', 'shield', ok + rej ? `<span class="pill ${pct(ok, ok + rej) >= 90 ? 'ok' : 'warn'}">${pct(ok, ok + rej) >= 90 ? 'Excellent' : 'Needs attention'}</span>` : 'No reviewed responses yet')}
         ${kpi('Investigations', fmt(sv.length), 'clip', `<b>${act.length}</b> live now`)}
-        ${kpi('Scout responses', fmt(all.length), 'file', `<b>${fmt(wk)}</b> in the last 7 days`)}
+        ${kpi('SavoScout responses', fmt(all.length), 'file', `<b>${fmt(wk)}</b> in the last 7 days`)}
         ${kpi('Verified responses', fmt(ok), 'checkc', `<b>${pct(ok, all.length)}%</b> of all responses`)}
       </div>
-      <div class="card"><div class="head"><h2>Scout network coverage</h2></div>
-        ${Object.keys(countries).length ? `<div class="tbl-wrap"><table><thead><tr><th>Country</th><th>Active scouts</th><th>Online today</th><th>Tasks completed</th><th>Verification</th></tr></thead><tbody>
+      <div class="card"><div class="head"><h2>SavoScout coverage</h2></div>
+        ${Object.keys(countries).length ? `<div class="tbl-wrap"><table><thead><tr><th>Country</th><th>Active SavoScouts</th><th>Online today</th><th>Tasks completed</th><th>Verification</th></tr></thead><tbody>
         ${Object.entries(countries).sort((a, b) => b[1].done - a[1].done).map(([c, v]) => `<tr><td>${esc(c)}</td><td class="num">${v.sc}</td><td><span class="pill ok num">${v.on}</span></td><td class="num">${fmt(v.done)}</td><td class="num" style="color:${pct(v.ok, v.ok + v.rej) >= 90 ? 'var(--ok)' : 'var(--warn)'}">${v.ok + v.rej ? pct(v.ok, v.ok + v.rej) + '%' : '—'}</td></tr>`).join('')}
         </tbody></table></div>` : emptyState('people', 'No scouts yet', 'Scouts appear here once they register and submit work.')}
       </div>
@@ -623,7 +623,7 @@ function cOverview(r) {
   </div>`;
   const own = sv.filter(s => !s.sample).length;
   const welcome = own ? '' : `<div class="card welcome"><div><h2 style="font-size:18px">Start your first investigation</h2><p class="muted" style="margin:4px 0 0">The investigations below are samples, so you can see how evidence, briefings and follow-up questions look. When you are ready, describe what you need to understand and Verisavo sets up the task for SavoScouts.</p></div><div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn" data-go="c-builder">${ic.search}Investigate market</button><button class="btn ghost" data-act="demo-example">See a worked example</button>${INLINE ? '<button class="btn ghost" data-act="back-chat">Ask the Assistant</button>' : ''}</div></div>`;
-  return shell(r, 'Executive Overview', welcome + body);
+  return shell(r, 'Overview', welcome + body);
 }
 
 function cSurveys(r) {
@@ -633,11 +633,11 @@ function cSurveys(r) {
   const list = sv.filter(s => (tab === 'all' || s.status === tab) && (!q || (s.title + ' ' + s.country + ' ' + (s.regions || []).join(' ')).toLowerCase().includes(q)));
   const ok = all.filter(s => s.status === 'approved').length, rev = all.filter(s => s.status !== 'pending').length;
   const body = `
-  <div class="grid g4">${kpi('Live investigations', counts.active, 'clip')}${kpi('Scout responses', fmt(all.length), 'send')}${kpi('Verified responses', fmt(ok), 'checkc')}${kpi('Verification rate', (rev ? pct(ok, rev) : 0) + '%', 'shield')}</div>
+  <div class="grid g4">${kpi('Live investigations', counts.active, 'clip')}${kpi('SavoScout responses', fmt(all.length), 'send')}${kpi('Verified responses', fmt(ok), 'checkc')}${kpi('Verification rate', (rev ? pct(ok, rev) : 0) + '%', 'shield')}</div>
   <div class="card"><div class="head"><h2>Market investigations</h2><button class="btn" data-go="c-builder">${ic.search}Investigate market</button></div>
     <div class="tabs" role="tablist">${['all', 'active', 'paused', 'draft', 'completed'].map(k => `<button class="${tab === k ? 'on' : ''}" data-tab="surveyTab" data-v="${k}">${{all: 'All', active: 'Live', paused: 'Paused', draft: 'Draft', completed: 'Completed'}[k]} <span class="cnt num">${counts[k]}</span></button>`).join('')}</div>
     <div class="row" style="margin:14px 0"><label class="search" style="flex:1;max-width:360px">${ic.search}<input id="surveySearch" placeholder="Search investigations, countries or regions" value="${esc(S.ui.surveySearch)}"></label></div>
-    ${list.length ? `<div class="tbl-wrap"><table><thead><tr><th>Investigation</th><th>Responses</th><th>Country</th><th>Regions</th><th>Status</th><th>Time left</th><th></th></tr></thead><tbody>
+    ${list.length ? `<div class="tbl-wrap"><table><thead><tr><th>Investigation</th><th>Responses</th><th>Country</th><th>Cities</th><th>Status</th><th>Time left</th><th></th></tr></thead><tbody>
     ${list.map(s => { const n = subsOf(s.id).length; return `<tr class="click" data-go="${s.status === 'draft' ? 'c-builder-' + s.id : 'c-survey-' + s.id}"><td style="max-width:260px"><b style="font-weight:500">${esc(s.title)}</b>${SAMPLE(s)}</td>
       <td><div class="row" style="gap:8px;flex-wrap:nowrap"><div class="bar" style="width:70px"><i style="width:${Math.min(100, pct(n, s.target))}%"></i></div><span class="num">${n}/${s.target}</span></div></td>
       <td class="muted">${esc(s.country)}</td><td><div class="tags" style="flex-wrap:nowrap">${(s.regions || []).slice(0, 3).map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div></td>
@@ -657,7 +657,7 @@ function cSurvey(r) {
   ${track(s, list)}
   <div class="tabs"><button class="${tab === 'raw' ? 'on' : ''}" data-go="c-survey-${id}~raw">${ic.file}Responses <span class="cnt num">${list.length}</span></button><button class="${tab === 'processed' ? 'on' : ''}" data-go="c-survey-${id}~processed">${ic.chart}Evidence overview</button><button class="${tab === 'brief' ? 'on' : ''}" data-go="c-survey-${id}~brief">${ic.spark}AI briefing</button>
   <button type="button" class="soon" data-act="soon" aria-disabled="true">${ic.route}Scenario simulator<em>Coming soon</em></button></div>`;
-  const statusBtns = `<div class="row">${s.status === 'active' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="paused">Pause</button>` : ''}${s.status === 'paused' ? `<button class="btn soft sm" data-act="setstatus" data-id="${id}" data-v="active">Resume</button>` : ''}${s.status !== 'completed' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="completed">Mark completed</button>` : ''}</div>`;
+  const statusBtns = `<div class="row">${s.status === 'active' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="paused">Pause</button>` : ''}${s.status === 'paused' ? `<button class="btn soft sm" data-act="setstatus" data-id="${id}" data-v="active">Resume</button>` : ''}${s.status !== 'completed' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="completed">Mark as complete</button>` : ''}</div>`;
   let body = tabs;
   if (tab === 'processed') body += processed(s, list); else if (tab === 'brief') body += briefView(s, list); else body += rawData(s, list, statusBtns);
   return shell(r, esc(s.title), body);
@@ -669,7 +669,7 @@ function track(s, list) {
   const ok = list.filter(x => x.status === 'approved').length, pend = list.filter(x => x.status === 'pending').length;
   return `<div class="card stack">
     <div class="stepper life">${names.map((t, i) => `<div class="step ${i < cur || (cur === 4 && i === 4) ? 'done' : i === cur ? 'on' : ''}"><span class="dot">${i < cur || cur === 4 ? ic.check : i + 1}</span><span class="lab">${t}</span></div>`).join('')}</div><p class="step-now"><span>Step ${Math.min(cur, names.length - 1) + 1} of ${names.length}</span><b>${names[Math.min(cur, names.length - 1)]}</b></p>
-    <div class="funnel"><div>Sent to SavoScouts<b class="num">${s.status === 'draft' ? '—' : eligible}</b>via the Verisavo agent</div><div>Responses submitted<b class="num">${list.length}<span class="faint" style="font-size:13px"> / ${s.target}</span></b>${pct(list.length, s.target)}% of coverage</div><div>Awaiting review<b class="num">${pend}</b>${pend ? 'needs your team' : 'nothing waiting'}</div><div>Verified<b class="num">${ok}</b>VeriPoints released</div></div>
+    <div class="funnel"><div>Sent to SavoScouts<b class="num">${s.status === 'draft' ? '—' : eligible}</b>via WhatsApp</div><div>Responses submitted<b class="num">${list.length}<span class="faint" style="font-size:13px"> / ${s.target}</span></b>${pct(list.length, s.target)}% of coverage</div><div>Awaiting review<b class="num">${pend}</b>${pend ? 'needs your team' : 'nothing waiting'}</div><div>Verified<b class="num">${ok}</b>counted as evidence</div></div>
     ${s.status !== 'draft' ? (() => { const c = costOf(s, list); return `<p class="costline">Charged so far <b class="num">${money(c.charged)}</b> for ${c.ok} verified responses, up to ${money(c.cap)}. <button class="link" data-go="c-billing">See billing</button></p>`; return `<div class="costrow"><div><span>Charged so far</span><b class="num">${money(c.charged)}</b><small>${c.ok} verified × ${money(c.rate)}</small></div><div><span>Awaiting review</span><b class="num">${money(c.pending)}</b><small>Charged only if verified</small></div><div><span>Authorised up to</span><b class="num">${money(c.cap)}</b><small>${esc(payName(s.billing && s.billing.method))}</small></div><button class="link" data-go="c-billing">Billing ${ic.arrow}</button></div>`; })() : ''}
     ${(s.signals || []).length ? `<div class="note">${ic.info}<span><b>Started from Signals.</b> ${esc(s.signals[0].text)}${s.signals.length > 1 ? ` <span class="faint">and ${s.signals.length - 1} more</span>` : ''}</span></div>` : s.gap ? `<div class="note">${ic.info}<span><b>Intelligence Gap.</b> ${esc(s.gap)}</span></div>` : s.request ? `<div class="note">${ic.info}<span><b>Started from a request.</b> ${esc(s.request)}</span></div>` : ''}
     ${life(s) === 'deployed' && s.publishedAt && Date.now() - s.publishedAt > 86400000 ? `<div class="note">${ic.clock}<span>No responses yet after a day. The Verisavo agent will re-send the task to SavoScouts nearby. You can also widen the regions or extend the timeline.</span></div>` : ''}
@@ -692,8 +692,8 @@ function rawData(s, list, statusBtns) {
     </div>
     ${list.length ? bars(hours, hours.map((_, i) => String(i).padStart(2, '0') + ':00'), {hi: peak}) : emptyState('send', 'No responses yet', 'SavoScouts respond on WhatsApp once they accept the task.')}
   </div>
-  <div class="card"><div class="head"><h2>Scout responses</h2><label class="search" style="width:min(280px,100%)">${ic.search}<input id="subSearch" placeholder="Search scout, region or status" value="${esc(S.ui.subSearch)}"></label></div>
-    ${rows.length ? `<div class="tbl-wrap"><table><thead><tr><th>Response</th><th>Scout</th><th>Region</th><th>Status</th><th>Submitted</th><th></th></tr></thead><tbody>
+  <div class="card"><div class="head"><h2>SavoScout responses</h2><label class="search" style="width:min(280px,100%)">${ic.search}<input id="subSearch" placeholder="Search SavoScout, region or status" value="${esc(S.ui.subSearch)}"></label></div>
+    ${rows.length ? `<div class="tbl-wrap"><table><thead><tr><th>Response</th><th>SavoScout</th><th>Region</th><th>Status</th><th>Submitted</th><th></th></tr></thead><tbody>
     ${rows.map(x => `<tr class="click" data-act="opensub" data-id="${x.id}"><td class="num" style="font-weight:500">SUB-${x.id.slice(-6).toUpperCase()}</td><td>${esc(x.scoutName)}${SAMPLE(x)}</td><td class="muted"><span class="row" style="gap:4px;flex-wrap:nowrap">${ic.pin.replace('<svg', '<svg width="13" height="13"')}${esc(x.region)}, ${esc(x.country)}</span></td><td>${pill(x.status)}</td><td class="muted" style="white-space:nowrap">${dtt(x.createdAt)}</td><td>${x.status === 'pending' ? '<span class="pill pri">Review</span>' : `<span class="iconbtn">${ic.eye}</span>`}</td></tr>`).join('')}
     </tbody></table></div>` : (list.length ? emptyState('search', 'No responses match', 'Try another search term.') : '')}
   </div>`;
@@ -736,7 +736,7 @@ function processed(s, list) {
         <div class="row" style="flex-wrap:nowrap;align-items:center">${donut([['Verified', ok, 'var(--primary-3)'], ['Not verified', rej, 'var(--err)'], ['Awaiting', pend, 'var(--warn)']], fmt(list.length), 'Total')}
         <div class="stack" style="gap:6px;font-size:13px"><div class="legend" style="display:grid;gap:6px"><span><i style="background:var(--primary-3)"></i>Verified ${ok}</span><span><i style="background:var(--err)"></i>Not verified ${rej}</span><span><i style="background:var(--warn)"></i>Awaiting review ${pend}</span></div>
         <span class="muted">Verification rate <b class="num" style="color:var(--ink)">${ok + rej ? pct(ok, ok + rej) + '%' : '—'}</b></span></div></div></div>
-      <div class="card"><div class="head"><h2>Regional summary</h2></div><div class="tbl-wrap"><table><thead><tr><th>Region</th><th>Responses</th>${firstNum ? `<th>Avg. ${esc(firstNum.short || 'value')}</th>` : ''}<th>Verified</th></tr></thead><tbody>
+      <div class="card"><div class="head"><h2>Regional summary</h2></div><div class="tbl-wrap"><table><thead><tr><th>Region</th><th>Responses</th>${firstNum ? `<th>Average ${esc(firstNum.short || (firstNum.text || 'value').replace(/^./, c => c.toLowerCase()))}</th>` : ''}<th>Verified</th></tr></thead><tbody>
         ${matrix.map(m => `<tr><td>${esc(m.rg)}</td><td class="num">${m.n}</td>${firstNum ? `<td class="num">${m.avg === null ? '—' : fmt(m.avg, 1)}</td>` : ''}<td>${m.rate === null ? '<span class="faint">—</span>' : `<span class="pill ${m.rate >= 90 ? 'ok' : m.rate >= 70 ? 'warn' : 'err'} num">${m.rate}%</span>`}</td></tr>`).join('')}</tbody></table></div></div>
     </div>
   </div>`;
@@ -750,7 +750,7 @@ function openSub(id) {
   layer(`<div class="drawer-bg" data-act="close"></div><aside class="drawer" role="dialog" aria-label="Submission">
     <div class="row between"><div><div class="faint" style="font-size:12px">SUB-${x.id.slice(-6).toUpperCase()}</div><h2 style="font-size:18px">${esc(x.surveyTitle)}</h2></div><button class="iconbtn" data-act="close" aria-label="Close">${ic.x}</button></div>
     <div class="row">${pill(x.status)}<span class="muted" style="font-size:12px">${dtt(x.createdAt)}</span>${SAMPLE(x)}</div>
-    <div class="stat3"><div>Scout<b>${esc(x.scoutName)}</b></div><div>Region<b>${esc(x.region)}</b></div><div>Reward<b class="num">${pts(x.reward)}</b></div></div>
+    <div class="stat3"><div>SavoScout<b>${esc(x.scoutName)}</b></div><div>Region<b>${esc(x.region)}</b></div><div>Reward<b class="num">${pts(x.reward)}</b></div></div>
     <div><div class="flabel" style="margin-bottom:6px">Automatic checks</div><div class="checklist">${checks.map(([t, okk]) => `<div class="${okk ? 'done' : 'now'}"><span class="ck" style="${okk ? '' : 'border-color:var(--err);color:var(--err)'}">${okk ? ic.check : ic.x}</span>${esc(t)}</div>`).join('')}</div></div>
     <div><div class="flabel">Answers</div>${ansHtml || '<p class="muted">No answers recorded.</p>'}</div>
     <div><div class="flabel" style="margin-bottom:6px">Media</div>${(x.media || []).length ? (x.media || []).map(m => `<div class="file" style="margin-bottom:6px">${ic[m.kind === 'video' ? 'video' : m.kind === 'audio' ? 'mic' : m.kind === 'document' ? 'file' : 'camera']}<span style="flex:1;min-width:0;overflow-wrap:anywhere">${esc(m.name)}</span><span class="faint">${m.size ? fmt(m.size / 1024) + ' KB' : ''}</span></div>`).join('') : '<p class="muted">No media attached.</p>'}<p class="faint" style="font-size:12px">The MVP records file names and sizes; files are not uploaded.</p></div>
@@ -933,7 +933,7 @@ function cBilling(r) {
   const rows = sv.map(s => ({s, c: costOf(s, subsOf(s.id))}));
   const charged = rows.reduce((a, x) => a + x.c.charged, 0), pending = rows.reduce((a, x) => a + x.c.pending, 0), open = rows.filter(x => x.s.status !== 'completed').reduce((a, x) => a + x.c.left, 0);
   const last = sv.find(s => s.billing && s.billing.method);
-  const body = `<div class="grid g3">${kpi('Charged to date', money(charged), 'card', 'Accepted, verified responses')}${kpi('Awaiting review', money(pending), 'clock', 'Charged only if verified')}${kpi('Authorised, not yet used', money(open), 'shield', 'Released when investigations close')}</div>
+  const body = `<div class="grid g3">${kpi('Charged to date', money(charged), 'card', 'Verified responses')}${kpi('Awaiting review', money(pending), 'clock', 'Charged only if verified')}${kpi('Authorised, not yet used', money(open), 'shield', 'Released when investigations close')}</div>
   <div class="grid g-main">
     <div class="card"><div class="head"><h2>Investigation charges</h2></div>
       ${rows.length ? `<div class="tbl-wrap"><table><thead><tr><th>Investigation</th><th>Payment</th><th>Verified</th><th>Charged</th><th>Authorised</th></tr></thead><tbody>
