@@ -281,6 +281,8 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .wiz-hint{margin:-2px 0 6px;font-size:12.5px}.gapscroll.wiz-list{max-height:none;overflow:visible}
 .manual-alt{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border:1px dashed var(--line);border-radius:12px;font-size:13.5px}
 @media (max-width:560px){.wiz-two{grid-template-columns:1fr}}
+.setup{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:0;font-size:13.5px}.setup dt{color:var(--ink-3)}.setup dd{margin:0}
+@media (max-width:560px){.setup{grid-template-columns:1fr;gap:2px}.setup dd{margin-bottom:6px}}
 .sigs .faint{font-size:12px;white-space:nowrap}
 .fu{display:grid;gap:12px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
 .fu-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
@@ -862,6 +864,7 @@ function briefView(s, list) {
   return `<div class="grid g-main"><div class="card brief">
     <div class="head" style="margin-bottom:0"><div><h2>Investigation briefing</h2><span class="faint" style="font-size:12px">Generated ${dtt(b.at)} from ${b.n} response${b.n === 1 ? '' : 's'}${b.by === 'rules' ? ' · summary built from the responses' : ''}</span></div><button class="btn ${stale ? '' : 'ghost'} sm" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}${stale ? 'Update with new evidence' : 'Regenerate'}</button></div>
     ${stale ? `<div class="note blue">${ic.info}<span>${list.length - b.n > 0 ? list.length - b.n + ' new response' + (list.length - b.n === 1 ? '' : 's') : 'Responses have changed'} since this briefing. Update it to include them.</span></div>` : ''}
+    ${(s.setup || []).length ? `<div><h3>How this survey was set up</h3><dl class="setup">${s.setup.map(x => `<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl></div>` : ''}
     ${(s.signals || []).length ? `<div><h3>Signals that started this investigation</h3><ul class="sigs">${s.signals.map(x => `<li>${esc(x.text)} <span class="faint">${esc(x.source)}</span></li>`).join('')}</ul></div>` : ''}
     <div><h3>Objective</h3><p style="margin:0;font-size:13.5px">${esc(s.request || s.title)}</p></div>
     <p style="margin:0;font-size:13.5px">${esc(b.summary)}</p>
@@ -1052,6 +1055,7 @@ function wizView() {
   const box = (key, i, on, t, d) => `<label class="gaprow"><input type="checkbox" id="${key}-${i}" data-${key}="${i}"${on ? ' checked' : ''}><span class="gbody"><b>${t}</b>${d ? `<small>${d}</small>` : ''}</span></label>`;
   return `<div class="narrow wiz"><div class="stack">
     <div><h2 style="font-size:22px">A few questions first</h2><p class="muted" style="margin:2px 0 0">${w.mode === 'gaps' ? 'Verisavo has filled in what your conversation already says. Check the answers and add what is missing, so the survey fits the decision ahead.' : 'So Verisavo can tailor the survey to your decision. Answers are filled in where your description already says it.'}</p></div>
+    ${w.demo ? `<div class="note prepnote">${ic.spark}<span><b>Worked example.</b> The answers are filled in to show how it works. Change anything, or press Generate survey to see the survey it builds. The finished version of this survey is under Manage investigations as Rice shopper choice in Accra.</span></div>` : ''}
     <div class="note gapnote">${ic.info}<span><b>${w.mode === 'gaps' ? (gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap') : 'What you want to investigate'}</b> ${gaps.length > 1 ? '<ul class="gaplist">' + gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(gaps[0])}${w.ctx.from ? `<br><span class="faint">From: ${esc(w.ctx.from)}</span>` : ''}</span></div>
     <div class="field"><label for="w-dec">1. What decision will this evidence support?</label><select class="in" id="w-dec" data-w="decision"><option value="">Choose a decision</option>${DECISIONS.map(d => `<option value="${d[0]}"${w.decision === d[0] ? ' selected' : ''}>${d[1]}</option>`).join('')}</select></div>
     <div class="field"><label for="w-prod">2. Which product or category?</label><input class="in" id="w-prod" data-w="product" placeholder="For example, cooking oil" value="${esc(w.product)}"></div>
@@ -1112,6 +1116,7 @@ function cBuilder(r) {
       <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation: the place, the instructions and survey questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Describe it in plain words. Verisavo asks a few questions about your decision, then builds the task for SavoScouts: the place, the instructions and the evidence questions.'}</p></div>
       ${fromChat ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : `
       <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Start again from this description' : 'Continue'}">${ic.spark}<span>${B.prepared ? 'Start again' : 'Continue'}</span></button></div>
+      ${B.prepared ? '' : `<p class="faint askhint">New to this? <button type="button" class="link" data-act="wizdemo">See a worked example</button></p>`}
       ${B.prepared ? `<p class="faint askhint">Survey generated below. Change the description and start again if needed.</p>` : ''}
       ${(() => { const dr = B.prepared || B.id ? [] : surveys().filter(x => x.status === 'draft' && !x.sample); return dr.length ? `<div class="field drafts-field"><span class="flabel faint" style="font-weight:400">Your drafts</span><div class="drafts">${dr.slice(0, 5).map(x => `<button type="button" class="draftrow" data-go="c-builder-${x.id}"><span class="dt">${esc(x.title)}</span><span class="dm">${x.questions ? x.questions.length + ' question' + (x.questions.length === 1 ? '' : 's') + ' · ' : ''}saved ${ago(x.updatedAt || x.createdAt)}</span><span class="da">Continue</span></button>`).join('')}</div><p class="faint" style="font-size:12.5px;margin:6px 0 0">All drafts are also under Manage investigations → Draft.</p></div>` : ''; })()}
       ${B.prepared ? '' : (INLINE && OPEN_GAPS.length && !B.id) ? gapPicker() : `<div class="field sugg-field"><span class="flabel faint" style="font-weight:400">Try one of these</span><div class="chips sugg">${GAPS.map((g, i) => `<button type="button" class="chipbtn" data-act="usegap" data-v="${i}">${esc(g.gap)}</button>`).join('')}</div></div>`}`}
@@ -1525,6 +1530,7 @@ document.addEventListener('click', async (e) => {
   /* builder */
   else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
   else if (a === 'prepare') { const t = $('#b-ai'), d = (t ? t.value : B.ai || '').trim(); if (!d) { toast('Describe what you want to investigate first.'); return; } openWizard(ctxFromText(d), 'direct'); render(); window.scrollTo(0, 0); const f = $('#w-dec'); if (f) f.focus({preventScroll: true}); }
+  else if (a === 'wizdemo') { openWizard(ctxFromText('Is our 5kg rice losing shoppers to imported brands in Accra markets, and is price the reason?'), 'direct'); Object.assign(B.wiz, {demo: true, decision: 'price', product: '5kg rice', country: 'Ghana', city: 'Accra', kinds: ['Price check', 'Shopper feedback', 'Availability and shelf'], auto: false, places: ['Small shops', 'Open-market stalls', 'Supermarkets'], known: 'The main rival is an imported 5kg bag sold widely at Makola.'}); render(); window.scrollTo(0, 0); }
   else if (a === 'wizgo') { wizGenerate(); render(); window.scrollTo(0, 0); toast('Survey generated. Review the place and instructions, then continue to the questions.'); }
   else if (a === 'wizback') { const w = B.wiz; B.wiz = null; if (w && w.mode === 'direct') B.ai = w.ctx.gap; else if (w && !(INLINE && OPEN_GAPS.length)) B.ai = (w.ctx.gaps || [w.ctx.gap]).join(' '); render(); window.scrollTo(0, 0); }
   else if (a === 'manual') { B.manual = true; B.wiz = null; render(); const t = $('#b-title'); if (t) t.focus(); }
@@ -1748,7 +1754,72 @@ function caseData() {
     billing: {method: 'invoice', company: 'Sample Foods Ltd', email: 'finance@example.com', rate: 1.15, authorised: 30 * 1.15}, briefing, followups};
   return {surveys: {[id]: survey}, submissions: subs};
 }
-const CASE = (() => { try { return caseData(); } catch (e) { return {surveys: {}, submissions: {}}; } })();
+/* Use case 2: a survey set up through the Survey Wizard from a typed request, completed, with briefing and follow-ups */
+function caseRice() {
+  const H = 3600000, D = 24 * H, now = Date.now(), id = 'case-rice', T = 'Rice shopper choice in Accra';
+  const Q = (qid, type, text, options, unit) => ({id: qid, type, text, ...(options ? {options} : {}), ...(unit ? {unit} : {})});
+  const qs = [Q('rq1', 'single', 'Which market area are you in?', ['Makola', 'Kaneshie', 'Madina']), Q('rq2', 'single', 'What type of outlet are you at?', ['Open-market stall', 'Small shop', 'Supermarket', 'Other']),
+    Q('rq3', 'single', 'Is our 5kg rice on the shelf right now?', ['Yes, well stocked', 'Yes, only a few units', 'No, sold out', 'Not stocked here']), Q('rq4', 'number', 'Shelf price of our 5kg bag', null, 'GH₵'),
+    Q('rq5', 'number', 'Shelf price of the imported 5kg bag', null, 'GH₵'), Q('rq6', 'single', 'Which bag did the shopper buy?', ['Ours', 'Imported brand', 'Another local brand', 'Did not buy']),
+    Q('rq7', 'single', 'What decided it?', ['Price', 'Grain quality or taste', 'Pack size', 'Habit or trust', 'Promotion']), Q('rq8', 'photo', 'Photograph the rice shelf, with both bags and their prices'),
+    Q('rq9', 'paragraph', 'In the shopper’s words: why this bag today?'), Q('rq10', 'single', 'How do shoppers react when the price of rice goes up?', ['Keep buying the same brand', 'Switch to a cheaper brand', 'Buy a smaller pack', 'Buy less often', 'Seller not sure'])];
+  const WS = 'Yes, well stocked', FW = 'Yes, only a few units', OU = 'Ours', IM = 'Imported brand', SM = 'Buy a smaller pack', SW = 'Switch to a cheaper brand', KP = 'Keep buying the same brand';
+  /* area, outlet, stock, our price, imported price, bought, reason, price reaction, shopper's words, status */
+  const rows = [
+    ['Makola', 'Open-market stall', WS, 120, 135, OU, 'Price', SM, 'It is cheaper and it cooks fine for the family.'],
+    ['Makola', 'Open-market stall', WS, 118, 136, IM, 'Grain quality or taste', SW, 'The imported one does not break when you cook jollof.'],
+    ['Makola', 'Open-market stall', WS, 120, 134, OU, 'Price', SM, 'Fifteen cedis less is a lot this month.'],
+    ['Makola', 'Open-market stall', WS, 122, 138, IM, 'Grain quality or taste', KP, 'My customers say the imported one is cleaner, fewer stones.'],
+    ['Makola', 'Open-market stall', WS, 120, 135, OU, 'Habit or trust', KP, 'I have bought this one for years.'],
+    ['Kaneshie', 'Small shop', WS, 120, 136, IM, 'Grain quality or taste', SM, 'It smells better when cooked.'],
+    ['Kaneshie', 'Small shop', WS, 119, 135, OU, 'Price', SW, 'Whichever is cheaper, I take.'],
+    ['Kaneshie', 'Small shop', WS, 121, 137, IM, 'Grain quality or taste', SM, 'For parties we use the imported one. It looks better on the plate.'],
+    ['Kaneshie', 'Small shop', WS, 120, 134, IM, 'Habit or trust', KP, 'My mother always used this brand.'],
+    ['Kaneshie', 'Small shop', WS, 118, 135, OU, 'Price', SM, 'Good price, and it is local.'],
+    ['Madina', 'Supermarket', FW, 122, 140, IM, 'Grain quality or taste', SM, 'The grains stay separate. The local one gets sticky.'],
+    ['Madina', 'Supermarket', WS, 121, 139, IM, 'Grain quality or taste', SW, 'Better quality, worth the extra.'],
+    ['Madina', 'Supermarket', FW, 122, 132, IM, 'Promotion', SM, 'It was on offer today.'],
+    ['Madina', 'Supermarket', WS, 120, 138, OU, 'Price', SM, 'Cheaper, and I saw it on TV.'],
+  ].map(r => [...r, 'approved']).concat([['Madina', 'Supermarket', WS, 120, 139, IM, 'Grain quality or taste', SM, 'Quality.', 'rejected'], ['Kaneshie', 'Small shop', WS, 120, 135, OU, 'Price', SM, 'Cheaper.', 'rejected']]);
+  const names = ['Akosua Frimpong', 'Kofi Mensah', 'Esi Adjei', 'Nana Owusu', 'Adwoa Badu'];
+  const subs = {}, sid = (i) => 'case-rc' + String(i + 1).padStart(4, '0');
+  rows.forEach((r, i) => {
+    const [area, outlet, stock, ours, imp, buy, why, react, words, status] = r;
+    subs[sid(i)] = {surveyId: id, surveyTitle: T, scoutId: 'case-rs' + (i % 5), scoutName: names[i % 5], region: 'Accra', country: 'Ghana',
+      answers: {rq1: area, rq2: outlet, rq3: stock, rq4: ours, rq5: imp, rq6: buy, rq7: why, rq8: 'rice-shelf-' + (i + 1) + '.jpg', rq9: words, rq10: react},
+      media: [{name: 'rice-shelf-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 10, status, reason: status === 'rejected' ? (i === 14 ? 'Duplicate of an earlier response from the same shop' : 'Photo did not show the rice shelf') : undefined,
+      createdAt: now - (12 * D) + i * 5 * H, reviewedAt: now - (12 * D) + (i * 5 + 3) * H, channel: 'whatsapp', checks: {gps: true, duplicate: i === 14, consistency: true}, sample: true};
+  });
+  const ok = rows.map((r, i) => [r, sid(i)]).filter(([r]) => r[9] === 'approved'), ids = (f) => ok.filter(([r]) => f(r)).map(x => x[1]), cnt = (f) => ids(f).length, n = ok.length;
+  const avg = (a) => Math.round(a.reduce((x, y) => x + y, 0) / a.length), ourP = avg(ok.map(([r]) => r[3])), impP = avg(ok.map(([r]) => r[4])), gap = Math.round((impP - ourP) / impP * 100);
+  const imB = cnt(r => r[5] === IM), ouB = cnt(r => r[5] === OU), imQ = cnt(r => r[5] === IM && r[6] === 'Grain quality or taste'), ouP = cnt(r => r[5] === OU && r[6] === 'Price'), small = cnt(r => r[7] === SM);
+  const by = (a) => [cnt(r => r[0] === a && r[5] === OU), cnt(r => r[0] === a)], mk = by('Makola'), md = by('Madina'), ks = by('Kaneshie');
+  const briefing = {
+    summary: `Based on ${n} verified SavoScout responses from Makola, Kaneshie and Madina in Accra. Our 5kg bag is already the cheaper option, yet most shoppers chose the imported bag, mainly for grain quality and taste rather than price.`,
+    findings: [
+      {text: `Our 5kg bag sells for about GH₵${ourP}, against about GH₵${impP} for the imported bag: roughly ${gap}% cheaper.`, confidence: 'High', refs: ok.slice(0, 6).map(x => x[1])},
+      {text: `The shopper bought the imported bag in ${imB} of ${n} outlets; ${imQ} of those ${imB} gave grain quality or taste as the reason.`, confidence: 'High', refs: ids(r => r[5] === IM && r[6] === 'Grain quality or taste')},
+      {text: `Shoppers who chose ours mostly did so on price (${ouP} of ${ouB}).`, confidence: 'Medium', refs: ids(r => r[5] === OU && r[6] === 'Price')},
+      {text: `Ours did best in Makola open-market stalls (${mk[0]} of ${mk[1]} sales) and worst in Madina supermarkets (${md[0]} of ${md[1]}).`, confidence: 'Medium', refs: ids(r => r[0] === 'Makola' || r[0] === 'Madina')}],
+    agreements: [{text: `Shelf availability is not the problem: our bag was on the shelf in all ${n} outlets.`, refs: ok.slice(0, 4).map(x => x[1])}, {text: `When rice prices rise, the most common reaction sellers reported is buying a smaller pack (${small} of ${n}).`, refs: ids(r => r[7] === SM)}],
+    contradictions: [{text: 'One Madina supermarket sale of the imported bag was driven by a promotion, not quality, so supermarket preference may be partly promotion-led.', refs: ids(r => r[6] === 'Promotion')}, {text: '2 responses were not verified (one duplicate, one photo that did not show the shelf) and are excluded.', refs: rows.map((r, i) => r[9] === 'rejected' ? sid(i) : '').filter(Boolean)}],
+    implications: [{text: 'Cutting our price further is unlikely to win imported-bag buyers, who are paying more for perceived quality. (Inference)'}, {text: 'Grain quality, cleanliness and how the rice cooks are where the imported bag wins, so product and packaging claims may matter more than price. (Inference)'}],
+    unknowns: [{text: 'Whether shoppers would rate our rice differently in a blind taste test. Every response reflects perception, not a direct comparison.'}, {text: 'Whether a smaller bag would sell. Sellers report shoppers trading down, but no response tested a smaller pack.'}],
+    next: [{text: 'Test perception directly: a short shopper investigation comparing both bags on cleanliness and cooking.'}, {text: 'Ask sellers whether they would stock a 2kg bag, and at what price.'}],
+    n: rows.length, at: now - 9 * D, by: 'assistant'};
+  const followups = [
+    {q: 'Should we cut our price?', a: {text: `That decision stays with you. The evidence suggests price is not what loses shoppers: ours is already about ${gap}% cheaper, and ${imQ} of the ${imB} imported-bag buyers gave grain quality or taste as the reason. A further cut may widen a gap these shoppers are not responding to. (Inference)`, refs: ids(r => r[5] === IM && r[6] === 'Grain quality or taste').slice(0, 4)}, at: now - 8 * D},
+    {q: 'Where are we strongest?', a: {text: `Makola open-market stalls, where ours won ${mk[0]} of ${mk[1]} sales. Kaneshie small shops were close to even (${ks[0]} of ${ks[1]}). Madina supermarkets were weakest (${md[0]} of ${md[1]}), where shoppers paid more for the imported bag.`, refs: ids(r => r[0] === 'Makola')}, at: now - 8 * D + H},
+    {q: 'Would a smaller bag help?', a: {text: `Possibly. ${small} of ${n} sellers said shoppers buy a smaller pack when prices rise, the most common reaction. That points to demand for a smaller bag, but no response tested one, so this is an Intelligence Gap.`, refs: ids(r => r[7] === SM).slice(0, 4), gap: true, ask: 'Would shoppers in Accra buy a 2kg bag of our rice, and at what price?'}, at: now - 8 * D + 2 * H}];
+  const survey = {title: T, industry: 'Consumer goods', country: 'Ghana', regions: ['Accra'], location: 'Open-market stalls, small shops and supermarkets in Accra',
+    brief: 'Purpose: this evidence will help decide how to price. Record the shelf price of our 5kg bag and the imported bag. Ask shoppers at the shelf, with consent, which bag they chose today and what made the difference. Visit: open-market stalls, small shops, supermarkets. Background from the client: the main rival is an imported 5kg bag sold widely at Makola.',
+    request: 'Is our 5kg rice losing shoppers to imported brands in Accra, and is price the reason?',
+    setup: [['How it started', 'Typed request in Investigate market'], ['Decision', 'How to price'], ['Product', 'Rice, 5kg bag'], ['Where', 'Accra, Ghana'], ['Find out', 'Prices, shoppers, shelf availability'], ['Places', 'Open-market stalls, small shops, supermarkets'], ['Notes', 'The main rival is an imported 5kg bag sold widely at Makola.']],
+    questions: qs, rewardPts: 10, gpsRadius: 100, sample: true, status: 'completed', target: rows.length, timeframe: '3d', createdAt: now - 13 * D, publishedAt: now - 13 * D, deadline: now - 10 * D,
+    billing: {method: 'card', company: 'Sample Foods Ltd', email: 'finance@example.com', rate: 1.15, authorised: rows.length * 1.15}, briefing, followups};
+  return {surveys: {[id]: survey}, submissions: subs};
+}
+const CASE = (() => { const o = {surveys: {}, submissions: {}}; [caseData, caseRice].forEach(f => { try { const d = f(); Object.assign(o.surveys, d.surveys); Object.assign(o.submissions, d.submissions); } catch (e) {} }); return o; })();
 function addCase() { ['surveys', 'submissions'].forEach(c => Object.keys(CASE[c]).forEach(k => { if (!S[c][k]) S[c] = {...S[c], [k]: CASE[c][k]}; })); }
 
 /* ---------------- boot ---------------- */
