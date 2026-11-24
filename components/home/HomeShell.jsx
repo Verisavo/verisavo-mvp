@@ -28,6 +28,7 @@ import HomeClient from "@/components/home/HomeClient";
 export default function HomeShell({ start = "" }) {
   return (
     <>
+      {start ? <script dangerouslySetInnerHTML={{ __html: "document.documentElement.setAttribute(\"data-vs-start\",\"1\");setTimeout(function(){document.documentElement.removeAttribute(\"data-vs-start\")},3000)" }} /> : null}
       <Header />
       <Menu />
       <AboutUsPage />

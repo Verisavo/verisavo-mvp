@@ -1359,3 +1359,7 @@ html body #pg-contact#pg-contact#pg-contact.pg.pg .ct3-form:not(#a#b#c#d#e#f#g#h
 
 /* the light/dark switch icon is removed from headers; the appearance choice stays in the profile settings */
 [data-theme-toggle] { display: none !important; }
+
+/* inner pages open and close at once, so the homepage illustration never shows through for a moment */
+html body .pg.pg:not(#a#b#c#d#e#f#g#h#i#j#k#l) { transition: visibility 0s !important; }
+html[data-vs-start] #ln, html[data-vs-start] .pg:not(.open) { visibility: hidden !important; }
