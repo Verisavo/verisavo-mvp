@@ -2,7 +2,7 @@
 <html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
-<script>try{if(localStorage.getItem("verisavo-theme")==="dark")document.documentElement.setAttribute("data-vs-theme","dark")}catch(e){}
+<script>try{localStorage.removeItem("verisavo-theme");document.documentElement.removeAttribute("data-vs-theme")}catch(e){}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-theme-toggle]");if(!b)return;var d=document.documentElement,on=d.getAttribute("data-vs-theme")!=="dark";if(on)d.setAttribute("data-vs-theme","dark");else d.removeAttribute("data-vs-theme");try{localStorage.setItem("verisavo-theme",on?"dark":"light")}catch(e){}document.querySelectorAll("[data-theme-toggle]").forEach(function(x){x.setAttribute("aria-pressed",String(on));var l=on?"Switch to light mode":"Switch to dark mode";x.setAttribute("aria-label",l);x.title=l})});
 document.addEventListener("DOMContentLoaded",function(){if(document.documentElement.getAttribute("data-vs-theme")==="dark")document.querySelectorAll("[data-theme-toggle]").forEach(function(x){x.setAttribute("aria-pressed","true");x.setAttribute("aria-label","Switch to light mode");x.title="Switch to light mode"})});</script>
 <style>
@@ -1150,4 +1150,5 @@ html body .doc :is(.btn, a.btn, button.btn):not(#a#b#c#d) { border-radius: 999px
   window.vsBar = { scan: scan };
 })();
 </script><style>[data-theme-toggle]{display:none!important}</style>
+<script>document.documentElement.dataset.theme="light"</script><style>#theme{display:none!important}</style>
 
