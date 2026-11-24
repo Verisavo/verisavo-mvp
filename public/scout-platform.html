@@ -275,6 +275,17 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .refs{display:inline-flex;gap:4px;flex-wrap:wrap;margin-left:6px;vertical-align:middle}
 .refs button{border:1px solid var(--line);background:var(--paper);border-radius:6px;font-size:11px;padding:0 6px;height:20px;color:var(--primary)}
 .conf{font-size:11px;border-radius:6px;padding:1px 6px;margin-left:6px;background:var(--field);color:var(--ink-2);white-space:nowrap}
+.fu{display:grid;gap:12px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
+.fu-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.fu-item{display:grid;gap:8px}
+.fu-q{justify-self:end;max-width:85%;margin:0;padding:8px 12px;border-radius:12px;background:var(--field);font-size:13.5px;line-height:1.5;overflow-wrap:anywhere}
+.fu-a{display:flex;gap:10px;align-items:flex-start}
+.fu-mark{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:#1F273F;color:#fff;font-size:11px;font-weight:700}
+.fu-a>div{display:grid;gap:6px;justify-items:start;min-width:0;padding-top:2px;font-size:13.5px;line-height:1.55}
+.fu-a p{margin:0}.fu-a .refs{margin-left:0}
+.fu-box{margin:0}.fu-box textarea{font-size:14px}
+.fu-note{margin:0;font-size:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .conf.High{background:var(--ok-bg);color:var(--ok)} .conf.Medium{background:var(--warn-bg);color:var(--warn)} .conf.Low{background:var(--err-bg);color:var(--err)}
 .menu svg{width:22px;height:22px;display:block} .chip-loc svg{width:15px;height:15px;flex:none}
 @media (max-width:640px){.exitb span{display:none}}
@@ -772,6 +783,69 @@ Return JSON only: {"summary": one or two sentences, "findings": [{"text","confid
   }
   await patch('surveys', id, {briefing: b}); toast('Briefing ready.');
 }
+/* follow-up questions under the briefing: answered only from this investigation's responses and briefing */
+function fuView(s) {
+  const items = s.followups || [], busy = S.ui.fuBusy === s.id, draft = (S.ui.fuDraft || {})[s.id] || '';
+  const one = (m, i) => `<li class="fu-item"><p class="fu-q">${esc(m.q)}</p><div class="fu-a"><span class="fu-mark" aria-hidden="true">V</span><div>${m.a ? `<p>${esc(m.a.text)}</p>${refBtns(m.a.refs)}${m.a.gap ? `<button class="link fu-inv" data-act="fuinv" data-id="${s.id}" data-v="${i}">Investigate this with SavoScouts</button>` : ''}` : '<span class="spin" aria-hidden="true"></span><span class="sr">Answering</span>'}</div></div></li>`;
+  const list = items.map(one).join('') + (busy ? one({q: S.ui.fuQ || ''}, -1) : '');
+  return `<div class="fu" id="fu"><h3>Ask a follow-up</h3>
+    ${list ? `<ol class="fu-list" aria-live="polite">${list}</ol>` : ''}
+    <form class="askbox fu-box" id="fuform" data-id="${s.id}"><label class="sr" for="fu-in">Ask a follow-up question about this briefing</label><textarea id="fu-in" rows="1" maxlength="400" placeholder="Ask a follow-up about this briefing"${busy ? ' disabled' : ''}>${esc(draft)}</textarea><button class="btn sm askgo" type="submit"${busy ? ' disabled' : ''}>Ask</button></form>
+    <p class="faint fu-note">Answers use only this investigation's responses. Where they cannot answer, you can send the question to SavoScouts.</p></div>`;
+}
+function fuLocal(s, list, q) {
+  const b = s.briefing || {}, low = q.toLowerCase(), ok = list.filter(x => x.status === 'approved'), use = ok.length ? ok : list.filter(x => x.status === 'pending');
+  const join = (a) => (a || []).map(o => o.text).join(' '), refs = (a) => [...new Set((a || []).flatMap(o => o.refs || []))];
+  const other = Object.values(COUNTRIES).flat().find(c => low.includes(c.toLowerCase()) && !(s.regions || []).includes(c));
+  if (other) return {text: `This investigation covered ${(s.regions || []).join(', ') || s.country} only, so it has no evidence on ${other}. SavoScouts could gather it there.`, refs: [], gap: true, ask: q};
+  if (/reliab|confiden|trust|sure|accura|verif|how many|sample|coverage/.test(low)) return {text: `${ok.length} of ${list.length} responses are verified, against ${s.target} planned. ${list.filter(x => x.status === 'pending').length} are awaiting review and ${(n => n + (n === 1 ? ' was' : ' were'))(list.filter(x => x.status === 'rejected').length)} not verified and excluded. ${join(b.unknowns)}`.trim(), refs: ok.map(x => x.id)};
+  if (/unknown|gap|missing|don.?t know|not know|uncertain/.test(low)) return (b.unknowns || []).length ? {text: join(b.unknowns), refs: [], gap: true, ask: b.unknowns[0].text} : {text: 'The briefing does not identify any open gaps in this investigation.', refs: []};
+  if (/next|recommend|should|action|what now|do about/.test(low)) return {text: (/should/.test(low) ? 'That decision stays with you. What this investigation suggests doing next: ' : '') + (join(b.next) || 'The briefing has no recommended next step yet.'), refs: []};
+  if (/contradict|disagree|differ|exclud|reject/.test(low)) return {text: join(b.contradictions) || 'No contradictions were found in the responses.', refs: refs(b.contradictions)};
+  if (/agree|consistent|common/.test(low)) return {text: join(b.agreements) || 'There is no clear agreement across responses yet.', refs: refs(b.agreements)};
+  if (/where|region|area|location|city|district/.test(low)) { const rg = [...new Set(use.map(x => x.region).filter(Boolean))]; return {text: rg.length ? `Responses came from ${rg.join(', ')}.` + ((s.regions || []).filter(r => !rg.includes(r)).length ? ` None yet from ${(s.regions || []).filter(r => !rg.includes(r)).join(', ')}.` : '') : 'No responses with a location yet.', refs: use.slice(0, 4).map(x => x.id)}; }
+  const words = low.split(/[^a-z]+/).filter(w => w.length > 3 && !['what', 'which', 'were', 'does', 'many', 'much', 'about', 'there', 'their', 'from', 'with', 'this', 'that', 'have'].includes(w));
+  const qn = (s.questions || []).find(x => { const t = (x.text || '').toLowerCase(); return words.some(w => t.includes(w) || t.includes(w.replace(/s$/, ''))); });
+  const ahead = /\b(will|would|going to|affect|effect|impact of|why|cause|predict|forecast|if we)\b/.test(low);
+  if (ahead && !qn) return {text: 'The responses record what SavoScouts observed on the ground. They cannot show what will happen or why, so this question is an Intelligence Gap that SavoScouts could investigate.', refs: [], gap: true, ask: q};
+  if (qn) {
+    const vals = use.map(x => [x.id, x.answers?.[qn.id]]).filter(a => a[1] !== undefined && a[1] !== '' && a[1] !== null);
+    if (!vals.length) return {text: `No ${ok.length ? 'verified ' : ''}responses have answered “${qn.text}” yet.`, refs: [], gap: true};
+    if (ahead) { const r = fuLocal(s, list, qn.text); return {text: r.text + ' This shows the current position only. The responses cannot tell whether or how it will change, so the rest is an Intelligence Gap.', refs: r.refs, gap: true, ask: q}; }
+    if (['number', 'scale', 'rating'].includes(qn.type)) { const n = vals.map(a => Number(a[1])).filter(v => !isNaN(v)), avg = n.reduce((a, c) => a + c, 0) / (n.length || 1), u = qn.unit ? ' ' + qn.unit : ''; return {text: `On “${qn.text}”: average ${fmt(avg, 1)}${u}, ranging from ${fmt(Math.min(...n), 1)} to ${fmt(Math.max(...n), 1)}, across ${n.length} responses.`, refs: vals.map(a => a[0])}; }
+    if (qn.type === 'single' || qn.type === 'multi') { const c = {}; vals.forEach(([, a]) => (Array.isArray(a) ? a : [a]).forEach(o => { if (o) c[o] = (c[o] || 0) + 1; })); const top = Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 4); return {text: `On “${qn.text}”, across ${vals.length} responses: ${top.map(([k, n]) => `${k} (${n})`).join(', ')}.`, refs: vals.map(a => a[0])}; }
+    const ex = vals.filter(a => typeof a[1] === 'string' && a[1].length > 2).slice(0, 2).map(a => `“${a[1].length > 120 ? a[1].slice(0, 117) + '…' : a[1]}”`);
+    return {text: `${vals.length} responses answered “${qn.text}”.` + (ex.length ? ' For example: ' + ex.join(' and ') + '.' : ' Open them to review the detail.'), refs: vals.map(a => a[0])};
+  }
+  if (/find|found|summar|key|main|overall|show/.test(low)) return {text: [b.summary, join(b.findings)].filter(Boolean).join(' '), refs: refs(b.findings)};
+  return {text: 'The responses in this investigation do not answer that. It is an Intelligence Gap: SavoScouts could gather the evidence on the ground.', refs: [], gap: true, ask: q};
+}
+async function askFollow(id, q) {
+  const s0 = S.surveys[id]; if (!s0 || !q || S.ui.fuBusy) return;
+  const s = {id, ...s0}, list = subsOf(id);
+  S.ui.fuBusy = id; S.ui.fuQ = q; S.ui.fuDraft = {...(S.ui.fuDraft || {}), [id]: ''}; render();
+  const el = $('#fu .fu-list li:last-child'); if (el) el.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+  let a = null;
+  if (SAMPLER && list.length) {
+    try {
+      const qmap = Object.fromEntries((s.questions || []).map(x => [x.id, x.text]));
+      const rows = list.filter(x => x.status !== 'rejected').slice(0, 40).map(x => ({id: x.id, region: x.region, status: x.status === 'approved' ? 'verified' : 'awaiting review', answers: Object.fromEntries(Object.entries(x.answers || {}).map(([k, v]) => [qmap[k] || k, v]))}));
+      const out = await SAMPLER.json(`You are the Verisavo Assistant answering a follow-up question about one investigation briefing. Use only the briefing and responses below. Say what the evidence supports, what is inferred, and what it cannot answer. Never claim certainty the evidence does not give. British English, plain language, two to four sentences, no hype.
+Investigation: ${s.title}. Objective: ${s.request || s.title}. Place: ${(s.regions || []).join(', ')}, ${s.country}. Planned responses: ${s.target}; received: ${list.length}.
+Briefing (JSON): ${JSON.stringify(s.briefing || {})}
+Earlier follow-ups (JSON): ${JSON.stringify((s.followups || []).slice(-4).map(m => ({q: m.q, a: m.a && m.a.text})))}
+Responses (JSON): ${JSON.stringify(rows)}
+Question: ${q}
+Return JSON only: {"answer": string, "refs": [response ids that support it], "answerable": true|false}. Set answerable to false when the responses cannot answer the question.`, {modelTier: 'quick'});
+      if (out && out.answer) { const okIds = new Set(list.map(x => x.id)); a = {text: String(out.answer), refs: (out.refs || []).filter(r => okIds.has(r)), gap: out.answerable === false, ask: q, by: 'assistant'}; }
+    } catch (e) { if (e && e.code === 'rate_limited') toast('Too many requests. Answering from the briefing instead.'); }
+  }
+  if (!a) { await new Promise(r => setTimeout(r, 700)); a = {...fuLocal(s, list, q), by: 'rules'}; }
+  S.ui.fuBusy = null; S.ui.fuQ = '';
+  await patch('surveys', id, {followups: [...(S.surveys[id].followups || []), {q, a, at: Date.now()}]});
+  const inp = $('#fu-in'); if (inp) inp.focus({preventScroll: true});
+  const last = $('#fu .fu-list li:last-child'); if (last) last.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+}
 function briefView(s, list) {
   const b = s.briefing;
   if (!list.length) return `<div class="card">${emptyState('spark', 'No evidence to brief on yet', 'The AI briefing becomes available once SavoScouts start responding.')}</div>`;
@@ -789,6 +863,7 @@ function briefView(s, list) {
     ${(b.implications || []).length ? sec('What it could mean', b.implications, '') : ''}
     ${sec('Still unknown', b.unknowns, 'No open gaps identified.')}
     ${sec('Recommended next steps', b.next, '')}
+    ${fuView(s)}
   </div>
   <div class="stack" style="align-self:start">
     <div class="card stack"><h2 style="font-size:16px">Evidence behind this briefing</h2>
@@ -1398,6 +1473,7 @@ document.addEventListener('click', async (e) => {
   else if (a === 'back-chat') { try { window.parent.postMessage({ vs: 'back-chat' }, '*'); } catch (e) {} }
   else if (a === 'usegap') { const g = GAPS[Number(v)]; prepareFromText(g.gap); Object.assign(B, {title: g.title, industry: g.industry, country: g.country, countries: [g.country], regions: g.regions.slice(), location: g.location, brief: g.brief}); render(); toast('Task prepared from the example. Review and edit before deploying.'); }
   else if (a === 'genbrief') genBrief(id);
+  else if (a === 'fuinv') { const s = S.surveys[id], m = s && (s.followups || [])[Number(v)]; if (!m) return; newBuilder(); prepareFromText((m.a && m.a.ask) || m.q); Object.assign(B, {country: s.country, countries: s.country ? [s.country] : [], regions: (s.regions || []).slice()}); go('c-builder'); }
   else if (a === 'ref') openSub(id);
   else if (a === 'toggleregion') { B.regions = B.regions.includes(v) ? B.regions.filter(x => x !== v) : [...B.regions, v]; render(); }
   else if (a === 'bstep') { B.step = Number(v); render(); window.scrollTo(0, 0); }
@@ -1423,6 +1499,7 @@ document.addEventListener('click', async (e) => {
   else if (a === 'wareset') { W = null; try { localStorage.removeItem('vs-wa-' + S.me); } catch (e) {} render(); }
 });
 document.addEventListener('submit', (e) => {
+  if (e.target.id === 'fuform') { e.preventDefault(); const inp = $('#fu-in'), q = inp ? inp.value.trim() : ''; if (q) askFollow(e.target.dataset.id, q); else if (inp) inp.focus(); return; }
   if (e.target.id !== 'waform') return; e.preventDefault();
   const inp = $('#wa-in'); if (!inp || !inp.value.trim() || typing) return;
   const v = inp.value; inp.value = ''; waText(v);
@@ -1431,6 +1508,7 @@ document.addEventListener('input', (e) => {
   const t = e.target, d = t.dataset;
   if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
+  if (t.id === 'fu-in') { const f = t.closest('form'); if (f) S.ui.fuDraft = {...(S.ui.fuDraft || {}), [f.dataset.id]: t.value}; t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 160) + 'px'; return; }
   if (d.pay) { B.pay[d.pay] = t.type === 'checkbox' ? t.checked : t.value; if (t.type === 'checkbox') render(); else softRender(); return; }
   if (d.b === 'ai' && t.tagName === 'TEXTAREA' && t.closest('.askbox')) { t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 160) + 'px'; }
   if (d.b) { B[d.b] = d.b === 'responses' ? Math.max(0, Math.round(Number(t.value) || 0)) : t.value; if (d.b === 'country') { B.countries = t.value ? [t.value] : []; B.regions = B.regions.filter(r => (COUNTRIES[t.value] || []).includes(r)); render(); return; } if (d.rerender || B.step === 0) softRender(); return; }
@@ -1448,6 +1526,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && $('#layer').innerHTML) closeLayer();
   else if (e.key === 'Escape' && WAFULL) { WAFULL = false; render(); const b = $('.wa-exp'); if (b) b.focus(); }
   if (e.key === 'Enter' && e.target.matches('[role="button"][data-go]')) go(e.target.dataset.go);
+  if (e.key === 'Enter' && !e.shiftKey && e.target.id === 'fu-in' && !e.isComposing) { e.preventDefault(); const f = e.target.closest('form'); if (f) f.requestSubmit(); }
 });
 /* soft render: update only footer/summary state without replacing focused input text */
 let sr = null;
