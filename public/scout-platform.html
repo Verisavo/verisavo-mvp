@@ -284,6 +284,10 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .setup{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:0;font-size:13.5px}.setup dt{color:var(--ink-3)}.setup dd{margin:0}
 @media (max-width:560px){.setup{grid-template-columns:1fr;gap:2px}.setup dd{margin-bottom:6px}}
 .welcome{display:grid;gap:14px}
+.tabs .soon{color:var(--ink-3);cursor:default}.tabs .soon:hover{color:var(--ink-3)}
+.tabs .soon em{margin-left:6px;padding:2px 7px;border-radius:999px;background:#F2F2F4;color:#78787A;font-size:11px;font-weight:500;line-height:1.4;font-style:normal;white-space:nowrap}
+.tabs .soon em.glow{animation:soonglow 1.2s ease}@keyframes soonglow{30%{background:#E3EBF8;color:#1F273F}}
+@media (prefers-reduced-motion:reduce){.tabs .soon em.glow{animation:none}}
 .costline{margin:0;font-size:13px;color:var(--ink-2)}.costline .link{font:inherit;background:none;border:0;padding:0;cursor:pointer}
 .sigs .faint{font-size:12px;white-space:nowrap}
 .fu{display:grid;gap:12px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
@@ -511,7 +515,7 @@ function scheduleRender(force) {
 
 /* ---------------- shell ---------------- */
 function hshell(r, title, body, extraTop) {
-  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview', 'Overview'], ['c-surveys', 'Manage investigations', 'clip', r.page === 'surveys' || r.page === 'survey', 'Manage'], ['c-builder', 'Investigate market', 'search', r.page === 'builder', 'Investigate'], ['c-billing', 'Billing', 'card', r.page === 'billing', 'Billing']];
+  const tabs = [['c-overview', 'Overview', 'grid', r.page === 'overview', 'Overview'], ['c-surveys', 'Manage', 'clip', r.page === 'surveys' || r.page === 'survey', 'Manage'], ['c-builder', 'Investigate', 'search', r.page === 'builder', 'Investigate'], ['c-billing', 'Billing', 'card', r.page === 'billing', 'Billing']];
   return `<div class="happ ${INLINE ? 'inline' : ''}">
   <header class="htop">
     <div class="htitle">${INLINE ? '<button type="button" class="hback" data-act="back-chat" aria-label="Back to the conversation" title="Back to the conversation"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg><span>Back</span></button>' : `<img class="logo-light" src="${LOGO}" alt="Verisavo"><img class="logo-dark" src="${LOGOW}" alt="Verisavo"><span class="hsep" aria-hidden="true"></span>`}<h1>${title}</h1></div>
@@ -649,7 +653,7 @@ function cSurvey(r) {
   const tabs = `<div class="row" style="gap:6px;font-size:13px"><button class="link" data-go="c-surveys">${ic.back}</button><span class="muted">Investigations</span><span class="faint">/</span><b style="font-weight:500">${esc(s.title)}</b>${SAMPLE(s)}<span style="margin-left:auto">${pill(life(s))}</span></div>
   ${track(s, list)}
   <div class="tabs"><button class="${tab === 'raw' ? 'on' : ''}" data-go="c-survey-${id}~raw">${ic.file}Responses <span class="cnt num">${list.length}</span></button><button class="${tab === 'processed' ? 'on' : ''}" data-go="c-survey-${id}~processed">${ic.chart}Evidence overview</button><button class="${tab === 'brief' ? 'on' : ''}" data-go="c-survey-${id}~brief">${ic.spark}AI briefing</button>
-  <button disabled title="Planned after the MVP">${ic.route}Scenario simulator</button></div>`;
+  <button type="button" class="soon" data-act="soon" aria-disabled="true">${ic.route}Scenario simulator<em>Coming soon</em></button></div>`;
   const statusBtns = `<div class="row">${s.status === 'active' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="paused">Pause</button>` : ''}${s.status === 'paused' ? `<button class="btn soft sm" data-act="setstatus" data-id="${id}" data-v="active">Resume</button>` : ''}${s.status !== 'completed' ? `<button class="btn ghost sm" data-act="setstatus" data-id="${id}" data-v="completed">Mark completed</button>` : ''}</div>`;
   let body = tabs;
   if (tab === 'processed') body += processed(s, list); else if (tab === 'brief') body += briefView(s, list); else body += rawData(s, list, statusBtns);
@@ -1536,6 +1540,7 @@ document.addEventListener('click', async (e) => {
   /* builder */
   else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
   else if (a === 'prepare') { const t = $('#b-ai'), d = (t ? t.value : B.ai || '').trim(); if (!d) { toast('Describe what you want to investigate first.'); return; } openWizard(ctxFromText(d), 'direct'); render(); window.scrollTo(0, 0); const f = $('#w-dec'); if (f) f.focus({preventScroll: true}); }
+  else if (a === 'soon') { const m = t.querySelector('em'); if (m) { m.classList.remove('glow'); void m.offsetWidth; m.classList.add('glow'); } toast('The Scenario simulator is coming soon.'); }
   else if (a === 'contact-us') { let u = './index.html#contact'; try { if (!/\.html$/.test(window.top.location.pathname)) u = '/contact'; } catch (e) {} try { window.top.location.href = u; } catch (e) { window.open(u, '_blank'); } }
   else if (a === 'demo-example') { go('c-builder'); setTimeout(() => { const b = $('[data-act="wizdemo"]'); if (b) b.click(); }, 60); }
   else if (a === 'wizdemo') { openWizard(ctxFromText('Is our 5kg rice losing shoppers to imported brands in Accra markets, and is price the reason?'), 'direct'); Object.assign(B.wiz, {demo: true, decision: 'price', product: '5kg rice', country: 'Ghana', city: 'Accra', kinds: ['Price check', 'Shopper feedback', 'Availability and shelf'], auto: false, places: ['Small shops', 'Open-market stalls', 'Supermarkets'], known: 'The main rival is an imported 5kg bag sold widely at Makola.'}); render(); window.scrollTo(0, 0); }
