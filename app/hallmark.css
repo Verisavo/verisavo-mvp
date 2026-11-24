@@ -1352,3 +1352,7 @@ html body #pg-pricing .pc-after .pa-ctas .pa-cta{justify-self:auto;margin:0}
 /* Request a demo on dark sections: white with dark text */
 html body :is(#ln, .pg) :is(.hp2-cta, .cta-band .obtn.solid, .ca-apply .obtn.solid, .u2-close .u2-btn.u2-solid):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n){background:#fff!important;border-color:#fff!important;color:#1F273F!important;-webkit-text-fill-color:#1F273F!important}
 html body :is(#ln, .pg) :is(.hp2-cta, .cta-band .obtn.solid, .ca-apply .obtn.solid, .u2-close .u2-btn.u2-solid):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n):hover{background:#E3EBF8!important;border-color:#E3EBF8!important}
+
+/* Contact: tighter space between the introduction and the form */
+html body #pg-contact#pg-contact#pg-contact.pg.pg .ct3-head:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding-bottom: 36px !important; }
+html body #pg-contact#pg-contact#pg-contact.pg.pg .ct3-form:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: 36px !important; }

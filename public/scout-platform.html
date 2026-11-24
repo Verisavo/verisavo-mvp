@@ -283,6 +283,8 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 @media (max-width:560px){.wiz-two{grid-template-columns:1fr}}
 .setup{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:0;font-size:13.5px}.setup dt{color:var(--ink-3)}.setup dd{margin:0}
 @media (max-width:560px){.setup{grid-template-columns:1fr;gap:2px}.setup dd{margin-bottom:6px}}
+.welcome{display:grid;gap:14px}
+.costline{margin:0;font-size:13px;color:var(--ink-2)}.costline .link{font:inherit;background:none;border:0;padding:0;cursor:pointer}
 .sigs .faint{font-size:12px;white-space:nowrap}
 .fu{display:grid;gap:12px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
 .fu-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
@@ -312,6 +314,7 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .hnav svg{width:16px;height:16px;flex:none}
 .happ .content{width:100%;max-width:1320px;margin:0 auto}
 .happ.inline .htop{min-height:56px;padding:8px 20px}
+@media (min-width:761px){.happ.inline .hnav{display:none}}
 .happ.inline .htitle h1{font-size:16px;font-weight:600}
 .happ.inline .content{padding:18px 20px 32px;gap:14px}
 .happ .card{border-radius:14px;padding:16px}.happ .kpi .val{font-size:22px}.happ .kpi .ico{width:32px;height:32px}
@@ -611,7 +614,9 @@ function cOverview(r) {
       <div class="row between" style="font-size:12px"><div class="tags">${(s.regions || []).map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div><span class="muted">${scouts} scout${scouts === 1 ? '' : 's'} contributing</span></div></div>`; }).join('')}</div>`
       : emptyState('clip', 'No live investigations', 'When existing evidence cannot answer a question, investigate it with SavoScouts.', `<button class="btn" data-go="c-builder">${ic.search}Investigate market</button>`)}
   </div>`;
-  return shell(r, 'Executive Overview', body);
+  const own = sv.filter(s => !s.sample).length;
+  const welcome = own ? '' : `<div class="card welcome"><div><h2 style="font-size:18px">Start your first investigation</h2><p class="muted" style="margin:4px 0 0">The investigations below are samples, so you can see how evidence, briefings and follow-up questions look. When you are ready, describe what you need to understand and Verisavo sets up the task for SavoScouts.</p></div><div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn" data-go="c-builder">${ic.search}Investigate market</button><button class="btn ghost" data-act="demo-example">See a worked example</button>${INLINE ? '<button class="btn ghost" data-act="back-chat">Ask the Assistant</button>' : ''}</div></div>`;
+  return shell(r, 'Executive Overview', welcome + body);
 }
 
 function cSurveys(r) {
@@ -636,8 +641,9 @@ function cSurveys(r) {
 }
 
 function cSurvey(r) {
-  const [id, tab = 'raw'] = (r.id || '').split('~');
+  const [id, tab0] = (r.id || '').split('~');
   const s = S.surveys[id] ? {id, ...S.surveys[id]} : null;
+  const tab = tab0 || (s && s.briefing ? 'brief' : 'raw');
   if (!s) return shell(r, 'Investigation', `<div class="card">${S.loaded ? emptyState('search', 'Investigation not found', 'It may have been removed.', `<button class="btn ghost" data-go="c-surveys">Back to investigations</button>`) : ''}</div>`);
   const list = subsOf(id);
   const tabs = `<div class="row" style="gap:6px;font-size:13px"><button class="link" data-go="c-surveys">${ic.back}</button><span class="muted">Investigations</span><span class="faint">/</span><b style="font-weight:500">${esc(s.title)}</b>${SAMPLE(s)}<span style="margin-left:auto">${pill(life(s))}</span></div>
@@ -657,8 +663,8 @@ function track(s, list) {
   return `<div class="card stack">
     <div class="stepper life">${names.map((t, i) => `<div class="step ${i < cur || (cur === 4 && i === 4) ? 'done' : i === cur ? 'on' : ''}"><span class="dot">${i < cur || cur === 4 ? ic.check : i + 1}</span><span class="lab">${t}</span></div>`).join('')}</div><p class="step-now"><span>Step ${Math.min(cur, names.length - 1) + 1} of ${names.length}</span><b>${names[Math.min(cur, names.length - 1)]}</b></p>
     <div class="funnel"><div>Sent to SavoScouts<b class="num">${s.status === 'draft' ? '—' : eligible}</b>via the Verisavo agent</div><div>Responses submitted<b class="num">${list.length}<span class="faint" style="font-size:13px"> / ${s.target}</span></b>${pct(list.length, s.target)}% of coverage</div><div>Awaiting review<b class="num">${pend}</b>${pend ? 'needs your team' : 'nothing waiting'}</div><div>Verified<b class="num">${ok}</b>VeriPoints released</div></div>
-    ${s.status !== 'draft' ? (() => { const c = costOf(s, list); return `<div class="costrow"><div><span>Charged so far</span><b class="num">${money(c.charged)}</b><small>${c.ok} verified × ${money(c.rate)}</small></div><div><span>Awaiting review</span><b class="num">${money(c.pending)}</b><small>Charged only if verified</small></div><div><span>Authorised up to</span><b class="num">${money(c.cap)}</b><small>${esc(payName(s.billing && s.billing.method))}</small></div><button class="link" data-go="c-billing">Billing ${ic.arrow}</button></div>`; })() : ''}
-    ${s.gap ? `<div class="note">${ic.info}<span><b>Intelligence Gap.</b> ${esc(s.gap)}</span></div>` : ''}
+    ${s.status !== 'draft' ? (() => { const c = costOf(s, list); return `<p class="costline">Charged so far <b class="num">${money(c.charged)}</b> for ${c.ok} verified responses, up to ${money(c.cap)}. <button class="link" data-go="c-billing">See billing</button></p>`; return `<div class="costrow"><div><span>Charged so far</span><b class="num">${money(c.charged)}</b><small>${c.ok} verified × ${money(c.rate)}</small></div><div><span>Awaiting review</span><b class="num">${money(c.pending)}</b><small>Charged only if verified</small></div><div><span>Authorised up to</span><b class="num">${money(c.cap)}</b><small>${esc(payName(s.billing && s.billing.method))}</small></div><button class="link" data-go="c-billing">Billing ${ic.arrow}</button></div>`; })() : ''}
+    ${(s.signals || []).length ? `<div class="note">${ic.info}<span><b>Started from Signals.</b> ${esc(s.signals[0].text)}${s.signals.length > 1 ? ` <span class="faint">and ${s.signals.length - 1} more</span>` : ''}</span></div>` : s.gap ? `<div class="note">${ic.info}<span><b>Intelligence Gap.</b> ${esc(s.gap)}</span></div>` : s.request ? `<div class="note">${ic.info}<span><b>Started from a request.</b> ${esc(s.request)}</span></div>` : ''}
     ${life(s) === 'deployed' && s.publishedAt && Date.now() - s.publishedAt > 86400000 ? `<div class="note">${ic.clock}<span>No responses yet after a day. The Verisavo agent will re-send the task to SavoScouts nearby. You can also widen the regions or extend the timeline.</span></div>` : ''}
   </div>`;
 }
@@ -864,7 +870,7 @@ function briefView(s, list) {
   return `<div class="grid g-main"><div class="card brief">
     <div class="head" style="margin-bottom:0"><div><h2>Investigation briefing</h2><span class="faint" style="font-size:12px">Generated ${dtt(b.at)} from ${b.n} response${b.n === 1 ? '' : 's'}${b.by === 'rules' ? ' · summary built from the responses' : ''}</span></div><button class="btn ${stale ? '' : 'ghost'} sm" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}${stale ? 'Update with new evidence' : 'Regenerate'}</button></div>
     ${stale ? `<div class="note blue">${ic.info}<span>${list.length - b.n > 0 ? list.length - b.n + ' new response' + (list.length - b.n === 1 ? '' : 's') : 'Responses have changed'} since this briefing. Update it to include them.</span></div>` : ''}
-    ${(s.setup || []).length ? `<div><h3>How this survey was set up</h3><dl class="setup">${s.setup.map(x => `<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl></div>` : ''}
+    ${(s.setup || []).length ? `<div><h3>How this investigation was set up</h3><dl class="setup">${s.setup.map(x => `<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl></div>` : ''}
     ${(s.signals || []).length ? `<div><h3>Signals that started this investigation</h3><ul class="sigs">${s.signals.map(x => `<li>${esc(x.text)} <span class="faint">${esc(x.source)}</span></li>`).join('')}</ul></div>` : ''}
     <div><h3>Objective</h3><p style="margin:0;font-size:13.5px">${esc(s.request || s.title)}</p></div>
     <p style="margin:0;font-size:13.5px">${esc(b.summary)}</p>
@@ -931,7 +937,7 @@ function cBilling(r) {
       <div class="card stack"><h2 style="font-size:16px">Payment details</h2>
         ${last ? `<div class="kv"><span>Last used</span><b>${esc(payName(last.billing.method))}</b></div><div class="kv"><span>Company</span><b>${esc(last.billing.company || '—')}</b></div><div class="kv"><span>Billing email</span><b>${esc(last.billing.email || '—')}</b></div>` : '<p class="muted" style="margin:0;font-size:13px">You choose a payment method when you deploy your first investigation.</p>'}
         <p class="faint" style="font-size:12px;margin:0">You can choose a different method for each investigation.</p></div>
-      <div class="card stack"><h2 style="font-size:16px">Response credits</h2><div class="kv"><span>Available</span><b class="num">${fmt(credits())} responses</b></div><p class="faint" style="font-size:12px;margin:0">Buy responses on the Pricing page, then choose Response credits when you deploy.</p></div>
+      <div class="card stack"><h2 style="font-size:16px">Response credits</h2><div class="kv"><span>Available</span><b class="num">${fmt(credits())} responses</b></div><p class="faint" style="font-size:12px;margin:0">Your plan and response credits are agreed after your demo. <button class="link" data-act="contact-us" style="font:inherit;background:none;border:0;padding:0;cursor:pointer">Contact us</button> to add credits.</p></div>
       <div class="note">${ic.info}<span>You pay ${money(PER_RESPONSE)} for each accepted, verified response, with no set-up fee. Investigations are charged separately from your subscription.</span></div>
     </div></div>`;
   return shell(r, 'Billing', body);
@@ -1054,8 +1060,8 @@ function wizView() {
   const w = B.wiz, gaps = w.ctx.gaps && w.ctx.gaps.length ? w.ctx.gaps : [w.ctx.gap], cities = COUNTRIES[w.country] || [], ok = !!(w.country && w.city && w.kinds.length);
   const box = (key, i, on, t, d) => `<label class="gaprow"><input type="checkbox" id="${key}-${i}" data-${key}="${i}"${on ? ' checked' : ''}><span class="gbody"><b>${t}</b>${d ? `<small>${d}</small>` : ''}</span></label>`;
   return `<div class="narrow wiz"><div class="stack">
-    <div><h2 style="font-size:22px">A few questions first</h2><p class="muted" style="margin:2px 0 0">${w.mode === 'gaps' ? 'Verisavo has filled in what your conversation already says. Check the answers and add what is missing, so the survey fits the decision ahead.' : 'So Verisavo can tailor the survey to your decision. Answers are filled in where your description already says it.'}</p></div>
-    ${w.demo ? `<div class="note prepnote">${ic.spark}<span><b>Worked example.</b> The answers are filled in to show how it works. Change anything, or press Generate survey to see the survey it builds. The finished version of this survey is under Manage investigations as Rice shopper choice in Accra.</span></div>` : ''}
+    <div><h2 style="font-size:22px">A few questions first</h2><p class="muted" style="margin:2px 0 0">${w.mode === 'gaps' ? 'Verisavo has filled in what your conversation already says. Check the answers and add what is missing, so the task fits the decision ahead.' : 'So Verisavo can tailor the task to your decision. Answers are filled in where your description already says it.'}</p></div>
+    ${w.demo ? `<div class="note prepnote">${ic.spark}<span><b>Worked example.</b> The answers are filled in to show how it works. Change anything, or press Generate task to see the task it builds. The finished version of this investigation is under Manage investigations as Rice shopper choice in Accra.</span></div>` : ''}
     <div class="note gapnote">${ic.info}<span><b>${w.mode === 'gaps' ? (gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap') : 'What you want to investigate'}</b> ${gaps.length > 1 ? '<ul class="gaplist">' + gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(gaps[0])}${w.ctx.from ? `<br><span class="faint">From: ${esc(w.ctx.from)}</span>` : ''}</span></div>
     <div class="field"><label for="w-dec">1. What decision will this evidence support?</label><select class="in" id="w-dec" data-w="decision"><option value="">Choose a decision</option>${DECISIONS.map(d => `<option value="${d[0]}"${w.decision === d[0] ? ' selected' : ''}>${d[1]}</option>`).join('')}</select></div>
     <div class="field"><label for="w-prod">2. Which product or category?</label><input class="in" id="w-prod" data-w="product" placeholder="For example, cooking oil" value="${esc(w.product)}"></div>
@@ -1105,7 +1111,7 @@ function cBuilder(r) {
   const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Payment', 'Review and deploy'];
   const stepper = `<div class="stepper">${steps.map((t, i) => `<div class="step ${i < B.step ? 'done' : i === B.step ? 'on' : ''}"><span class="dot">${i < B.step ? ic.check : i + 1}</span><span class="lab">${t}</span></div>`).join('')}</div><p class="step-now"><span>Step ${Math.min(B.step, steps.length - 1) + 1} of ${steps.length}</span><b>${steps[Math.min(B.step, steps.length - 1)]}</b></p>`;
   if (B.wiz) { const ok = !!(B.wiz.country && B.wiz.city && B.wiz.kinds.length);
-    return shell(r, 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${wizView()}<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px"><button class="btn ghost" data-act="wizback">Back</button><button class="btn" data-act="wizgo"${ok ? '' : ' disabled'}>${ic.spark}Generate survey</button></div>${ok ? '' : '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a country, a city and at least one thing to find out.</p>'}</div>`); }
+    return shell(r, 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${wizView()}<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px"><button class="btn ghost" data-act="wizback">Back</button><button class="btn" data-act="wizgo"${ok ? '' : ' disabled'}>${ic.spark}Generate task</button></div>${ok ? '' : '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a country, a city and at least one thing to find out.</p>'}</div>`); }
   const P = pricing(B.responses, B.timeframe);
   let inner = '';
   if (B.step === 0) {
@@ -1113,22 +1119,22 @@ function cBuilder(r) {
     const showDetails = B.prepared || B.manual || !!(B.title || cs.length);
     const fromChat = B.prepared && !B.typed;
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation: the place, the instructions and survey questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Describe it in plain words. Verisavo asks a few questions about your decision, then builds the task for SavoScouts: the place, the instructions and the evidence questions.'}</p></div>
+      <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation: the place, the instructions and evidence questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Describe it in plain words. Verisavo asks a few questions about your decision, then builds the task for SavoScouts: the place, the instructions and the evidence questions.'}</p></div>
       ${fromChat ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : `
-      <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Start again from this description' : 'Continue'}">${ic.spark}<span>${B.prepared ? 'Start again' : 'Continue'}</span></button></div>
+      <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="What do you want to find out?" aria-label="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Start again from this description' : 'Continue'}">${ic.spark}<span>${B.prepared ? 'Start again' : 'Continue'}</span></button></div>
       ${B.prepared ? '' : `<p class="faint askhint">New to this? <button type="button" class="link" data-act="wizdemo">See a worked example</button></p>`}
-      ${B.prepared ? `<p class="faint askhint">Survey generated below. Change the description and start again if needed.</p>` : ''}
+      ${B.prepared ? `<p class="faint askhint">Task generated below. Change the description and start again if needed.</p>` : ''}
       ${(() => { const dr = B.prepared || B.id ? [] : surveys().filter(x => x.status === 'draft' && !x.sample); return dr.length ? `<div class="field drafts-field"><span class="flabel faint" style="font-weight:400">Your drafts</span><div class="drafts">${dr.slice(0, 5).map(x => `<button type="button" class="draftrow" data-go="c-builder-${x.id}"><span class="dt">${esc(x.title)}</span><span class="dm">${x.questions ? x.questions.length + ' question' + (x.questions.length === 1 ? '' : 's') + ' · ' : ''}saved ${ago(x.updatedAt || x.createdAt)}</span><span class="da">Continue</span></button>`).join('')}</div><p class="faint" style="font-size:12.5px;margin:6px 0 0">All drafts are also under Manage investigations → Draft.</p></div>` : ''; })()}
-      ${B.prepared ? '' : (INLINE && OPEN_GAPS.length && !B.id) ? gapPicker() : `<div class="field sugg-field"><span class="flabel faint" style="font-weight:400">Try one of these</span><div class="chips sugg">${GAPS.map((g, i) => `<button type="button" class="chipbtn" data-act="usegap" data-v="${i}">${esc(g.gap)}</button>`).join('')}</div></div>`}`}
+      ${B.prepared ? '' : (INLINE && OPEN_GAPS.length && !B.id) ? gapPicker() : `<div class="field sugg-field"><span class="flabel faint" style="font-weight:400">Or start from an example</span><ul class="sugg-list">${GAPS.map((g, i) => `<li><button type="button" class="link" data-act="usegap" data-v="${i}">${esc(g.gap)}</button></li>`).join('')}</ul></div>`}`}
       ${showDetails ? `
-      ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Survey generated.</b> Verisavo used your description${B.wizAns ? ' and answers' : ''} to fill in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
+      ${B.prepared && !fromChat ? `<div class="note prepnote">${ic.spark}<span><b>Task generated.</b> Verisavo used your description${B.wizAns ? ' and answers' : ''} to fill in the place, the instructions and ${B.questions.length} evidence questions for the next step. Review and change anything.</span></div>` : ''}
       <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
       <div class="field"><label for="b-industry">Industry</label><select class="in" id="b-industry" data-b="industry"><option value="">Select your industry</option>${INDUSTRIES.map(x => `<option ${B.industry === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
       <div class="field"><label for="b-country">Target country</label><select class="in" id="b-country" data-b="country" data-rerender="1"><option value="">Select your target country</option>${Object.keys(COUNTRIES).map(x => `<option ${cs[0] === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
       <div class="field"><span class="flabel">Target regions or cities</span>${cs.length ? `<div class="chips">${(COUNTRIES[cs[0]] || []).map(x => `<button type="button" class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div>` : '<span class="faint" style="font-size:13px">Choose a country to see its regions.</span>'}</div>
       <div class="field"><label for="b-location">Main collection point</label><input class="in" id="b-location" data-b="location" placeholder="For example, Tamale Central Market" value="${esc(B.location)}"></div>
       <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea></div>
-      <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<div class="manual-alt"><span class="muted">Prefer to build the survey yourself?</span><button type="button" class="btn ghost sm" data-act="manual">Build it manually</button></div>`}
+      <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<div class="manual-alt"><span class="muted">Prefer to set up the task yourself?</span><button type="button" class="btn ghost sm" data-act="manual">Build it manually</button></div>`}
     </div>
     ${showDetails ? `<div class="card" style="align-self:start"><div class="head"><h2 style="font-size:16px">Coverage summary</h2></div>
       <div class="kv"><span>Target country</span><b>${esc(cs[0] || '—')}</b></div><div class="kv"><span>Selected regions</span><b class="num">${B.regions.length}</b></div>
@@ -1184,8 +1190,8 @@ function cBuilder(r) {
   const can = [B.title.trim() && bCountries().length && B.regions.length, B.questions.length && B.questions.every(q => q.text.trim()), B.responses >= 10, !!(B.pay.method && B.pay.ok && /.+@.+\..+/.test(B.pay.email || '')), true][B.step];
   const foot = `<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px">
     ${B.step ? `<button class="btn ghost" data-act="bstep" data-v="${B.step - 1}">Back</button>` : `<button class="btn ghost" data-go="c-surveys">Cancel</button>`}
-    ${B.step < 4 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
-    ${!can && B.step === 0 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">' + ((B.prepared || B.manual || B.title || bCountries().length) ? 'Add an investigation name, a country and at least one region to continue.' : 'Describe what you want to investigate and continue, or build the survey manually.') + '</p>' : ''}
+    ${B.step === 0 && !B.prepared && !B.manual && !B.title ? '' : B.step < 4 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
+    ${!can && B.step === 0 && (B.prepared || B.manual || B.title) ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add an investigation name, a country and at least one region to continue.</p>' : ''}
     ${!can && B.step === 1 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add at least one question, and give every question a statement.</p>' : ''}
     ${!can && B.step === 3 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a payment method, add a billing email and authorise the maximum cost to continue.</p>' : ''}`;
   return shell(r, B.id ? 'Edit investigation' : 'Investigate market', `<div class="card stack" style="gap:20px">${stepper}${inner}${foot}</div>`);
@@ -1232,9 +1238,9 @@ function joinView() {
   let inner;
   if (J.step === -1) {
     inner = `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><img class="logo-light" src="${LOGO}" alt="Verisavo" style="height:28px"><img class="logo-dark" src="${LOGOW}" alt="Verisavo" style="height:28px">
-      <h2 style="font-size:28px">Welcome to the Verisavo Scout Network</h2><p class="muted" style="margin:0">You have been invited to contribute verified market evidence in your area. Once you register, all your jobs come to you on WhatsApp.</p>
+      <h2 style="font-size:28px">${QS.get('invite') ? 'Welcome to the Verisavo Scout Network' : 'Welcome to SavoScouts'}</h2><p class="muted" style="margin:0">${QS.get('invite') ? 'You have been invited to contribute verified market evidence in your area.' : 'Share what you see in your local market and earn VeriPoints for every response that passes our checks.'} Once you register, all your jobs come to you on WhatsApp.</p>
       <div class="perks" style="width:100%"><div>${ic.gift}Earn rewards for verified work</div><div>${ic.pin}Contribute local knowledge</div><div>${ic.store}Support businesses in your market</div><div>${ic.medal}Build your contributor reputation</div></div>
-      <button class="btn" style="width:100%" data-act="jstep" data-v="0">Accept invitation</button>
+      <button class="btn" style="width:100%" data-act="jstep" data-v="0">${QS.get('invite') ? 'Accept invitation' : 'Join with WhatsApp'}</button>
       ${SIDE ? (EXIT ? `<button class="link" data-act="exit">${EXIT}</button>` : '') : '<button class="link" data-go="c-overview">Back to the client view</button>'}${EXIT && !SIDE ? `<button class="link" data-act="exit">${EXIT}</button>` : ''}</div>`;
   } else if (J.step < JSTEPS) {
     const qs = [
@@ -1530,8 +1536,10 @@ document.addEventListener('click', async (e) => {
   /* builder */
   else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
   else if (a === 'prepare') { const t = $('#b-ai'), d = (t ? t.value : B.ai || '').trim(); if (!d) { toast('Describe what you want to investigate first.'); return; } openWizard(ctxFromText(d), 'direct'); render(); window.scrollTo(0, 0); const f = $('#w-dec'); if (f) f.focus({preventScroll: true}); }
+  else if (a === 'contact-us') { let u = './index.html#contact'; try { if (!/\.html$/.test(window.top.location.pathname)) u = '/contact'; } catch (e) {} try { window.top.location.href = u; } catch (e) { window.open(u, '_blank'); } }
+  else if (a === 'demo-example') { go('c-builder'); setTimeout(() => { const b = $('[data-act="wizdemo"]'); if (b) b.click(); }, 60); }
   else if (a === 'wizdemo') { openWizard(ctxFromText('Is our 5kg rice losing shoppers to imported brands in Accra markets, and is price the reason?'), 'direct'); Object.assign(B.wiz, {demo: true, decision: 'price', product: '5kg rice', country: 'Ghana', city: 'Accra', kinds: ['Price check', 'Shopper feedback', 'Availability and shelf'], auto: false, places: ['Small shops', 'Open-market stalls', 'Supermarkets'], known: 'The main rival is an imported 5kg bag sold widely at Makola.'}); render(); window.scrollTo(0, 0); }
-  else if (a === 'wizgo') { wizGenerate(); render(); window.scrollTo(0, 0); toast('Survey generated. Review the place and instructions, then continue to the questions.'); }
+  else if (a === 'wizgo') { wizGenerate(); render(); window.scrollTo(0, 0); toast('Task generated. Review the place and instructions, then continue to the questions.'); }
   else if (a === 'wizback') { const w = B.wiz; B.wiz = null; if (w && w.mode === 'direct') B.ai = w.ctx.gap; else if (w && !(INLINE && OPEN_GAPS.length)) B.ai = (w.ctx.gaps || [w.ctx.gap]).join(' '); render(); window.scrollTo(0, 0); }
   else if (a === 'manual') { B.manual = true; B.wiz = null; render(); const t = $('#b-title'); if (t) t.focus(); }
   else if (a === 'askDel') { S.ui.confirmDel = id; render(); }
@@ -1651,7 +1659,7 @@ function seed() {
   const sub = (sid, qs, i, scout, status, price, region) => {
     const a = {};
     qs.forEach(q => { if (q.type === 'number') a[q.id] = price; else if (q.type === 'single') a[q.id] = q.options[i % 5 === 4 ? 1 : 0]; else if (q.type === 'scale') a[q.id] = 3 + (i % 3 === 0 ? 1 : 0); else if (q.type === 'photo') a[q.id] = 'shelf-' + (i + 1) + '.jpg'; else a[q.id] = ['Kejetia stall ' + (i + 1), 'Adum shop ' + (i + 1), 'Bantama kiosk ' + (i + 1)][i % 3]; });
-    S.submissions['sbx' + sid + i] = {surveyId: sid, surveyTitle: S.surveys[sid].title, scoutId: 'sc-' + scout, scoutName: names[scout], region, country: S.surveys[sid].country, answers: a, media: [{name: 'shelf-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 10, status, reason: status === 'rejected' ? 'Location mismatch' : undefined, createdAt: now - (i * 7 + 2) * H, channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
+    S.submissions['sbx' + sid + i] = {surveyId: sid, surveyTitle: S.surveys[sid].title, scoutId: 'sc-' + scout, scoutName: names[scout], region, country: S.surveys[sid].country, answers: a, media: [{name: 'shelf-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 10, status, reason: status === 'rejected' ? 'Location mismatch' : undefined, createdAt: dayT(now - (i * 7 + 2) * H), channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
   };
   const q1 = mk('svx1', GAPS[0], {status: 'active', target: 40, timeframe: '7d', createdAt: now - 3 * 86400000, publishedAt: now - 3 * 86400000, deadline: now + 4 * 86400000});
   [41, 43, 40, 44, 42, 58, 41, 43, 45, 42, 44, 41, 43, 46].forEach((p, i) => sub('svx1', q1, i, i % 6, i === 5 ? 'rejected' : i > 10 ? 'pending' : 'approved', p, 'Kumasi'));
@@ -1676,6 +1684,8 @@ function dedupe() {
 
 /* ---------- Use case: an investigation that started from Signals, with an AI briefing and follow-up questions ----------
    Illustrative data, marked Sample. Kept in this page only: it is never written to the shared database. */
+/* sample responses arrive in shop hours (8:00 to 18:00), never in the future */
+function dayT(ms) { const d = new Date(ms), h = d.getHours(); if (h < 8 || h > 18) d.setHours(8 + (h % 10)); let t = +d; while (t > Date.now()) t -= 86400000; return t; }
 function caseData() {
   const H = 3600000, D = 24 * H, now = Date.now(), id = 'case-kano';
   const Q = (qid, type, text, options, unit) => ({id: qid, type, text, ...(options ? {options} : {}), ...(unit ? {unit} : {})});
@@ -1716,7 +1726,7 @@ function caseData() {
     subs[sid(i)] = {surveyId: id, surveyTitle: 'Detergent sales slowdown in Kano', scoutId: 'case-sc' + (i % 6), scoutName: names[i % 6], region: 'Kano', country: 'Nigeria',
       answers: {cq1: area, cq2: outlet, cq3: sup, cq4: stock, cq5: ours, cq6: rivOn, cq7: riv, cq8: days, cq9: last, cq10: 'shelf-kano-' + (i + 1) + '.jpg', cq11: words},
       media: [{name: 'shelf-kano-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 12, status, reason: status === 'rejected' ? 'Location outside the 100 m radius' : undefined,
-      createdAt: now - (60 - i * 2) * H, reviewedAt: status === 'pending' ? undefined : now - (58 - i * 2) * H, channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
+      createdAt: dayT(now - (60 - i * 2) * H), reviewedAt: status === 'pending' ? undefined : dayT(now - (58 - i * 2) * H), channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
   });
   const ok = rows.map((r, i) => [r, sid(i)]).filter(([r]) => r[10] === 'approved'), ids = (f) => ok.filter(([r]) => f(r)).map(x => x[1]);
   const low = (r) => r[3] !== W, van = (r) => r[2] === V, avg = (a) => Math.round(a.reduce((x, y) => x + y, 0) / a.length / 10) * 10;
@@ -1788,7 +1798,7 @@ function caseRice() {
     subs[sid(i)] = {surveyId: id, surveyTitle: T, scoutId: 'case-rs' + (i % 5), scoutName: names[i % 5], region: 'Accra', country: 'Ghana',
       answers: {rq1: area, rq2: outlet, rq3: stock, rq4: ours, rq5: imp, rq6: buy, rq7: why, rq8: 'rice-shelf-' + (i + 1) + '.jpg', rq9: words, rq10: react},
       media: [{name: 'rice-shelf-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 10, status, reason: status === 'rejected' ? (i === 14 ? 'Duplicate of an earlier response from the same shop' : 'Photo did not show the rice shelf') : undefined,
-      createdAt: now - (12 * D) + i * 5 * H, reviewedAt: now - (12 * D) + (i * 5 + 3) * H, channel: 'whatsapp', checks: {gps: true, duplicate: i === 14, consistency: true}, sample: true};
+      createdAt: dayT(now - (12 * D) + i * 5 * H), reviewedAt: dayT(now - (12 * D) + (i * 5 + 3) * H), channel: 'whatsapp', checks: {gps: true, duplicate: i === 14, consistency: true}, sample: true};
   });
   const ok = rows.map((r, i) => [r, sid(i)]).filter(([r]) => r[9] === 'approved'), ids = (f) => ok.filter(([r]) => f(r)).map(x => x[1]), cnt = (f) => ids(f).length, n = ok.length;
   const avg = (a) => Math.round(a.reduce((x, y) => x + y, 0) / a.length), ourP = avg(ok.map(([r]) => r[3])), impP = avg(ok.map(([r]) => r[4])), gap = Math.round((impP - ourP) / impP * 100);
@@ -1969,6 +1979,9 @@ td { border-top-color: var(--line); }
 .askbox .askgo svg { width: 15px; height: 15px; }
 .askhint { margin: -2px 0 22px; font-size: 13px; }
 .field.sugg-field { margin-top: 10px; margin-bottom: 10px; }
+.sugg-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-width: 680px; }
+.sugg-list .link { font: inherit; font-size: 13.5px; line-height: 1.45; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; }
+@media (max-width: 560px) { .askbox { flex-wrap: wrap; } .askbox textarea { flex: 1 1 100%; } .askbox .askgo { flex: 1 1 100%; justify-content: center; } .askbox .askgo span { display: inline !important; } }
 .field.sugg-field > .flabel { margin-bottom: 4px; }
 .chips.sugg { gap: 10px; }
 .happ.inline .stack > .askbox { margin-top: 12px; margin-bottom: 10px; }
