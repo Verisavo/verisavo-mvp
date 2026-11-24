@@ -281,6 +281,7 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 .wiz-hint{margin:-2px 0 6px;font-size:12.5px}.gapscroll.wiz-list{max-height:none;overflow:visible}
 .manual-alt{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border:1px dashed var(--line);border-radius:12px;font-size:13.5px}
 @media (max-width:560px){.wiz-two{grid-template-columns:1fr}}
+.sigs .faint{font-size:12px;white-space:nowrap}
 .fu{display:grid;gap:12px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
 .fu-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
 .fu-item{display:grid;gap:8px}
@@ -447,15 +448,15 @@ function saveLocal() { try { localStorage.setItem('vs-mvp', JSON.stringify({surv
 function loadLocal() { try { const o = JSON.parse(localStorage.getItem('vs-mvp') || '{}'); COLLS.forEach(c => S[c] = o[c] || {}); } catch (e) {} }
 async function put(coll, id, data) {
   S[coll] = {...S[coll], [id]: data}; scheduleRender(true);
-  if (DB) { try { await DB.collection(coll).doc(id).set(data); } catch (e) { onWriteError(e); } } else saveLocal();
+  if (DB && !/^case-/.test(id)) { try { await DB.collection(coll).doc(id).set(data); } catch (e) { onWriteError(e); } } else saveLocal();
 }
 async function remove(coll, id) {
   const next = {...S[coll]}; delete next[id]; S[coll] = next; scheduleRender(true);
-  if (DB) { try { await DB.collection(coll).doc(id).delete(); } catch (e) { onWriteError(e); } } else saveLocal();
+  if (DB && !/^case-/.test(id)) { try { await DB.collection(coll).doc(id).delete(); } catch (e) { onWriteError(e); } } else saveLocal();
 }
 async function patch(coll, id, data) {
   S[coll] = {...S[coll], [id]: {...S[coll][id], ...data}}; scheduleRender(true);
-  if (DB) { try { await DB.collection(coll).doc(id).update(data); } catch (e) { onWriteError(e); } } else saveLocal();
+  if (DB && !/^case-/.test(id)) { try { await DB.collection(coll).doc(id).update(data); } catch (e) { onWriteError(e); } } else saveLocal();
 }
 function onWriteError(e) {
   if (e && e.code === 'invalid_argument') { S.canWrite = false; toast('You can view this workspace but not change it.'); }
@@ -861,6 +862,7 @@ function briefView(s, list) {
   return `<div class="grid g-main"><div class="card brief">
     <div class="head" style="margin-bottom:0"><div><h2>Investigation briefing</h2><span class="faint" style="font-size:12px">Generated ${dtt(b.at)} from ${b.n} response${b.n === 1 ? '' : 's'}${b.by === 'rules' ? ' · summary built from the responses' : ''}</span></div><button class="btn ${stale ? '' : 'ghost'} sm" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}${stale ? 'Update with new evidence' : 'Regenerate'}</button></div>
     ${stale ? `<div class="note blue">${ic.info}<span>${list.length - b.n > 0 ? list.length - b.n + ' new response' + (list.length - b.n === 1 ? '' : 's') : 'Responses have changed'} since this briefing. Update it to include them.</span></div>` : ''}
+    ${(s.signals || []).length ? `<div><h3>Signals that started this investigation</h3><ul class="sigs">${s.signals.map(x => `<li>${esc(x.text)} <span class="faint">${esc(x.source)}</span></li>`).join('')}</ul></div>` : ''}
     <div><h3>Objective</h3><p style="margin:0;font-size:13.5px">${esc(s.request || s.title)}</p></div>
     <p style="margin:0;font-size:13.5px">${esc(b.summary)}</p>
     ${sec('Key findings', b.findings, 'No finding is supported strongly enough yet.')}
@@ -1666,11 +1668,95 @@ function dedupe() {
   if (changed) saveLocal();
 }
 
+/* ---------- Use case: an investigation that started from Signals, with an AI briefing and follow-up questions ----------
+   Illustrative data, marked Sample. Kept in this page only: it is never written to the shared database. */
+function caseData() {
+  const H = 3600000, D = 24 * H, now = Date.now(), id = 'case-kano';
+  const Q = (qid, type, text, options, unit) => ({id: qid, type, text, ...(options ? {options} : {}), ...(unit ? {unit} : {})});
+  const qs = [Q('cq1', 'single', 'Which area are you in?', ['Sabon Gari', 'Kurmi Market', 'Tarauni', 'Fagge']), Q('cq2', 'single', 'What type of outlet are you at?', ['Kiosk', 'Small shop', 'Open-market stall', 'Supermarket', 'Wholesaler']),
+    Q('cq3', 'single', 'Who supplies this outlet with our detergent?', ['Distributor van', 'Wholesaler in the market', 'Other or not sure']), Q('cq4', 'single', 'Is our 500g detergent on the shelf right now?', ['Yes, well stocked', 'Yes, only a few units', 'No, sold out', 'Not stocked here']),
+    Q('cq5', 'number', 'Shelf price of our 500g pack', null, '₦'), Q('cq6', 'single', 'Is the rival 500g pack on the shelf?', ['Yes', 'No']), Q('cq7', 'number', 'Shelf price of the rival 500g pack', null, '₦'),
+    Q('cq8', 'number', 'Days since the last delivery of our pack', null, 'days'), Q('cq9', 'single', 'Which brand did the last shopper buy?', ['Ours', 'Rival 500g pack', 'Another brand']),
+    Q('cq10', 'photo', 'Photograph the detergent shelf'), Q('cq11', 'paragraph', 'In the seller’s words: why are shoppers choosing what they choose?')];
+  const W = 'Yes, well stocked', F = 'Yes, only a few units', X = 'No, sold out', V = 'Distributor van', WH = 'Wholesaler in the market';
+  /* area, outlet, supplier, our stock, our price, rival on shelf, rival price, days since delivery, last purchase, seller's words, status */
+  const rows = [
+    ['Sabon Gari', 'Kiosk', V, X, 1250, 'Yes', 1050, 9, 'Rival 500g pack', 'The van has not come for over a week. People take the cheaper one instead.'],
+    ['Sabon Gari', 'Small shop', V, F, 1300, 'Yes', 1050, 11, 'Rival 500g pack', 'I have only a few left, and customers now ask for the new pack by name.'],
+    ['Sabon Gari', 'Kiosk', V, X, 1250, 'Yes', 1000, 12, 'Rival 500g pack', 'Sold out since last week. The new one is two hundred naira less.'],
+    ['Sabon Gari', 'Open-market stall', V, F, 1200, 'Yes', 1050, 8, 'Ours', 'Some customers still prefer yours for washing whites.'],
+    ['Sabon Gari', 'Small shop', V, W, 1250, 'No', '', 10, 'Ours', 'I do not stock the new brand yet. Yours sells as before here.'],
+    ['Sabon Gari', 'Small shop', WH, W, 1300, 'Yes', 1100, 3, 'Rival 500g pack', 'I buy from the market, so I have stock. But the cheaper pack moves faster.'],
+    ['Sabon Gari', 'Kiosk', WH, W, 1250, 'Yes', 1050, 2, 'Ours', 'Regular customers stay with yours. New customers try the cheaper one.'],
+    ['Kurmi Market', 'Open-market stall', V, F, 1250, 'Yes', 1050, 10, 'Rival 500g pack', 'Deliveries are slow this month. I keep the rival because it arrives on time.'],
+    ['Kurmi Market', 'Open-market stall', V, X, 1200, 'Yes', 1000, 11, 'Another brand', 'Nothing came. The customer took a local brand.'],
+    ['Kurmi Market', 'Kiosk', V, W, 1300, 'No', '', 9, 'Ours', 'Stock is fine for now.'],
+    ['Kurmi Market', 'Wholesaler', WH, W, 1250, 'Yes', 1050, 4, 'Rival 500g pack', 'Shops are buying more of the rival from me since it came in.'],
+    ['Kurmi Market', 'Small shop', WH, F, 1250, 'Yes', 1100, 3, 'Rival 500g pack', 'Price is the reason. People count every naira now.'],
+    ['Kurmi Market', 'Open-market stall', WH, W, 1300, 'Yes', 1050, 3, 'Ours', 'Some buyers trust yours more for quality.'],
+    ['Kurmi Market', 'Small shop', WH, W, 1250, 'Yes', 1050, 4, 'Rival 500g pack', 'The new pack looks the same size but costs less.'],
+    ['Tarauni', 'Small shop', V, W, 1250, 'Yes', 1050, 12, 'Ours', 'I ordered extra last time, so I still have stock.'],
+    ['Tarauni', 'Kiosk', V, F, 1200, 'Yes', 1000, 9, 'Another brand', 'Running low. The customer wanted a smaller sachet.'],
+    ['Tarauni', 'Small shop', V, W, 1250, 'Yes', 1050, 9, 'Rival 500g pack', 'The cheaper one is selling well here too.'],
+    ['Tarauni', 'Supermarket', WH, W, 1250, 'No', '', 2, 'Ours', 'Steady sales. We have not been offered the rival pack.'],
+    ['Tarauni', 'Small shop', WH, W, 1250, 'No', '', 3, 'Ours', 'Selling as normal.'],
+  ].map(r => [...r, 'approved'])
+    .concat([['Sabon Gari', 'Kiosk', V, X, 1250, 'Yes', 1050, 10, 'Rival 500g pack', 'Still waiting for the van.', 'pending'], ['Kurmi Market', 'Small shop', WH, W, 1300, 'Yes', 1100, 3, 'Ours', 'Normal week.', 'pending'], ['Sabon Gari', 'Small shop', V, F, 1250, 'Yes', 1050, 11, 'Rival 500g pack', 'Few left.', 'pending'],
+      ['Tarauni', 'Kiosk', V, W, 1250, 'Yes', 1050, 4, 'Ours', 'Fine.', 'rejected'], ['Tarauni', 'Small shop', WH, W, 1300, 'No', '', 2, 'Ours', 'Fine.', 'rejected']]);
+  const names = ['Musa Abdullahi', 'Hauwa Sani', 'Ibrahim Yusuf', 'Zainab Bello', 'Aminu Garba', 'Fatima Lawal'];
+  const subs = {}, sid = (i) => 'case-kn' + String(i + 1).padStart(4, '0');
+  rows.forEach((r, i) => {
+    const [area, outlet, sup, stock, ours, rivOn, riv, days, last, words, status] = r;
+    subs[sid(i)] = {surveyId: id, surveyTitle: 'Detergent sales slowdown in Kano', scoutId: 'case-sc' + (i % 6), scoutName: names[i % 6], region: 'Kano', country: 'Nigeria',
+      answers: {cq1: area, cq2: outlet, cq3: sup, cq4: stock, cq5: ours, cq6: rivOn, cq7: riv, cq8: days, cq9: last, cq10: 'shelf-kano-' + (i + 1) + '.jpg', cq11: words},
+      media: [{name: 'shelf-kano-' + (i + 1) + '.jpg', kind: 'photo'}], reward: 12, status, reason: status === 'rejected' ? 'Location outside the 100 m radius' : undefined,
+      createdAt: now - (60 - i * 2) * H, reviewedAt: status === 'pending' ? undefined : now - (58 - i * 2) * H, channel: 'whatsapp', checks: {gps: status !== 'rejected', duplicate: false, consistency: true}, sample: true};
+  });
+  const ok = rows.map((r, i) => [r, sid(i)]).filter(([r]) => r[10] === 'approved'), ids = (f) => ok.filter(([r]) => f(r)).map(x => x[1]);
+  const low = (r) => r[3] !== W, van = (r) => r[2] === V, avg = (a) => Math.round(a.reduce((x, y) => x + y, 0) / a.length / 10) * 10;
+  const ourP = avg(ok.map(([r]) => r[4])), rivP = avg(ok.filter(([r]) => r[6]).map(([r]) => r[6])), gap = Math.round((ourP - rivP) / ourP * 100);
+  const n = ok.length, rivOnN = ids(r => r[5] === 'Yes').length, vanN = ids(van).length, whN = n - vanN;
+  const vanDays = avg(ok.filter(([r]) => van(r)).map(([r]) => r[7] * 10)) / 10, whDays = avg(ok.filter(([r]) => !van(r)).map(([r]) => r[7] * 10)) / 10;
+  const lowN = ids(low).length, lowVan = ids(r => low(r) && van(r)).length, rivBuy = ids(r => r[8] === 'Rival 500g pack').length, whRiv = ids(r => !van(r) && r[8] === 'Rival 500g pack').length;
+  const money = (v) => '₦' + v.toLocaleString('en-GB');
+  const briefing = {
+    summary: `Based on ${n} verified SavoScout responses from Sabon Gari, Kurmi Market and Tarauni in Kano. The evidence points to two causes working together: a cheaper rival pack, and slow distributor van deliveries that leave shelves short.`,
+    findings: [
+      {text: `A rival 500g pack sells for about ${money(rivP)}, against about ${money(ourP)} for ours: roughly ${gap}% cheaper. It was on the shelf in ${rivOnN} of ${n} verified outlets.`, confidence: 'High', refs: ids(r => r[5] === 'Yes')},
+      {text: `Outlets supplied by distributor vans had waited ${vanDays} days on average since their last delivery, against ${whDays} days for outlets that buy from market wholesalers.`, confidence: 'High', refs: ids(van)},
+      {text: `Our pack was sold out or running low in ${lowN} of ${n} outlets; ${lowVan} of them are supplied by van.`, confidence: 'Medium', refs: ids(low)},
+      {text: `The last shopper bought the rival pack in ${rivBuy} of ${n} outlets. Sellers most often gave price as the reason.`, confidence: 'Medium', refs: ids(r => r[8] === 'Rival 500g pack')}],
+    agreements: [{text: 'Sellers in all three areas describe the rival as the cheaper pack of the same size, and none reported a quality problem with ours.', refs: ids(r => /cheaper|less|price|naira/i.test(r[9]))}],
+    contradictions: [{text: 'Two Tarauni outlets report our pack selling as normal, unlike most others. Both buy from wholesalers and neither stocks the rival, so they fit the pattern rather than contradict it.', refs: ids(r => r[0] === 'Tarauni' && !van(r))},
+      {text: '2 responses were not verified because they were submitted outside the 100 m radius, and are excluded.', refs: rows.map((r, i) => r[10] === 'rejected' ? sid(i) : '').filter(Boolean)}],
+    implications: [{text: 'A price cut alone may not recover sales where van deliveries are slow: shoppers cannot buy a pack that is not on the shelf. (Inference)'}, {text: 'The wholesaler route already keeps shelves stocked, which suggests it could carry more volume while van deliveries are fixed. (Inference)'}],
+    unknowns: [{text: 'Whether shoppers who switched would come back at a smaller price gap. No response measured price sensitivity directly.'}, {text: 'Why van deliveries slowed. The responses show the delay, not its cause.'}, {text: `Coverage is ${rows.length} of 30 planned responses, with none yet from Fagge.`}],
+    next: [{text: 'Ask the distributor about van routes and delivery frequency in Kano before changing price.'}, {text: 'Run a short shopper investigation to test whether a smaller price gap would win buyers back.'}],
+    n: rows.length, at: now - 20 * H, by: 'assistant'};
+  const followups = [
+    {q: 'Is the stock problem or the price the bigger issue?', a: {text: `The evidence suggests both, in different places. In van-supplied outlets, ${ids(r => van(r) && low(r)).length} of ${vanN} were sold out or low, so many shoppers had no choice. In wholesaler-supplied outlets our pack was in stock, yet the rival still won ${whRiv} of ${whN} last sales, which points to price. This split is inferred from ${n} responses, not measured.`, refs: ids(r => van(r) && low(r)).slice(0, 2).concat(ids(r => !van(r) && r[8] === 'Rival 500g pack').slice(0, 2))}, at: now - 18 * H},
+    {q: 'Which area should we fix first?', a: {text: `Sabon Gari. ${ids(r => r[0] === 'Sabon Gari' && van(r)).length} of its ${ids(r => r[0] === 'Sabon Gari').length} verified outlets are supplied by van, and ${ids(r => r[0] === 'Sabon Gari' && low(r)).length} were sold out or low, the highest share of the three areas. Kurmi Market outlets mostly buy from wholesalers and were better stocked.`, refs: ids(r => r[0] === 'Sabon Gari' && low(r))}, at: now - 17 * H},
+    {q: 'What would happen if we cut our price to ₦1,100?', a: {text: 'The responses cannot answer that. They show what shoppers bought at today’s prices, not how they would react to a new one. It is an Intelligence Gap: SavoScouts could ask shoppers at the shelf how a smaller price gap would change their choice.', refs: [], gap: true, ask: 'How would shoppers in Kano respond if our 500g detergent cost ₦1,100, closer to the rival pack?'}, at: now - 16 * H},
+    {q: 'How reliable is this?', a: {text: `${n} of ${rows.length} responses are verified, against 30 planned; 3 are awaiting review and 2 were excluded. Confidence is high for the price gap and the delivery delay, which agree across all three areas. It is lower for shopper choice, which rests on one observed sale per outlet.`, refs: ok.slice(0, 4).map(x => x[1])}, at: now - 15 * H}];
+  const survey = {title: 'Detergent sales slowdown in Kano', industry: 'Consumer goods', country: 'Nigeria', regions: ['Kano'], location: 'Kiosks, small shops, market stalls and wholesalers in Sabon Gari, Kurmi Market and Tarauni',
+    brief: 'Purpose: this evidence will help decide how to respond to falling sales. Visit each outlet. Record whether our 500g detergent is on the shelf, its price and the rival pack’s price, who supplies the outlet and when stock last arrived. Ask the seller, with consent, why shoppers choose what they choose, and photograph the shelf.',
+    request: 'Why are sales of our 500g detergent slowing in Kano, and is it stock, price or a competitor?', gap: 'Why are sales of our 500g detergent slowing in Kano?',
+    signals: [{text: 'Distributor sell-through of our 500g detergent in Kano fell 18% over six weeks.', source: 'Company data · distributor report'},
+      {text: 'Two Sabon Gari retailers told a SavoScout on an unrelated task that a cheaper rival 500g pack had arrived.', source: 'Ground-Level Intelligence'},
+      {text: 'No change in import duty or tax on detergents this quarter, which rules out a cost-led price rise.', source: 'Public records'}],
+    questions: qs, rewardPts: 12, gpsRadius: 100, sample: true, status: 'active', target: 30, timeframe: '7d', createdAt: now - 3 * D, publishedAt: now - 3 * D, deadline: now + 2 * D,
+    billing: {method: 'invoice', company: 'Sample Foods Ltd', email: 'finance@example.com', rate: 1.15, authorised: 30 * 1.15}, briefing, followups};
+  return {surveys: {[id]: survey}, submissions: subs};
+}
+const CASE = (() => { try { return caseData(); } catch (e) { return {surveys: {}, submissions: {}}; } })();
+function addCase() { ['surveys', 'submissions'].forEach(c => Object.keys(CASE[c]).forEach(k => { if (!S[c][k]) S[c] = {...S[c], [k]: CASE[c][k]}; })); }
+
 /* ---------------- boot ---------------- */
 async function boot() {
   loadLocal();
   const use = window.claude && window.claude.use ? window.claude.use.bind(window.claude) : null;
   if (!use) { seed(); dedupe(); }
+  addCase();
   if (QS.get('gap') && SIDE !== 'scout') { newBuilder(); B.gap = QS.get('gap'); B.ai = QS.get('gap'); }
   if (QS.get('gapctx') && SIDE !== 'scout') { let g = null; try { g = JSON.parse(QS.get('gapctx')); } catch (e) {} if (g && g.gap) openWizard(g, 'gaps'); }
   render();
@@ -1683,7 +1769,7 @@ async function boot() {
   DB = db; COLLS.forEach(c => S[c] = {});
   let got = 0;
   COLLS.forEach(c => db.collection(c).onSnapshot(snap => {
-    const o = {}; snap.docs.forEach(d => { if (d.exists) o[d.id] = d.data(); }); S[c] = o;
+    const o = {}; snap.docs.forEach(d => { if (d.exists) o[d.id] = d.data(); }); const keep = Object.fromEntries(Object.entries(S[c] || {}).filter(([k]) => /^case-/.test(k))); S[c] = {...(CASE[c] || {}), ...keep, ...o};
     if (!snap.metadata.fromCache && !S['_l' + c]) { S['_l' + c] = 1; got++; if (got === COLLS.length) { clearTimeout(timer); S.loaded = true; S.slow = false; return render(); } }
     scheduleRender();
   }, err => { clearTimeout(timer); if (!S.loaded) { S.loaded = true; render(); } }));
