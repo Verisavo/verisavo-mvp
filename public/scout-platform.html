@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8>
+<script>try{var vsI=new URLSearchParams(location.search).get("inline")==="1",vsD=localStorage.getItem("verisavo-theme")==="dark";document.documentElement.setAttribute("data-theme",!vsI&&vsD?"dark":"light")}catch(e){document.documentElement.setAttribute("data-theme","light")}</script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Verisavo Scout Platform</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,17 +20,17 @@
   --wa-bg:#EFEAE2; --wa-in:#FFFFFF; --wa-out:#D9FDD3; --wa-head:#1F273F; --wa-bar:#F0F2F5; --wa-link:#0B7AC5;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --primary:#8FB0E8; --primary-2:#7FA2E2; --primary-3:#618DD0; --primary-100:#1E2B47; --primary-200:#2A3A5E;
-  --ink:#E8EEF4; --ink-2:#A9B4C0; --ink-3:#7A8592;
-  --bg:#12171F; --paper:#0D1218; --card:#161D27; --line:#26303C; --field:#1C2531;
-  --ok:#4FD1A5; --ok-bg:#12352B; --warn:#F2B35A; --warn-bg:#3A2A12; --err:#FF8097; --err-bg:#3E1520; --info:#7FC3FF; --info-bg:#132C44;
-  --overlay:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); --wa-bg:#0B141A; --wa-in:#202C33; --wa-out:#005C4B; --wa-head:#1F273F; --wa-bar:#1F2C34; --wa-link:#53BDEB; color-scheme:dark}}
+  --primary:#C9D8F2; --primary-2:#C9D8F2; --primary-3:#80AADC; --primary-100:#243150; --primary-200:#2E3D60;
+  --ink:#E8ECF4; --ink-2:#AEB7C8; --ink-3:#8590A6; --ink-4:#6B768C;
+  --bg:#1A2234; --paper:#141B2A; --card:#1B2437; --line:#2A3550; --field:#222C42;
+  --ok:#5FD3A8; --ok-bg:#14352E; --warn:#F2B35A; --warn-bg:#3A2C16; --err:#FF8FA3; --err-bg:#3E1A26; --info:#9DBDF0; --info-bg:#22304D;
+  --overlay:rgba(6,10,20,.6); --shadow:0 1px 2px rgba(0,0,0,.25),0 12px 32px -16px rgba(0,0,0,.5); --wa-bg:#0B141A; --wa-in:#202C33; --wa-out:#005C4B; --wa-head:#1F273F; --wa-bar:#1F2C34; --wa-link:#53BDEB; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --primary:#8FB0E8; --primary-2:#7FA2E2; --primary-3:#618DD0; --primary-100:#1E2B47; --primary-200:#2A3A5E;
-  --ink:#E8EEF4; --ink-2:#A9B4C0; --ink-3:#7A8592;
-  --bg:#12171F; --paper:#0D1218; --card:#161D27; --line:#26303C; --field:#1C2531;
-  --ok:#4FD1A5; --ok-bg:#12352B; --warn:#F2B35A; --warn-bg:#3A2A12; --err:#FF8097; --err-bg:#3E1520; --info:#7FC3FF; --info-bg:#132C44;
-  --overlay:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); --wa-bg:#0B141A; --wa-in:#202C33; --wa-out:#005C4B; --wa-head:#1F273F; --wa-bar:#1F2C34; --wa-link:#53BDEB; color-scheme:dark}
+  --primary:#C9D8F2; --primary-2:#C9D8F2; --primary-3:#80AADC; --primary-100:#243150; --primary-200:#2E3D60;
+  --ink:#E8ECF4; --ink-2:#AEB7C8; --ink-3:#8590A6; --ink-4:#6B768C;
+  --bg:#1A2234; --paper:#141B2A; --card:#1B2437; --line:#2A3550; --field:#222C42;
+  --ok:#5FD3A8; --ok-bg:#14352E; --warn:#F2B35A; --warn-bg:#3A2C16; --err:#FF8FA3; --err-bg:#3E1A26; --info:#9DBDF0; --info-bg:#22304D;
+  --overlay:rgba(6,10,20,.6); --shadow:0 1px 2px rgba(0,0,0,.25),0 12px 32px -16px rgba(0,0,0,.5); --wa-bg:#0B141A; --wa-in:#202C33; --wa-out:#005C4B; --wa-head:#1F273F; --wa-bar:#1F2C34; --wa-link:#53BDEB; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--paper);color:var(--ink);font:14px/1.55 var(--f);letter-spacing:.005em}
@@ -2070,6 +2071,15 @@ body { font-feature-settings: normal; }
 h1, h2, h3, h4 { font-family: "Red Hat Display", var(--f); letter-spacing: 0; }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }
+
+/* dark mode: deep indigo surfaces that match the website; light buttons carry Royal Indigo text */
+:root[data-theme="dark"] .btn:not(.ghost):not(.soft):not(.link){color:#1F273F}
+:root[data-theme="dark"] .btn.ghost{background:var(--card);border-color:var(--line);color:var(--ink)}
+:root[data-theme="dark"] .tabs .soon em{background:#243150;color:#AEB7C8}
+:root[data-theme="dark"] .fu-mark{background:#C9D8F2;color:#1F273F}
+:root[data-theme="dark"] .step.on .dot,:root[data-theme="dark"] .happ.inline .hnew{color:#1F273F}
+:root[data-theme="dark"] .btn.danger{color:#fff}
+:root[data-theme="dark"] .vsb-tr{background:#222C42}:root[data-theme="dark"] .vsb-th{background:#5B6782}
 /* <<< quiet system v1 */
 </style>
 <script>(function(){function u(){var h=document.querySelector('.htop');var v=0;if(h){var c=getComputedStyle(h).position;if(c==='sticky'||c==='fixed')v=h.offsetHeight;}document.documentElement.style.setProperty('--htop-h',v+'px');}u();addEventListener('resize',u);addEventListener('hashchange',function(){setTimeout(u,50)});setInterval(u,700);})();</script>
