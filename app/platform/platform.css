@@ -3144,3 +3144,6 @@ html[data-vs-theme="dark"] .thm .thm-sun{display:block}
 
 /* the light/dark switch icon is removed from headers; the appearance choice stays in the profile settings */
 [data-theme-toggle] { display: none !important; }
+/* footer links in two columns */
+html body footer :is(nav.foot-cols, nav.lf-cols).foot-min:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: grid !important; grid-template-columns: repeat(2, max-content) !important; grid-template-rows: repeat(5, auto) !important; grid-auto-flow: column !important; column-gap: clamp(48px, 10vw, 160px) !important; }
+@media (max-width: 560px) { html body footer :is(nav.foot-cols, nav.lf-cols).foot-min:not(#a#b#c#d#e#f#g#h#i#j#k#l) { grid-template-columns: 1fr 1fr !important; column-gap: 16px !important; } }

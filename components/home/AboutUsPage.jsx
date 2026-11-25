@@ -392,7 +392,7 @@ export default function AboutUsPage() {
             {" "}
           </div>
           {" "}
-          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><button type="button" data-page="research" data-tab="research">{"Insights"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="admin">{"Admin"}</button><button type="button" data-page="community">{"Community"}</button><button type="button" data-page="community-tasks">{"Opportunities"}</button><button type="button" data-page="contact">{"Contact us"}</button></nav>
+          <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><button type="button" data-page="use-cases">{"Use cases"}</button><button type="button" data-page="pricing">{"Pricing"}</button><a href="/docs">{"Docs"}</a><button type="button" data-page="research" data-tab="research">{"Insights"}</button><button type="button" data-page="about-us">{"About us"}</button><button type="button" data-page="community">{"Community"}</button><button type="button" data-page="community-tasks">{"Opportunities"}</button><button type="button" data-page="careers">{"Careers"}</button><button type="button" data-page="contact">{"Contact us"}</button></nav>
           <div className="foot-bar">
             {" "}
             <span>{"© 2026 Verisavo. All rights reserved."}</span>
@@ -400,7 +400,7 @@ export default function AboutUsPage() {
             <nav aria-label="Legal">
             <button type="button" data-orig-signin="">{"Sign in"}</button>
               <button type="button" data-legal="terms">{"Terms of Service"}</button>
-              <button type="button" data-legal="privacy">{"Privacy Policy"}</button>
+              <button type="button" data-legal="privacy">{"Privacy Policy"}</button><button type="button" data-page="admin">{"Admin"}</button>
             </nav>
             {" "}
           </div>

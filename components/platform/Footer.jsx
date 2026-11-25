@@ -15,7 +15,7 @@ export default function Footer() {
         </div>
         {" "}
         {" "}
-        <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><a href="/about">{"About us"}</a><a href="/use-cases">{"Use cases"}</a><a href="/pricing">{"Pricing"}</a><a href="/insights">{"Insights"}</a><a href="/docs">{"Docs"}</a><a href="/careers">{"Careers"}</a><a href="/admin">{"Admin"}</a><a href="/community">{"Community"}</a><a href="/community/tasks">{"Opportunities"}</a><a href="/contact">{"Contact us"}</a></nav>
+        <nav className="foot-cols foot-min" aria-label="Footer"><a href="/platform">{"Product"}</a><a href="/use-cases">{"Use cases"}</a><a href="/pricing">{"Pricing"}</a><a href="/docs">{"Docs"}</a><a href="/insights">{"Insights"}</a><a href="/about">{"About us"}</a><a href="/community">{"Community"}</a><a href="/community/tasks">{"Opportunities"}</a><a href="/careers">{"Careers"}</a><a href="/contact">{"Contact us"}</a></nav>
         <div className="foot-bar">
           {" "}
           <span>{"© "}<span id="year">{"2026"}</span>{" Verisavo. All rights reserved."}</span>
@@ -23,7 +23,7 @@ export default function Footer() {
           <nav aria-label="Legal">
             <button type="button" data-orig-signin="" data-login="">{"Sign in"}</button>
             <button type="button" data-legal="terms">{"Terms of Service"}</button>
-            <button type="button" data-legal="privacy">{"Privacy Policy"}</button>
+            <button type="button" data-legal="privacy">{"Privacy Policy"}</button><a href="/admin">{"Admin"}</a>
             <button type="button" className="foot-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>{"Back to top ↑"}</button>
           </nav>
           {" "}
