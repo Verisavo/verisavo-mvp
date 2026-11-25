@@ -1397,3 +1397,25 @@ html body #pg-portal .adm-panel button[data-admin].adm-solid { display: inline-f
 html body .pg .pg-in > .pg-back:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: -20px !important; margin-bottom: calc(0px - clamp(64px, 10vh, 110px)) !important; position: relative; z-index: 1; }
 @media (min-width: 761px) { html body .pg .pg-in > .pg-back:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: -32px !important; margin-bottom: calc(12px - clamp(64px, 10vh, 110px)) !important; } }
 html body #pg-scout.pg .pg-in > .pg-back:not(#a#b#c#d#e#f#g#h#i#j#k#l) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; height: auto !important; align-self: flex-start; }
+
+/* SavoScout dashboard cards (Connect WhatsApp, Invite friends): calmer spacing */
+html body #pg-scout .sx-card:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding: clamp(24px, 3vw, 32px) !important; margin-bottom: 20px !important; }
+html body #pg-scout .sx-card .sx-k:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: block; margin: 0 0 10px !important; font-size: .75rem !important; letter-spacing: .06em; color: #6A7385 !important; }
+html body #pg-scout .sx-card h2:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 0 0 10px !important; line-height: 1.2 !important; }
+html body #pg-scout .sx-card :is(.sx-wa-copy, .sx-ref-copy) > p:not(.sx-k):not(.sx-msg):not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 0 0 24px !important; line-height: 1.55 !important; }
+html body #pg-scout .sx-card label:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: block; margin: 0 0 8px !important; }
+html body #pg-scout .sx-card .sx-row:not(#a#b#c#d#e#f#g#h#i#j#k#l) { gap: 10px !important; }
+html body #pg-scout .sx-card .sx-msg:not(:empty):not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: 10px !important; }
+html body #pg-scout .sx-ref-share:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: 12px !important; }
+@media (max-width: 760px) {
+  html body #pg-scout .sx-wa:not(#a#b#c#d#e#f#g#h#i#j#k#l) { gap: 0 !important; }
+  html body #pg-scout .sx-wa .sx-qr:not(#a#b#c#d#e#f#g#h#i#j#k#l) { order: 2; display: flex !important; align-items: center; gap: 16px; margin: 24px 0 0 !important; padding-top: 24px; border-top: 1px solid #E6EAF0; }
+  html body #pg-scout .sx-wa .sx-qr-box:not(#a#b#c#d#e#f#g#h#i#j#k#l) { flex: none; width: 72px !important; height: 72px !important; }
+  html body #pg-scout .sx-wa .sx-qr figcaption:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 0 !important; font-size: .8125rem !important; line-height: 1.45 !important; }
+  html body #pg-scout .sx-card .sx-row:not(#a#b#c#d#e#f#g#h#i#j#k#l) { flex-direction: column; align-items: stretch; }
+}
+html body #pg-scout .sx-card > .sx-lock-tag:not(#a#b#c#d#e#f#g#h#i#j#k#l) { grid-column: 1 / -1; justify-self: start; margin: 0 0 4px !important; }
+html body #pg-scout .sx-wa .sx-wa-form:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 0 !important; }
+html body #pg-scout .sx-wa .sx-msg:empty:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: none !important; }
+html body #pg-scout .sx-wa:not(#a#b#c#d#e#f#g#h#i#j#k#l) { align-items: start !important; row-gap: 0 !important; }
+html body #pg-scout .sx-card > .sx-lock-tag:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin: 0 0 14px !important; }
