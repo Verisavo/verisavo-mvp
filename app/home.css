@@ -2314,7 +2314,7 @@ html body #pg-scout#pg-scout.pg.pg .sx-at input { padding-left: 30px !important;
 /* identity onboarding */
 #pg-scout .sx-onb { display: grid; place-items: center; padding: clamp(16px, 4vw, 48px) 0; }
 #pg-scout .sx-onb-box { width: min(100%, 560px); display: grid; gap: 14px; padding: clamp(24px, 4vw, 40px); border-radius: 22px; background: var(--color-paper); box-shadow: 0 0 0 1px var(--lc-e6ecf4), 0 30px 60px -44px var(--lc-rgba-31-39-63-45); }
-#pg-scout .sx-prog { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+#pg-scout .sx-prog { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
 #pg-scout .sx-prog i { height: 4px; border-radius: 4px; background: var(--lc-edf1f6); }
 #pg-scout .sx-prog i.on { background: var(--color-b400); }
 html body #pg-scout#pg-scout.pg.pg .sx-onb h1:not(#_a):not(#_b):not(#_c) { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem) !important; }
