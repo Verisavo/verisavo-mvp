@@ -1392,3 +1392,8 @@ html body #pg-portal.adm-mode[data-adm-tab="platform"] .pt-mount, html body #pg-
   #pg-portal .adm-room:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: none; }
 }
 html body #pg-portal .adm-panel button[data-admin].adm-solid { display: inline-flex !important; align-items: center; }
+
+/* Back sits clearly below the header on every inner page (it was hidden under the header on phones) */
+html body .pg .pg-in > .pg-back:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: -20px !important; margin-bottom: calc(0px - clamp(64px, 10vh, 110px)) !important; position: relative; z-index: 1; }
+@media (min-width: 761px) { html body .pg .pg-in > .pg-back:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-top: -32px !important; margin-bottom: calc(12px - clamp(64px, 10vh, 110px)) !important; } }
+html body #pg-scout.pg .pg-in > .pg-back:not(#a#b#c#d#e#f#g#h#i#j#k#l) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; height: auto !important; align-self: flex-start; }
