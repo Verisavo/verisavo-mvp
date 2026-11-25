@@ -1419,3 +1419,4 @@ html body #pg-scout .sx-wa .sx-wa-form:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 0
 html body #pg-scout .sx-wa .sx-msg:empty:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: none !important; }
 html body #pg-scout .sx-wa:not(#a#b#c#d#e#f#g#h#i#j#k#l) { align-items: start !important; row-gap: 0 !important; }
 html body #pg-scout .sx-card > .sx-lock-tag:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { margin: 0 0 14px !important; }
+html body details.ca-job { scroll-margin-top: 96px; }
