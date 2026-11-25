@@ -1363,3 +1363,32 @@ html body #pg-contact#pg-contact#pg-contact.pg.pg .ct3-form:not(#a#b#c#d#e#f#g#h
 /* inner pages open and close at once, so the homepage illustration never shows through for a moment */
 html body .pg.pg:not(#a#b#c#d#e#f#g#h#i#j#k#l) { transition: visibility 0s !important; }
 html[data-vs-start] #ln, html[data-vs-start] .pg:not(.open) { visibility: hidden !important; }
+
+/* Admin: the portal page with an admin sidebar (footer: Admin). Each new section is one sidebar button and one panel. */
+html body #pg-portal:not(.adm-mode) :is(.adm-side, .adm-panel) { display: none !important; }
+html body #pg-portal.adm-mode .pg-in:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: grid !important; grid-template-columns: 220px minmax(0, 1fr); column-gap: 40px; align-items: start; }
+html body #pg-portal.adm-mode .pg-in > .pg-back, html body #pg-portal.adm-mode .pg-in > .pg-foot { grid-column: 1 / -1; }
+html body #pg-portal.adm-mode .adm-side { grid-column: 1; position: sticky; top: 24px; padding-top: 28px; }
+html body #pg-portal.adm-mode .pt-mount, html body #pg-portal.adm-mode .adm-panel { grid-column: 2; min-width: 0; }
+html body #pg-portal.adm-mode[data-adm-tab="platform"] .pt-mount, html body #pg-portal.adm-mode:not([data-adm-tab="platform"]) .adm-panel[data-adm-panel="platform"] { display: none !important; }
+#pg-portal .adm-title:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 0 0 14px 12px; font: 600 1.375rem/1.2 "Red Hat Display", sans-serif; letter-spacing: -.02em; color: #1F273F; }
+#pg-portal .adm-nav { display: grid; gap: 2px; }
+#pg-portal .adm-tab:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: flex; align-items: center; gap: 10px; width: 100%; height: 40px; padding: 0 12px; border: 0; border-radius: 10px; background: none; font: 500 .9375rem/1 "Red Hat Text", sans-serif; color: #3A3A3C; text-align: left; cursor: pointer; }
+#pg-portal .adm-tab:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #F1F3F6; }
+#pg-portal .adm-tab.on:not(#a#b#c#d#e#f#g#h#i#j#k#l) { background: #EEF2F9; color: #1F273F; }
+#pg-portal .adm-tab svg { flex: none; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#pg-portal .adm-room:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 14px 12px 0; padding-top: 14px; border-top: 1px solid #EEF0F3; font: 400 .8125rem/1.45 "Red Hat Text", sans-serif; color: #8E8E93; }
+#pg-portal .adm-panel:not(#a#b#c#d#e#f#g#h#i#j#k#l) { padding: 40px 0; }
+#pg-portal .adm-panel h1:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 0; font: 600 2rem/1.15 "Red Hat Display", sans-serif; letter-spacing: -.03em; color: #1F273F; }
+#pg-portal .adm-panel p:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin: 10px 0 24px; max-width: 560px; font: 400 1rem/1.55 "Red Hat Text", sans-serif; color: #5B6478; }
+#pg-portal .adm-solid:not(#a#b#c#d#e#f#g#h#i#j#k#l) { height: 44px; padding: 0 20px; border: 0; border-radius: 12px; background: #1F273F; color: #fff; font: 500 .9375rem/1 "Red Hat Text", sans-serif; cursor: pointer; }
+@media (max-width: 860px) {
+  html body #pg-portal.adm-mode .pg-in:not(#a#b#c#d#e#f#g#h#i#j#k#l) { grid-template-columns: minmax(0, 1fr); }
+  html body #pg-portal.adm-mode .adm-side { position: static; grid-column: 1; padding-top: 16px; }
+  html body #pg-portal.adm-mode .pt-mount, html body #pg-portal.adm-mode .adm-panel { grid-column: 1; }
+  #pg-portal .adm-title:not(#a#b#c#d#e#f#g#h#i#j#k#l) { margin-left: 0; }
+  #pg-portal .adm-nav { display: flex; gap: 6px; overflow-x: auto; }
+  #pg-portal .adm-tab:not(#a#b#c#d#e#f#g#h#i#j#k#l) { width: auto; white-space: nowrap; background: #F1F3F6; }
+  #pg-portal .adm-room:not(#a#b#c#d#e#f#g#h#i#j#k#l) { display: none; }
+}
+html body #pg-portal .adm-panel button[data-admin].adm-solid { display: inline-flex !important; align-items: center; }
