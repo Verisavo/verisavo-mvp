@@ -2666,6 +2666,8 @@ html body .pg .pg-foot:not(#_a):not(#_b):not(#_c) { margin-bottom: 0 !important;
 #va .va-main .apill.no{background:#EEF1F5;color:#55596A}
 #va .va-main .apill.part{background:var(--px-amber-bg);color:var(--px-amber)}
 #va .va-main .apill.bad{background:#FDECEC;color:#B42318}
+@media (min-width:761px){#va .va-main.sheet-open:not(#_a) > .va-body,#va .va-main.sheet-open:not(#_a) > .va-dock{padding-right:436px!important;transition:padding 260ms var(--px-ease)}#va .va-main aside.sheet:not(.srcview) .shead h2{font-size:16px!important;font-weight:600!important}}
+
 #va .va-main .kx-sec .kx-list,.kx-as{border:1px solid #E3E9F0!important;border-radius:14px!important;background:#fff;overflow:hidden}
 #va .va-main .kx-sec .kx-list li+li{border-top:1px solid #EEF1F6}
 #va .va-main .kx-sec .kx-row{padding:13px 14px!important;gap:12px;align-items:flex-start}
