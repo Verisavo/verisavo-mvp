@@ -1512,7 +1512,10 @@ function render() {
   }
   const ae = document.activeElement, aid = ae && ae.id, sel = ae && 'selectionStart' in ae ? [ae.selectionStart, ae.selectionEnd] : null;
   const wb0 = $('#wa-body'), nearBottom = !wb0 || wb0.scrollHeight - wb0.scrollTop - wb0.clientHeight < 80, prevTop = wb0 ? wb0.scrollTop : 0;
+  /* keep scrolled areas (tab bars, tables, lists) where they were, so a tap never makes the screen jump */
+  const keepSc = [...app.querySelectorAll('*')].filter(e => e.scrollTop > 0 || e.scrollLeft > 0).map(e => { const sel = e.tagName.toLowerCase() + (e.className && typeof e.className === 'string' ? '.' + e.className.trim().split(/\s+/).join('.') : ''); return [sel, [...app.querySelectorAll(sel)].indexOf(e), e.scrollTop, e.scrollLeft]; });
   app.innerHTML = html;
+  keepSc.forEach(([sel, i, t, l]) => { try { const e = app.querySelectorAll(sel)[i]; if (e && e.id !== 'wa-body') { e.scrollTop = t; e.scrollLeft = l; } } catch (x) {} });
   const wb = $('#wa-body'); if (wb) { const n = W ? W.msgs.length + (typing ? 1 : 0) : 0; if (nearBottom || n !== render.n) wb.scrollTop = wb.scrollHeight; else wb.scrollTop = prevTop; render.n = n; }
   if (aid) { const el = document.getElementById(aid); if (el) { el.focus(); if (sel && el.setSelectionRange) try { el.setSelectionRange(...sel); } catch (e) {} } }
 }
