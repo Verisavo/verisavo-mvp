@@ -438,7 +438,9 @@ const tf = (k) => TIMEFRAMES.find(t => t[0] === k) || TIMEFRAMES[2];
 const PLATFORM_FEE = 0, VERIFY_FEE = .15, PT_USD = .1, PER_RESPONSE = 1.15;
 const pricing = (n, k) => { const r = tf(k)[3]; const rewards = n * r, verify = n * VERIFY_FEE; return {rate: r, rewards, verify, collection: rewards + verify, total: rewards + verify + PLATFORM_FEE, rewardPts: Math.round(r / PT_USD * 100) / 100}; };
 
-const COUNTRIES = {Ghana: ['Tamale', 'Savelugu', 'Yendi', 'Bolgatanga', 'Kumasi', 'Accra', 'Takoradi'], Nigeria: ['Kano', 'Kaduna', 'Makurdi', 'Abuja', 'Lagos', 'Ibadan'], Kenya: ['Nairobi', 'Nakuru', 'Eldoret', 'Kisumu', 'Mombasa'], Zambia: ['Lusaka', 'Kabwe', 'Ndola', 'Kitwe'], 'South Africa': ['Johannesburg', 'Durban', 'Cape Town'], Uganda: ['Kampala', 'Gulu', 'Mbarara']};
+/* the main cities and towns in each country, A to Z; MAIN_CITIES are the ones offered first as quick picks */
+const MAIN_CITIES = {Ghana: ['Tamale', 'Savelugu', 'Yendi', 'Bolgatanga', 'Kumasi', 'Accra', 'Takoradi'], Nigeria: ['Kano', 'Kaduna', 'Makurdi', 'Abuja', 'Lagos', 'Ibadan'], Kenya: ['Nairobi', 'Nakuru', 'Eldoret', 'Kisumu', 'Mombasa'], Zambia: ['Lusaka', 'Kabwe', 'Ndola', 'Kitwe'], 'South Africa': ['Johannesburg', 'Durban', 'Cape Town'], Uganda: ['Kampala', 'Gulu', 'Mbarara']};
+const COUNTRIES = {Ghana: ['Accra', 'Ashaiman', 'Bolgatanga', 'Cape Coast', 'Dambai', 'Damongo', 'Goaso', 'Ho', 'Kasoa', 'Koforidua', 'Kumasi', 'Nalerigu', 'Nkawkaw', 'Obuasi', 'Savelugu', 'Sefwi Wiawso', 'Sunyani', 'Takoradi', 'Tamale', 'Tarkwa', 'Techiman', 'Tema', 'Wa', 'Winneba', 'Yendi'], Nigeria: ['Aba', 'Abakaliki', 'Abeokuta', 'Abuja', 'Ado-Ekiti', 'Akure', 'Asaba', 'Awka', 'Bauchi', 'Benin City', 'Birnin Kebbi', 'Bonny', 'Calabar', 'Damaturu', 'Dutse', 'Enugu', 'Gombe', 'Gusau', 'Ibadan', 'Ife', 'Ijebu-Ode', 'Ikeja', 'Ikorodu', 'Ilorin', 'Jalingo', 'Jos', 'Kaduna', 'Kano', 'Katsina', 'Lafia', 'Lagos', 'Lokoja', 'Maiduguri', 'Makurdi', 'Minna', 'Nnewi', 'Nsukka', 'Ogbomosho', 'Onitsha', 'Oshogbo', 'Owerri', 'Oyo', 'Port Harcourt', 'Sapele', 'Sokoto', 'Umuahia', 'Uyo', 'Warri', 'Yenagoa', 'Yola', 'Zaria'], Kenya: ['Bungoma', 'Eldoret', 'Embu', 'Garissa', 'Isiolo', 'Kakamega', 'Kericho', 'Kiambu', 'Kilifi', 'Kisii', 'Kisumu', 'Kitale', 'Lamu', 'Machakos', 'Malindi', 'Meru', 'Mombasa', 'Nairobi', 'Naivasha', 'Nakuru', 'Nanyuki', 'Narok', 'Nyeri', 'Ruiru', 'Thika'], Zambia: ['Chililabombwe', 'Chingola', 'Chipata', 'Choma', 'Kabwe', 'Kafue', 'Kalulushi', 'Kasama', 'Kitwe', 'Livingstone', 'Luanshya', 'Lusaka', 'Mansa', 'Mazabuka', 'Mongu', 'Mufulira', 'Ndola', 'Solwezi'], 'South Africa': ['Benoni', 'Bloemfontein', 'Cape Town', 'Durban', 'East London', 'George', 'Gqeberha', 'Johannesburg', 'Kimberley', 'Mahikeng', 'Mbombela', 'Newcastle', 'Pietermaritzburg', 'Polokwane', 'Pretoria', 'Richards Bay', 'Rustenburg', 'Soweto', 'Stellenbosch', 'Upington', 'Vereeniging', 'Welkom'], Uganda: ['Arua', 'Entebbe', 'Fort Portal', 'Gulu', 'Hoima', 'Jinja', 'Kabale', 'Kampala', 'Kasese', 'Lira', 'Masaka', 'Mbale', 'Mbarara', 'Mukono', 'Soroti', 'Tororo', 'Wakiso']};
 const INDUSTRIES = ['Agriculture', 'Consumer goods', 'Energy', 'Retail', 'Healthcare', 'Financial services', 'Logistics'];
 const QTYPES = [['short', 'Short answer'], ['paragraph', 'Paragraph'], ['single', 'Single choice'], ['multi', 'Checkboxes'], ['number', 'Number'], ['scale', 'Scale (1–5)'], ['rating', 'Star rating'], ['date', 'Date'], ['photo', 'Photo upload']];
 
@@ -1010,7 +1012,7 @@ function prepareFromText(desc) {
   desc = (desc || '').trim(); if (!desc) return false;
   const low = desc.toLowerCase();
   let city = '', country = '';
-  Object.keys(COUNTRIES).forEach(c => { if (low.includes(c.toLowerCase())) country = country || c; COUNTRIES[c].forEach(ct => { if (low.includes(ct.toLowerCase())) { city = city || ct; country = country || c; } }); });
+  Object.keys(COUNTRIES).forEach(c => { if (low.includes(c.toLowerCase())) country = country || c; COUNTRIES[c].forEach(ct => { if (new RegExp('\\b' + ct.toLowerCase() + '\\b').test(low)) { city = city || ct; country = country || c; } }); });
   const pm = desc.match(PRODUCT_RX), product = pm ? pm[0].toLowerCase() : '';
   const kinds = kindsFromGaps([desc], []);
   fromGapCtx(JSON.stringify({gap: desc.replace(/\s+/g, ' '), gaps: [desc.replace(/\s+/g, ' ')], from: '', kind: kinds[0] || 'Open observation', kinds, city, country, product}));
@@ -1053,7 +1055,7 @@ const PLACES = [['Kiosks', 'Kiosk'], ['Small shops', 'Small shop'], ['Open-marke
 function ctxFromText(desc) {
   desc = (desc || '').replace(/\s+/g, ' ').trim(); const low = desc.toLowerCase();
   let city = '', country = '';
-  Object.keys(COUNTRIES).forEach(c => { if (low.includes(c.toLowerCase())) country = country || c; COUNTRIES[c].forEach(ct => { if (low.includes(ct.toLowerCase())) { city = city || ct; country = country || c; } }); });
+  Object.keys(COUNTRIES).forEach(c => { if (low.includes(c.toLowerCase())) country = country || c; COUNTRIES[c].forEach(ct => { if (new RegExp('\\b' + ct.toLowerCase() + '\\b').test(low)) { city = city || ct; country = country || c; } }); });
   const pm = desc.match(PRODUCT_RX), kinds = kindsFromGaps([desc], []);
   return {gap: desc, gaps: [desc], from: '', kind: kinds[0] || 'Open observation', kinds, city, country, product: pm ? pm[0].toLowerCase() : ''};
 }
@@ -1140,7 +1142,7 @@ function cBuilder(r) {
       <div class="field"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" placeholder="For example, Maize availability in Tamale" value="${esc(B.title)}"></div>
       <div class="field"><label for="b-industry">Industry</label><select class="in" id="b-industry" data-b="industry"><option value="">Select your industry</option>${INDUSTRIES.map(x => `<option ${B.industry === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
       <div class="field"><label for="b-country">Target country</label><select class="in" id="b-country" data-b="country" data-rerender="1"><option value="">Select your target country</option>${Object.keys(COUNTRIES).map(x => `<option ${cs[0] === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
-      <div class="field"><span class="flabel">Target regions or cities</span>${cs.length ? `<div class="chips">${(COUNTRIES[cs[0]] || []).map(x => `<button type="button" class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div>` : '<span class="faint" style="font-size:13px">Choose a country to see its regions.</span>'}</div>
+      <div class="field"><span class="flabel">Target regions or cities</span>${cs.length ? `<div class="chips">${[...(MAIN_CITIES[cs[0]] || []), ...B.regions.filter(r => !(MAIN_CITIES[cs[0]] || []).includes(r))].map(x => `<button type="button" class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div>` : '<span class="faint" style="font-size:13px">Choose a country to see its regions.</span>'}</div>
       <div class="field"><label for="b-location">Main collection point</label><input class="in" id="b-location" data-b="location" placeholder="For example, Tamale Central Market" value="${esc(B.location)}"></div>
       <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea></div>
       <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<div class="manual-alt"><span class="muted">Prefer to set up the task yourself?</span><button type="button" class="btn ghost sm" data-act="manual">Build it manually</button></div>`}
@@ -1518,7 +1520,7 @@ function render() {
   app.innerHTML = html;
   keepSc.forEach(([sel, i, t, l]) => { try { const e = app.querySelectorAll(sel)[i]; if (e && e.id !== 'wa-body') { e.scrollTop = t; e.scrollLeft = l; } } catch (x) {} });
   const wb = $('#wa-body'); if (wb) { const n = W ? W.msgs.length + (typing ? 1 : 0) : 0; if (nearBottom || n !== render.n) wb.scrollTop = wb.scrollHeight; else wb.scrollTop = prevTop; render.n = n; }
-  if (aid) { const el = document.getElementById(aid); if (el) { el.focus(); if (sel && el.setSelectionRange) try { el.setSelectionRange(...sel); } catch (e) {} } }
+  if (aid) { const el = document.getElementById(aid); if (el) { el.focus({preventScroll: true}); if (sel && el.setSelectionRange) try { el.setSelectionRange(...sel); } catch (e) {} } }
 }
 function layer(html) { $('#layer').innerHTML = html; const f = $('#layer [data-act="close"].iconbtn, #layer input, #layer button'); f && f.focus(); }
 function closeLayer() { $('#layer').innerHTML = ''; }
@@ -1607,7 +1609,7 @@ document.addEventListener('input', (e) => {
   if (d.b) { B[d.b] = d.b === 'responses' ? Math.max(0, Math.round(Number(t.value) || 0)) : t.value; if (d.b === 'country') { B.countries = t.value ? [t.value] : []; B.regions = B.regions.filter(r => (COUNTRIES[t.value] || []).includes(r)); render(); return; } if (d.rerender || B.step === 0) softRender(); return; }
   if (d.q) { const [i, k] = d.q.split(':'); B.questions[i][k] = t.value; if (k === 'type') { const q = B.questions[i]; if ((t.value === 'single' || t.value === 'multi') && !(q.options || []).length) q.options = ['Option 1', 'Option 2']; render(); } else softRender(); return; }
   if (d.qo) { const [i, j] = d.qo.split(':').map(Number); B.questions[i].options[j] = t.value; return; }
-  if (d.j) { J[d.j] = t.value; if (d.j === 'country') J.city = (COUNTRIES[t.value] || [])[0] || ''; if (t.tagName === 'SELECT' || t.type === 'radio') render(); else { const b = $('#jnext'); if (b) b.disabled = !jValid(); } return; }
+  if (d.j) { J[d.j] = t.value; if (d.j === 'country') J.city = (MAIN_CITIES[t.value] || [])[0] || ''; if (t.tagName === 'SELECT' || t.type === 'radio') render(); else { const b = $('#jnext'); if (b) b.disabled = !jValid(); } return; }
 });
 document.addEventListener('change', (e) => {
   const t = e.target;
@@ -2186,8 +2188,10 @@ select.in{cursor:pointer}
 .vsdd{position:fixed;z-index:9999;background:#fff;border:1px solid #E3E9F0;border-radius:12px;box-shadow:0 16px 40px -12px rgba(31,39,63,.28);padding:6px 4px 6px 6px;box-sizing:border-box;animation:vsddIn .14s ease-out}
 .vsdd-list{max-height:280px;overflow-y:auto;padding-right:4px;scrollbar-width:thin;scrollbar-color:#C3CAD6 transparent;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .vsdd-list{scrollbar-width:none}.vsdd-list::-webkit-scrollbar{display:none}
-.vsdd-bar{position:absolute;right:4px;top:6px;width:4px;border-radius:4px;background:#C3CAD6;pointer-events:none}
-.vsdd-list{padding-right:10px}
+.vsdd-bar{position:absolute;right:4px;top:6px;width:6px;border-radius:6px;background:#A9B1BF;cursor:grab;touch-action:none}
+.vsdd-bar::before{content:"";position:absolute;inset:-6px -6px -6px -10px}
+.vsdd-tr{position:absolute;right:4px;top:6px;bottom:6px;width:6px;border-radius:6px;background:#EEF1F5}
+.vsdd-list{padding-right:16px}
 .vsdd-o{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:0;border-radius:8px;background:none;font:inherit;font-size:14.5px;line-height:1.3;color:#1F273F;text-align:left;cursor:pointer}
 .vsdd-o:hover,.vsdd-o.act{background:#F4F6FA}
 .vsdd-o[aria-selected="true"]{background:#EEF2F8;color:#2E4A7D;font-weight:500}
@@ -2231,8 +2235,11 @@ select.in{cursor:pointer}
       list.appendChild(b); return b;
     }).map(function (b) { return b || document.createElement('button'); });
     /* our own thin scroll bar, so it shows on phones too */
+    var tr = document.createElement('i'); tr.className = 'vsdd-tr'; menu.appendChild(tr);
     var bar = document.createElement('i'); bar.className = 'vsdd-bar'; menu.appendChild(bar);
-    var sync = function () { var sh = list.scrollHeight, ch = list.clientHeight; if (sh <= ch + 2) { bar.style.display = 'none'; return; } bar.style.display = ''; var h = Math.max(28, ch * ch / sh); bar.style.height = h + 'px'; bar.style.top = (6 + (ch - h) * list.scrollTop / (sh - ch)) + 'px'; };
+    bar.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); var y0 = e.clientY, s0 = list.scrollTop, k = (list.scrollHeight - list.clientHeight) / Math.max(1, list.clientHeight - bar.offsetHeight); try { bar.setPointerCapture(e.pointerId); } catch (x) {} var mv = function (ev) { list.scrollTop = s0 + (ev.clientY - y0) * k; }, up = function () { bar.removeEventListener('pointermove', mv); bar.removeEventListener('pointerup', up); bar.removeEventListener('pointercancel', up); }; bar.addEventListener('pointermove', mv); bar.addEventListener('pointerup', up); bar.addEventListener('pointercancel', up); });
+    bar.addEventListener('click', function (e) { e.stopPropagation(); });
+    var sync = function () { var sh = list.scrollHeight, ch = list.clientHeight; if (sh <= ch + 2) { bar.style.display = tr.style.display = 'none'; return; } bar.style.display = tr.style.display = ''; var h = Math.max(28, ch * ch / sh); bar.style.height = h + 'px'; bar.style.top = (6 + (ch - h) * list.scrollTop / (sh - ch)) + 'px'; };
     list.addEventListener('scroll', sync, { passive: true });
     document.body.appendChild(menu); place();
     var cur = opts[s.selectedIndex]; if (cur && !cur.hidden) { list.scrollTop = Math.max(0, cur.offsetTop - list.clientHeight / 2 + cur.offsetHeight / 2); }
@@ -2258,6 +2265,9 @@ select.in{cursor:pointer}
     var s = e.target; if (s && s.matches && s.matches('select.in') && (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp' || (e.altKey && e.key === 'ArrowDown'))) { e.preventDefault(); open(s); }
   }, true);
   window.addEventListener('resize', function () { close(false); });
+  /* while the list is open, the page behind it stays still: only the list scrolls */
+  document.addEventListener('touchmove', function (e) { if (!menu) return; var l = e.target.closest && e.target.closest('.vsdd-list'); if (!l || l.scrollHeight <= l.clientHeight + 2) e.preventDefault(); }, { passive: false, capture: true });
+  document.addEventListener('wheel', function (e) { if (!menu) return; var l = e.target.closest && e.target.closest('.vsdd-list'); if (!l || l.scrollHeight <= l.clientHeight + 2) e.preventDefault(); }, { passive: false, capture: true });
   document.addEventListener('scroll', function (e) { if (menu && !menu.contains(e.target)) place(); }, true);
   /* when the page redraws, the old select is replaced: close the list */
   new MutationObserver(function () { if (owner && !owner.isConnected) close(false); }).observe(document.documentElement, { childList: true, subtree: true });
