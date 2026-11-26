@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<style>html.vs-boot body{visibility:hidden}</style><script>/* show the page only once all of it has loaded, so half-styled content never flashes */(function(){var d=document.documentElement;d.classList.add("vs-boot");var go=function(){requestAnimationFrame(function(){d.classList.remove("vs-boot")})};document.addEventListener("DOMContentLoaded",go);setTimeout(go,3000)})()</script>
 <meta charset="utf-8">
 <script>try{localStorage.removeItem("verisavo-theme");document.documentElement.removeAttribute("data-vs-theme")}catch(e){}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-theme-toggle]");if(!b)return;var d=document.documentElement,on=d.getAttribute("data-vs-theme")!=="dark";if(on)d.setAttribute("data-vs-theme","dark");else d.removeAttribute("data-vs-theme");try{localStorage.setItem("verisavo-theme",on?"dark":"light")}catch(e){}document.querySelectorAll("[data-theme-toggle]").forEach(function(x){x.setAttribute("aria-pressed",String(on));var l=on?"Switch to light mode":"Switch to dark mode";x.setAttribute("aria-label",l);x.title=l})});
