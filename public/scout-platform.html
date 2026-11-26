@@ -2184,7 +2184,7 @@ h1, h2, h3, h4 { font-family: "Red Hat Display", var(--f); letter-spacing: 0; }
 <style id="vsdd-css">
 /* Verisavo dropdown: replaces the phone's own picker with a tidy list */
 select.in{cursor:pointer}
-@media (pointer:coarse){select.in{pointer-events:none}}
+@media (pointer:coarse){select.in{pointer-events:none;-webkit-user-select:none;user-select:none}}
 .vsdd{position:fixed;z-index:9999;background:#fff;border:1px solid #E3E9F0;border-radius:12px;box-shadow:0 16px 40px -12px rgba(31,39,63,.28);padding:6px 4px 6px 6px;box-sizing:border-box;animation:vsddIn .14s ease-out}
 .vsdd-list{max-height:280px;overflow-y:auto;padding-right:4px;scrollbar-width:thin;scrollbar-color:#C3CAD6 transparent;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .vsdd-list{scrollbar-width:none}.vsdd-list::-webkit-scrollbar{display:none}
@@ -2205,8 +2205,12 @@ select.in{cursor:pointer}
 <script id="vsdd-js">
 (function () {
   var menu = null, owner = null, act = -1, opts = [];
+  /* iPhones open their own picker whenever a select is focused, so on touch screens the select is never focused */
+  var COARSE = !!(window.matchMedia && matchMedia('(pointer:coarse)').matches);
+  function foc(el) { if (el && !COARSE) el.focus({ preventScroll: true }); }
+  document.addEventListener('focusin', function (e) { if (COARSE && e.target && e.target.matches && e.target.matches('select.in')) e.target.blur(); }, true);
   var CK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"/></svg>';
-  function close(back) { if (!menu) return; menu.remove(); menu = null; var o = owner; owner = null; if (back && o && o.isConnected) o.focus({ preventScroll: true }); }
+  function close(back) { if (!menu) return; menu.remove(); menu = null; var o = owner; owner = null; if (back && o && o.isConnected) foc(o); }
   function place() {
     if (!menu || !owner) return; var r = owner.getBoundingClientRect(), h = menu.offsetHeight, vh = window.innerHeight;
     menu.style.left = r.left + 'px'; menu.style.width = r.width + 'px';
@@ -2217,8 +2221,8 @@ select.in{cursor:pointer}
   function choose(i) {
     var s = owner, o = s && s.options[i]; if (!o || o.disabled) return;
     var id = s.id, changed = s.selectedIndex !== i; close(false);
-    if (changed) { s.selectedIndex = i; s.focus({ preventScroll: true }); s.dispatchEvent(new Event('input', { bubbles: true })); if (s.isConnected) s.dispatchEvent(new Event('change', { bubbles: true })); }
-    var n = id && document.getElementById(id); if (n) n.focus({ preventScroll: true });
+    if (changed) { s.selectedIndex = i; foc(s); s.dispatchEvent(new Event('input', { bubbles: true })); if (s.isConnected) s.dispatchEvent(new Event('change', { bubbles: true })); }
+    var n = id && document.getElementById(id); if (n) foc(n);
   }
   function open(s) {
     if (s.disabled) return; close(false); owner = s;
@@ -2248,11 +2252,11 @@ select.in{cursor:pointer}
   }
   /* phones: the select ignores taps (pointer-events:none), so find the select under the finger */
   function selAt(x, y) { var all = document.querySelectorAll('select.in'); for (var i = 0; i < all.length; i++) { var r = all[i].getBoundingClientRect(); if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom && r.width) return all[i]; } return null; }
-  document.addEventListener('mousedown', function (e) { var s = e.target.closest && e.target.closest('select.in'); if (s) { e.preventDefault(); if (owner === s) close(true); else { s.focus({ preventScroll: true }); open(s); } } }, true);
+  document.addEventListener('mousedown', function (e) { var s = e.target.closest && e.target.closest('select.in'); if (s) { e.preventDefault(); if (owner === s) close(true); else { foc(s); open(s); } } }, true);
   document.addEventListener('click', function (e) {
     if (menu && menu.contains(e.target)) return;
     var s = (e.target.closest && e.target.closest('select.in')) || (!e.target.closest || !e.target.closest('input,textarea,button,a') ? selAt(e.clientX, e.clientY) : null);
-    if (s && e.target.tagName !== 'SELECT') { e.preventDefault(); if (owner === s) close(true); else { s.focus({ preventScroll: true }); open(s); } return; }
+    if (s && e.target.tagName !== 'SELECT') { e.preventDefault(); if (owner === s) close(true); else { foc(s); open(s); } return; }
     if (menu && !s) close(false);
   }, true);
   document.addEventListener('keydown', function (e) {
