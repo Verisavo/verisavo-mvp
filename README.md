@@ -6,6 +6,7 @@ The connected intelligence layer for African markets. Built with [Next.js](https
 
 | Doc | For |
 |---|---|
+| **[docs/HANDOVER.md](docs/HANDOVER.md)** | **Start here:** what the product is, where everything lives, how the new website works, what's left |
 | [docs/SETUP.md](docs/SETUP.md) | Running it locally against a dev database |
 | [docs/ENV.md](docs/ENV.md) | Every environment variable: what it is and where it comes from |
 | [docs/DEPLOY.md](docs/DEPLOY.md) | The live deploy: Supabase, Vercel, domain, Stripe, Meta, weekly `RELEASE_STAGE` releases, smoke test |
