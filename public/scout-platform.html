@@ -2179,4 +2179,88 @@ h1, h2, h3, h4 { font-family: "Red Hat Display", var(--f); letter-spacing: 0; }
   window.vsBar = { scan: scan };
 })();
 </script>
+<style id="vsdd-css">
+/* Verisavo dropdown: replaces the phone's own picker with a tidy list */
+select.in{cursor:pointer}
+@media (pointer:coarse){select.in{pointer-events:none}}
+.vsdd{position:fixed;z-index:9999;background:#fff;border:1px solid #E3E9F0;border-radius:12px;box-shadow:0 16px 40px -12px rgba(31,39,63,.28);padding:6px 4px 6px 6px;box-sizing:border-box;animation:vsddIn .14s ease-out}
+.vsdd-list{max-height:280px;overflow-y:auto;padding-right:4px;scrollbar-width:thin;scrollbar-color:#C3CAD6 transparent;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.vsdd-list{scrollbar-width:none}.vsdd-list::-webkit-scrollbar{display:none}
+.vsdd-bar{position:absolute;right:4px;top:6px;width:4px;border-radius:4px;background:#C3CAD6;pointer-events:none}
+.vsdd-list{padding-right:10px}
+.vsdd-o{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:0;border-radius:8px;background:none;font:inherit;font-size:14.5px;line-height:1.3;color:#1F273F;text-align:left;cursor:pointer}
+.vsdd-o:hover,.vsdd-o.act{background:#F4F6FA}
+.vsdd-o[aria-selected="true"]{background:#EEF2F8;color:#2E4A7D;font-weight:500}
+.vsdd-o[disabled]{color:#A3A8B4;cursor:default;background:none}
+.vsdd-o .ck{width:14px;flex:none;display:inline-flex}
+.vsdd-o .ck svg{width:14px;height:14px}
+.vsdd-ph{color:#6D6C71}
+@keyframes vsddIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.vsdd{animation:none}}
+</style>
+<script id="vsdd-js">
+(function () {
+  var menu = null, owner = null, act = -1, opts = [];
+  var CK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"/></svg>';
+  function close(back) { if (!menu) return; menu.remove(); menu = null; var o = owner; owner = null; if (back && o && o.isConnected) o.focus({ preventScroll: true }); }
+  function place() {
+    if (!menu || !owner) return; var r = owner.getBoundingClientRect(), h = menu.offsetHeight, vh = window.innerHeight;
+    menu.style.left = r.left + 'px'; menu.style.width = r.width + 'px';
+    var below = vh - r.bottom - 8, top = below >= Math.min(h, 200) || below >= r.top ? r.bottom + 6 : Math.max(8, r.top - h - 6);
+    menu.style.top = top + 'px';
+  }
+  function hi(i) { act = i; opts.forEach(function (b, k) { b.classList.toggle('act', k === i); }); if (opts[i]) { var l = menu.querySelector('.vsdd-list'), b = opts[i]; if (b.offsetTop < l.scrollTop) l.scrollTop = b.offsetTop - 4; else if (b.offsetTop + b.offsetHeight > l.scrollTop + l.clientHeight) l.scrollTop = b.offsetTop + b.offsetHeight - l.clientHeight + 4; } }
+  function choose(i) {
+    var s = owner, o = s && s.options[i]; if (!o || o.disabled) return;
+    var id = s.id, changed = s.selectedIndex !== i; close(false);
+    if (changed) { s.selectedIndex = i; s.focus({ preventScroll: true }); s.dispatchEvent(new Event('input', { bubbles: true })); if (s.isConnected) s.dispatchEvent(new Event('change', { bubbles: true })); }
+    var n = id && document.getElementById(id); if (n) n.focus({ preventScroll: true });
+  }
+  function open(s) {
+    if (s.disabled) return; close(false); owner = s;
+    menu = document.createElement('div'); menu.className = 'vsdd'; menu.setAttribute('role', 'listbox');
+    var lab = s.getAttribute('aria-label') || (s.labels && s.labels[0] && s.labels[0].textContent) || ''; if (lab) menu.setAttribute('aria-label', lab.trim());
+    var list = document.createElement('div'); list.className = 'vsdd-list'; menu.appendChild(list);
+    opts = [].map.call(s.options, function (o, i) {
+      if (o.value === '' && !o.textContent.trim()) return null;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'vsdd-o' + (o.value === '' ? ' vsdd-ph' : ''); b.setAttribute('role', 'option');
+      b.setAttribute('aria-selected', String(i === s.selectedIndex && o.value !== '')); if (o.disabled) b.disabled = true;
+      b.innerHTML = '<span class="ck">' + (i === s.selectedIndex && o.value !== '' ? CK : '') + '</span>'; b.appendChild(document.createTextNode(o.textContent));
+      b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); choose(i); });
+      if (o.value === '') b.hidden = true; /* the placeholder ("Choose a decision") is the field's prompt, not a choice */
+      list.appendChild(b); return b;
+    }).map(function (b) { return b || document.createElement('button'); });
+    /* our own thin scroll bar, so it shows on phones too */
+    var bar = document.createElement('i'); bar.className = 'vsdd-bar'; menu.appendChild(bar);
+    var sync = function () { var sh = list.scrollHeight, ch = list.clientHeight; if (sh <= ch + 2) { bar.style.display = 'none'; return; } bar.style.display = ''; var h = Math.max(28, ch * ch / sh); bar.style.height = h + 'px'; bar.style.top = (6 + (ch - h) * list.scrollTop / (sh - ch)) + 'px'; };
+    list.addEventListener('scroll', sync, { passive: true });
+    document.body.appendChild(menu); place();
+    var cur = opts[s.selectedIndex]; if (cur && !cur.hidden) { list.scrollTop = Math.max(0, cur.offsetTop - list.clientHeight / 2 + cur.offsetHeight / 2); }
+    sync();
+    act = s.selectedIndex;
+  }
+  /* phones: the select ignores taps (pointer-events:none), so find the select under the finger */
+  function selAt(x, y) { var all = document.querySelectorAll('select.in'); for (var i = 0; i < all.length; i++) { var r = all[i].getBoundingClientRect(); if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom && r.width) return all[i]; } return null; }
+  document.addEventListener('mousedown', function (e) { var s = e.target.closest && e.target.closest('select.in'); if (s) { e.preventDefault(); if (owner === s) close(true); else { s.focus({ preventScroll: true }); open(s); } } }, true);
+  document.addEventListener('click', function (e) {
+    if (menu && menu.contains(e.target)) return;
+    var s = (e.target.closest && e.target.closest('select.in')) || (!e.target.closest || !e.target.closest('input,textarea,button,a') ? selAt(e.clientX, e.clientY) : null);
+    if (s && e.target.tagName !== 'SELECT') { e.preventDefault(); if (owner === s) close(true); else { s.focus({ preventScroll: true }); open(s); } return; }
+    if (menu && !s) close(false);
+  }, true);
+  document.addEventListener('keydown', function (e) {
+    if (menu) {
+      if (e.key === 'Escape') { e.preventDefault(); close(true); return; }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); var d = e.key === 'ArrowDown' ? 1 : -1, i = act; do { i += d; } while (opts[i] && opts[i].disabled); if (opts[i]) hi(i); return; }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(act); return; }
+      if (e.key === 'Tab') { close(false); return; }
+    }
+    var s = e.target; if (s && s.matches && s.matches('select.in') && (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp' || (e.altKey && e.key === 'ArrowDown'))) { e.preventDefault(); open(s); }
+  }, true);
+  window.addEventListener('resize', function () { close(false); });
+  document.addEventListener('scroll', function (e) { if (menu && !menu.contains(e.target)) place(); }, true);
+  /* when the page redraws, the old select is replaced: close the list */
+  new MutationObserver(function () { if (owner && !owner.isConnected) close(false); }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
 </body></html>
