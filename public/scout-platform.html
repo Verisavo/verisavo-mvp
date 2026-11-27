@@ -1427,11 +1427,26 @@ function qualityChecks() {
   if (qs.length > 12) out.push([0, qs.length + ' questions is long for one visit. Shorter tasks are completed more reliably.']);
   return out;
 }
+/* how the answer will look to the person filling it in: the real boxes, circles and fields, switched off */
+function qPreview(q) {
+  const o = (q.options || []).filter(x => String(x).trim()), box = (t, ph) => `<span class="qp-in${t ? ' ' + t : ''}">${ph}</span>`;
+  const body = q.type === 'single' ? (o.length ? o.map(x => `<span class="qp-o"><i class="qp-r"></i>${esc(x)}</span>`).join('') : '<span class="faint">No options yet</span>')
+    : q.type === 'multi' ? (o.length ? o.map(x => `<span class="qp-o"><i class="qp-c"></i>${esc(x)}</span>`).join('') + '<span class="qp-hint">Tick all that apply</span>' : '<span class="faint">No options yet</span>')
+    : q.type === 'short' ? box('', 'Short answer')
+    : q.type === 'paragraph' ? box('tall', 'Longer answer, in the respondent’s own words')
+    : q.type === 'number' ? `<span class="qp-num">${box('', '0')}${q.unit ? '<b>' + esc(q.unit) + '</b>' : ''}</span>`
+    : q.type === 'scale' ? `<span class="qp-scale">${[1, 2, 3, 4, 5].map(n => '<i>' + n + '</i>').join('')}</span><span class="qp-hint">1 is low, 5 is high</span>`
+    : q.type === 'rating' ? '<span class="qp-stars">' + '☆'.repeat(5) + '</span>'
+    : q.type === 'date' ? `<span class="qp-num">${box('', 'DD/MM/YYYY')}${ic.cal}</span>`
+    : q.type === 'photo' ? `<span class="qp-photo">${ic.camera}Take or upload a photo</span>` : '';
+  return `<div class="qprev" aria-hidden="true">${body}</div>`;
+}
 function qRow(q, i) {
   const open = B.openQ === q.id, qs = B.questions, prior = qs.slice(0, i).filter(x => x.type === 'single' && (x.options || []).length), ct = condText(q, qs);
   const arrow = d => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
   return `<div class="qrow${open ? ' open' : ''}"><div class="qrow-h"><span class="qn">${i + 1}.</span><button type="button" class="qb" data-act="openq" data-v="${q.id}" aria-expanded="${open}"><b>${esc(q.text || 'Untitled question')}</b><small>${q.screen ? 'Screening question · ' : ''}${QLABEL[q.type] || q.type}${ct ? ' · ' + esc(ct) : ''}</small></button>
     <div class="tools"><button class="iconbtn" data-act="moveq" data-v="${i}:-1" aria-label="Move question ${i + 1} up"${i ? '' : ' disabled'}>${arrow('M4 10l4-4 4 4')}</button><button class="iconbtn" data-act="moveq" data-v="${i}:1" aria-label="Move question ${i + 1} down"${i < qs.length - 1 ? '' : ' disabled'}>${arrow('M4 6l4 4 4-4')}</button><button class="iconbtn" data-act="openq" data-v="${q.id}" aria-label="${open ? 'Close' : 'Edit'} question ${i + 1}">${open ? ic.check : arrow('M11 2.5l2.5 2.5L6 12.5 3 13l.5-3z')}</button></div></div>
+    ${open ? '' : qPreview(q)}
     ${open ? qEditor(q, i) + `<div class="field qcond"><label for="qc-${q.id}">When to ask</label><select class="in" id="qc-${q.id}" data-qc="${i}"><option value="">Always ask this question</option>${prior.map(x => x.options.map(o => `<option value="${esc(x.id + '|' + o)}"${q.cond && q.cond.q === x.id && q.cond.v === o ? ' selected' : ''}>Only if question ${qs.indexOf(x) + 1} is “${esc(o)}”</option>`).join('')).join('')}</select>${prior.length ? '' : '<span class="faint" style="font-size:12.5px">Add a single-choice question before this one to make it conditional.</span>'}</div>` : ''}</div>`;
 }
 /* Preview as SavoScout: walk through the task as it will be asked, without sending anything */
@@ -2511,6 +2526,10 @@ select.in{cursor:pointer}
 .qrow{border:1px solid var(--line);border-radius:14px;background:var(--card)}.qrow.open{border-color:var(--primary-3)}.qrow-h{display:flex;gap:10px;align-items:flex-start;padding:14px}.qrow .qn{color:var(--ink-3);font-size:13px;line-height:1.5;flex:none;min-width:18px}
 .qrow .qb{flex:1;min-width:0;display:grid;gap:3px;text-align:left;border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer}.qrow .qb b{font-weight:500;line-height:1.4}.qrow .qb small{font-size:13px;color:var(--ink-2)}
 .qrow .tools{display:flex;gap:2px;flex:none}.qrow .tools .iconbtn{width:30px;height:30px}.qrow .tools svg{width:15px;height:15px}.qrow .qcard{border:0;border-top:1px solid var(--line);border-radius:0;margin:0}.qrow .qcond{padding:0 14px 14px;margin:0}
+.qprev{display:grid;gap:8px;justify-items:start;padding:0 14px 16px 42px;font-size:14px;color:var(--ink)}.qp-o{display:flex;align-items:center;gap:10px;line-height:1.35}.qp-r,.qp-c{width:17px;height:17px;flex:none;border:1.5px solid #9AA6B8;background:#fff}.qp-r{border-radius:50%}.qp-c{border-radius:4px}
+.qp-in{display:block;width:min(100%,360px);min-height:40px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink-3);font-size:13.5px}.qp-in.tall{min-height:76px;width:100%}.qp-num{display:flex;align-items:center;gap:8px;width:100%}.qp-num .qp-in{width:160px}.qp-num b{font-weight:500;color:var(--ink-2)}.qp-num svg{width:17px;height:17px;color:var(--ink-3)}
+.qp-scale{display:flex;gap:6px}.qp-scale i{display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:#fff;font-style:normal;color:var(--ink-2)}.qp-stars{font-size:26px;letter-spacing:4px;color:#9AA6B8;line-height:1}.qp-hint{font-size:12.5px;color:var(--ink-3)}
+.qp-photo{display:flex;align-items:center;gap:8px;padding:14px 16px;border:1.5px dashed #B8C2D0;border-radius:12px;color:var(--ink-2);font-size:13.5px}.qp-photo svg{width:18px;height:18px}
 .qadd{display:flex;align-items:center;gap:10px;width:100%;padding:14px;border:1px dashed var(--line);border-radius:14px;background:none;font:inherit;font-weight:500;color:var(--ink);cursor:pointer}.qadd svg{width:16px;height:16px}
 .rv-regen summary{display:flex;align-items:center;gap:8px;font-weight:500;cursor:pointer;list-style:none}.rv-regen summary::-webkit-details-marker{display:none}.rv-regen summary svg{width:16px;height:16px;color:var(--primary)}
 .rv-ev{background:var(--paper)}.rv-evrow{display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer}.rv-evrow input{width:18px;height:18px;margin:0;flex:none;accent-color:var(--primary)}.rv-evrow svg{width:17px;height:17px;flex:none;color:var(--ink-2)}
