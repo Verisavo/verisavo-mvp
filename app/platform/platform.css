@@ -3161,6 +3161,8 @@ html body #va * { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,.18) transp
 html body #va *::-webkit-scrollbar { width: 8px; height: 8px; }
 html body #va *::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); border-radius: 8px; border: 2px solid transparent; background-clip: content-box; }
 html body #va *::-webkit-scrollbar-track { background: transparent; }
+/* desktop: the conversation has a scroll bar you can see and grab; its space is reserved so nothing shifts when it appears */
+@media (min-width:761px){html body #va .va-main > .va-body{scrollbar-width:thin;scrollbar-color:#9AA6B8 #EEF1F6;scrollbar-gutter:stable}}
 html body #va .va-side button:not(:disabled):active, html body #va .va-top button:not(:disabled):active { transform: scale(.97); }
 html body #va .va-side button, html body #va .va-top button { transition: transform 120ms cubic-bezier(.23,1,.32,1), background-color 160ms var(--q-ease), color 160ms var(--q-ease), border-color 160ms var(--q-ease); }
 html body #va .vsn-h, html body #va .va-h { color: var(--q-ink2) !important; font-size: 12px !important; letter-spacing: 0 !important; text-transform: none !important; }
