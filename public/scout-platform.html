@@ -754,6 +754,7 @@ function openSub(id) {
   layer(`<div class="drawer-bg" data-act="close"></div><aside class="drawer" role="dialog" aria-label="Submission">
     <div class="row between"><div><div class="faint" style="font-size:12px">SUB-${x.id.slice(-6).toUpperCase()}</div><h2 style="font-size:18px">${esc(x.surveyTitle)}</h2></div><button class="iconbtn" data-act="close" aria-label="Close">${ic.x}</button></div>
     <div class="row">${pill(x.status)}<span class="muted" style="font-size:12px">${dtt(x.createdAt)}</span>${SAMPLE(x)}</div>
+    ${x.route ? `<div class="note">${ic.info}<span><b>${x.route === 'first' ? 'First-hand' : x.route === 'reported' ? 'Reported' : 'Observed'}.</b> ${x.route === 'first' ? 'The respondent answered about their own ' + (x.role && /consumer|community/i.test(x.role) ? 'experience' : 'business or experience') + '.' : x.route === 'reported' ? 'A researcher asked the respondent and wrote down the answers.' : 'Recorded by the SavoScout, not told to them.'}${x.role ? ' Role: ' + esc(x.role) + '.' : ''}</span></div>` : ''}
     <div class="stat3"><div>SavoScout<b>${esc(x.scoutName)}</b></div><div>Region<b>${esc(x.region)}</b></div><div>Reward<b class="num">${pts(x.reward)}</b></div></div>
     <div><div class="flabel" style="margin-bottom:6px">Automatic checks</div><div class="checklist">${checks.map(([t, okk]) => `<div class="${okk ? 'done' : 'now'}"><span class="ck" style="${okk ? '' : 'border-color:var(--err);color:var(--err)'}">${okk ? ic.check : ic.x}</span>${esc(t)}</div>`).join('')}</div></div>
     <div><div class="flabel">Answers</div>${ansHtml || '<p class="muted">No answers recorded.</p>'}</div>
@@ -813,8 +814,9 @@ function localBrief(s, list) {
   if (UN.length) NX.push({text: 'Extend coverage to the regions and outlets still missing before making a decision that depends on them.'});
   NX.push({text: 'Return to the Verisavo Assistant to connect these findings with what Verisavo already knows about this market.'});
   const basisT = s.attrs ? ({experience: ' These are people’s own reported experiences and opinions, not observations checked on site.', interviews: ' These are answers given to SavoScouts in interviews: what respondents said, not what was observed.', observations: ' These are direct observations by SavoScouts.', desk: ' These come from online research by SavoScouts.', documents: ' These come from documents and records reviewed by SavoScouts.', mixed: ' These combine interview answers with direct observations.'})[s.attrs.method] || '' : '', roles = {}; use.forEach(x => { if (x.role) roles[x.role] = (roles[x.role] || 0) + 1; });
+  const fh = use.filter(x => x.route === 'first').length, rp = use.filter(x => x.route === 'reported').length, routeT = fh || rp ? ` ${fh} first-hand, ${rp} reported through researchers.${fh && rp ? ' Where the two disagree, read the first-hand answers as the stronger evidence.' : ''}` : '';
   const roleT = Object.keys(roles).length ? ' By role: ' + Object.entries(roles).map(r => r[1] + ' ' + r[0].toLowerCase()).join(', ') + '.' : '';
-  return {summary: `Based on ${use.length} ${okL.length ? 'verified' : 'unverified'} SavoScout response${use.length === 1 ? '' : 's'} from ${[...new Set(use.map(x => x.region))].join(', ') || s.country}.${basisT}${roleT}`, findings: F, agreements: AG, contradictions: CO, implications: [], unknowns: UN, next: NX, n: list.length, at: Date.now(), by: 'rules'};
+  return {summary: `Based on ${use.length} ${okL.length ? 'verified' : 'unverified'} SavoScout response${use.length === 1 ? '' : 's'} from ${[...new Set(use.map(x => x.region))].join(', ') || s.country}.${fh && !rp ? ' These are first-hand answers from the people themselves.' : basisT}${routeT}${roleT}`, findings: F, agreements: AG, contradictions: CO, implications: [], unknowns: UN, next: NX, n: list.length, at: Date.now(), by: 'rules'};
 }
 async function genBrief(id) {
   const s = S.surveys[id]; if (!s) return;
@@ -1102,14 +1104,35 @@ function recAttrs(w) {
   if (!targets.length) targets = [...(kinds.includes('Shopper feedback') ? ['consumers'] : []), ...(kinds.includes('Retailer interviews') ? ['retailers'] : [])]; if (!targets.length) targets = ['subjects'];
   const ppl = targets.filter(PEOPLE), all = targets.includes('everyone'), people = ppl.length || all, looks = LOOK_RX.test(txt) || (!txt && kinds.some(k => /Availability|Price|Outlet/.test(k)));
   let method = w.method && w.method !== 'auto' ? w.method : !people ? (DESK_RX.test(txt) ? 'desk' : 'observations') : OWN_RX.test(txt) ? 'experience' : DESK_RX.test(txt) ? 'desk' : looks ? 'mixed' : 'interviews';
-  let scoutCats = set(w.scoutCats); if (!scoutCats.length) scoutCats = method === 'experience' ? (all ? ['everyone'] : ppl.length ? ppl : ['community']) : ['researchers'];
+  let scoutCats = set(w.scoutCats); if (!scoutCats.length) scoutCats = method === 'experience' ? (all ? ['everyone'] : ppl.length ? ppl : ['community']) : people && ['interviews', 'mixed'].includes(method) ? (all ? ['everyone'] : [...ppl.filter(c => c !== 'researchers'), 'researchers']) : ['researchers'];
   let exec = w.whereMode && w.whereMode !== 'auto' ? w.whereMode : ['experience', 'desk', 'documents'].includes(method) ? (method !== 'desk' && (w.city || w.country) ? 'market' : 'anywhere') : (w.placeType || '').trim() || /shop|market|supermarket|kiosk|stall|outlet|store|pharmac|warehouse/i.test(txt) ? 'outlet' : 'city';
   let evidence = set(w.evidence);
   if (!evidence.length) evidence = method === 'experience' ? ['written'] : method === 'desk' ? ['written', 'online', 'screenshots'] : method === 'documents' ? ['written', 'documents'] : method === 'interviews' ? ['written', ...(REMOTE(exec) ? [] : ['location'])] : ['written', 'photos', ...(kinds.includes('Price check') ? ['pricelabels'] : []), 'observations', ...(REMOTE(exec) ? [] : ['location'])];
   return {targets, scoutCats, method, exec, evidence, visit: REMOTE(exec) ? 'Not required' : exec === 'mixed' ? 'For part of the task' : 'Required'};
 }
+/* Two routes to the same answer. First-hand: the shopkeeper, distributor or customer answers for themselves. Reported: a researcher with a track record asks them. */
+const TRUST_MIN = 10, TRUST_RATE = .9, TRUST_TEXT = TRUST_MIN + ' verified responses and a ' + Math.round(TRUST_RATE * 100) + '% verification rate';
+function tPeople(a) { const T = a.targets || []; return T.includes('everyone') ? CAT_IDS.filter(PEOPLE) : T.filter(PEOPLE); }
+function firstCats(a) { const need = a.scoutCats || []; return ['interviews', 'mixed', 'experience'].includes(a.method) ? tPeople(a).filter(c => c !== 'researchers' && (need.includes(c) || need.includes('everyone'))) : []; }
+function dualRoute(a) { return ['interviews', 'mixed'].includes(a.method) && firstCats(a).length > 0 && ((a.scoutCats || []).includes('researchers') || (a.scoutCats || []).includes('everyone')); }
+function scoutLabel(a) { const need = a.scoutCats || []; if (!need.length) return ''; if (!dualRoute(a) || need.includes('everyone')) return labs(SCOUTCATS, need) + (dualRoute(a) && a.trusted ? ' (researchers need a track record)' : ''); const fc = firstCats(a), rest = need.filter(c => !fc.includes(c) && c !== 'researchers'); return labs(SCOUTCATS, fc) + ' (first-hand)' + (rest.length ? ', ' + labs(SCOUTCATS, rest) : '') + ', and ' + (a.trusted ? 'trusted researchers' : 'researchers'); }
+function scoutTrust(id) { const l = subs().filter(x => x.scoutId === id), ok = l.filter(x => x.status === 'approved').length, rej = l.filter(x => x.status === 'rejected').length; return {ok, rate: ok + rej ? ok / (ok + rej) : 0, trusted: ok >= TRUST_MIN && ok / (ok + rej) >= TRUST_RATE}; }
+/* 'first' answers for themselves · 'reported' interviews others · 'open' observes or researches · 'locked' not yet trusted · null not eligible */
+function routeFor(s, sc) {
+  const a = s.attrs; if (!a) return 'open';
+  if (a.exec !== 'anywhere' && s.country && sc.country && s.country !== sc.country) return null;
+  const need = a.scoutCats || [], cats = sc.cats && sc.cats.length ? sc.cats : ['researchers'], ok = need.includes('everyone') || need.some(x => cats.includes(x));
+  if (firstCats(a).some(c => cats.includes(c))) return 'first';
+  if (!ok) return null;
+  if (a.method === 'experience') return 'first';
+  if (['interviews', 'mixed'].includes(a.method) && tPeople(a).length) return a.trusted && !scoutTrust(S.me).trusted ? 'locked' : 'reported';
+  return 'open';
+}
+/* the same question, as the person answering about themselves reads it */
+function firstVoice(q) { if (q.role) return 'Which of the following best describes your role in this market?'; return selfVoice(q.text).replace(/^Ask (them|the \w+): /, '').replace(/\? Write down what they say\.$/, '?').replace(/^What type of outlet are you at\?$/, 'What type of outlet do you run?').replace(/^Name of the shop, stall or market$/, 'Name of your shop, stall or business').replace(/\bthe supplier push\b/, 'your supplier push'); }
+function needsPhoto(s) { if (!s.attrs) return true; const opt = s.evidenceOptional || {}; return (s.evidence || []).some(k => /photos|pricelabels|screenshots|documents|video/.test(k) && !opt[k]); }
 function attrSummary(R, place, placeType) {
-  return [['Scout Category', labs(SCOUTCATS, R.scoutCats)], ['Target Audience', labs(WHO, R.targets)], ['Participation Method', wlab(METHOD, R.method)], ['Physical visit', R.visit], ['Market Location', [place, !REMOTE(R.exec) && placeType ? placeType : '', wlab(WHERE, R.exec)].filter(Boolean).join(' · ')], ['Evidence Requirements', labs(EVID, R.evidence)]];
+  return [['Scout Category', scoutLabel(Object.assign({trusted: true}, R))], ['Target Audience', labs(WHO, R.targets)], ['Participation Method', wlab(METHOD, R.method)], ['Physical visit', R.visit], ['Market Location', [place, !REMOTE(R.exec) && placeType ? placeType : '', wlab(WHERE, R.exec)].filter(Boolean).join(' · ')], ['Evidence Requirements', labs(EVID, R.evidence)]];
 }
 function wizSummary(w) { const R = recAttrs(w), place = [(w.cities && w.cities.length > 1 ? w.cities.join(' and ') : w.city), w.country].filter(Boolean).join(', '); return attrSummary(R, place, w.whereMode === 'address' ? w.placeText : w.placeType).map(x => `<div class="kv"><span>${x[0]}</span><b style="text-align:right">${esc(x[1] || '—')}</b></div>`).join(''); }
 function wizNeedCity(w) { return !REMOTE(recAttrs(w).exec); }
@@ -1137,7 +1160,7 @@ function openWizard(ctx, mode) {
   const txt = (ctx.gaps || [ctx.gap]).join(' ').toLowerCase(); B.wiz.cities = country ? COUNTRIES[country].filter(c => new RegExp('\\b' + c.toLowerCase() + '\\b').test(txt)) : []; if (B.wiz.city && !B.wiz.cities.includes(B.wiz.city)) B.wiz.cities.unshift(B.wiz.city);
 }
 const VAGUE = /\b(if|when|after|once) (this|that|it) (changed|change|happens|happened|were introduced|was introduced)\b|\b(the|this|that) (proposed |planned )?(change|idea|plan|move|scenario)\b|\bdid this\b|\bdo this\b/i;
-function wizMissing(w) { const T = (w.targets || []), ppl = T.some(PEOPLE) || T.includes('everyone'), txt = (w.ctx.gaps || [w.ctx.gap]).join(' '); return {change: !!w.vague && !(w.change || '').trim(), place: !w.country || (wizNeedCity(w) && !w.city), who: !T.length && !LOOK_RX.test(txt) && !DESK_RX.test(txt), method: (!w.method || w.method === 'auto') && (ppl || !T.length) && !OWN_RX.test(txt) && !DESK_RX.test(txt) && !LOOK_RX.test(txt), where: !w.whereMode && !['experience', 'desk', 'documents'].includes(recAttrs(w).method), evidence: false}; }
+function wizMissing(w) { const T = (w.targets || []), ppl = T.some(PEOPLE) || T.includes('everyone'), txt = (w.ctx.gaps || [w.ctx.gap]).join(' '); return {change: !!w.vague && !(w.change || '').trim(), place: !w.country || (wizNeedCity(w) && !w.city), who: !T.length && !LOOK_RX.test(txt) && !DESK_RX.test(txt), method: false, where: !w.whereMode && !['experience', 'desk', 'documents'].includes(recAttrs(w).method), evidence: false}; }
 const svgi = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const STARTS = [
   ['Compare market prices', svgi('<path d="M3 12.5V4h8.5l9 9-8 8z"/><circle cx="7.5" cy="8.5" r="1.2"/>'), 'Compare the price of [product] across shops and markets in [city].'],
@@ -1240,7 +1263,7 @@ function wizView() {
   </div></div>`;
 }
 /* turn an interviewer's question into one a person answers about themselves */
-function selfVoice(t) { return t.replace(/^In the seller.s words: ?/i, '').replace(/^Ask the seller: ?(.*?)\? Write down what they say\.$/i, '$1?').replace(/\b(the|this) (shopper|customer|respondent)\b/gi, 'you').replace(/\bthis outlet\b/gi, 'your business').replace(/\bdoes it reorder\b/gi, 'do you reorder').replace(/\bdoes you\b/gi, 'do you').replace(/\byou choose\b(?=.*next time)/i, 'you choose').replace(/^./, c => c.toUpperCase()); }
+function selfVoice(t) { return t.replace(/^In the \w+.s words: ?/i, '').replace(/\bthis business\b/gi, 'your business').replace(/^Name of the business$/, 'Name of your business').replace(/^Ask (?:them|the \w+): ?(.*?)\? Write down what they say\.$/i, '$1?').replace(/\b(the|this) (shopper|customer|respondent)\b/gi, 'you').replace(/\bthis outlet\b/gi, 'your business').replace(/\bdoes it reorder\b/gi, 'do you reorder').replace(/\bdoes you\b/gi, 'do you').replace(/\byou choose\b(?=.*next time)/i, 'you choose').replace(/^./, c => c.toUpperCase()); }
 const ROLE_CONS = ['Customer or consumer', 'Community member'], ROLE_TRADE = ['Retailer or merchant', 'Wholesaler', 'Distributor', 'Manufacturer or producer'];
 function addRoleQ(ppl, method) {
   const opts = ppl.map(c => CATS.find(x => x[0] === c)[2]).concat('Other'), rq = Object.assign(newQ('single', method === 'experience' ? 'Which of the following best describes your role in this market?' : 'Which best describes the person you are speaking with?', opts), {role: true});
@@ -1293,11 +1316,13 @@ function wizGenerate() {
   if (ev.includes('pricelabels') && !B.questions.some(q => /price label/i.test(q.text)) && room()) B.questions.push(newQ('photo', 'Photograph the price label, if the seller agrees.'));
   if (ev.includes('online') && room()) B.questions.push(newQ('short', 'Paste a link to the online source you used.'));
   if (ev.includes('written') && !B.questions.some(q => q.type === 'paragraph') && w.method !== 'structured' && room()) B.questions.push(newQ('paragraph', 'In your own words, what did you find?'));
+  { const nm = {consumers: 'customer', retailers: 'shopkeeper', wholesalers: 'wholesaler', distributors: 'distributor', manufacturers: 'producer', professionals: 'industry expert', community: 'person you speak with'}, tp = tPeople({targets: R.targets}).map(c => nm[c]).filter(Boolean).slice(0, 4); if (tp.length) B.brief = B.brief.replace(/the shopkeeper or distributor/gi, 'the ' + (tp.length > 1 ? tp.slice(0, -1).join(', ') + ' or ' + tp[tp.length - 1] : tp[0])); }
   B.brief = (w.method === 'experience' ? 'Answer from your own experience. There are no right or wrong answers. ' + B.brief.replace(/Ask [^.]*\./gi, '').replace(/Visit [^.]*\./gi, '').trim() : B.brief);
   if (!wantPhoto) B.brief = B.brief.replace(/,? and photograph[^.]*\./gi, '.').replace(/\s*Photograph[^.]*\./gi, '').replace(/,? and take a clear photo[^.]*\./gi, '.');
   B.brief = (B.brief + (w.known.trim() ? ' Note from the client: ' + w.known.trim() : '')).replace(/\s+/g, ' ').trim();
   B.evid = R.evidence.filter(k => k !== 'none' && EVREQ[k]); B.evidNone = R.evidence.includes('none'); B.evidOpt = {};
-  B.at = {scoutCats: R.scoutCats.slice(), targets: R.targets.slice(), method: R.method, exec: R.exec, placeType: (w.placeType || '').trim(), placeText: (w.placeText || '').trim()};
+  B.at = {trusted: true, scoutCats: R.scoutCats.slice(), targets: R.targets.slice(), method: R.method, exec: R.exec, placeType: (w.placeType || '').trim(), placeText: (w.placeText || '').trim()};
+  { const tp = tPeople({targets: R.targets}), word = !tp.includes('retailers') && tp.length === 1 ? ({distributors: 'distributor', wholesalers: 'wholesaler', manufacturers: 'producer'})[tp[0]] : ''; if (word) { B.questions = B.questions.filter(q => !/^What type of outlet are you at/i.test(q.text)); B.questions.forEach(q => { q.text = q.text.replace(/^Ask the seller: /, 'Ask the ' + word + ': ').replace(/^In the seller.s words/i, 'In the ' + word + '’s words').replace(/\bthis outlet\b/gi, 'this business').replace(/^Name of the shop, stall or market$/, 'Name of the business'); }); } }
   /* several kinds of respondent: record each one's role, and only ask what fits that role */
   { const ppl = R.targets.includes('everyone') ? CAT_IDS.filter(PEOPLE) : R.targets.filter(PEOPLE); if ((ppl.length > 1 || R.targets.includes('everyone') || (ppl.length === 1 && ppl[0] === 'community')) && room()) addRoleQ(ppl, R.method); }
   B.objective = (w.mode === 'gaps' ? 'Find out: ' : '') + gaps.join(' ');
@@ -1372,9 +1397,10 @@ function cBuilder(r) {
       <div class="card rv-card"><div class="field"><label for="b-title">Task title</label><input class="in" id="b-title" data-b="title" value="${esc(B.title)}"></div>
         <div class="field"><label for="b-obj">Objective</label><textarea class="in" id="b-obj" data-b="objective" rows="2">${esc(B.objective != null ? B.objective : (B.gap || B.ai || ''))}</textarea></div>
         <div class="rv-grid"><div><span>Scout Category</span><b>${esc(F.scouts)}</b></div><div><span>Target Audience</span><b>${esc(F.who)}</b></div><div><span>Participation Method</span><b>${esc(F.method)}</b></div><div><span>Task Execution</span><b>${esc(F.setting)}${F.spot ? ' · ' + esc(F.spot) : ''}</b></div><div><span>Market Location</span><b>${esc(F.where)}</b></div><div><span>Physical visit</span><b>${F.visit}</b></div></div>
+        ${dualRoute(bAt()) ? `<div class="note rt-note">${ic.people}<span><b>Two ways to answer.</b> <b>First-hand:</b> ${esc(labs(SCOUTCATS, firstCats(bAt())).toLowerCase())} who are SavoScouts answer about their own ${firstCats(bAt()).every(c => c === 'consumers' || c === 'community') ? 'experience' : 'business'}. <b>Reported:</b> ${bAt().trusted ? 'researchers with a track record (' + TRUST_TEXT + ')' : 'researchers'} speak to those who are not on Verisavo or have no time. Both are open from the start, and every response is labelled.</span></div>` : ''}
         ${atMissing().length ? `<p class="cf-warn" style="margin:0;font-size:13px">Still needed before you continue: ${esc(atMissing().join('; '))}.</p>` : ''}
         ${B.atEdit || atMissing().length ? atEditor() : `<button class="link" data-act="atedit" style="justify-self:start">Edit who takes part, how and where</button>`}
-        <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea></div>
+        <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea>${dualRoute(bAt()) ? '<span class="faint" style="font-size:12.5px">Written for researchers. People answering first-hand see the same questions worded about themselves.</span>' : ''}</div>
         <button class="link" data-act="bstep" data-v="0" style="justify-self:start">Change the place and details</button></div>
       <div class="row between" style="flex-wrap:wrap;gap:8px"><div><h3 style="font-size:17px">Generated questions <span class="faint" style="font-weight:400;font-size:13px">${B.questions.length} of 20 · Editable</span></h3></div><button class="btn ghost sm" data-act="pv-open">${ic.eye}Preview as SavoScout</button></div>
       ${B.questions.map((q, i) => qRow(q, i)).join('') || `<div class="card">${emptyState('clip', 'No questions yet', 'Regenerate the set below or add questions one by one.')}</div>`}
@@ -1472,22 +1498,23 @@ const QLABEL = {short: 'Short written response', paragraph: 'Written response', 
 const EVREQ = {written: ['clip', 'Completed responses to every question'], photos: ['camera', 'Photographs, where permitted'], video: ['video', 'A short video recording, where permitted'], observations: ['eye', 'What the SavoScout sees on site'], documents: ['file', 'Documents, receipts or price lists'], pricelabels: ['card', 'Price labels or product information'], screenshots: ['copy', 'Screenshots'], online: ['globe', 'Website links and online sources'], location: ['pin', 'Location confirmation'], };
 function bEvid() { if (!B.evid) { const a = bAt(), R = recAttrs({ctx: {gap: B.objective || B.ai || B.title || ''}, kinds: B.kinds || [], targets: a.targets, scoutCats: a.scoutCats, method: a.method || 'auto', whereMode: a.exec || '', evidence: [], city: B.regions[0] || ''}); B.evid = R.evidence.filter(k => EVREQ[k]); if (B.questions.some(q => q.type === 'photo') && !B.evid.some(k => /photos|pricelabels|screenshots|documents/.test(k))) B.evid.push('photos'); } return B.evid; }
 function bAt() {
-  if (!B.at) { const a = B.wizAns || {}; B.at = Object.assign({placeType: '', placeText: ''}, recAttrs({ctx: {gap: [B.objective, B.gap, B.ai, B.title].filter(Boolean).join(' ')}, kinds: B.kinds || [], targets: a.targets || [], scoutCats: [], method: a.method === 'structured' ? 'auto' : a.method, whereMode: a.whereMode, evidence: [], city: B.regions[0] || ''})); delete B.at.evidence; delete B.at.visit; }
+  if (!B.at) { const a = B.wizAns || {}; B.at = Object.assign({placeType: '', placeText: ''}, recAttrs({ctx: {gap: [B.objective, B.gap, B.ai, B.title].filter(Boolean).join(' ')}, kinds: B.kinds || [], targets: a.targets || [], scoutCats: [], method: a.method === 'structured' ? 'auto' : a.method, whereMode: a.whereMode, evidence: [], city: B.regions[0] || ''})); delete B.at.evidence; delete B.at.visit; B.at.trusted = true; }
   return B.at;
 }
 function bRemote() { return !!(B.at && REMOTE(B.at.exec)); }
 function atMissing() { const a = bAt(), m = []; if (!(a.scoutCats || []).length) m.push('who can complete the task'); if (!(a.targets || []).length) m.push('who or what is being investigated'); if (!a.method) m.push('how SavoScouts take part'); if (!a.exec) m.push('where the task can be completed'); if (!bRemote() && !B.regions.length) m.push('a city for the visit'); if (!bEvid().length && !B.evidNone) m.push('the evidence required, or “No additional evidence”'); return m; }
 function reviewFacts() {
   const a = bAt(), place = B.regions.length ? (B.regions.length > 1 ? B.regions.slice(0, -1).join(', ') + ' and ' + B.regions[B.regions.length - 1] : B.regions[0]) + (bCountries()[0] ? ', ' + bCountries()[0] : '') : (bCountries()[0] || 'Not set');
-  return {who: labs(WHO, a.targets) || 'Not set', scouts: labs(SCOUTCATS, a.scoutCats) || 'Not set', method: wlab(METHOD, a.method) || 'Not set', setting: wlab(WHERE, a.exec) || 'Not set', where: place, visit: REMOTE(a.exec) ? 'Not required' : a.exec === 'mixed' ? 'For part of the task' : 'Required', spot: a.exec === 'outlet' ? a.placeType : a.exec === 'address' ? a.placeText : ''};
+  return {who: labs(WHO, a.targets) || 'Not set', scouts: scoutLabel(a) || 'Not set', method: wlab(METHOD, a.method) || 'Not set', setting: wlab(WHERE, a.exec) || 'Not set', where: place, visit: REMOTE(a.exec) ? 'Not required' : a.exec === 'mixed' ? 'For part of the task' : 'Required', spot: a.exec === 'outlet' ? a.placeType : a.exec === 'address' ? a.placeText : ''};
 }
 /* the brief SavoScouts read before accepting: written from the structured attributes, so it always matches them */
-function taskBrief(s) {
+function taskBrief(s, route) {
   const a = s.attrs; if (!a) return '';
-  const ev = (s.evidence || []).filter(k => EVREQ[k]), opt = s.evidenceOptional || {}, req = ev.filter(k => !opt[k]), op = ev.filter(k => opt[k]), per = s.perScout || 1, low = t => t.charAt(0).toLowerCase() + t.slice(1);
+  const own = route === 'first' && a.method !== 'experience', trade = firstCats(a).some(c => c !== 'consumers' && c !== 'community');
+  const ev = (s.evidence || []).filter(k => EVREQ[k] && !(route === 'first' && s.attrs.method !== 'experience' && k === 'location')), opt = s.evidenceOptional || {}, req = ev.filter(k => !opt[k]), op = ev.filter(k => opt[k]), per = s.perScout || 1, low = t => t.charAt(0).toLowerCase() + t.slice(1);
   const eng = a.method === 'experience' ? 'Answer from your own experience.' : a.method === 'desk' ? 'Research this online. You do not need to speak to anyone.' : a.method === 'documents' ? 'Review the documents or records described.' : (a.targets || []).some(PEOPLE) || (a.targets || []).includes('everyone') ? 'Speak with: ' + low(labs(WHO, a.targets)) + '.' + (a.method === 'mixed' ? ' Also record what you see.' : '') : 'No one to interview: observe and record.';
   const where = a.exec === 'anywhere' ? 'From anywhere. No visit is needed.' : a.exec === 'market' ? 'From anywhere, if you know the market in ' + ((s.regions || []).join(', ') || s.country) + '. No visit is needed.' : (a.exec === 'mixed' ? 'Partly remote, partly a visit: ' : 'A visit is required: ') + (a.exec === 'address' && a.placeText ? a.placeText : (a.exec === 'outlet' && a.placeType ? a.placeType + ' in ' : '') + ((s.regions || []).join(', ') || s.country)) + '.';
-  return ['*Who can do this*\n' + labs(SCOUTCATS, a.scoutCats), '*What you do*\n' + eng, '*Where*\n' + where, '*Evidence*\n' + (req.length ? req.map(k => '• ' + EVREQ[k][1]).join('\n') : 'No additional evidence is needed.') + (op.length ? '\nOptional:\n' + op.map(k => '• ' + EVREQ[k][1]).join('\n') : ''), '*Responses needed from you*\n' + per + (per === 1 ? ' completed response' : ' completed responses') + (s.deadline ? '\n*Complete by*\n' + dt(s.deadline) : '')].join('\n\n');
+  return ['*Who can do this*\n' + scoutLabel(a), '*What you do*\n' + (own ? 'Answer about your own ' + (trade ? 'business' : 'experience') + '. You are answering first-hand, so no one interviews you.' : eng), '*Where*\n' + (own ? 'Wherever you are. No visit is needed.' : where), '*Evidence*\n' + (req.length ? req.map(k => '• ' + EVREQ[k][1]).join('\n') : 'No additional evidence is needed.') + (op.length ? '\nOptional:\n' + op.map(k => '• ' + EVREQ[k][1]).join('\n') : ''), '*Responses needed from you*\n' + (own ? 1 : per) + (per === 1 || own ? ' completed response' : ' completed responses') + (s.deadline ? '\n*Complete by*\n' + dt(s.deadline) : '')].join('\n\n');
 }
 function bAsTask() { return {attrs: bAt(), evidence: bEvid(), evidenceOptional: B.evidOpt || {}, perScout: B.perScout || 1, regions: B.regions, country: bCountries()[0] || '', deadline: null}; }
 function atEditor() {
@@ -1499,6 +1526,7 @@ function atEditor() {
     ${set('How should SavoScouts take part?', '', METHOD.slice(0, -1).map(x => row('radio', 'amt', x[0], a.method === x[0], x[1])).join(''))}
     ${set('Where can the task be completed?', 'Not every task needs a visit.', WHERE.slice(0, -1).map(x => row('radio', 'aex', x[0], a.exec === x[0], x[1])).join(''))}
     ${a.exec === 'outlet' ? `<div class="field wz-sub"><label for="at-pt">Type of location</label><input class="in" id="at-pt" data-atx="placeType" placeholder="For example, supermarkets, grocery shops and markets" value="${esc(a.placeType || '')}"></div>` : a.exec === 'address' ? `<div class="field wz-sub"><label for="at-pt">Address or location</label><input class="in" id="at-pt" data-atx="placeText" placeholder="For example, Wuse Market, Abuja" value="${esc(a.placeText || '')}"></div>` : ''}
+    ${dualRoute(a) ? `<label class="rv-screen" style="padding:0"><input type="checkbox" data-atr="1"${a.trusted ? ' checked' : ''}><span><b>Researchers need a track record first</b><small>Only researchers with ${TRUST_TEXT} can interview people for this task. Newer researchers start with price and shelf checks.</small></span></label>` : ''}
     <div class="row" style="gap:10px;flex-wrap:wrap"><button type="button" class="btn ghost sm" data-act="atrec">${ic.spark}Let Verisavo recommend</button><button type="button" class="btn sm" data-act="atdone">Done</button></div></div>`;
 }
 /* a question with a condition is asked only when an earlier single-choice answer matches */
@@ -1544,17 +1572,18 @@ function qRow(q, i) {
 }
 /* Preview as SavoScout: walk through the task as it will be asked, without sending anything */
 let PV = null;
-function pvQs() { return B.questions.filter(q => condOk(q, B.questions, PV.ans)); }
+function pvQs() { return B.questions.filter(q => !(PV.route === 'first' && q.screen) && condOk(q, B.questions, PV.ans)); }
+const pvText = q => PV.route === 'first' ? firstVoice(q) : q.text;
 function pvView() {
   const P = pricing(B.responses, B.timeframe), qs = pvQs(), n = qs.length, i = PV.i, q = qs[i], a = q ? PV.ans[q.id] : null;
   const opt = (o, on, act) => `<button type="button" class="pv-o${on ? ' on' : ''}" data-act="${act}" data-v="${esc(String(o))}">${esc(String(o))}</button>`;
   let body;
-  if (i < 0) body = `<div class="wa-b">${fmtMsg(`*New job available near you*\n${B.title || 'Your investigation'}\nLocation: ${B.location || B.regions.join(', ') || '—'}\nTime: about ${Math.max(5, Math.round(B.questions.length * 1.5 + 4))} min\nReward: *${fmt(P.rewardPts, 2)} VeriPoints* after verification`)}</div><div class="wa-b">${fmtMsg('*What to do*\n' + (B.brief || 'Answer the questions in order.') + '\n\n' + taskBrief(bAsTask()))}</div><button class="btn" data-act="pv-next">Accept job</button>`;
-  else if (i >= n) body = `<div class="wa-b">${fmtMsg('*Review your answers*\n' + (qs.map((x, j) => (j + 1) + '. ' + x.text + '\n_' + (Array.isArray(PV.ans[x.id]) ? PV.ans[x.id].join(', ') : PV.ans[x.id] || 'No answer') + '_').join('\n') || 'No questions.'))}</div><p class="faint" style="font-size:12.5px;margin:0">This is where the SavoScout submits. In this preview nothing is sent.</p><div class="row" style="gap:8px"><button class="btn ghost" data-act="pv-back">Back</button><button class="btn" data-act="pv-restart">Start again</button></div>`;
-  else body = `<div class="wa-b">${fmtMsg(`*Question ${i + 1} of ${n}*\n${q.text}`)}</div>
+  if (i < 0) body = `<div class="wa-b">${fmtMsg(`*New job available near you*\n${B.title || 'Your investigation'}\nLocation: ${B.location || B.regions.join(', ') || '—'}\nTime: about ${Math.max(5, Math.round(B.questions.length * 1.5 + 4))} min\nReward: *${fmt(P.rewardPts, 2)} VeriPoints* after verification`)}</div><div class="wa-b">${fmtMsg('*What to do*\n' + (B.brief || 'Answer the questions in order.') + '\n\n' + taskBrief(bAsTask(), PV.route))}</div><button class="btn" data-act="pv-next">Accept job</button>`;
+  else if (i >= n) body = `<div class="wa-b">${fmtMsg('*Review your answers*\n' + (qs.map((x, j) => (j + 1) + '. ' + pvText(x) + '\n_' + (Array.isArray(PV.ans[x.id]) ? PV.ans[x.id].join(', ') : PV.ans[x.id] || 'No answer') + '_').join('\n') || 'No questions.'))}</div><p class="faint" style="font-size:12.5px;margin:0">This is where the SavoScout submits. In this preview nothing is sent.</p><div class="row" style="gap:8px"><button class="btn ghost" data-act="pv-back">Back</button><button class="btn" data-act="pv-restart">Start again</button></div>`;
+  else body = `<div class="wa-b">${fmtMsg(`*Question ${i + 1} of ${n}*\n${pvText(q)}`)}</div>
     ${q.type === 'single' ? `<div class="pv-opts">${(q.options || []).map(o => opt(o, a === o, 'pv-ans')).join('')}</div>` : q.type === 'multi' ? `<div class="pv-opts">${(q.options || []).map(o => opt(o, (a || []).includes(o), 'pv-tog')).join('')}</div><span class="faint" style="font-size:12.5px">Tap all that apply.</span>` : q.type === 'scale' || q.type === 'rating' ? `<div class="pv-opts pv-line">${[1, 2, 3, 4, 5].map(v => opt(q.type === 'rating' ? '★'.repeat(v) : v, String(a) === String(q.type === 'rating' ? '★'.repeat(v) : v), 'pv-ans')).join('')}</div>` : q.type === 'photo' ? `<button type="button" class="pv-o${a ? ' on' : ''}" data-act="pv-ans" data-v="Photo attached">${ic.camera}<span>${a ? 'Photo attached' : 'Take a photo'}</span></button>` : q.type === 'paragraph' ? `<textarea class="in" data-pv="1" placeholder="Type your answer" aria-label="Your answer">${esc(a || '')}</textarea>` : `<input class="in" data-pv="1" ${q.type === 'number' ? 'inputmode="decimal"' : ''} placeholder="${q.type === 'number' ? 'A number' + (q.unit ? ' (' + q.unit + ')' : '') : q.type === 'date' ? 'DD/MM/YYYY' : 'Type your answer'}" aria-label="Your answer" value="${esc(a || '')}">`}
     <div class="row" style="gap:8px"><button class="btn ghost" data-act="pv-back">Back</button><button class="btn" data-act="pv-next">${i === n - 1 ? 'Finish' : 'Next'}</button></div>`;
-  layer(`<div class="modal-bg" data-act="close"><div class="modal pv" role="dialog" aria-label="Preview as SavoScout"><div class="row between"><b>Preview as SavoScout</b><button class="iconbtn" data-act="close" aria-label="Close preview">${ic.x}</button></div><p class="faint" style="font-size:12.5px;margin:-8px 0 0">How the Verisavo agent asks this task on WhatsApp. Nothing is sent.</p><div class="pv-body">${body}</div></div></div>`);
+  layer(`<div class="modal-bg" data-act="close"><div class="modal pv" role="dialog" aria-label="Preview as SavoScout"><div class="row between"><b>Preview as SavoScout</b><button class="iconbtn" data-act="close" aria-label="Close preview">${ic.x}</button></div><p class="faint" style="font-size:12.5px;margin:-8px 0 0">How the Verisavo agent asks this task on WhatsApp. Nothing is sent.</p>${dualRoute(bAt()) ? `<div class="pv-rt" role="group" aria-label="Preview as"><button type="button" class="${PV.route === 'first' ? 'on' : ''}" data-act="pv-route" data-v="first">Answering first-hand</button><button type="button" class="${PV.route === 'first' ? '' : 'on'}" data-act="pv-route" data-v="reported">As a researcher</button></div>` : ''}<div class="pv-body">${body}</div></div></div>`);
 }
 function qEditor(q, i) {
   const opts = (q.type === 'single' || q.type === 'multi') ? `<div class="stack" style="gap:6px">${(q.options || []).map((o, j) => `<div class="opt"><span class="faint" style="width:18px">${q.type === 'single' ? '○' : '☐'}</span><input class="in" id="qo-${q.id}-${j}" aria-label="Option ${j + 1}" data-qo="${i}:${j}" value="${esc(o)}"><button class="iconbtn" data-act="delopt" data-v="${i}:${j}" aria-label="Remove option">${ic.x}</button></div>`).join('')}<button class="link" data-act="addopt" data-v="${i}" style="justify-self:start">${ic.plus}Add option</button></div>` : '';
@@ -1583,10 +1612,10 @@ const AGENT_NO = '+233 20 555 0142';
 const loc = (s) => s.location || (s.regions || [])[0] || s.country;
 const dur = (s) => Math.max(5, Math.round((s.questions || []).length * 1.5 + 4));
 /* eligibility comes from the stored attributes, never from the wording of the brief */
-function eligible(s, sc) { const a = s.attrs; if (!a) return true; const need = a.scoutCats || [], cats = sc.cats && sc.cats.length ? sc.cats : null; if (cats && need.length && !need.includes('everyone') && !need.some(x => cats.includes(x))) return false; if (a.exec !== 'anywhere' && s.country && sc.country && s.country !== sc.country) return false; return true; }
+function eligible(s, sc) { const r = routeFor(s, sc); return !!r && r !== 'locked'; }
 function recSurveys() {
   const sc = myScout() || {}; const cnt = {}; mySubs().forEach(x => cnt[x.surveyId] = (cnt[x.surveyId] || 0) + 1);
-  return surveys().filter(s => s.status === 'active' && (cnt[s.id] || 0) < (s.perScout || 1) && eligible(s, sc)).sort((a, b) => (b.country === sc.country) - (a.country === sc.country) || ((b.regions || []).includes(sc.city)) - ((a.regions || []).includes(sc.city)) || b.createdAt - a.createdAt);
+  return surveys().filter(s => s.status === 'active' && eligible(s, sc) && (cnt[s.id] || 0) < (routeFor(s, sc) === 'first' ? 1 : (s.perScout || 1))).sort((a, b) => (b.country === sc.country) - (a.country === sc.country) || ((b.regions || []).includes(sc.city)) - ((a.regions || []).includes(sc.city)) || b.createdAt - a.createdAt);
 }
 
 /* ---------- registration and WhatsApp linking (web, from the Figma flow) ---------- */
@@ -1690,13 +1719,14 @@ function askNext() {
   const c = W.cs, s = S.surveys[c.sid]; if (!s) { c.mode = 'idle'; return say('That job has closed. Reply *JOBS* to see others.', MENU()); }
   const qs = s.questions || [];
   c.qi++;
-  while (c.qi < qs.length && !condOk(qs[c.qi], qs, c.answers || {})) c.qi++;
+  /* someone answering first-hand does not screen themselves */
+  while (c.qi < qs.length && (!condOk(qs[c.qi], qs, c.answers || {}) || (c.route === 'first' && qs[c.qi].screen && (c.answers[qs[c.qi].id] = 'Yes')))) c.qi++;
   if (c.qi < qs.length) return ask(qs[c.qi], c.qi, qs.length);
-  if (!c.media.length) { c.needPhoto = true; return say('Almost done. Please send *at least one photo* of the product on display. Tap the camera button below.'); }
+  if (!c.media.length && needsPhoto(s)) { c.needPhoto = true; return say('Almost done. Please send *at least one photo* of the product on display. Tap the camera button below.'); }
   review();
 }
 function ask(q, i, n) {
-  const h = `*Question ${i + 1} of ${n}*\n${q.text}`;
+  const h = `*Question ${i + 1} of ${n}*\n${W.cs.route === 'first' ? firstVoice(q) : q.text}`;
   if (q.type === 'single') return say(h, q.options.map(o => ({l: o, a: 'ans', v: o})));
   if (q.type === 'multi') { W.cs.multi = []; return say(h + '\n_Tap all that apply, then Done._', [...q.options.map(o => ({l: o, a: 'tog', v: o})), {l: 'Done', a: 'multidone'}], {multi: true}); }
   if (q.type === 'scale') return say(h + '\n_1 = low, 5 = high_', [1, 2, 3, 4, 5].map(v => ({l: String(v), a: 'ans', v})));
@@ -1726,6 +1756,7 @@ async function waSubmit() {
   render(); await new Promise(r => setTimeout(r, 900));
   const id = uid('sb');
   const doc = {surveyId: c.sid, surveyTitle: s.title, scoutId: S.me, scoutName: sc.name, region: (s.regions || []).includes(sc.city) ? sc.city : (s.regions || [])[0] || sc.city, country: s.country,
+    route: s.attrs ? (c.route === 'first' ? 'first' : c.route === 'reported' ? 'reported' : 'observed') : null,
     role: ((s.questions || []).find(q => q.role) && c.answers[(s.questions || []).find(q => q.role).id]) || null, basis: s.attrs ? {method: s.attrs.method, exec: s.attrs.exec, scoutCats: (myScout() || {}).cats || []} : null,
     answers: c.answers, media: c.media, reward: s.rewardPts, status: 'pending', createdAt: Date.now(), channel: 'whatsapp', checks: {gps: true, duplicate: mySubs().filter(x => x.surveyId === c.sid).length >= ((S.surveys[c.sid] || {}).perScout || 1), consistency: true}};
   W.seen.subs[id] = 'pending';
@@ -1745,17 +1776,18 @@ function waAct(a, v) {
     const me = myScout() || {};
     let job = recSurveys().find(s => s.country === me.country);
     if (!job) { const id = sampleJob(); job = {id, ...S.surveys[id]}; }
-    return reply(() => say(`*A job near you*\n\n*${job.title}*\n${loc(job)} · ${fmt(job.rewardPts, 2)} VeriPoints · ~${dur(job)} min${job.sample ? '\n_Sample job for this preview._' : ''}\n\nView the details or accept it now.`, [{l: 'View details', a: 'job', v: job.id}, {l: 'Accept job', a: 'accept', v: job.id}]));
+    return reply(() => say(`*A job near you*\n\n*${job.title}*\n${loc(job)} · ${fmt(job.rewardPts, 2)} VeriPoints · ~${dur(job)} min${job.sample ? '\n_Sample job for this preview._' : ''}\n\nView the details or accept it now.${(n => n ? `\n\n_${n} interview task${n === 1 ? '' : 's'} will open to you once you have ${TRUST_TEXT}. You have ${scoutTrust(S.me).ok} verified so far._` : '')(surveys().filter(x => x.status === 'active' && routeFor(x, me) === 'locked').length)}`, [{l: 'View details', a: 'job', v: job.id}, {l: 'Accept job', a: 'accept', v: job.id}]));
   }
   if (a === 'job') {
     const s = S.surveys[v]; if (!s) return;
-    return reply(() => say(`*${s.title}*\n${s.request || ''}\n\n*What to do*\n${s.brief || 'Answer the questions in order.'}\n\nLocation: ${loc(s)}${s.regions?.length ? ' (' + s.regions.join(', ') + ')' : ''}\nQuestions: ${(s.questions || []).length}\nTime: about ${dur(s)} min\nReward: *${fmt(s.rewardPts, 2)} VeriPoints* after verification\nDeadline: ${dt(s.deadline)}\n\n${s.attrs ? taskBrief(s) : 'You must be within 100 m of the location and send at least one photo.'}`, [{l: 'Accept job', a: 'accept', v: s.id}, {l: 'Back to jobs', a: 'jobs'}]));
+    return reply(() => say(`*${s.title}*\n${s.request || ''}\n\n*What to do*\n${s.brief || 'Answer the questions in order.'}\n\nLocation: ${loc(s)}${s.regions?.length ? ' (' + s.regions.join(', ') + ')' : ''}\nQuestions: ${(s.questions || []).length}\nTime: about ${dur(s)} min\nReward: *${fmt(s.rewardPts, 2)} VeriPoints* after verification\nDeadline: ${dt(s.deadline)}\n\n${s.attrs ? taskBrief(s, routeFor(s, myScout() || {})) : 'You must be within 100 m of the location and send at least one photo.'}`, [{l: 'Accept job', a: 'accept', v: s.id}, {l: 'Back to jobs', a: 'jobs'}]));
   }
   if (a === 'accept') {
     const s = S.surveys[v]; if (!s || s.status !== 'active') return reply(() => say('Sorry, that job is no longer open.', MENU()));
     if (c.mode === 'job' && c.sid !== v) return reply(() => say('Finish or cancel your current job first.', [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
     mine('Accept job');
-    W.cs = {mode: 'job', sid: v, qi: -1, answers: {}, media: [], located: false};
+    W.cs = {mode: 'job', sid: v, qi: -1, answers: {}, media: [], located: false, route: routeFor(s, myScout() || {})};
+    if (s.attrs && (W.cs.route === 'first' || REMOTE(s.attrs.exec) || !(s.evidence || []).includes('location'))) return reply(() => { say(`*Job accepted* ✓\n${W.cs.route === 'first' ? 'You are answering first-hand, about your own ' + (firstCats(s.attrs).some(x => x !== 'consumers' && x !== 'community') && s.attrs.method !== 'experience' ? 'business' : 'experience') + '.' : 'Let’s get started.'}`); askNext(); });
     return reply(() => say(`*Job accepted* ✓\nLet's get started. Are you at *${loc(s)}*? Share your location so I can confirm you are within 100 m.`, [{l: 'Share location', a: 'loc'}]));
   }
   if (a === 'loc') {
@@ -1946,10 +1978,11 @@ document.addEventListener('click', async (e) => {
   else if (a === 'atrec') { const keep = bAt(); B.at = null; const R = bAt(); R.placeType = keep.placeType; R.placeText = keep.placeText; B.evid = null; bEvid(); render(); toast('Set to what Verisavo recommends for this investigation.'); }
   else if (a === 'openq') { B.openQ = B.openQ === v ? null : v; render(); }
   else if (a === 'moveq') { const [i, d] = v.split(':').map(Number), j = i + d; if (j < 0 || j >= B.questions.length) return; const q = B.questions.splice(i, 1)[0]; B.questions.splice(j, 0, q); B.questions.forEach((x, k) => { if (x.cond && B.questions.findIndex(y => y.id === x.cond.q) >= k) x.cond = null; }); render(); }
-  else if (a === 'pv-open') { PV = {i: -1, ans: {}}; pvView(); }
+  else if (a === 'pv-open') { PV = {i: -1, ans: {}, route: 'reported'}; pvView(); }
+  else if (a === 'pv-route') { PV = {i: -1, ans: {}, route: v}; pvView(); }
   else if (a === 'pv-next') { PV.i = Math.min(PV.i + 1, pvQs().length); pvView(); }
   else if (a === 'pv-back') { PV.i = Math.max(-1, PV.i - 1); pvView(); }
-  else if (a === 'pv-restart') { PV = {i: -1, ans: {}}; pvView(); }
+  else if (a === 'pv-restart') { PV = {i: -1, ans: {}, route: PV.route}; pvView(); }
   else if (a === 'pv-ans') { const q = pvQs()[PV.i]; if (q) { PV.ans[q.id] = v; pvView(); } }
   else if (a === 'pv-tog') { const q = pvQs()[PV.i]; if (q) { const c = PV.ans[q.id] || []; PV.ans[q.id] = c.includes(v) ? c.filter(x => x !== v) : c.concat(v); pvView(); } }
   else if (a === 'saveDraft') saveSurvey('draft');
@@ -2011,6 +2044,7 @@ document.addEventListener('input', (e) => {
   if (d.bevo && B) { B.evidOpt = Object.assign({}, B.evidOpt, {[d.bevo]: !!t.value}); return; }
   if (d.bev === 'none' && B) { B.evidNone = t.checked; if (t.checked) { B.evid = []; B.questions = B.questions.filter(q => q.type !== 'photo'); } render(); return; }
   if (B && (d.asc || d.atg)) { const a = bAt(), key = d.asc ? 'scoutCats' : 'targets'; a[key] = pickMulti(a[key], d.asc || d.atg, t.checked); render(); return; }
+  if (B && d.atr) { bAt().trusted = t.checked; render(); return; }
   if (B && d.amt) { bAt().method = d.amt; render(); return; }
   if (B && d.aex) { bAt().exec = d.aex; render(); return; }
   if (B && d.atx) { bAt()[d.atx] = t.value; return; }
@@ -2635,6 +2669,7 @@ select.in{cursor:pointer}
 .cf-tot{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;border-radius:14px;background:var(--ink);color:#fff}.cf-tot span{display:block;font-size:12.5px;opacity:.75}.cf-tot b{font-size:26px;font-weight:600;line-height:1.2}
 .cf-loc{border:1px solid var(--line);border-radius:14px;padding:6px 14px}.cf-loc>div{display:flex;align-items:center;gap:10px;padding:8px 0}.cf-loc svg{width:17px;height:17px;flex:none;color:var(--ink-2)}.cf-loc span{flex:1;min-width:0}.cf-loc b{font-weight:500}.cf-loc input{width:84px;flex:none}
 .cf-warn{color:var(--bad,#B3261E)}.cf-rec svg{color:var(--primary)}.cf-est{background:var(--paper)}.cf-est h3 svg{width:18px;height:18px;color:var(--ink-2)}
+.rt-note svg{color:var(--primary)}.pv-rt{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:var(--paper)}.pv-rt button{min-height:36px;border:0;border-radius:9px;background:none;font:inherit;font-size:13px;color:var(--ink-2);cursor:pointer}.pv-rt button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .wz-sum{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper)}.wz-sum .kv:last-child{border-bottom:0}.wz-sum .kv b{font-weight:500}.at-ed{display:grid;gap:14px;padding-top:6px;border-top:1px solid var(--line)}
 .rv-evrow{justify-content:space-between}.rv-evrow label{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}.rv-evrow .rv-evsel{width:auto;min-width:118px;min-height:36px;padding:4px 30px 4px 10px;font-size:13px;flex:none}
 .rv-card{display:grid;gap:14px}.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}.rv-grid span{display:block;font-size:12.5px;color:var(--ink-3)}.rv-grid b{font-weight:600;line-height:1.35}
