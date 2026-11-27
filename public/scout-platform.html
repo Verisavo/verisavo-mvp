@@ -1052,6 +1052,12 @@ const DECISIONS = [['enter', 'Whether to enter or expand in this market'], ['pri
 const KIND_LABEL = {'Availability and shelf': ['Shelf availability', 'Whether it is on the shelf, and which rivals sit next to it'], 'Price check': ['Prices', 'Shelf prices against rival packs, and any promotions'], 'Retailer interviews': ['Supply and sellers', 'How outlets are supplied, in the sellers’ own words'], 'Shopper feedback': ['Shoppers', 'Which brand shoppers choose, and why'], 'Outlet mapping': ['Outlets', 'Which outlets exist in the area and what they sell']};
 const DECISION_KINDS = {enter: ['Outlet mapping', 'Availability and shelf'], price: ['Price check', 'Shopper feedback'], distribution: ['Retailer interviews', 'Availability and shelf'], launch: ['Availability and shelf', 'Shopper feedback'], rival: ['Price check', 'Availability and shelf']};
 const PLACES = [['Kiosks', 'Kiosk'], ['Small shops', 'Small shop'], ['Open-market stalls', 'Open-market stall'], ['Supermarkets', 'Supermarket'], ['Wholesalers', 'Wholesaler']];
+const REC = ['auto', 'Let Verisavo recommend'];
+const WHO = [['customers', 'Customers and consumers'], ['merchants', 'Merchants, retailers and vendors'], ['distributors', 'Distributors and wholesalers'], ['researchers', 'Researchers and industry experts'], ['public', 'General public'], ['none', 'No respondents required'], ['other', 'Other'], REC];
+const WHERE = [['anywhere', 'Anywhere, including from home'], ['city', 'Within a specific city or area'], ['outlet', 'At a specific type of business or outlet'], ['address', 'At a specific address or location'], ['mixed', 'A combination of remote and on-site work'], REC];
+const EVID = [['written', 'Written responses'], ['photos', 'Photographs or images'], ['observations', 'Physical observations'], ['documents', 'Documents, receipts or price lists'], ['location', 'Location confirmation'], ['online', 'Online sources and links'], REC];
+const METHOD = [['structured', 'Structured questions'], ['interviews', 'Interviews'], ['observations', 'Market observations'], ['desk', 'Online or desk research'], ['mixed', 'Combination of methods'], REC];
+const wlab = (L, k) => (L.find(x => x[0] === k) || ['', ''])[1];
 function ctxFromText(desc) {
   desc = (desc || '').replace(/\s+/g, ' ').trim(); const low = desc.toLowerCase();
   let city = '', country = '';
@@ -1065,36 +1071,76 @@ function openWizard(ctx, mode) {
   const kinds = (ctx.kinds || [ctx.kind]).filter(k => KIND_LABEL[k]);
   newBuilder(); B.ai = mode === 'direct' ? ctx.gap : '';
   B.wiz = {mode, ctx, decision: prev ? prev.decision : '', product: (ctx.product || '').replace(/^(our|your|my|the) /i, ''), country, city: country && COUNTRIES[country].includes(ctx.city) ? ctx.city : '',
-    kinds, auto: !kinds.length, places: prev ? prev.places.slice() : ['Kiosks', 'Small shops', 'Open-market stalls'], known: prev ? prev.known : ''};
+    kinds, auto: !kinds.length, places: prev ? prev.places.slice() : ['Kiosks', 'Small shops', 'Open-market stalls'], known: '',
+    who: (t => /shopper|customer|consumer|household|buyer/i.test(t) ? 'customers' : /distributor|wholesal|supplier/i.test(t) ? 'distributors' : /expert|researcher|analyst/i.test(t) ? 'researchers' : /shop|retail|seller|vendor|merchant|kiosk|stall|outlet|stock|shel|store/i.test(t) ? 'merchants' : '')((ctx.gaps || [ctx.gap]).join(' ')),
+    whereMode: (t => /online|by phone|phone call|from home|remote/i.test(t) ? 'anywhere' : /shop|market|supermarket|kiosk|stall|outlet|shel|store|retail/i.test(t) ? 'outlet' : '')((ctx.gaps || [ctx.gap]).join(' ')),
+    evidence: kinds.some(k => /Availability|Price|Outlet/.test(k)) || /shel|price|display|stock/i.test((ctx.gaps || [ctx.gap]).join(' ')) ? ['written', 'photos', 'observations'] : [],
+    method: 'auto', placeType: '', placeText: '', whoOther: '', ask: false, all: false};
+  const txt = (ctx.gaps || [ctx.gap]).join(' ').toLowerCase(); B.wiz.cities = country ? COUNTRIES[country].filter(c => new RegExp('\\b' + c.toLowerCase() + '\\b').test(txt)) : []; if (B.wiz.city && !B.wiz.cities.includes(B.wiz.city)) B.wiz.cities.unshift(B.wiz.city);
 }
+function wizMissing(w) { return {place: !w.country || !w.city, who: !w.who, where: !w.whereMode, evidence: !w.evidence.length}; }
 function wizView() {
-  const w = B.wiz, gaps = w.ctx.gaps && w.ctx.gaps.length ? w.ctx.gaps : [w.ctx.gap], cities = COUNTRIES[w.country] || [], ok = !!(w.country && w.city && w.kinds.length);
-  const box = (key, i, on, t, d) => `<label class="gaprow"><input type="checkbox" id="${key}-${i}" data-${key}="${i}"${on ? ' checked' : ''}><span class="gbody"><b>${t}</b>${d ? `<small>${d}</small>` : ''}</span></label>`;
+  const w = B.wiz, gaps = w.ctx.gaps && w.ctx.gaps.length ? w.ctx.gaps : [w.ctx.gap], cities = COUNTRIES[w.country] || [];
+  const show = k => w.all || (w.ask && w.asked && w.asked[k]), open = w.all || w.ask;
+  const row = (type, attr, val, on, t) => `<label class="gaprow"><input type="${type}" data-${attr}="${val}"${type === 'radio' ? ' name="' + attr + '"' : ''}${on ? ' checked' : ''}><span class="gbody"><b>${t}</b></span></label>`;
+  const set = (title, hint, body) => `<fieldset class="field wiz-set"><legend class="flabel">${title}</legend>${hint ? `<p class="faint wiz-hint">${hint}</p>` : ''}<div class="gapscroll wiz-list">${body}</div></fieldset>`;
+  const und = [w.who && w.who !== 'auto' ? wlab(WHO, w.who).toLowerCase() : '', w.whereMode && w.whereMode !== 'auto' ? wlab(WHERE, w.whereMode).toLowerCase() : '', w.evidence.filter(x => x !== 'auto').map(x => wlab(EVID, x).toLowerCase()).join(', ')].filter(Boolean);
+  const qs = [
+    show('place') ? `<div class="field"><label for="w-prod">Which product or category?</label><input class="in" id="w-prod" data-w="product" placeholder="For example, cooking oil" value="${esc(w.product)}"></div>
+    <div class="field"><span class="flabel" id="w-where">Which country and city?</span><div class="wiz-two"><select class="in" id="w-country" data-w="country" aria-labelledby="w-where"><option value="">Country</option>${Object.keys(COUNTRIES).map(c => `<option${w.country === c ? ' selected' : ''}>${c}</option>`).join('')}</select><select class="in" id="w-city" data-w="city" aria-label="City"${cities.length ? '' : ' disabled'}><option value="">City</option>${cities.map(c => `<option${w.city === c ? ' selected' : ''}>${c}</option>`).join('')}</select></div></div>` : '',
+    show('who') ? set('Who should this investigation focus on?', '', WHO.map(x => row('radio', 'ww', x[0], w.who === x[0], x[1])).join('')) + (w.who === 'other' ? `<div class="field wz-sub"><label for="w-whoo">Who?</label><input class="in" id="w-whoo" data-w="whoOther" placeholder="For example, farmers or drivers" value="${esc(w.whoOther || '')}"></div>` : '') : '',
+    show('where') ? set('Where should the task be carried out?', '', WHERE.map(x => row('radio', 'wm', x[0], w.whereMode === x[0], x[1])).join('')) + (w.whereMode === 'outlet' ? `<div class="field wz-sub"><label for="w-pt">Type of location</label><input class="in" id="w-pt" data-w="placeType" placeholder="For example, supermarkets, grocery shops and markets" value="${esc(w.placeType || '')}"></div>` : w.whereMode === 'address' ? `<div class="field wz-sub"><label for="w-pt">Address or location</label><input class="in" id="w-pt" data-w="placeText" placeholder="For example, Wuse Market, Abuja" value="${esc(w.placeText || '')}"></div>` : '') : '',
+    show('evidence') ? set('What evidence should SavoScouts provide?', 'Select all that apply.', EVID.map(x => row('checkbox', 'wev', x[0], w.evidence.includes(x[0]), x[1])).join('')) : '',
+    w.all ? set('How should the research be carried out?', '', METHOD.map(x => row('radio', 'wmt', x[0], w.method === x[0], x[1])).join('')) : '',
+    open ? `<div class="field"><label for="w-known">Anything else we should consider? <span class="faint" style="font-weight:400">Optional</span></label><textarea class="in" id="w-known" data-w="known" placeholder="Add any specific requirements or important context">${esc(w.known)}</textarea></div>` : ''].filter(Boolean);
   return `<div class="narrow wiz"><div class="stack">
-    <div><h2 style="font-size:22px">A few questions first</h2><p class="muted" style="margin:2px 0 0">${w.mode === 'gaps' ? 'Verisavo has filled in what your conversation already says. Check the answers and add what is missing, so the task fits the decision ahead.' : 'So Verisavo can tailor the task to your decision. Answers are filled in where your description already says it.'}</p></div>
-    ${w.demo ? `<div class="note prepnote">${ic.spark}<span><b>Worked example.</b> The answers are filled in to show how it works. Change anything, or press Generate task to see the task it builds. The finished version of this investigation is under Manage investigations as Rice shopper choice in Accra.</span></div>` : ''}
-    <div class="note gapnote">${ic.info}<span><b>${w.mode === 'gaps' ? (gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap') : 'What you want to investigate'}</b> ${gaps.length > 1 ? '<ul class="gaplist">' + gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(gaps[0])}${w.ctx.from ? `<br><span class="faint">From: ${esc(w.ctx.from)}</span>` : ''}</span></div>
-    <div class="field"><label for="w-dec">1. What decision will this evidence support?</label><select class="in" id="w-dec" data-w="decision"><option value="">Choose a decision</option>${DECISIONS.map(d => `<option value="${d[0]}"${w.decision === d[0] ? ' selected' : ''}>${d[1]}</option>`).join('')}</select></div>
-    <div class="field"><label for="w-prod">2. Which product or category?</label><input class="in" id="w-prod" data-w="product" placeholder="For example, cooking oil" value="${esc(w.product)}"></div>
-    <div class="field"><span class="flabel" id="w-where">3. Where should SavoScouts work?</span><div class="wiz-two"><select class="in" id="w-country" data-w="country" aria-labelledby="w-where"><option value="">Country</option>${Object.keys(COUNTRIES).map(c => `<option${w.country === c ? ' selected' : ''}>${c}</option>`).join('')}</select><select class="in" id="w-city" data-w="city" aria-label="City"${cities.length ? '' : ' disabled'}><option value="">${cities.length ? 'City' : 'Choose a country first'}</option>${cities.map(c => `<option${w.city === c ? ' selected' : ''}>${c}</option>`).join('')}</select></div></div>
-    <fieldset class="field wiz-set"><legend class="flabel">4. What should SavoScouts find out?</legend><p class="faint wiz-hint">${w.kinds.length ? 'Ticked from ' + (w.mode === 'gaps' ? 'the gap' + (gaps.length > 1 ? 's' : '') : 'your description') + (w.decision ? ' and your decision' : '') + '. Change as needed.' : 'Tick at least one.'}</p><div class="gapscroll wiz-list">${Object.keys(KIND_LABEL).map((k, i) => box('wk', i, w.kinds.includes(k), KIND_LABEL[k][0], KIND_LABEL[k][1])).join('')}</div></fieldset>
-    <fieldset class="field wiz-set"><legend class="flabel">5. Which places should they visit?</legend><div class="gapscroll wiz-list">${PLACES.map((p, i) => box('wp', i, w.places.includes(p[0]), p[0], '')).join('')}</div></fieldset>
-    <div class="field"><label for="w-known">6. Anything Verisavo should know? <span class="faint" style="font-weight:400">Optional</span></label><textarea class="in" id="w-known" data-w="known" placeholder="For example, the rival brand to watch, or what you already know">${esc(w.known)}</textarea></div>
+    <div><h2 style="font-size:24px">${w.mode === 'gaps' ? 'Let’s investigate what is missing.' : 'Let’s investigate your question.'}</h2><p class="muted" style="margin:4px 0 0">${w.mode === 'gaps' ? 'We’ve brought together the market questions you selected. Use them to create your investigation.' : 'Verisavo uses what you described to create your investigation.'}</p></div>
+    ${w.demo ? `<div class="note prepnote">${ic.spark}<span><b>Worked example.</b> Press Generate task to see the task Verisavo builds. The finished version of this investigation is under Manage investigations as Rice shopper choice in Accra.</span></div>` : ''}
+    <div class="card wz-gaps"><div class="row between"><h3 style="font-size:16px">${w.mode === 'gaps' ? 'Selected intelligence gaps' : 'What you want to investigate'}</h3>${w.mode === 'gaps' ? `<span class="faint" style="font-size:13px">${gaps.length} selected</span>` : ''}</div>
+      <ul class="wz-list">${gaps.map(x => '<li>' + ic.checkc + '<span>' + esc(x) + '</span></li>').join('')}</ul>
+      <p class="faint wz-src">Source: ${w.mode === 'gaps' ? 'Conversation with Verisavo Assistant' : 'Your description'}</p>
+      ${!w.country || !w.city ? '' : `<div class="tags">${[w.product ? w.product.charAt(0).toUpperCase() + w.product.slice(1) : '', ...(w.cities && w.cities.length ? w.cities : [w.city]), w.country].filter(Boolean).map(x => '<span class="tag">' + esc(x) + '</span>').join('')}</div>`}</div>
+    <div class="card wz-card stack">
+      <div><span class="wz-ico">${ic.spark}</span><h3 style="font-size:20px;margin-top:6px">Task Wizard</h3>${open ? `<p style="font-size:17px;font-weight:600;margin:8px 0 0">A few details before we begin.</p><p class="muted" style="margin:4px 0 0">Help us create the right task for your investigation. We’ve already included what we know.</p>` : `<p class="muted" style="margin:4px 0 0">Create a tailored task using your ${w.mode === 'gaps' ? 'selected questions' : 'description'}, market context and investigation needs.</p>`}</div>
+      ${qs.join('')}
+      ${!w.all && und.length ? `<p class="faint wz-und">Verisavo will build it for: ${esc(und.join('; '))}. <button type="button" class="link" data-act="wizall">Change</button></p>` : ''}
+      <button class="btn wz-go" data-act="wizgo">${ic.spark}Generate task</button>
+      <p class="faint" style="font-size:12.5px;margin:0;text-align:center">You can edit the generated task before launching.</p>
+    </div>
+    <div class="manual-alt"><span class="muted">Want more control over the task?</span><button type="button" class="btn ghost sm" data-act="manual">Build it manually</button></div>
   </div></div>`;
 }
 function wizGenerate() {
-  const w = B.wiz; if (!w || !w.country || !w.city || !w.kinds.length) return;
-  const gaps = w.ctx.gaps && w.ctx.gaps.length ? w.ctx.gaps : [w.ctx.gap], ai = B.ai, prod = w.product.trim();
-  fromGapCtx(JSON.stringify({...w.ctx, gaps, gap: gaps.join(' '), kinds: w.kinds, kind: w.kinds[0], city: w.city, country: w.country, product: prod, exact: true}));
+  const w = B.wiz; if (!w || !w.country || !w.city) return;
+  const gaps = w.ctx.gaps && w.ctx.gaps.length ? w.ctx.gaps : [w.ctx.gap], ai = B.ai, prod = w.product.trim(), ev = w.evidence.filter(x => x !== 'auto'), talk = ['Retailer interviews', 'Shopper feedback'];
+  let kinds = w.kinds.slice(); const add = k => { if (!kinds.includes(k)) kinds.push(k); };
+  if (w.who === 'merchants' || w.who === 'distributors') add('Retailer interviews'); if (w.who === 'customers' || w.who === 'public') add('Shopper feedback');
+  if (w.method === 'interviews') add(w.who === 'customers' || w.who === 'public' ? 'Shopper feedback' : 'Retailer interviews');
+  if (w.method === 'observations') add('Availability and shelf');
+  if (w.who === 'none' || w.method === 'observations') kinds = kinds.filter(k => !talk.includes(k));
+  if (!kinds.length) kinds.push('Availability and shelf');
+  fromGapCtx(JSON.stringify({...w.ctx, gaps, gap: gaps.join(' '), kinds, kind: kinds[0], city: w.city, country: w.country, product: prod, exact: true}));
   if (w.mode === 'direct') { B.ai = ai; B.typed = true; B.gapFrom = ''; }
-  const P = prod || 'the product', one = PLACES.filter(p => w.places.includes(p[0]));
-  if (one.length && B.questions[0]) B.questions[0].options = one.map(p => p[1]).concat(one.length < PLACES.length ? ['Other'] : []);
-  if (one.length) { const l = one.map(p => p[0].toLowerCase()); B.location = (l.length > 1 ? l.slice(0, -1).join(', ') + ' and ' + l[l.length - 1] : l[0]).replace(/^./, c => c.toUpperCase()) + ' in ' + w.city; }
-  const dq = {enter: newQ('paragraph', `In the seller’s view, is there room for another brand of ${P} here? Why?`), price: newQ('single', `How do shoppers react when the price of ${P} goes up?`, ['Keep buying the same brand', 'Switch to a cheaper brand', 'Buy a smaller pack', 'Buy less often', 'Seller not sure']), distribution: newQ('single', `In the last month, how often did this outlet run short of ${P}?`, ['Never', 'Once', 'Two or three times', 'Most weeks']), launch: newQ('single', `Would the seller stock a new pack or variant of ${P}?`, ['Yes', 'Maybe, if the margin is right', 'No', 'Not sure']), rival: newQ('paragraph', 'What has the leading rival changed recently: price, promotion, pack or supply?')}[w.decision];
-  if (dq && B.questions.length < 20 && !B.questions.some(q => q.text === dq.text)) B.questions.push(dq);
-  const dec = (DECISIONS.find(d => d[0] === w.decision) || [])[1];
-  B.brief = (dec && w.decision !== 'other' ? 'Purpose: this evidence will help decide ' + dec.charAt(0).toLowerCase() + dec.slice(1) + '. ' : '') + B.brief + (one.length ? ' Visit: ' + one.map(p => p[0].toLowerCase()).join(', ') + '.' : '') + (w.known.trim() ? ' Background from the client: ' + w.known.trim() : '');
-  B.wizAns = {mode: w.mode, decision: w.decision, places: w.places.slice(), known: w.known}; B.wiz = null;
+  if (w.cities && w.cities.length > 1 && w.cities.includes(w.city)) { B.regions = w.cities.slice(); B.title = B.title.replace(' in ' + w.city, ' in ' + w.cities.slice(0, -1).join(', ') + ' and ' + w.cities[w.cities.length - 1]); B.location = B.location.replace(' in ' + w.city, ' in ' + w.cities.join(' and ')); }
+  const P = prod || 'the product', C = B.regions.length > 1 ? B.regions.join(' and ') : w.city, room = () => B.questions.length < 20, desk = w.method === 'desk';
+  const where = desk && (!w.whereMode || w.whereMode === 'auto') ? 'anywhere' : w.whereMode;
+  if (where === 'anywhere') B.location = 'Anywhere in ' + C + ', including from home';
+  else if (where === 'city') B.location = 'Anywhere in ' + C;
+  else if (where === 'outlet' && (w.placeType || '').trim()) B.location = w.placeType.trim().replace(/^./, c => c.toUpperCase()) + ' in ' + C;
+  else if (where === 'address' && (w.placeText || '').trim()) B.location = w.placeText.trim();
+  else if (where === 'mixed') B.location = 'Remote and on-site in ' + C;
+  if (w.who === 'researchers' && room()) B.questions.push(newQ('paragraph', `In your expert view, what best explains this for ${P} in ${C}?`));
+  if (w.method === 'structured') { const keep = B.questions.filter(q => q.type !== 'paragraph'); if (keep.length >= 3) B.questions = keep; }
+  const wantPhoto = ev.length ? ev.includes('photos') || ev.includes('documents') : !desk;
+  if (!wantPhoto) B.questions = B.questions.filter(q => q.type !== 'photo');
+  else if (ev.includes('photos') && !B.questions.some(q => q.type === 'photo') && room()) B.questions.push(newQ('photo', 'Photograph what you observed.'));
+  if (ev.includes('documents') && room()) B.questions.push(newQ('photo', 'Photograph a receipt or price list, if the seller agrees.'));
+  if (ev.includes('online') && room()) B.questions.push(newQ('short', 'Paste a link to the online source you used.'));
+  if (ev.includes('written') && !B.questions.some(q => q.type === 'paragraph') && w.method !== 'structured' && room()) B.questions.push(newQ('paragraph', 'In your own words, what did you find?'));
+  const whoT = w.who === 'other' ? (w.whoOther || '').trim() : w.who && !['auto', 'none'].includes(w.who) ? wlab(WHO, w.who).toLowerCase() : '';
+  B.brief = (whoT ? 'Focus on: ' + whoT + '. ' : w.who === 'none' ? 'No respondents are needed: observe and record. ' : '') + (wantPhoto ? B.brief : B.brief.replace(/,? and photograph[^.]*\./gi, '.').replace(/\s*Photograph[^.]*\./gi, '') + ' No photos are needed.')
+    + (where === 'anywhere' ? ' This task can be done anywhere, including from home.' : where === 'mixed' ? ' Part of this task can be done remotely.' : '') + (ev.includes('location') ? ' Confirm your location when you submit.' : '') + (w.method && !['auto', 'mixed'].includes(w.method) ? ' Method: ' + wlab(METHOD, w.method).toLowerCase() + '.' : '') + (w.known.trim() ? ' Note from the client: ' + w.known.trim() : '');
+  B.wizAns = {mode: w.mode, who: w.who, whoOther: w.whoOther || '', whereMode: w.whereMode, evidence: w.evidence.slice(), method: w.method, places: w.places.slice(), known: w.known, decision: ''}; B.wiz = null; B.step = 1;
 }
 function fromGapCtx(raw) {
   let g; try { g = JSON.parse(raw); } catch (e) { return; }
@@ -1119,10 +1165,11 @@ function fromGapCtx(raw) {
 }
 function cBuilder(r) {
   if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
-  const steps = ['Objective and place', 'Evidence questions', 'Coverage and cost', 'Payment', 'Review and deploy'];
-  const stepper = `<div class="stepper">${steps.map((t, i) => `<div class="step ${i < B.step ? 'done' : i === B.step ? 'on' : ''}"><span class="dot">${i < B.step ? ic.check : i + 1}</span><span class="lab">${t}</span></div>`).join('')}</div><p class="step-now"><span>Step ${Math.min(B.step, steps.length - 1) + 1} of ${steps.length}</span><b>${steps[Math.min(B.step, steps.length - 1)]}</b></p>`;
-  if (B.wiz) { const ok = !!(B.wiz.country && B.wiz.city && B.wiz.kinds.length);
-    return shell(r, ['Investigate market', 'Create a task for SavoScouts'], `<div class="card stack" style="gap:20px">${stepper}${wizView()}<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px"><button class="btn ghost" data-act="wizback">Back</button><button class="btn" data-act="wizgo"${ok ? '' : ' disabled'}>${ic.spark}Generate task</button></div>${ok ? '' : '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a country, a city and at least one thing to find out.</p>'}</div>`); }
+  /* four named stages: Create, Review, Configure, Launch. Both entry points (Intelligence Gaps or a typed request) share them. */
+  const steps = ['Create', 'Review', 'Configure', 'Launch'], stage = B.wiz || (B.step === 0 && !B.prepared && !B.manual && !B.title) ? 0 : B.step <= 1 ? 1 : B.step <= 3 ? 2 : 3;
+  const stepper = `<div class="stepper stages">${steps.map((t, i) => `<div class="step ${i < stage ? 'done' : i === stage ? 'on' : ''}"><span class="lab">${i + 1}. ${t}</span></div>`).join('')}</div>`;
+  if (B.wiz) { const ok = !!(B.wiz.country && B.wiz.city);
+    return shell(r, ['Investigate market', 'Turn market questions into real-world investigations.'], `<div class="card stack" style="gap:20px">${stepper}${wizView()}<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px"><button class="btn ghost" data-act="wizback">Back</button></div></div>`); }
   const P = pricing(B.responses, B.timeframe);
   let inner = '';
   if (B.step === 0) {
@@ -1130,7 +1177,7 @@ function cBuilder(r) {
     const showDetails = B.prepared || B.manual || !!(B.title || cs.length);
     const fromChat = B.prepared && !B.typed;
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation: the place, the instructions and evidence questions tailored to the gaps you ticked. Review and change anything before it reaches SavoScouts.' : 'Describe it in plain words. Verisavo asks a few questions about your decision, then builds the task for SavoScouts: the place, the instructions and the evidence questions.'}</p></div>
+      <div><h2 style="font-size:22px">${fromChat ? (B.gaps && B.gaps.length > 1 ? 'Investigate these gaps' : 'Investigate this gap') : 'What do you want to investigate?'}</h2><p class="muted" style="margin:2px 0 0">${fromChat ? 'Verisavo prepared this task from your conversation. Check the name and the place here. The instructions are under Configure.' : 'Describe it in plain words. Verisavo builds the task for SavoScouts, and asks only if something important is missing: the place, the instructions and the evidence questions.'}</p></div>
       ${fromChat ? `<div class="note gapnote">${ic.info}<span><b>${B.gaps && B.gaps.length > 1 ? 'Intelligence Gaps' : 'Intelligence Gap'}</b> ${B.gaps && B.gaps.length > 1 ? '<ul class="gaplist">' + B.gaps.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : esc(B.gap)}${B.gapFrom ? `<br><span class="faint">From: ${esc(B.gapFrom)}</span>` : ''}</span></div>` : `
       <div class="askbox"><textarea id="b-ai" data-b="ai" rows="1" placeholder="What do you want to find out?" aria-label="Describe what you want to investigate">${esc(B.ai)}</textarea><button class="btn sm askgo" data-act="prepare" aria-label="${B.prepared ? 'Start again from this description' : 'Continue'}">${ic.spark}<span>${B.prepared ? 'Start again' : 'Continue'}</span></button></div>
       ${B.prepared ? '' : `<p class="faint askhint">New to this? <button type="button" class="link" data-act="wizdemo">See a worked example</button></p>`}
@@ -1144,8 +1191,7 @@ function cBuilder(r) {
       <div class="field"><label for="b-country">Target country</label><select class="in" id="b-country" data-b="country" data-rerender="1"><option value="">Select your target country</option>${Object.keys(COUNTRIES).map(x => `<option ${cs[0] === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
       <div class="field"><span class="flabel">Target regions or cities</span>${cs.length ? `<div class="chips">${[...(MAIN_CITIES[cs[0]] || []), ...B.regions.filter(r => !(MAIN_CITIES[cs[0]] || []).includes(r))].map(x => `<button type="button" class="chipbtn ${B.regions.includes(x) ? 'on' : ''}" data-act="toggleregion" data-v="${esc(x)}">${B.regions.includes(x) ? '✓ ' : ''}${esc(x)}</button>`).join('')}</div>` : '<span class="faint" style="font-size:13px">Choose a country to see its regions.</span>'}</div>
       <div class="field"><label for="b-location">Main collection point</label><input class="in" id="b-location" data-b="location" placeholder="For example, Tamale Central Market" value="${esc(B.location)}"></div>
-      <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph?">${esc(B.brief)}</textarea></div>
-      <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<div class="manual-alt"><span class="muted">Prefer to set up the task yourself?</span><button type="button" class="btn ghost sm" data-act="manual">Build it manually</button></div>`}
+      <div class="note">${ic.info}<span><b>GPS verification radius.</b> Responses are accepted only if SavoScouts submit within 100 metres of the investigation location. This is checked at submission.</span></div>` : `<div class="manual-alt"><span class="muted">Want more control over the task?</span><button type="button" class="btn ghost sm" data-act="manual">Build it manually</button></div>`}
     </div>
     ${showDetails ? `<div class="card" style="align-self:start"><div class="head"><h2 style="font-size:16px">Coverage summary</h2></div>
       <div class="kv"><span>Target country</span><b>${esc(cs[0] || '—')}</b></div><div class="kv"><span>Selected regions</span><b class="num">${B.regions.length}</b></div>
@@ -1154,7 +1200,13 @@ function cBuilder(r) {
       <div class="kv"><span>GPS radius</span><b>100 m</b></div></div>` : ''}</div>`;
   } else if (B.step === 1) {
     inner = `<div class="narrow" style="max-width:820px">
-      <div class="row between"><div><h2 style="font-size:22px">Evidence questions</h2><p class="muted" style="margin:2px 0 0">What SavoScouts answer and photograph on the ground. The Verisavo agent asks these one by one on WhatsApp.</p></div><button class="btn ghost sm" data-act="saveDraft">Save draft</button></div>
+      <div class="row between"><div><h2 style="font-size:22px">Review the task</h2><p class="muted" style="margin:2px 0 0">${B.wizAns ? 'Verisavo generated this task. ' : ''}Check the questions SavoScouts will answer. The Verisavo agent asks these one by one on WhatsApp.</p></div><button class="btn ghost sm" data-act="saveDraft">Save draft</button></div>
+      <div class="card"><div class="field" style="margin-bottom:6px"><label for="b-title">Investigation name</label><input class="in" id="b-title" data-b="title" value="${esc(B.title)}"></div>
+        ${B.wizAns && B.wizAns.who ? `<div class="kv"><span>Focus</span><b style="text-align:right">${esc(B.wizAns.who === 'other' && B.wizAns.whoOther ? B.wizAns.whoOther : B.wizAns.who === 'auto' ? 'Recommended by Verisavo' : wlab(WHO, B.wizAns.who))}</b></div>` : ''}
+        <div class="kv"><span>Where</span><b style="text-align:right">${esc(B.location || B.regions.join(', ') || 'Not set')}</b></div>
+        <div class="kv"><span>Photos</span><b>${(n => n ? 'Yes, ' + n + ' photo question' + (n === 1 ? '' : 's') : 'No')(B.questions.filter(q => q.type === 'photo').length)}</b></div>
+        <div class="kv"><span>Time per visit</span><b>About ${Math.max(5, Math.round(B.questions.length * 1.5 + 4))} minutes</b></div>
+        <button class="link" data-act="bstep" data-v="0" style="margin-top:6px">Change the place and details</button></div>
       <div class="card stack"><label class="flabel" for="b-ai">${B.prepared ? 'Verisavo task builder' : 'Prepare with Verisavo'}</label>${B.prepared ? `<p class="faint" style="margin:-4px 0 2px;font-size:12.5px">Built from your ${B.typed ? 'description' : 'Intelligence Gap' + (B.gaps && B.gaps.length > 1 ? 's' : '')}: ${(B.kinds || []).map(k => k.toLowerCase()).join(', ') || 'open observation'}. Every question is something a SavoScout can see or ask on the ground.</p>` : ''}<textarea class="in" id="b-ai" data-b="ai" placeholder="Describe what you want to understand about the market. For example: onion prices, availability and supplier sources in Tamale markets.">${esc(B.ai)}</textarea>
         <div class="row between"><span class="faint" style="font-size:12px">${B.prepared ? 'Edit any question, add your own, or rebuild the set from the description above.' : SAMPLER ? 'Turns your objective into clear questions. Review every question before deploying.' : 'Builds a starter set from your description.'}</span><button class="btn sm" data-act="genq" id="genq">${ic.spark}${B.prepared ? 'Rebuild questions' : 'Prepare questions'}</button></div></div>
       <div class="row between"><h3 style="font-size:16px">Questions (${B.questions.length} / 20)</h3></div>
@@ -1163,9 +1215,10 @@ function cBuilder(r) {
     </div>`;
   } else if (B.step === 2) {
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">Coverage and timeline</h2><p class="muted" style="margin:2px 0 0">How many independent SavoScout responses you need, and by when. More responses make it easier to spot agreement and contradiction.</p></div>
-      <div class="field"><label for="b-resp">Independent SavoScout responses</label><input class="in num" id="b-resp" type="number" min="10" max="5000" step="10" data-b="responses" data-rerender="1" value="${B.responses}"></div>
-      <div class="field"><span class="flabel">Deadline</span><div class="chips">${TIMEFRAMES.map(t => `<button class="chipbtn ${B.timeframe === t[0] ? 'on' : ''}" data-act="settf" data-v="${t[0]}">${t[1]}</button>`).join('')}</div></div>
+      <div><h2 style="font-size:22px">Configure the investigation</h2><p class="muted" style="margin:2px 0 0">How many SavoScouts you need, what they should note, and by when. More responses make it easier to spot agreement and contradiction.</p></div>
+      <div class="field"><label for="b-resp">SavoScouts needed <span class="faint" style="font-weight:400">(one response each)</span></label><input class="in num" id="b-resp" type="number" min="10" max="5000" step="10" data-b="responses" data-rerender="1" value="${B.responses}"></div>
+      <div class="field"><label for="b-brief">Instructions for SavoScouts</label><textarea class="in" id="b-brief" data-b="brief" placeholder="What should SavoScouts observe, record and photograph? Add anything they should note.">${esc(B.brief)}</textarea></div>
+      <div class="field"><span class="flabel">Complete by</span><div class="chips">${TIMEFRAMES.map(t => `<button class="chipbtn ${B.timeframe === t[0] ? 'on' : ''}" data-act="settf" data-v="${t[0]}">${t[1]}</button>`).join('')}</div></div>
       <div class="note">${ic.info}<span>You pay ${money(PER_RESPONSE)} for each accepted, verified response. The deadline does not change the rate, and there is no set-up fee.</span></div>
     </div>
     <div class="card" style="align-self:start;background:var(--paper)"><h2 style="font-size:16px;margin-bottom:8px">Estimated cost</h2>
@@ -1180,7 +1233,7 @@ function cBuilder(r) {
     inner = payStep(P);
   } else {
     inner = `<div class="grid g-main"><div class="stack">
-      <div><h2 style="font-size:22px">Review and deploy</h2><p class="muted" style="margin:2px 0 0">Check the investigation before the Verisavo agent sends it to SavoScouts.</p></div>
+      <div><h2 style="font-size:22px">Review and launch</h2><p class="muted" style="margin:2px 0 0">Check the investigation before the Verisavo agent sends it to SavoScouts.</p></div>
       <div class="card"><h2 style="font-size:16px;margin-bottom:6px">Investigation summary</h2>
         ${B.gap ? `<div class="kv"><span>Intelligence Gap</span><b style="text-align:right">${esc(B.gap)}</b></div>` : ''}<div class="kv"><span>Objective</span><b style="text-align:right">${esc(B.ai || '—')}</b></div>
         <div class="kv"><span>Investigation name</span><b>${esc(B.title)}</b></div><div class="kv"><span>Industry</span><b>${esc(B.industry || '—')}</b></div><div class="kv"><span>Target country</span><b>${esc(bCountries()[0] || '')}</b></div>
@@ -1201,11 +1254,11 @@ function cBuilder(r) {
   const can = [B.title.trim() && bCountries().length && B.regions.length, B.questions.length && B.questions.every(q => q.text.trim()), B.responses >= 10, !!(B.pay.method && B.pay.ok && /.+@.+\..+/.test(B.pay.email || '')), true][B.step];
   const foot = `<div class="row" style="justify-content:flex-end;gap:8px;border-top:1px solid var(--line);padding-top:16px">
     ${B.step ? `<button class="btn ghost" data-act="bstep" data-v="${B.step - 1}">Back</button>` : `<button class="btn ghost" data-go="c-surveys">Cancel</button>`}
-    ${B.step === 0 && !B.prepared && !B.manual && !B.title ? '' : B.step < 4 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>Continue</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
+    ${B.step === 0 && !B.prepared && !B.manual && !B.title ? '' : B.step < 4 ? `<button class="btn ghost" data-act="saveDraft">Save draft</button><button class="btn" data-act="bstep" data-v="${B.step + 1}" ${can ? '' : 'disabled'}>${['Continue to Review', 'Continue to Configure', 'Continue to payment', 'Continue to Launch'][B.step]}</button>` : `<button class="btn" data-act="publish" ${S.canWrite ? '' : 'disabled'}>${ic.send}Deploy to SavoScouts · up to ${money(P.total)}</button>`}</div>
     ${!can && B.step === 0 && (B.prepared || B.manual || B.title) ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add an investigation name, a country and at least one region to continue.</p>' : ''}
     ${!can && B.step === 1 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Add at least one question, and give every question a statement.</p>' : ''}
     ${!can && B.step === 3 ? '<p class="faint" style="text-align:right;font-size:12px;margin:0">Choose a payment method, add a billing email and authorise the maximum cost to continue.</p>' : ''}`;
-  return shell(r, B.id ? 'Edit investigation' : ['Investigate market', 'Create a task for SavoScouts'], `<div class="card stack" style="gap:20px">${stepper}${inner}${foot}</div>`);
+  return shell(r, B.id ? 'Edit investigation' : ['Investigate market', 'Turn market questions into real-world investigations.'], `<div class="card stack" style="gap:20px">${stepper}${inner}${foot}</div>`);
 }
 function qEditor(q, i) {
   const opts = (q.type === 'single' || q.type === 'multi') ? `<div class="stack" style="gap:6px">${(q.options || []).map((o, j) => `<div class="opt"><span class="faint" style="width:18px">${q.type === 'single' ? '○' : '☐'}</span><input class="in" id="qo-${q.id}-${j}" aria-label="Option ${j + 1}" data-qo="${i}:${j}" value="${esc(o)}"><button class="iconbtn" data-act="delopt" data-v="${i}:${j}" aria-label="Remove option">${ic.x}</button></div>`).join('')}<button class="link" data-act="addopt" data-v="${i}" style="justify-self:start">${ic.plus}Add option</button></div>` : '';
@@ -1553,8 +1606,9 @@ document.addEventListener('click', async (e) => {
   else if (a === 'soon') { const m = t.querySelector('em'); if (m) { m.classList.remove('glow'); void m.offsetWidth; m.classList.add('glow'); } toast('The Scenario simulator is coming soon.'); }
   else if (a === 'contact-us') { let u = './index.html#contact'; try { if (!/\.html$/.test(window.top.location.pathname)) u = '/contact'; } catch (e) {} try { window.top.location.href = u; } catch (e) { window.open(u, '_blank'); } }
   else if (a === 'demo-example') { go('c-builder'); setTimeout(() => { const b = $('[data-act="wizdemo"]'); if (b) b.click(); }, 60); }
-  else if (a === 'wizdemo') { openWizard(ctxFromText('Is our 5kg rice losing shoppers to imported brands in Accra markets, and is price the reason?'), 'direct'); Object.assign(B.wiz, {demo: true, decision: 'price', product: '5kg rice', country: 'Ghana', city: 'Accra', kinds: ['Price check', 'Shopper feedback', 'Availability and shelf'], auto: false, places: ['Small shops', 'Open-market stalls', 'Supermarkets'], known: 'The main rival is an imported 5kg bag sold widely at Makola.'}); render(); window.scrollTo(0, 0); }
-  else if (a === 'wizgo') { wizGenerate(); render(); window.scrollTo(0, 0); toast('Task generated. Review the place and instructions, then continue to the questions.'); }
+  else if (a === 'wizdemo') { openWizard(ctxFromText('Is our 5kg rice losing shoppers to imported brands in Accra markets, and is price the reason?'), 'direct'); Object.assign(B.wiz, {demo: true, product: '5kg rice', country: 'Ghana', city: 'Accra', kinds: ['Price check', 'Shopper feedback', 'Availability and shelf'], auto: false, places: ['Small shops', 'Open-market stalls', 'Supermarkets'], who: 'customers', whereMode: 'outlet', placeType: 'Small shops, open-market stalls and supermarkets', evidence: ['written', 'photos', 'observations'], method: 'auto', cities: ['Accra']}); render(); window.scrollTo(0, 0); }
+  else if (a === 'wizgo') { const w = B.wiz, m = wizMissing(w); if (m.place || m.who || m.where || m.evidence) { w.ask = true; w.asked = {...(w.asked || {}), ...Object.fromEntries(Object.keys(m).filter(k => m[k]).map(k => [k, true]))}; /* what Verisavo could not work out starts on 'Let Verisavo recommend' */ if (m.who) w.who = 'auto'; if (m.where) w.whereMode = 'auto'; if (m.evidence) w.evidence = ['auto']; render(); if (m.place) toast('Choose a country and a city to generate the task.'); return; } wizGenerate(); render(); window.scrollTo(0, 0); toast('Task generated. Review the questions, then continue.'); }
+  else if (a === 'wizall') { B.wiz.all = true; render(); }
   else if (a === 'wizback') { const w = B.wiz; B.wiz = null; if (w && w.mode === 'direct') B.ai = w.ctx.gap; else if (w && !(INLINE && OPEN_GAPS.length)) B.ai = (w.ctx.gaps || [w.ctx.gap]).join(' '); render(); window.scrollTo(0, 0); }
   else if (a === 'manual') { B.manual = true; B.wiz = null; render(); const t = $('#b-title'); if (t) t.focus(); }
   else if (a === 'askDel') { S.ui.confirmDel = id; render(); }
@@ -1598,11 +1652,17 @@ document.addEventListener('input', (e) => {
   const t = e.target, d = t.dataset;
   if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
+  if (B && B.wiz && (d.ww || d.wm || d.wev || d.wmt)) { const w = B.wiz, sub = v => v === 'other' || v === 'outlet' || v === 'address';
+    if (d.ww) { const r = sub(w.who) || sub(d.ww); w.who = d.ww; if (r) render(); }
+    if (d.wm) { const r = sub(w.whereMode) || sub(d.wm); w.whereMode = d.wm; if (r) render(); }
+    if (d.wmt) w.method = d.wmt;
+    if (d.wev) { const had = w.evidence.includes('auto'); w.evidence = w.evidence.filter(x => x !== d.wev); if (t.checked) w.evidence = d.wev === 'auto' ? ['auto'] : w.evidence.filter(x => x !== 'auto').concat(d.wev); if (had || d.wev === 'auto') render(); }
+    return; }
   if (d.w && B && B.wiz) { const w = B.wiz; w[d.w] = t.value;
     if (d.w === 'decision' && w.auto && DECISION_KINDS[t.value]) w.kinds = DECISION_KINDS[t.value].slice();
     if (d.w === 'decision' && !w.auto && DECISION_KINDS[t.value]) DECISION_KINDS[t.value].forEach(k => { if (!w.kinds.includes(k) && !w.cleared) w.kinds.push(k); });
     if (d.w === 'country') w.city = (COUNTRIES[t.value] || []).length === 1 ? COUNTRIES[t.value][0] : '';
-    if (t.tagName === 'SELECT') render(); return; }
+    if (t.tagName === 'SELECT') { if (d.w === 'city' && w.city) w.cities = [w.city]; render(); } return; }
   if (t.id === 'fu-in') { const f = t.closest('form'); if (f) S.ui.fuDraft = {...(S.ui.fuDraft || {}), [f.dataset.id]: t.value}; t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 160) + 'px'; return; }
   if (d.pay) { B.pay[d.pay] = t.type === 'checkbox' ? t.checked : t.value; if (t.type === 'checkbox') render(); else softRender(); return; }
   if (d.b === 'ai' && t.tagName === 'TEXTAREA' && t.closest('.askbox')) { t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 160) + 'px'; }
@@ -2201,6 +2261,13 @@ select.in{cursor:pointer}
 .vsdd-ph{color:#6D6C71}
 @keyframes vsddIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.vsdd{animation:none}}
+.wiz-und{margin:0;font-size:13.5px;color:var(--ink-2)}.wiz-und b{color:var(--ink);font-weight:600}
+.stepper.stages{justify-content:space-between!important;gap:8px;overflow:visible}.stepper.stages .step{flex:none!important;min-width:0;padding:0}.stepper.stages .step::before,.stepper.stages .step::after{display:none!important}
+.stepper.stages .lab{display:block!important;font-size:14px;font-weight:500;color:var(--ink-3);white-space:nowrap}.stepper.stages .step.done .lab{color:var(--ink-2)}.stepper.stages .step.on .lab{color:var(--primary);font-weight:600}
+.hsub{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.3}
+.wz-gaps{display:grid;gap:10px}.wz-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}.wz-list li{display:flex;gap:10px;align-items:flex-start;line-height:1.4}.wz-list svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--primary)}.wz-src{margin:0;padding-top:10px;border-top:1px solid var(--line);font-size:13px}
+.wz-card{border-color:var(--primary-3)!important}.wz-ico{display:inline-flex;color:var(--primary)}.wz-ico svg{width:26px;height:26px}.wz-go{width:100%;justify-content:center;min-height:48px}.wz-need{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:13.5px;color:var(--ink)}.wz-need svg{width:16px;height:16px;flex:none;margin-top:2px;color:var(--primary)}.wz-und{margin:0;font-size:13px}.wz-sub{margin-top:-6px;padding:12px 14px;border-radius:12px;background:var(--paper)}
+@media (max-width:640px){.stepper.stages .lab{font-size:13px}}
 </style>
 <script id="vsdd-js">
 (function () {
