@@ -17,6 +17,7 @@ export default function HomeClient() {
       (await import("@/lib/home/portal")).default();
       (await import("@/lib/home/roles")).default();
       (await import("@/lib/telpick")).default();
+      (await import("@/lib/reportgate")).default();
       (await import("@/lib/vsbar")).default();
       (await import("@/lib/vsgate")).default();
       (await import("@/lib/home/pricing")).default();
