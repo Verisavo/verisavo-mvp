@@ -1458,3 +1458,8 @@ html body.menu-open .top:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::before { transition: o
 html body.menu-open .top .logo:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { transition: color .15s .66s !important; }
 html body.menu-closing .top:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::before, html body.menu-closing .top .logo:not(#a#b#c#d#e#f#g#h#i#j#k#l#m), html body.menu-closing .top .pill:not(#a#b#c#d#e#f#g#h#i#j#k#l#m), html body.menu-closing .top .pill > button:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { transition: none !important; }
 html body.menu-open .top .pill:not(#a#b#c#d#e#f#g#h#i#j#k#l#m), html body.menu-open .top .pill > button:not(#a#b#c#d#e#f#g#h#i#j#k#l#m) { transition: color .15s .66s, background-color .15s .66s, box-shadow .15s .66s !important; }
+
+/* Phones: the header bar is solid, so page text scrolling under it never shows through behind the logo */
+@media (max-width: 760px) {
+  html body:not(.menu-open):not(:has(#pg-community.open, #pg-community-tasks.open)) .top:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::before { background-color: #fff !important; }
+}

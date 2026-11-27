@@ -527,6 +527,10 @@ body.menu-open .vmenu .b-ic { display: none; }
 body.menu-open .vmenu { background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); transition-delay: .5s; }
 .top { transition: background-color .2s .15s, border-color .2s .15s; }
 body.menu-open .top { background: transparent; border-bottom-color: transparent; transition-delay: .45s; }
+/* keep the header under the logo until the menu panel covers the page, and bring it back at once on close */
+body.menu-open .top, body.menu-open .logo, body.menu-open .vmenu { transition-delay: .64s !important; }
+body.menu-closing .top, body.menu-closing .logo, body.menu-closing .vmenu, body.menu-closing .snd { transition: none !important; }
+
 body.menu-open .links, body.menu-open .login { visibility: hidden; }
 body.menu-open { overflow: hidden; }
 
