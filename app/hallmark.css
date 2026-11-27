@@ -931,7 +931,6 @@ html body #ln #start h2:not(#a#b#c#d#e#f#g#h#i) { color: var(--ver-accent) !impo
 /* ---- version 1: photo card ---- */
 :root { --ver-accent: #A8C6E8; }
 html body #ln .hv1 .hv-card { position: relative; border-radius: 36px; overflow: hidden; min-height: clamp(540px, 50vw, 700px); display: flex; align-items: center; isolation: isolate; background: #2A3350; }
-html body #ln .hv1 .hv-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 74% 30%; z-index: -2; }
 html body #ln .hv1 .hv-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(52,64,98,.86) 0%, rgba(40,50,80,.7) 38%, rgba(31,39,63,.18) 66%, rgba(31,39,63,.05) 100%); }
 html body #ln .hv1 .hv-txt { padding: clamp(28px, 5.5vw, 80px); max-width: 820px; }
 html body #ln .hv1 h1 { color: #A8C6E8 !important; max-width: 13ch; }
@@ -939,7 +938,6 @@ html body #ln .hv1 .hv-b1 { background: #A8C6E8; color: #1F273F; } html body #ln
 html body #ln .hv1 .hv-tag { margin: 22px 0 0; text-align: center; color: rgba(255,255,255,.72) !important; -webkit-text-fill-color: rgba(255,255,255,.72) !important; font: 400 .9375rem/1.4 "Red Hat Text", sans-serif; }
 @media (max-width: 760px) {
   html body #ln .hv1 .hv-card { align-items: flex-end; min-height: 0; height: 640px; border-radius: 30px; }
-  html body #ln .hv1 .hv-ph { object-position: 78% 20%; }
   html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(31,39,63,.3) 0%, rgba(31,39,63,.3) 26%, rgba(31,39,63,.82) 60%, rgba(31,39,63,.95) 100%); }
   html body #ln .hv1 .hv-txt { padding: 0 24px 28px; } html body #ln .hv1 h1 { font-size: 2.625rem; max-width: none; }
   html body #ln .hv1 .hv-lead { font-size: 1.0625rem; max-width: none; margin-top: 14px; } html body #ln .hv-ctas { margin-top: 22px; } html body #ln .hv-btn { min-height: 48px; padding: 0 22px; }
@@ -961,7 +959,6 @@ html body #ln .hv1:not(#a#b#c#d#e#f#g#h#i) { padding-bottom: clamp(20px, 3vw, 36
 @media (max-width: 760px) { html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i) { border-radius: 30px; } }
 /* hero: pencil market overview, text at the foot of a light card */
 html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i) { background: #F5F8FD !important; align-items: flex-end !important; min-height: clamp(600px, 54vw, 760px); }
-html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i) { object-position: 50% 35% !important; }
 html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(242,245,250,0) 0%, rgba(242,245,250,0) 34%, rgba(242,245,250,.88) 62%, #F2F5FA 82%) !important; }
 html body #ln .hv1 .hv-txt:not(#a#b#c#d#e#f#g#h#i) { padding: 0 clamp(24px, 4.5vw, 64px) clamp(28px, 4vw, 56px) !important; max-width: 860px; }
 html body #ln #ln-h1#ln-h1:not(#a#b#c#d#e#f#g#h#i) { color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; max-width: 14ch; }
@@ -970,7 +967,6 @@ html body #ln .hv1 .hv-b1:not(#a#b#c#d#e#f#g#h#i) { background: #1F273F !importa
 html body #ln .hv1 .hv-b2:not(#a#b#c#d#e#f#g#h#i) { background: rgba(255,255,255,.7) !important; border-color: #1F273F !important; color: #1F273F !important; -webkit-text-fill-color: #1F273F !important; }
 @media (max-width: 760px) {
   html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i) { height: 680px; min-height: 0; }
-  html body #ln .hv1 .hv-ph:not(#a#b#c#d#e#f#g#h#i) { object-position: 50% 0 !important; height: 62% !important; }
   html body #ln .hv1 .hv-card::after { background: linear-gradient(180deg, rgba(242,245,250,0) 0%, rgba(242,245,250,0) 30%, rgba(242,245,250,.92) 52%, #F2F5FA 62%) !important; }
 }
 @media (min-width: 761px) { html body #ln .hv1 .hv-card::after { background: radial-gradient(ellipse 62% 78% at 0% 100%, #F2F5FA 0%, rgba(242,245,250,.96) 55%, rgba(242,245,250,0) 100%), linear-gradient(180deg, rgba(242,245,250,0) 40%, rgba(242,245,250,.9) 78%, #F2F5FA 100%) !important; } }
@@ -989,7 +985,8 @@ html body:not(:has(.pg.open)):not(.menu-open) .top .pill > button { color: #1F27
 /* scattered section: full-width band in the Built on trust colour */
 html body #ln #why:not(#a#b#c#d#e#f#g#h#i#j#k) { background: var(--why-band, #F0F3F7) !important; padding: clamp(56px, 8vw, 104px) 0 !important; border-top: 1px solid #E1E6EE !important; border-bottom: 1px solid #E1E6EE !important; margin-top: clamp(20px, 3vw, 40px) !important; }
 html body #ln #why .why-in:not(#a#b#c#d#e#f#g#h#i#j#k) { background: transparent !important; box-shadow: none !important; border-radius: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
-/* hero: the live pencil market (three.js) sits over the still drawing */
+/* hero: the live pencil market (three.js). The card is plain until it has drawn; there is no still picture behind it. */
+html body #ln .hv1 .hv-card:not(#a#b#c#d#e#f#g#h#i#j) { background: #F2F5FA !important; }
 html body #ln .hv1 .hv-cv { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; z-index: -2; }
 html body #ln .hv1 .hv-card.ms-off .hv-cv { display: none; }
 html body #ln .hv1 .hv-card.ms-off:not(#a#b#c#d#e#f#g#h#i#j) { background: #F2F5FA !important; }
