@@ -899,7 +899,7 @@ html body:not(:has(.pg.open)):not(.menu-open) .top #menu-lab { display: none !im
 html body:not(:has(.pg.open)):not(.menu-open) .top #menu-btn svg { width: 30px !important; height: 30px !important; }
 html body:not(:has(.pg.open)):not(.menu-open) .top .pa { display: none !important; }
 html body #ln .hv { background: #1F273F; color: #fff; padding: clamp(84px, 9vw, 120px) clamp(12px, 3vw, 40px) clamp(28px, 5vw, 64px); margin: 0; }
-html body #ln .hv-in { max-width: 1360px; margin: 0 auto; }
+html body #ln .hv-in { max-width: 1540px; margin: 0 auto; } /* lines up with the header on wide screens */
 html body #ln .hv h1 { margin: 0; font: 500 clamp(2.625rem, 5.2vw, 4.75rem)/1.02 "Red Hat Display", sans-serif; letter-spacing: -.03em; text-wrap: balance; text-align: left; -webkit-text-fill-color: currentColor !important; }
 html body #ln .hv-lead { margin: 22px 0 0; font: 400 clamp(1.0625rem, 1.5vw, 1.3125rem)/1.45 "Red Hat Text", sans-serif; color: rgba(255,255,255,.94) !important; -webkit-text-fill-color: rgba(255,255,255,.94) !important; max-width: 32ch; text-align: left; }
 html body #ln .hv-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
