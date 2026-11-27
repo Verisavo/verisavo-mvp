@@ -1237,6 +1237,7 @@ function wizGenerate() {
     + (where === 'anywhere' ? ' This task can be done anywhere, including from home.' : where === 'mixed' ? ' Part of this task can be done remotely.' : '') + (ev.includes('location') ? ' Confirm your location when you submit.' : '') + (w.method && !['auto', 'mixed'].includes(w.method) ? ' Method: ' + wlab(METHOD, w.method).toLowerCase() + '.' : '') + (w.known.trim() ? ' Note from the client: ' + w.known.trim() : '');
   B.evid = ev.length ? ev.filter(k => EVREQ[k]) : ['written', ...(wantPhoto ? ['photos'] : []), ...(kinds.some(k => /Availability|Price|Outlet/.test(k)) ? ['observations'] : []), ...(where === 'anywhere' ? [] : ['location'])];
   B.objective = (w.mode === 'gaps' ? 'Find out: ' : '') + gaps.join(' ');
+  [w.country, ...(COUNTRIES[w.country] || [])].forEach(n => { B.objective = B.objective.replace(new RegExp('\\b' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi'), n); });
   B.wizAns = {mode: w.mode, who: w.who, whoOther: w.whoOther || '', whereMode: w.whereMode, evidence: w.evidence.slice(), method: w.method, places: w.places.slice(), known: w.known, decision: ''}; B.wiz = null; B.step = 1;
 }
 function fromGapCtx(raw) {
@@ -1261,7 +1262,7 @@ function fromGapCtx(raw) {
   B.builtBy = 'verisavo';
 }
 function cBuilder(r) {
-  if (!B || (r.id && B.id !== r.id) || (!r.id && B.id)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: 0} : null); }
+  if (!B || (r.id && B.id !== r.id) || (!r.id && B.id && !B.autoId)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: d.status === 'draft' ? Math.min(3, d.draftStep || 0) : 0, dist: d.distMode || 'even', distN: d.dist || null, evid: d.evidence || null} : null); }
   /* four named stages: Create, Review, Configure, Launch. Both entry points (Intelligence Gaps or a typed request) share them. */
   const steps = ['Create', 'Review', 'Configure', 'Launch'], stage = B.wiz || (B.step === 0 && !B.prepared && !B.manual && !B.title) ? 0 : B.step <= 1 ? 1 : B.step === 2 ? 2 : 3;
   const stepper = `<div class="stepper stages">${steps.map((t, i) => `<div class="step ${i < stage ? 'done' : i === stage ? 'on' : ''}"><span class="lab">${i + 1}. ${t}</span></div>`).join('')}</div>`;
@@ -1405,7 +1406,7 @@ function reviewFacts() {
   const who = a.who === 'other' && a.whoOther ? a.whoOther : a.who && a.who !== 'auto' ? wlab(WHO, a.who) : k.includes('Shopper feedback') && !k.includes('Retailer interviews') ? 'Customers and consumers' : talk ? 'Merchants, retailers and vendors' : 'No respondents required';
   const method = a.method && a.method !== 'auto' ? wlab(METHOD, a.method) : talk && look ? 'Interviews and market observations' : talk ? 'Interviews' : 'Market observations';
   const setting = a.method === 'desk' || a.whereMode === 'anywhere' ? 'Remote or on-site' : a.whereMode === 'mixed' ? 'Remote and on-site' : 'On-site';
-  return {who, method, setting, where: B.regions.length ? (B.regions.length > 1 ? B.regions.slice(0, -1).join(', ') + ' and ' + B.regions[B.regions.length - 1] : B.regions[0]) : (bCountries()[0] || 'Not set')};
+  return {who, method, setting, where: B.regions.length ? (B.regions.length > 1 ? B.regions.slice(0, -1).join(', ') + ' and ' + B.regions[B.regions.length - 1] : B.regions[0]) + (bCountries()[0] ? ', ' + bCountries()[0] : '') : (bCountries()[0] || 'Not set')};
 }
 /* a question with a condition is asked only when an earlier single-choice answer matches */
 function condOk(q, qs, ans) { const sc = qs.find(x => x.screen); if (sc && q !== sc && ans[sc.id] === 'No') return false; if (!q.cond) return true; const ref = qs.find(x => x.id === q.cond.q); return !ref || ans[ref.id] === q.cond.v; }
@@ -1773,7 +1774,7 @@ document.addEventListener('click', async (e) => {
   const stop = e.target.closest('[data-stop]'), t = e.target.closest('[data-go],[data-act],[data-tab]');
   if (!t) return;
   if (stop && t.classList.contains('modal-bg')) return;
-  if (t.dataset.go) { e.preventDefault(); return go(t.dataset.go); }
+  if (t.dataset.go) { e.preventDefault(); if (B && t.dataset.go.indexOf('c-builder') !== 0) autoDraft(true); if (t.dataset.go === 'c-builder' && B && B.autoId) { autoDraft(true); B = null; } return go(t.dataset.go); }
   if (t.dataset.tab) { S.ui[t.dataset.tab] = t.dataset.v; return render(); }
   const a = t.dataset.act, v = t.dataset.v, id = t.dataset.id;
   if (a === 'wafull') { WAFULL = !WAFULL; render(); const b = $('.wa-exp'); if (b) b.focus(); const wb = $('#wa-body'); if (wb) wb.scrollTop = wb.scrollHeight; return; }
@@ -1790,27 +1791,31 @@ document.addEventListener('click', async (e) => {
   else if (a === 'setstatus') { await patch('surveys', id, {status: v}); toast('Investigation ' + (v === 'active' ? 'resumed' : v) + '.'); }
   /* builder */
   else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
-  else if (a === 'reuse') { const d0 = S.surveys[v]; if (!d0) return; newBuilder({...d0, id: null, status: undefined, title: d0.title + ' (new)', responses: d0.target || 50, scouts: d0.scouts || 0, perScout: d0.perScout || 0, ai: d0.request || '', pay: undefined, billing: undefined, step: 1}); B.prepared = true; B.typed = true; B.questions.forEach(q => q.id = uid('q')); B.evid = d0.evidence || null; render(); window.scrollTo(0, 0); toast('Copied. Change anything, then continue.'); }
+  else if (a === 'reuse') { const d0 = S.surveys[v]; if (!d0) return; newBuilder({...d0, id: null, status: undefined, dist: d0.distMode || 'even', distN: d0.dist || null, title: d0.title + ' (new)', responses: d0.target || 50, scouts: d0.scouts || 0, perScout: d0.perScout || 0, ai: d0.request || '', pay: undefined, billing: undefined, step: 1}); B.prepared = true; B.typed = true; B.questions.forEach(q => q.id = uid('q')); B.evid = d0.evidence || null; render(); window.scrollTo(0, 0); toast('Copied. Change anything, then continue.'); }
   else if (a === 'dxstart') { const t = $('#b-ai'), x = STARTS[Number(v)]; if (!t || !x) return; t.value = B.ai = x[2]; const i = x[2].indexOf('[product]'); t.focus({preventScroll: true}); try { t.setSelectionRange(i, i + 9); } catch (e) {} t.scrollIntoView({block: 'center', behavior: 'smooth'}); }
   else if (a === 'prepare') { const t = $('#b-ai'), d = (t ? t.value : B.ai || '').trim(); if (!d) { toast('Describe what you want to investigate first.'); if (t) t.focus(); return; } const br = d.match(/\[(product|city)\]/); if (br) { toast('Replace ' + br[0] + ' with your own ' + br[1] + '.'); if (t) { t.focus(); try { t.setSelectionRange(br.index, br.index + br[0].length); } catch (e) {} } return; } openWizard(ctxFromText(d), 'direct'); render(); window.scrollTo(0, 0); const f = $('#w-dec'); if (f) f.focus({preventScroll: true}); }
   else if (a === 'soon') { const m = t.querySelector('em'); if (m) { m.classList.remove('glow'); void m.offsetWidth; m.classList.add('glow'); } toast('The Scenario simulator is coming soon.'); }
   else if (a === 'contact-us') { let u = './index.html#contact'; try { if (!/\.html$/.test(window.top.location.pathname)) u = '/contact'; } catch (e) {} try { window.top.location.href = u; } catch (e) { window.open(u, '_blank'); } }
   else if (a === 'demo-example') { go('c-builder'); setTimeout(() => { const b = $('[data-act="wizdemo"]'); if (b) b.click(); }, 60); }
   else if (a === 'wizdemo') { openWizard(ctxFromText('Is our 5kg rice losing shoppers to imported brands in Accra markets, and is price the reason?'), 'direct'); Object.assign(B.wiz, {demo: true, product: '5kg rice', country: 'Ghana', city: 'Accra', kinds: ['Price check', 'Shopper feedback', 'Availability and shelf'], auto: false, places: ['Small shops', 'Open-market stalls', 'Supermarkets'], who: 'customers', whereMode: 'outlet', placeType: 'Small shops, open-market stalls and supermarkets', evidence: ['written', 'photos', 'observations'], method: 'auto', cities: ['Accra']}); render(); window.scrollTo(0, 0); }
-  else if (a === 'wizgo') { const w = B.wiz, m = wizMissing(w); if (w.mode === 'direct') { if (m.change || m.place) { toast(m.change ? 'Tell Verisavo which change you mean.' : 'Choose a country and a city to generate the task.'); const el = $(m.change ? '#w-change' : '#w-country'); if (el) el.scrollIntoView({block: 'center', behavior: 'smooth'}); return; } if (m.who) w.who = 'auto'; if (m.where) w.whereMode = 'auto'; if (m.evidence) w.evidence = ['auto']; wizGenerate(); render(); window.scrollTo(0, 0); toast('Task generated. Review the questions, then continue.'); return; } if (m.change || m.place || m.who || m.where || m.evidence) { w.ask = true; w.asked = {...(w.asked || {}), ...Object.fromEntries(Object.keys(m).filter(k => m[k]).map(k => [k, true]))}; /* what Verisavo could not work out starts on 'Let Verisavo recommend' */ if (m.who) w.who = 'auto'; if (m.where) w.whereMode = 'auto'; if (m.evidence) w.evidence = ['auto']; render(); if (w.asked.change && m.change && w.askedOnce) toast('Tell Verisavo which change you mean.'); else if (m.place && w.askedOnce) toast('Choose a country and a city to generate the task.'); w.askedOnce = true; return; } wizGenerate(); render(); window.scrollTo(0, 0); toast('Task generated. Review the questions, then continue.'); }
+  else if (a === 'wizgo') { const w = B.wiz, m = wizMissing(w); if (w.mode === 'direct') { if (m.change || m.place) { toast(m.change ? 'Tell Verisavo which change you mean.' : 'Choose a country and a city to generate the task.'); const el = $(m.change ? '#w-change' : '#w-country'); if (el) el.scrollIntoView({block: 'center', behavior: 'smooth'}); return; } if (m.who) w.who = 'auto'; if (m.where) w.whereMode = 'auto'; if (m.evidence) w.evidence = ['auto']; wizGenerate(); render(); autoDraft(true); window.scrollTo(0, 0); toast('Task generated and saved as a draft. Review the questions, then continue.'); return; } if (m.change || m.place || m.who || m.where || m.evidence) { w.ask = true; w.asked = {...(w.asked || {}), ...Object.fromEntries(Object.keys(m).filter(k => m[k]).map(k => [k, true]))}; /* what Verisavo could not work out starts on 'Let Verisavo recommend' */ if (m.who) w.who = 'auto'; if (m.where) w.whereMode = 'auto'; if (m.evidence) w.evidence = ['auto']; render(); if (w.asked.change && m.change && w.askedOnce) toast('Tell Verisavo which change you mean.'); else if (m.place && w.askedOnce) toast('Choose a country and a city to generate the task.'); w.askedOnce = true; return; } wizGenerate(); render(); autoDraft(true); window.scrollTo(0, 0); toast('Task generated and saved as a draft. Review the questions, then continue.'); }
   else if (a === 'wizall') { B.wiz.all = true; render(); }
   else if (a === 'wizback') { const w = B.wiz; B.wiz = null; if (w && w.mode === 'direct') B.ai = w.ctx.gap; else if (w && !(INLINE && OPEN_GAPS.length)) B.ai = (w.ctx.gaps || [w.ctx.gap]).join(' '); render(); window.scrollTo(0, 0); }
   else if (a === 'manual') { B.manual = true; B.wiz = null; render(); const t = $('#b-title'); if (t) t.focus(); }
   else if (a === 'askDel') { S.ui.confirmDel = id; render(); }
   else if (a === 'keepDraft') { S.ui.confirmDel = null; render(); }
   else if (a === 'delDraft') { const d = S.surveys[id]; S.ui.confirmDel = null; if (d && d.status === 'draft') { remove('surveys', id); if (B && B.id === id) B = null; toast('Draft deleted.'); } render(); }
+  else if (a === 'back-chat' && route().page === 'builder' && B && (B.wiz || B.step > 0 || B.manual || B.prepared || B.title)) {
+    if (B.wiz) { const el = $('[data-act="wizback"]'); if (el) el.click(); return; }
+    if (B.step > 0) B.step--; else if (B.fromReview && B.questions.length) B.step = 1; else { autoDraft(true); B = null; if (route().id) return go('c-builder'); }
+    render(); window.scrollTo(0, 0); }
   else if (a === 'back-chat') { try { window.parent.postMessage({ vs: 'back-chat' }, '*'); } catch (e) {} }
   else if (a === 'usegap') { const g = GAPS[Number(v)], c = ctxFromText(g.gap); c.country = g.country; c.city = g.regions[0]; openWizard(c, 'direct'); render(); window.scrollTo(0, 0); }
   else if (a === 'genbrief') genBrief(id);
   else if (a === 'fuinv') { const s = S.surveys[id], m = s && (s.followups || [])[Number(v)]; if (!m) return; const c = ctxFromText((m.a && m.a.ask) || m.q); if (!c.city) { c.country = s.country; c.city = (s.regions || [])[0] || ''; } c.from = 'Follow-up on ' + s.title; openWizard(c, 'gaps'); go('c-builder'); }
   else if (a === 'ref') openSub(id);
   else if (a === 'toggleregion') { B.regions = B.regions.includes(v) ? B.regions.filter(x => x !== v) : [...B.regions, v]; render(); }
-  else if (a === 'bstep') { if (Number(v) === 1 && B.manual && !B.prepared && !(B.ai || '').trim()) B.ai = [B.title, B.regions.length && !B.regions.some(x => B.title.includes(x)) ? 'in ' + B.regions.join(', ') + (bCountries()[0] ? ', ' + bCountries()[0] : '') : '', B.brief ? '. ' + B.brief : ''].filter(Boolean).join(' ').replace(/ \. /, '. ').trim(); B.step = Number(v); render(); window.scrollTo(0, 0); }
+  else if (a === 'bstep') { B.fromReview = Number(v) === 0 && B.step === 1; setTimeout(() => autoDraft(true), 0); if (Number(v) === 1 && B.manual && !B.prepared && !(B.ai || '').trim()) B.ai = [B.title, B.regions.length && !B.regions.some(x => B.title.includes(x)) ? 'in ' + B.regions.join(', ') + (bCountries()[0] ? ', ' + bCountries()[0] : '') : '', B.brief ? '. ' + B.brief : ''].filter(Boolean).join(' ').replace(/ \. /, '. ').trim(); B.step = Number(v); render(); window.scrollTo(0, 0); }
   else if (a === 'settf') { B.timeframe = v; render(); }
   else if (a === 'cfgrec') { const p = cfgPlan(); B.scouts = p.rec; B.perScout = [1, 2, 3, 4, 5, 6, 8, 10].find(n => n >= p.recPer) || 10; B.scoutsCustom = ![5, 10, 20, 50].includes(B.scouts); render(); }
   else if (a === 'cfgdate') { B.due = new Date(Date.now() + cfgPlan().need * DAY).toISOString().slice(0, 10); B.timeframe = 'custom'; render(); }
@@ -1850,6 +1855,7 @@ document.addEventListener('submit', (e) => {
 });
 document.addEventListener('input', (e) => {
   const t = e.target, d = t.dataset;
+  if (B && !B.wiz && route().page === 'builder') autoDraft();
   if (t.id === 'surveySearch') { S.ui.surveySearch = t.value; render(); return; }
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
   if (B && B.wiz && d.wf) { B.wiz.focus = d.wf; const r = $('#wq-rec'); if (r) r.textContent = wizRec(B.wiz); return; }
@@ -1920,13 +1926,17 @@ Return JSON only: an array of 6 to 8 objects {"type": one of "short","paragraph"
   B.questions = B.prepared ? qs.slice(0, 20) : [...B.questions, ...qs].slice(0, 20);
   render(); toast(`${qs.length} questions added. Review and edit them before publishing.`);
 }
-async function saveSurvey(status) {
+let adT;
+function autoDraft(now) { clearTimeout(adT); const run = () => { if (!B || B.wiz || !S.canWrite || !B.title.trim() || !B.questions.length) return; const ex = B.id && S.surveys[B.id]; if (ex && ex.status !== 'draft') return; saveSurvey('draft', true); }; if (now) run(); else adT = setTimeout(run, 1200); }
+addEventListener('pagehide', () => autoDraft(true));
+async function saveSurvey(status, silent) {
   if (!B.title.trim()) { B.step = 0; render(); return toast('Add an investigation name first.'); }
   cfgInit(); const P = pricing(B.responses, B.timeframe), id = B.id || uid('sv'), prev = S.surveys[id] || {};
   const doc = {gaps: B.gaps || (B.gap ? [B.gap] : []), objective: B.objective != null ? B.objective : (B.gap || B.ai || ''), evidence: bEvid(), note: B.note || '', wizAns: B.wizAns || null, kinds: B.kinds || [], title: B.title.trim(), industry: B.industry, country: bCountries()[0] || '', countries: bCountries(), regions: B.regions, location: B.location, brief: B.brief, questions: B.questions, target: B.responses, timeframe: B.timeframe,
     rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), updatedAt: Date.now(), publishedAt: status === 'active' ? Date.now() : null,
-    deadline: status === 'active' ? Date.now() + bDays() * 86400000 : null, scouts: B.scouts, perScout: B.perScout, dist: cfgDist(), due: B.due || '', request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: PER_RESPONSE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
+    deadline: status === 'active' ? Date.now() + bDays() * 86400000 : null, scouts: B.scouts, perScout: B.perScout, dist: cfgDist(), distMode: typeof B.dist === 'string' ? B.dist : 'even', draftStep: B.step, typed: !!B.typed, due: B.due || '', request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: PER_RESPONSE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
   B.id = id;
+  if (silent) { doc.createdAt = prev.createdAt || Date.now(); S.surveys = {...S.surveys, [id]: doc}; if (route().id !== id) { try { history.replaceState(null, '', '#c-builder-' + id); } catch (e) {} if (route().id !== id) B.autoId = true; } if (DB) { try { await DB.collection('surveys').doc(id).set(doc); } catch (e) {} } else saveLocal(); return; }
   if (status === 'active' && B.pay.method === 'credits') { try { localStorage.setItem('vs-credits', String(Math.max(0, credits() - B.responses))); } catch (e) {} }
   await put('surveys', id, doc);
   if (status === 'active') { if (INLINE) { try { window.parent.postMessage({ vs: 'task-deployed', id, title: doc.title, target: doc.target, gap: doc.gap || '', gaps: B.gaps || (doc.gap ? [doc.gap] : []), regions: doc.regions, country: doc.country }, '*'); } catch (e) {} } B = null; go('c-survey-' + id); toast(INLINE ? 'Investigation deployed. Results will come back into your conversation as SavoScouts respond.' : 'Investigation deployed. The Verisavo agent is sending it to SavoScouts on WhatsApp.'); }
