@@ -3225,7 +3225,9 @@ html body footer :is(nav.foot-cols, nav.lf-cols).foot-min:not(#a#b#c#d#e#f#g#h#i
 /* arriving from sign-in: show nothing until the Assistant (and any setup) is open */
 html.vs-arrive body{visibility:hidden}html.vs-arrive dialog#va{visibility:visible}:is(html.vs-arrive,html.vs-arrived) dialog#va,:is(html.vs-arrive,html.vs-arrived) dialog#va::backdrop{animation:none!important}
 
-/* Product page edges: the grey sections are rounded cards inside the header's edges (the logo and the menu), like the home page. Only the footer runs edge to edge. */
-html body :is(section#answer, section#investigate):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { width: min(1556px, calc(100% - 2 * clamp(20px, 3vw, 32px))) !important; max-width: none !important; margin-left: auto !important; margin-right: auto !important; box-sizing: border-box !important; border: 0 !important; border-radius: 36px !important; }
-html body section#investigate:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { margin-top: clamp(20px, 3vw, 40px) !important; margin-bottom: clamp(20px, 3vw, 40px) !important; }
-@media (max-width: 760px) { html body :is(section#answer, section#investigate):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { border-radius: 30px !important; } }
+/* Product page edges: the grey sections are rounded cards inside the header's edges (the logo and the menu), like the home page. Only the footer runs edge to edge.
+   Tablets and desktops only: on phones they keep their original full-width style. */
+@media (min-width: 761px) {
+  html body :is(section#answer, section#investigate):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { width: min(1556px, calc(100% - 2 * clamp(20px, 3vw, 32px))) !important; max-width: none !important; margin-left: auto !important; margin-right: auto !important; box-sizing: border-box !important; border: 0 !important; border-radius: 36px !important; }
+  html body section#investigate:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { margin-top: clamp(20px, 3vw, 40px) !important; margin-bottom: clamp(20px, 3vw, 40px) !important; }
+}

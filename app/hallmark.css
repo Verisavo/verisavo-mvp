@@ -1431,10 +1431,12 @@ html body footer :is(nav.foot-cols, nav.lf-cols).foot-min:not(#a#b#c#d#e#f#g#h#i
 html body #pg-scout:not(#a#b#c){min-height:100vh;min-height:100dvh}
 
 /* Home page edges: every section sits inside the same edges as the hero card (1540px wide, with the hero's side gap).
-   The grey sections are rounded cards, not full-width bands. Only the footer runs edge to edge. */
-html body #ln { --ln-edge: min(1540px, calc(100% - 2 * clamp(12px, 3vw, 40px))); }
-html body #ln :is(#why, #trust):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { width: var(--ln-edge) !important; max-width: none !important; margin-left: auto !important; margin-right: auto !important; box-sizing: border-box !important; border: 0 !important; border-radius: 36px !important; }
-html body #ln #trust:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { margin-top: clamp(20px, 3vw, 40px) !important; margin-bottom: clamp(20px, 3vw, 40px) !important; }
-html body #ln #problem .net-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n), html body #ln #start .ln-wrap:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { max-width: 1540px !important; margin-left: auto !important; margin-right: auto !important; }
-html body #ln #start .ln-wrap:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { border-radius: 36px !important; }
-@media (max-width: 760px) { html body #ln :is(#why, #trust, #start .ln-wrap):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { border-radius: 30px !important; } }
+   The grey sections are rounded cards, not full-width bands. Only the footer runs edge to edge.
+   Tablets and desktops only: on phones the sections keep their original full-width style. */
+@media (min-width: 761px) {
+  html body #ln { --ln-edge: min(1540px, calc(100% - 2 * clamp(12px, 3vw, 40px))); }
+  html body #ln :is(#why, #trust):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { width: var(--ln-edge) !important; max-width: none !important; margin-left: auto !important; margin-right: auto !important; box-sizing: border-box !important; border: 0 !important; border-radius: 36px !important; }
+  html body #ln #trust:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { margin-top: clamp(20px, 3vw, 40px) !important; margin-bottom: clamp(20px, 3vw, 40px) !important; }
+  html body #ln #problem .net-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n), html body #ln #start .ln-wrap:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { max-width: 1540px !important; margin-left: auto !important; margin-right: auto !important; }
+  html body #ln #start .ln-wrap:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { border-radius: 36px !important; }
+}
