@@ -1745,7 +1745,10 @@ function waView(r) {
 }
 
 /* ---------------- render ---------------- */
+/* tell the Assistant which screen is showing, so closing the window can bring you back to it */
+function tellAt() { if (!INLINE) return; try { const r = route(); parent.postMessage({ vs: 'inv-at', hash: r.page === 'builder' && B && B.id ? 'c-builder-' + B.id : location.hash.slice(1) }, '*'); } catch (e) {} }
 function render() {
+  tellAt();
   const r = route(), app = $('#app');
   let html;
   if (r.role === 'client') {
@@ -1936,7 +1939,7 @@ async function saveSurvey(status, silent) {
     rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), updatedAt: Date.now(), publishedAt: status === 'active' ? Date.now() : null,
     deadline: status === 'active' ? Date.now() + bDays() * 86400000 : null, scouts: B.scouts, perScout: B.perScout, dist: cfgDist(), distMode: typeof B.dist === 'string' ? B.dist : 'even', draftStep: B.step, typed: !!B.typed, due: B.due || '', request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: PER_RESPONSE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
   B.id = id;
-  if (silent) { doc.createdAt = prev.createdAt || Date.now(); S.surveys = {...S.surveys, [id]: doc}; if (route().id !== id) { try { history.replaceState(null, '', '#c-builder-' + id); } catch (e) {} if (route().id !== id) B.autoId = true; } if (DB) { try { await DB.collection('surveys').doc(id).set(doc); } catch (e) {} } else saveLocal(); return; }
+  if (silent) { doc.createdAt = prev.createdAt || Date.now(); S.surveys = {...S.surveys, [id]: doc}; if (route().id !== id) { try { history.replaceState(null, '', '#c-builder-' + id); } catch (e) {} if (route().id !== id) B.autoId = true; } tellAt(); if (DB) { try { await DB.collection('surveys').doc(id).set(doc); } catch (e) {} } else saveLocal(); return; }
   if (status === 'active' && B.pay.method === 'credits') { try { localStorage.setItem('vs-credits', String(Math.max(0, credits() - B.responses))); } catch (e) {} }
   await put('surveys', id, doc);
   if (status === 'active') { if (INLINE) { try { window.parent.postMessage({ vs: 'task-deployed', id, title: doc.title, target: doc.target, gap: doc.gap || '', gaps: B.gaps || (doc.gap ? [doc.gap] : []), regions: doc.regions, country: doc.country }, '*'); } catch (e) {} } B = null; go('c-survey-' + id); toast(INLINE ? 'Investigation deployed. Results will come back into your conversation as SavoScouts respond.' : 'Investigation deployed. The Verisavo agent is sending it to SavoScouts on WhatsApp.'); }
