@@ -1449,3 +1449,6 @@ html body #pg-research > .pg-in:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { grid-templat
   html body :is(#pg-careers .k2-band, #pg-community .c2-band, #pg-use-cases .u2-band, #pg-about-us .a2-band):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n)::before { inset: 0 !important; border: 0 !important; border-radius: 36px !important; }
   html body #pg-about-us .pg-sec:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { border-radius: 36px !important; }
 }
+
+/* Back links on every page: 2px smaller than before (14px to 12px). The tap area stays the same. */
+html body .pg-link:is(.pg-back, .rd-back):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { font-size: 12px !important; }
