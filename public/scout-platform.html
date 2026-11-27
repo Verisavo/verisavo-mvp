@@ -410,7 +410,6 @@ const dtt = (t) => t ? new Date(t).toLocaleString('en-GB', {day: 'numeric', mont
 const ago = (t) => { const s = (Date.now() - t) / 1000; if (s < 60) return 'just now'; if (s < 3600) return Math.floor(s / 60) + 'm ago'; if (s < 86400) return Math.floor(s / 3600) + 'h ago'; return Math.floor(s / 86400) + 'd ago'; };
 const left = (t) => { if (!t) return '—'; const d = (t - Date.now()) / 86400000; if (d < 0) return 'Ended'; if (d < 1) return Math.max(1, Math.round(d * 24)) + ' hours left'; if (d < 14) return Math.round(d) + ' days left'; if (d < 60) return Math.round(d / 7) + ' weeks left'; return Math.round(d / 30) + ' months left'; };
 const initials = (n) => String(n || '?').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-const hashN = (s) => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 const STATUS = {
   active: ['info', 'Active', 'clock'], draft: ['', 'Draft', 'build'], paused: ['warn', 'Paused', 'clock'], completed: ['ok', 'Completed', 'checkc'],
   pending: ['warn', 'Awaiting review', 'clock'], approved: ['ok', 'Verified', 'checkc'], rejected: ['err', 'Not verified', 'xc'],
@@ -932,7 +931,6 @@ function briefView(s, list) {
 /* ---------- survey builder ---------- */
 let B = null;
 const bCountries = () => { if (!B.countries || !Array.isArray(B.countries)) B.countries = B.country ? [B.country] : []; if (!B.countries.length && B.country) B.countries = [B.country]; B.country = B.countries[0] || ''; return B.countries; };
-const inCountries = (c) => bCountries().includes(c);
 function newBuilder(from) {
   B = from ? JSON.parse(JSON.stringify(from)) : {id: null, gap: '', title: '', industry: '', country: '', countries: [], regions: [], brief: '', location: '', questions: [], ai: '', responses: 250, timeframe: '7d', step: 0};
   B.step = B.step || 0; bCountries();
@@ -981,7 +979,6 @@ function cBilling(r) {
     </div></div>`;
   return shell(r, 'Billing', body);
 }
-function newBuilderPay() {}
 /* An Intelligence Gap arriving from the Assistant: prefill the task and prepare the evidence questions, so the client reviews rather than starts from nothing. */
 const KIND_BRIEF = {
   'Availability and shelf': 'Visit each shop or kiosk. Record whether the product is on the shelf, which brands are present, and photograph the shelf.',
@@ -1036,17 +1033,6 @@ function gapQs(gaps, kinds, prod, city) {
   return out;
 }
 const PRODUCT_RX = /\b(cooking oil|palm oil|vegetable oil|detergent|soap|rice|maize|flour|sugar|noodles?|bread|milk|water|beer|soft drinks?|tomato(es)?|onions?|beans|yam|cassava|fertili[sz]er|seeds?|cement|solar (lanterns?|panels?|lamps?)|lanterns?|batteries|airtime|phones?|sachet water|biscuits?|tea|coffee)\b/i;
-function prepareFromText(desc) {
-  desc = (desc || '').trim(); if (!desc) return false;
-  const low = desc.toLowerCase();
-  let city = '', country = '';
-  Object.keys(COUNTRIES).forEach(c => { if (low.includes(c.toLowerCase())) country = country || c; COUNTRIES[c].forEach(ct => { if (new RegExp('\\b' + ct.toLowerCase() + '\\b').test(low)) { city = city || ct; country = country || c; } }); });
-  const pm = desc.match(PRODUCT_RX), product = pm ? pm[0].toLowerCase() : '';
-  const kinds = kindsFromGaps([desc], []);
-  fromGapCtx(JSON.stringify({gap: desc.replace(/\s+/g, ' '), gaps: [desc.replace(/\s+/g, ' ')], from: '', kind: kinds[0] || 'Open observation', kinds, city, country, product}));
-  B.ai = desc; B.gapFrom = ''; B.typed = true;
-  return true;
-}
 let OPEN_GAPS = [], GAPSEL = {};
 function gapPicker() {
   const n = OPEN_GAPS.filter((g, i) => GAPSEL[i]).length;
@@ -1076,7 +1062,6 @@ if (INLINE) {
 }
 /* ---------- Survey Wizard: a few questions before Verisavo builds the survey ----------
    Used for a typed description (direct) and for Intelligence Gaps; both end in fromGapCtx, the existing gap-aware builder. */
-const DECISIONS = [['enter', 'Whether to enter or expand in this market'], ['price', 'How to price'], ['distribution', 'How to fix distribution or stock'], ['launch', 'Whether to launch a new product or pack'], ['rival', 'How to respond to a competitor'], ['other', 'Something else']];
 const KIND_LABEL = {'Availability and shelf': ['Shelf availability', 'Whether it is on the shelf, and which rivals sit next to it'], 'Price check': ['Prices', 'Shelf prices against rival packs, and any promotions'], 'Retailer interviews': ['Supply and sellers', 'How outlets are supplied, in the sellers’ own words'], 'Shopper feedback': ['Shoppers', 'Which brand shoppers choose, and why'], 'Outlet mapping': ['Outlets', 'Which outlets exist in the area and what they sell']};
 const DECISION_KINDS = {enter: ['Outlet mapping', 'Availability and shelf'], price: ['Price check', 'Shopper feedback'], distribution: ['Retailer interviews', 'Availability and shelf'], launch: ['Availability and shelf', 'Shopper feedback'], rival: ['Price check', 'Availability and shelf']};
 const PLACES = [['Kiosks', 'Kiosk'], ['Small shops', 'Small shop'], ['Open-market stalls', 'Open-market stall'], ['Supermarkets', 'Supermarket'], ['Wholesalers', 'Wholesaler']];
@@ -1113,20 +1098,9 @@ function recAttrs(w) {
 /* Two routes to the same answer. First-hand: the shopkeeper, distributor or customer answers for themselves. Reported: a researcher with a track record asks them. */
 /* Contribution preference, set on the task. Contribution method, saved with every response: direct (the participant answers for themselves), assisted (a researcher documents what a participant tells them), independent (observation, online research or document review). */
 const CONTRIB = [['direct_pref', 'Participants and researchers'], ['direct_only', 'Participants only'], ['assisted', 'Researchers only'], ['independent', 'Independent research'], REC];
-const CONTRIB_HINT = {direct_pref: 'Participants answer for themselves. Researchers reach those not on Verisavo.', direct_only: 'Only the market participants themselves answer.', assisted: 'Researchers speak to participants and write down what they say.', independent: 'SavoScouts observe, research online or review documents. No one is interviewed.'};
 const CMETHOD = {first: 'From the participant', reported: 'Through a researcher', observed: 'Independent research'};
 function contribOf(a) { return a.method === 'experience' ? 'direct_only' : dualRoute(a) ? 'direct_pref' : ['interviews', 'mixed'].includes(a.method) && tPeople(a).length ? 'assisted' : 'independent'; }
 /* choosing a preference settles who is eligible and how they take part */
-function applyContrib(a, k) {
-  const ppl = tPeople(a).filter(c => c !== 'researchers'), every = (a.targets || []).includes('everyone');
-  if ((k === 'direct_pref' || k === 'direct_only' || k === 'assisted') && !ppl.length) return 'Choose who you are investigating first.';
-  if (k !== 'direct_only' && a._exec) { a.exec = a._exec; delete a._exec; } else if (k === 'direct_only' && !REMOTE(a.exec)) a._exec = a.exec;
-  if (k === 'direct_pref') { a.scoutCats = every ? ['everyone'] : [...ppl, 'researchers']; if (!['interviews', 'mixed'].includes(a.method)) a.method = 'interviews'; a.trusted = true; }
-  else if (k === 'direct_only') { a.scoutCats = every ? ['everyone'] : ppl; a.method = 'experience'; if (!REMOTE(a.exec)) a.exec = 'market'; }
-  else if (k === 'assisted') { a.scoutCats = ['researchers']; if (!['interviews', 'mixed'].includes(a.method)) a.method = 'interviews'; a.trusted = true; }
-  else if (k === 'independent') { a.scoutCats = ['researchers']; if (!['observations', 'desk', 'documents'].includes(a.method)) a.method = 'observations'; }
-  return '';
-}
 const TRUST_MIN = 10, TRUST_RATE = .9, TRUST_TEXT = TRUST_MIN + ' verified responses and a ' + Math.round(TRUST_RATE * 100) + '% verification rate';
 function tPeople(a) { const T = a.targets || []; return T.includes('everyone') ? CAT_IDS.filter(PEOPLE) : T.filter(PEOPLE); }
 function firstCats(a) { const need = a.scoutCats || []; return ['interviews', 'mixed', 'experience'].includes(a.method) ? tPeople(a).filter(c => c !== 'researchers' && (need.includes(c) || need.includes('everyone'))) : []; }
@@ -1985,7 +1959,6 @@ document.addEventListener('click', async (e) => {
   else if (a === 'ref') openSub(id);
   else if (a === 'toggleregion') { B.regions = B.regions.includes(v) ? B.regions.filter(x => x !== v) : [...B.regions, v]; render(); }
   else if (a === 'bstep') { B.fromReview = Number(v) === 0 && B.step === 1; setTimeout(() => autoDraft(true), 0); if (Number(v) === 1 && B.manual && !B.prepared && !(B.ai || '').trim()) B.ai = [B.title, B.regions.length && !B.regions.some(x => B.title.includes(x)) ? 'in ' + B.regions.join(', ') + (bCountries()[0] ? ', ' + bCountries()[0] : '') : '', B.brief ? '. ' + B.brief : ''].filter(Boolean).join(' ').replace(/ \. /, '. ').trim(); B.step = Number(v); render(); window.scrollTo(0, 0); }
-  else if (a === 'settf') { B.timeframe = v; render(); }
   else if (a === 'catreset') { B.catN = null; render(); }
   else if (a === 'cfgrec') { const p = cfgPlan(); B.scouts = p.rec; B.perScout = [1, 2, 3, 4, 5, 6, 8, 10].find(n => n >= p.recPer) || 10; B.scoutsCustom = ![5, 10, 20, 50].includes(B.scouts); render(); }
   else if (a === 'cfgdate') { B.due = new Date(Date.now() + cfgPlan().need * DAY).toISOString().slice(0, 10); B.timeframe = 'custom'; render(); }
@@ -2036,10 +2009,8 @@ document.addEventListener('input', (e) => {
   if (t.id === 'subSearch') { S.ui.subSearch = t.value; render(); return; }
   if (B && B.wiz && d.wf) { B.wiz.focus = d.wf; const r = $('#wq-rec'); if (r) r.textContent = wizRec(B.wiz); return; }
   if (B && B.wiz && d.w && t.classList.contains('need') && String(t.value).trim()) t.classList.remove('need');
-  if (B && B.wiz && d.wcb) { const w = B.wiz; w.contrib = d.wcb; if (d.wcb !== 'auto') { const R = recAttrs(Object.assign({}, w, {scoutCats: [], method: 'auto'})), a = {targets: R.targets, scoutCats: [], method: R.method, exec: w.whereMode || '', trusted: true}, msg = applyContrib(a, d.wcb); if (msg) { toast(msg); w.contrib = 'auto'; } else { w.scoutCats = a.scoutCats; w.method = a.method; if (a.exec && d.wcb === 'direct_only') w.whereMode = REMOTE(w.whereMode) ? w.whereMode : ''; } } else { w.scoutCats = []; w.method = 'auto'; } render(); return; }
   if (B && B.wiz && (d.wtg || d.wsc)) { const w = B.wiz, k = d.wtg || d.wsc, key = d.wtg ? 'targets' : 'scoutCats', before = w[key] || [], solo = SOLO.includes(k) || before.some(x => SOLO.includes(x)), need0 = wizNeedCity(w); w[key] = pickMulti(before, k, t.checked); if (d.wtg) w.who = whoOf(w.targets); if (solo || need0 !== wizNeedCity(w)) render(); else { const el = $('#wq-rec'); if (el) el.textContent = wizRec(w); const sm = $('#wz-sum'); if (sm) sm.innerHTML = wizSummary(w); } return; }
-  if (B && B.wiz && (d.ww || d.wm || d.wev || d.wmt)) { const w = B.wiz, need0 = wizNeedCity(w), sub = v => v === 'other' || v === 'outlet' || v === 'address';
-    if (d.ww) { const r = sub(w.who) || sub(d.ww); w.who = d.ww; if (r) render(); else { const el = $('#wq-rec'); if (el) el.textContent = wizRec(w); } }
+  if (B && B.wiz && (d.wm || d.wev || d.wmt)) { const w = B.wiz, need0 = wizNeedCity(w), sub = v => v === 'other' || v === 'outlet' || v === 'address';
     if (d.wm) { const r = sub(w.whereMode) || sub(d.wm); w.whereMode = d.wm; if (r) render(); }
     if (d.wmt) w.method = d.wmt;
     if (d.wev && (d.wev === 'none' || w.evidence.includes('none'))) { w.evidence = t.checked ? (d.wev === 'none' ? ['none'] : w.evidence.filter(x => x !== 'none' && x !== 'auto').concat(d.wev)) : w.evidence.filter(x => x !== d.wev); render(); return; }
@@ -2071,7 +2042,6 @@ document.addEventListener('input', (e) => {
   if (d.bev === 'none' && B) { B.evidNone = t.checked; if (t.checked) { B.evid = []; B.questions = B.questions.filter(q => q.type !== 'photo'); } render(); return; }
   if (B && (d.asc || d.atg)) { const a = bAt(), key = d.asc ? 'scoutCats' : 'targets'; a[key] = pickMulti(a[key], d.asc || d.atg, t.checked); render(); return; }
   if (B && d.atr) { bAt().trusted = t.checked; render(); return; }
-  if (B && d.acb) { const msg = applyContrib(bAt(), d.acb); if (msg) toast(msg); B.evid = null; B.routeN = null; render(); return; }
   if (B && d.amt) { bAt().method = d.amt; render(); return; }
   if (B && d.aex) { bAt().exec = d.aex; render(); return; }
   if (B && d.atx) { bAt()[d.atx] = t.value; return; }
