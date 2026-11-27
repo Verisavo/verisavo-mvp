@@ -1440,3 +1440,12 @@ html body #pg-scout:not(#a#b#c){min-height:100vh;min-height:100dvh}
   html body #ln #problem .net-card:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n), html body #ln #start .ln-wrap:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { max-width: 1540px !important; margin-left: auto !important; margin-right: auto !important; }
   html body #ln #start .ln-wrap:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { border-radius: 36px !important; }
 }
+
+/* Insights: the page column never grows wider than the screen (on phones the headline, intro and first card were cut off) */
+html body #pg-research > .pg-in:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { grid-template-columns: minmax(0, 1fr) !important; }
+/* Careers, Community, Use cases and About us: on tablets and desktops the grey sections are rounded cards inside the header's edges, like the home and Product pages. Phones keep the original full-width style. */
+@media (min-width: 761px) {
+  html body :is(#pg-careers .k2-band, #pg-community .c2-band, #pg-use-cases .u2-band, #pg-about-us .a2-band):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { padding-left: clamp(24px, 4vw, 64px) !important; padding-right: clamp(24px, 4vw, 64px) !important; }
+  html body :is(#pg-careers .k2-band, #pg-community .c2-band, #pg-use-cases .u2-band, #pg-about-us .a2-band):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n)::before { inset: 0 !important; border: 0 !important; border-radius: 36px !important; }
+  html body #pg-about-us .pg-sec:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { border-radius: 36px !important; }
+}

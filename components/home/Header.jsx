@@ -18,7 +18,7 @@ export default function Header() {
         <button type="button" className="pa" data-dialog="access">{"Contact us"}</button>
         {" "}
         <button type="button" className="hdemo" data-page="demo">{"Request a demo"}</button>
-        <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu">
+        <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menu">
           <span id="menu-lab">{"Menu"}</span>
           {" "}
           <svg className="b-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true"><path d="M2 4.5h12M2 8h12M2 11.5h12"></path></svg>

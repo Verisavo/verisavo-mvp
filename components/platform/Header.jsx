@@ -30,7 +30,7 @@ export default function Header() {
           <button type="button" className="login" data-login="">{"Sign in"}</button>
           {" "}
           <a className="hdemo" href="/demo">{"Request a demo"}</a>
-          <button type="button" className="vmenu" id="vmenu-btn" aria-expanded="false" aria-controls="vmenu">
+          <button type="button" className="vmenu" id="vmenu-btn" aria-expanded="false" aria-controls="vmenu" aria-label="Menu">
             <span id="vmenu-lab">{"Menu"}</span>
             {" "}
             <svg className="b-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true"><path d="M2 4.5h12M2 8h12M2 11.5h12"></path></svg>
