@@ -1463,3 +1463,7 @@ html body.menu-open .top .pill:not(#a#b#c#d#e#f#g#h#i#j#k#l#m), html body.menu-o
 @media (max-width: 760px) {
   html body:not(.menu-open):not(:has(#pg-community.open, #pg-community-tasks.open)) .top:not(#a#b#c#d#e#f#g#h#i#j#k#l#m)::before { background-color: #fff !important; }
 }
+
+/* Request a demo in the top bar: navy, the same as the main hero button */
+html body .hdemo:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n#o#p){background:#1F273F!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#1F273F!important}
+html body .hdemo:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n#o#p){background:#2C3656!important;border-color:#2C3656!important}

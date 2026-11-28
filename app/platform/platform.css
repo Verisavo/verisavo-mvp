@@ -3235,3 +3235,7 @@ html.vs-arrive body{visibility:hidden}html.vs-arrive dialog#va{visibility:visibl
   html body :is(section#answer, section#investigate):not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { width: min(1556px, calc(100% - 2 * clamp(20px, 3vw, 32px))) !important; max-width: none !important; margin-left: auto !important; margin-right: auto !important; box-sizing: border-box !important; border: 0 !important; border-radius: 36px !important; }
   html body section#investigate:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n) { margin-top: clamp(20px, 3vw, 40px) !important; margin-bottom: clamp(20px, 3vw, 40px) !important; }
 }
+
+/* Request a demo in the top bar: navy, the same as the main hero button */
+html body .hdemo:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n#o#p){background:#1F273F!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#1F273F!important}
+html body .hdemo:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n#o#p){background:#2C3656!important;border-color:#2C3656!important}
