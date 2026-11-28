@@ -2651,6 +2651,9 @@ boot();
   var KEY = 'vs-demo', p = null;
   function qs(w) { try { return new URLSearchParams(w.location.search).get('demo'); } catch (e) { return null; } }
   p = qs(window); if (p == null) { try { p = qs(window.parent); } catch (e) {} } if (p == null) { try { p = qs(window.top); } catch (e) {} }
+  /* a shared link can only carry a plain #name, so these names do the same job as ?demo=1, ?demo=0 and ?tour=1 */
+  if (location.hash === '#demo-on') p = '1'; if (location.hash === '#demo-off') p = '0';
+  if (location.hash === '#tour' && !document.getElementById('va')) { try { location.replace((window.__next_f || window.next) ? '/platform?tour=1' : 'assistant.html?tour=1'); } catch (e) {} return; }
   try { if (p === '1') localStorage.setItem(KEY, '1'); if (p === '0') localStorage.removeItem(KEY); } catch (e) {}
   var on = false; try { on = localStorage.getItem(KEY) === '1'; } catch (e) {} if (p === '1') on = true; if (p === '0') on = false;
   window.vsDemoOn = on;
