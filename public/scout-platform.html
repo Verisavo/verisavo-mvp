@@ -13,7 +13,7 @@
 :root{
   --primary:#3B5292; --primary-2:#4362B2; --primary-3:#618DD0; --primary-100:#E2EBF7; --primary-200:#CCDDF1;
   --ink:#1E282E; --ink-2:#55606B; --ink-3:#8A949C;
-  --bg:#FFFFFF; --paper:#F3F7F8; --card:#FFFFFF; --line:#E3E9EC; --field:#EEF3F5;
+  --bg:#FFFFFF; --paper:#EEF1F6; --card:#FFFFFF; --line:#DFDFDF; --field:#EEF3F5;
   --ok:#0E8968; --ok-bg:#D9F7E6; --warn:#B76305; --warn-bg:#FFF2D6; --err:#C80836; --err-bg:#FFE1E6; --info:#0156B3; --info-bg:#DDF2FE;
   --overlay:rgba(20,28,40,.45); --shadow:0 1px 2px rgba(30,40,46,.06),0 8px 24px rgba(30,40,46,.06);
   --f:"Google Sans Flex","Google Sans","Manrope",ui-sans-serif,system-ui,sans-serif;
@@ -287,7 +287,7 @@ textarea.in{height:auto;min-height:84px;padding:10px 14px;resize:vertical}
 @media (max-width:560px){.setup{grid-template-columns:1fr;gap:2px}.setup dd{margin-bottom:6px}}
 .welcome{display:grid;gap:14px}
 .tabs .soon{color:var(--ink-3);cursor:default}.tabs .soon:hover{color:var(--ink-3)}
-.tabs .soon em{margin-left:6px;padding:2px 7px;border-radius:999px;background:#F0F4F5;color:#78787A;font-size:11px;font-weight:500;line-height:1.4;font-style:normal;white-space:nowrap}
+.tabs .soon em{margin-left:6px;padding:2px 7px;border-radius:999px;background:#EEF1F6;color:#78787A;font-size:11px;font-weight:500;line-height:1.4;font-style:normal;white-space:nowrap}
 .tabs .soon em.glow{animation:soonglow 1.2s ease}@keyframes soonglow{30%{background:#E3EBF8;color:#1F273F}}
 @media (prefers-reduced-motion:reduce){.tabs .soon em.glow{animation:none}}
 .costline{margin:0;font-size:13px;color:var(--ink-2)}.costline .link{font:inherit;background:none;border:0;padding:0;cursor:pointer}
@@ -2553,7 +2553,7 @@ boot();
 :root, :root[data-theme="light"] {
   --primary: #1F273F; --primary-2: #1F273F; --primary-3: #3A5292; --primary-100: #EEF1F6; --primary-200: #DDE3EE;
   --ink: #1D1D1F; --ink-2: #6E6E73; --ink-3: #6E6E73; --ink-4: #8E8E93;
-  --bg: #FFFFFF; --paper: #F3F7F8; --card: #FFFFFF; --line: #E1E7EA; --field: #F0F4F5;
+  --bg: #FFFFFF; --paper: #EEF1F6; --card: #FFFFFF; --line: #DFDFDF; --field: #EEF1F6;
   --ok: #17704A; --ok-bg: #E7F5EC; --warn: #A85A0A; --warn-bg: #FFF4E3; --err: #B9304A; --err-bg: #FCEBEE; --info: #3A5292; --info-bg: #EEF1F6;
   --shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 32px -16px rgba(0,0,0,.16);
   --f: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
@@ -2655,7 +2655,10 @@ td { border-top-color: var(--line); }
 .step:not(:last-child)::after { background: var(--line); }
 
 /* inside the Assistant: paper ground, white cards */
-.happ.inline { background: var(--paper); }
+.happ.inline { background: #F9FAFE; }
+body { background: #F9FAFE; }
+th, .happ.inline th { background: #EFEFEF; }
+.hnav { background: #EEF1F6; }
 .happ.inline .content { padding: 18px 20px 32px; gap: 14px; }
 .happ.inline .hnew { background: var(--primary); border-color: var(--primary); color: #fff; }
 .happ.inline .hnew:hover { background: #2C3656; }
@@ -2746,7 +2749,7 @@ a { text-underline-offset: 2px; }
 :root, :root[data-theme="light"] {
   --primary: #3B5D8A; --primary-2: #3B5D8A; --primary-3: #3F74B5; --primary-100: #E6EEF7; --primary-200: #CDDDEF;
   --ink: #3A3A3C; --ink-2: #6D6C71; --ink-3: #6D6C71; --ink-4: #A2A1A6;
-  --paper: #F3F7F8; --line: #E1E7EA; --field: #F1F5F6; --info: #3B5D8A; --info-bg: #E6EEF7;
+  --paper: #EEF1F6; --line: #DFDFDF; --field: #EEF1F6; --info: #3B5D8A; --info-bg: #E6EEF7;
   --f: "Red Hat Text", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
 }
 body { font-feature-settings: normal; }
@@ -2783,7 +2786,7 @@ h1, h2, h3, h4 { font-family: "Red Hat Display", var(--f); letter-spacing: 0; }
     '.vsb button::before{content:"";position:absolute;left:2px;top:2px;border-left:4px solid transparent;border-right:4px solid transparent}' +
     '.vsb .vsb-up::before{border-bottom:5px solid #8E8D92}.vsb .vsb-dn::before{border-top:5px solid #8E8D92}' +
     '.vsb .vsb-up:hover::before{border-bottom-color:#3A3A3C}.vsb .vsb-dn:hover::before{border-top-color:#3A3A3C}' +
-    '.vsb-tr{position:relative;flex:1;width:10px;border-radius:5px;background:#EFF3F4;cursor:pointer}' +
+    '.vsb-tr{position:relative;flex:1;width:10px;border-radius:5px;background:#EEF1F6;cursor:pointer}' +
     '.vsb-th{position:absolute;left:0;top:0;width:10px;border-radius:5px;background:#8E8D92;cursor:grab;transition:background .15s}' +
     '.vsb-th:hover,.vsb-th:active{background:#6D6C71}';
   document.head.appendChild(css);

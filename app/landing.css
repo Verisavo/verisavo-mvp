@@ -1,5 +1,5 @@
 /* ===== Verisavo homepage (landing) ===== */
-.ln, .lf { --i9: #1F273F; --i10: #1F273F; --pap: #F6FAFB; --serif: "Newsreader", "Iowan Old Style", Georgia, serif; --lnw: 1200px; }
+.ln, .lf { --i9: #1F273F; --i10: #1F273F; --pap: #FAFAFA; --serif: "Newsreader", "Iowan Old Style", Georgia, serif; --lnw: 1200px; }
 body.ln-on { background: var(--color-paper); }
 .ln { display: block; color: var(--indigo); background: var(--color-paper); }
 .ln-wrap { max-width: var(--lnw); margin: 0 auto; padding-inline: clamp(20px, 4vw, 40px); }
@@ -1409,7 +1409,7 @@ html body .ln .fx-loop svg { width: 15px; height: 15px; flex: none; }
 #ln .ln-close .hp2-cta2:hover { background: var(--lc-rgba-255-255-255-08); box-shadow: inset 0 0 0 1px var(--lc-rgba-255-255-255-7); }
 @media (max-width: 640px) { #ln .ln-close .hp2-ctas { display: grid; width: 100%; max-width: 360px; } }
 /* >>> homepage sim: a short product walkthrough under How intelligence moves (homepage only) */
-#ln .sim { --s-i: #1F273F; --s-b: #3D4559; --s-m: #6A6A6C; --s-s: #6A6A6C; --s-l: #E3EAF2; --s-a: #4774AE; --s-t: #F6FAFB; display: grid; gap: 14px; justify-items: center; margin-top: clamp(36px, 5vw, 64px); }
+#ln .sim { --s-i: #1F273F; --s-b: #3D4559; --s-m: #6A6A6C; --s-s: #6A6A6C; --s-l: #E3EAF2; --s-a: #4774AE; --s-t: #FAFAFA; display: grid; gap: 14px; justify-items: center; margin-top: clamp(36px, 5vw, 64px); }
 #ln .sim-win { width: 100%; min-width: 0; border-radius: 20px; background: var(--color-paper); box-shadow: 0 0 0 1px var(--lc-e1e8f2), 0 40px 80px -48px var(--lc-rgba-31-39-63-45); overflow: hidden; font-family: "Inter", var(--sans); text-align: left; }
 #ln .sim-bar { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--s-l); font-size: .88rem; color: var(--s-i); }
 #ln .sim-bar b { font-weight: 600; }
