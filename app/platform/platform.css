@@ -3251,3 +3251,5 @@ html body .hdemo:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n#o#p){background:#2C3656!
 @keyframes vmic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(58,82,146,.35)}50%{box-shadow:0 0 0 7px rgba(58,82,146,0)}}
 @media (prefers-reduced-motion:reduce){#va .va-main .vmic.live{animation:none}}
 /* <<< voice mode */
+
+#va .va-main .tourline{margin:18px 0 0;text-align:center}#va .va-main .tourline .lnk{font-size:14px;color:#3A5292;text-decoration:underline;text-underline-offset:3px}
