@@ -812,6 +812,67 @@ function openSub(id) {
   </aside>`);
 }
 
+
+/* >>> pdf: a small built-in PDF writer, so a chat or a briefing downloads with one tap and no outside library */
+function vsPdf(title, blocks, filename) {
+  var W = 595, H = 842, M = 56, CW = W - M * 2;
+  var MAP = {8216: 145, 8217: 146, 8220: 147, 8221: 148, 8211: 150, 8212: 151, 8230: 133, 8226: 149, 8364: 128, 8482: 153};
+  function width(ch, bold) {
+    var w = /[ilj.,:;'|!]/.test(ch) ? 278 : ch === ' ' ? 278 : /[ftrI\-()\[\]\/]/.test(ch) ? 333 : /[mw]/.test(ch) ? 833 : /[MW]/.test(ch) ? 900 : /[A-HJ-LN-VX-Z&]/.test(ch) ? 700 : /[0-9$]/.test(ch) ? 556 : 540;
+    return w * (bold ? 1.06 : 1);
+  }
+  function tw(t, size, bold) { var n = 0; for (var i = 0; i < t.length; i++) n += width(t.charAt(i), bold); return n * size / 1000; }
+  function enc(t) {
+    var o = ''; for (var i = 0; i < t.length; i++) {
+      var c = t.charCodeAt(i); if (MAP[c]) c = MAP[c]; else if (c === 8239 || c === 160 || c === 8201) c = 32; else if (c > 255) c = 63;
+      if (c === 40 || c === 41 || c === 92) o += '\\' + String.fromCharCode(c); else if (c < 32 || c > 126) o += '\\' + ('000' + c.toString(8)).slice(-3); else o += String.fromCharCode(c);
+    } return o;
+  }
+  function wrap(t, size, bold, maxw) {
+    var out = [], line = ''; String(t).replace(/\s+/g, ' ').trim().split(' ').forEach(function (w) {
+      var tryl = line ? line + ' ' + w : w;
+      if (tw(tryl, size, bold) <= maxw || !line) line = tryl; else { out.push(line); line = w; }
+    }); if (line) out.push(line); return out;
+  }
+  var STY = {h1: [20, 1, 26, 0, 10, '0.122 0.153 0.247'], h2: [13, 1, 18, 14, 6, '0.122 0.153 0.247'], q: [11.5, 1, 16, 14, 4, '0.227 0.322 0.573'], p: [10.5, 0, 15.5, 0, 7, '0.15 0.15 0.16'], li: [10.5, 0, 15.5, 0, 4, '0.15 0.15 0.16'], meta: [9, 0, 13, 0, 8, '0.43 0.43 0.45']};
+  var pages = [], cur = [], y = H - M;
+  function np() { if (cur.length) pages.push(cur); cur = []; y = H - M; }
+  function put(text, x, size, bold, color) { cur.push('BT /F' + (bold ? 2 : 1) + ' ' + size + ' Tf ' + color + ' rg ' + x.toFixed(1) + ' ' + y.toFixed(1) + ' Td (' + enc(text) + ') Tj ET'); }
+  function block(kind, text) {
+    text = String(text).replace(/\u20a6\s?/g, 'NGN ').replace(/GH\u20b5\s?|\u20b5\s?/g, 'GHS ').replace(/\u2192/g, 'to').replace(/[\u2713\u2714]/g, '');
+    var s = STY[kind] || STY.p, ind = kind === 'li' ? 14 : 0, lines = wrap(text, s[0], s[1], CW - ind);
+    y -= s[3]; if (y - s[2] * Math.min(lines.length, 2) < M + 24) np();
+    lines.forEach(function (l, i) { if (y - s[2] < M + 24) np(); y -= s[2]; if (kind === 'li' && i === 0) put('•', M + 2, s[0], 0, s[5]); put(l, M + ind, s[0], s[1], s[5]); });
+    y -= s[4];
+  }
+  y -= 12; put('Verisavo', M, 12, 1, '0.122 0.153 0.247'); y -= 20;
+  block('h1', title);
+  blocks.forEach(function (b) { if (b && b.text) block(b.t, b.text); });
+  np();
+  var objs = [], kids = [];
+  function add(s) { objs.push(s); return objs.length; }
+  add('<< /Type /Catalog /Pages 2 0 R >>'); add('');
+  add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+  add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
+  pages.forEach(function (pg, i) {
+    var foot = 'BT /F1 8.5 Tf 0.43 0.43 0.45 rg ' + M + ' 34 Td (' + enc('Verisavo · ' + title.slice(0, 70) + ' · page ' + (i + 1) + ' of ' + pages.length) + ') Tj ET';
+    var stream = pg.join('\n') + '\n' + foot;
+    var c = add('<< /Length ' + stream.length + ' >>\nstream\n' + stream + '\nendstream');
+    kids.push(add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ' + c + ' 0 R >>'));
+  });
+  objs[1] = '<< /Type /Pages /Kids [' + kids.map(function (k) { return k + ' 0 R'; }).join(' ') + '] /Count ' + kids.length + ' >>';
+  var out = '%PDF-1.4\n', offs = [];
+  objs.forEach(function (o, i) { offs.push(out.length); out += (i + 1) + ' 0 obj\n' + o + '\nendobj\n'; });
+  var xref = out.length; out += 'xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n';
+  offs.forEach(function (o) { out += ('0000000000' + o).slice(-10) + ' 00000 n \n'; });
+  out += 'trailer\n<< /Size ' + (objs.length + 1) + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF';
+  var bytes = new Uint8Array(out.length); for (var i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+  var name = (filename || title).replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 60) + '.pdf';
+  var url = URL.createObjectURL(new Blob([bytes], {type: 'application/pdf'})), a = document.createElement('a');
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  return name;
+}
+/* <<< pdf */
 /* ---------- AI briefing ---------- */
 const sid6 = (id) => 'SUB-' + id.slice(-6).toUpperCase();
 const refBtns = (ids) => (ids || []).length ? `<span class="refs">${ids.slice(0, 4).map(i => S.submissions[i] ? `<button data-act="ref" data-id="${i}" title="Open response">${sid6(i)}</button>` : '').join('')}</span>` : '';
@@ -953,7 +1014,7 @@ function briefView(s, list) {
   const sec = (t, a, empty) => `<div><h3>${t}</h3>${(a || []).length ? `<ul>${a.map(o => `<li>${esc(o.text)}${o.confidence ? `<span class="conf ${o.confidence}">${o.confidence} confidence</span>` : ''}${refBtns(o.refs)}</li>`).join('')}</ul>` : `<p class="faint" style="margin:0;font-size:13px">${empty}</p>`}</div>`;
   const stale = list.length !== b.n;
   return `<div class="grid g-main"><div class="card brief">
-    <div class="head" style="margin-bottom:0"><div><h2>Investigation briefing</h2><span class="faint" style="font-size:12px">Generated ${dtt(b.at)} from ${b.n} response${b.n === 1 ? '' : 's'}${b.by === 'rules' ? ' · summary built from the responses' : ''}</span></div><button class="btn ${stale ? '' : 'ghost'} sm" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}${stale ? 'Update with new evidence' : 'Regenerate'}</button></div>
+    <div class="head" style="margin-bottom:0"><div><h2>Investigation briefing</h2><span class="faint" style="font-size:12px">Generated ${dtt(b.at)} from ${b.n} response${b.n === 1 ? '' : 's'}${b.by === 'rules' ? ' · summary built from the responses' : ''}</span></div><span class="brief-acts"><button class="btn ghost sm" data-act="pdfbrief" data-id="${s.id}" aria-label="Download this briefing as a PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download PDF</button><button class="btn ${stale ? '' : 'ghost'} sm" id="genbrief" data-act="genbrief" data-id="${s.id}">${ic.spark}${stale ? 'Update with new evidence' : 'Regenerate'}</button></span></div>
     ${stale ? `<div class="note blue">${ic.info}<span>${list.length - b.n > 0 ? list.length - b.n + ' new response' + (list.length - b.n === 1 ? '' : 's') : 'Responses have changed'} since this briefing. Update it to include them.</span></div>` : ''}
     ${(s.setup || []).length ? `<div><h3>How this investigation was set up</h3><dl class="setup">${s.setup.map(x => `<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl></div>` : ''}
     ${(s.signals || []).length ? `<div><h3>Signals that started this investigation</h3><ul class="sigs">${s.signals.map(x => `<li>${esc(x.text)} <span class="faint">${esc(x.source)}</span></li>`).join('')}</ul></div>` : ''}
@@ -2177,6 +2238,20 @@ document.addEventListener('click', async (e) => {
   else if (a === 'back-chat') { try { window.parent.postMessage({ vs: 'back-chat' }, '*'); } catch (e) {} }
   else if (a === 'usegap') { const g = GAPS[Number(v)], c = ctxFromText(g.gap); c.country = g.country; c.city = g.regions[0]; openWizard(c, 'direct'); render(); window.scrollTo(0, 0); }
   else if (a === 'genbrief') genBrief(id);
+  else if (a === 'pdfbrief') {
+    const s = S.surveys[id], b = s && s.briefing; if (!b) return toast('Create the briefing first.');
+    const list = Object.values(S.submissions).filter(x => x.surveyId === id), bl = [], add = (t, text) => bl.push({t, text});
+    add('meta', 'Investigation briefing · generated ' + dtt(b.at) + ' from ' + b.n + ' response' + (b.n === 1 ? '' : 's') + ' · downloaded ' + new Date().toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'}));
+    (s.setup || []).length && (add('h2', 'How this investigation was set up'), s.setup.forEach(x => add('li', x[0] + ': ' + x[1])));
+    (s.signals || []).length && (add('h2', 'Signals that started this investigation'), s.signals.forEach(x => add('li', x.text + ' (' + x.source + ')')));
+    add('h2', 'Objective'); add('p', s.request || s.title);
+    add('h2', 'Summary'); add('p', b.summary);
+    [['Key findings', b.findings], ['Where SavoScouts agree', b.agreements], ['Differences and contradictions', b.contradictions], ['What it could mean', b.implications], ['Still unknown', b.unknowns], ['Recommended next steps', b.next]].forEach(g => { if ((g[1] || []).length) { add('h2', g[0]); g[1].forEach(o => add('li', o.text + (o.confidence ? ' (' + o.confidence + ' confidence)' : '') + ((o.refs || []).length ? ' [' + o.refs.slice(0, 4).map(sid6).join(', ') + ']' : ''))); } });
+    const fu = (s.followups || []).filter(m => m.a); if (fu.length) { add('h2', 'Follow-up questions'); fu.forEach(m => { add('q', m.q); add('p', m.a.text); }); }
+    add('h2', 'Evidence behind this briefing');
+    add('li', 'Verified: ' + list.filter(x => x.status === 'approved').length); add('li', 'Awaiting review: ' + list.filter(x => x.status === 'pending').length); add('li', 'Not verified (excluded): ' + list.filter(x => x.status === 'rejected').length);
+    toast('Downloaded ' + vsPdf(s.title, bl, 'Verisavo briefing ' + s.title));
+  }
   else if (a === 'fuinv') { const s = S.surveys[id], m = s && (s.followups || [])[Number(v)]; if (!m) return; const c = ctxFromText((m.a && m.a.ask) || m.q); if (!c.city) { c.country = s.country; c.city = (s.regions || [])[0] || ''; } c.from = 'Follow-up on ' + s.title; openWizard(c, 'gaps'); go('c-builder'); }
   else if (a === 'ref') openSub(id);
   else if (a === 'toggleregion') { B.regions = B.regions.includes(v) ? B.regions.filter(x => x !== v) : [...B.regions, v]; render(); }
@@ -2657,6 +2732,7 @@ td { border-top-color: var(--line); }
 /* inside the Assistant: paper ground, white cards */
 .happ.inline { background: #F9FAFE; }
 body { background: #F9FAFE; }
+.brief-acts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .draftdel { padding: 10px 14px; border: 1px solid #E4A49C; border-radius: 10px; background: #fff; flex-wrap: wrap; }
 .draftdel .dq { flex: 1; min-width: 180px; display: grid; gap: 2px; font-size: 13px; color: var(--ink-2); }
 .draftdel .dq b { font-weight: 500; font-size: 14px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
