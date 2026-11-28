@@ -3239,3 +3239,15 @@ html.vs-arrive body{visibility:hidden}html.vs-arrive dialog#va{visibility:visibl
 /* Request a demo in the top bar: navy, the same as the main hero button */
 html body .hdemo:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n#o#p){background:#1F273F!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#1F273F!important}
 html body .hdemo:hover:not(#a#b#c#d#e#f#g#h#i#j#k#l#m#n#o#p){background:#2C3656!important;border-color:#2C3656!important}
+
+/* >>> voice mode */
+#va .va-main .vmic{flex:none;width:32px;height:32px;border-radius:var(--px-r-s);background:#fff;color:#3A5292;border:1px solid #DFDFDF;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+#va .va-main .vmic svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#va .va-main .vmic:hover{background:#EEF1F6;border-color:#3A5292}
+#va .va-main .vmic:focus-visible{outline:2px solid #3A5292;outline-offset:2px}
+#va .va-main .vmic.on{background:#E3EBF8;border-color:#3A5292;color:#1F273F}
+#va .va-main .vmic.live{background:#1F273F;border-color:#1F273F;color:#fff;animation:vmic-pulse 1.4s ease-in-out infinite}
+#va .va-main .vstat{font-size:13px;color:#3A5292;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@keyframes vmic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(58,82,146,.35)}50%{box-shadow:0 0 0 7px rgba(58,82,146,0)}}
+@media (prefers-reduced-motion:reduce){#va .va-main .vmic.live{animation:none}}
+/* <<< voice mode */
