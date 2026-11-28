@@ -2644,6 +2644,118 @@ async function boot() {
   }, err => { clearTimeout(timer); if (!S.loaded) { S.loaded = true; render(); } }));
 }
 boot();
+
+/* >>> demo guide: a presenter's panel, only when the page is opened with ?demo=1. It moves a walkthrough past the steps that normally wait for a person or for time. */
+(function () {
+  if (window.vsDemoGuide) return;
+  var KEY = 'vs-demo', p = null;
+  function qs(w) { try { return new URLSearchParams(w.location.search).get('demo'); } catch (e) { return null; } }
+  p = qs(window); if (p == null) { try { p = qs(window.parent); } catch (e) {} } if (p == null) { try { p = qs(window.top); } catch (e) {} }
+  try { if (p === '1') localStorage.setItem(KEY, '1'); if (p === '0') localStorage.removeItem(KEY); } catch (e) {}
+  var on = false; try { on = localStorage.getItem(KEY) === '1'; } catch (e) {} if (p === '1') on = true; if (p === '0') on = false;
+  window.vsDemoOn = on;
+  window.vsDemoGuide = function (getSteps, title) {
+    if (!on) return;
+    function mount() {
+      var css = document.createElement('style');
+      css.textContent = '#vsdg-b{position:fixed;right:10px;top:50%;transform:translateY(-50%);z-index:2147483600;width:46px;padding:8px 0 7px;border-radius:12px;border:0;background:#1F273F;color:#fff;font:600 10.5px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;display:grid;justify-items:center;gap:3px;box-shadow:0 6px 20px rgba(31,39,63,.28)}#vsdg-b svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}#vsdg-b:focus-visible{outline:2px solid #80AADC;outline-offset:2px}#vsdg-b[hidden],#vsdg-p[hidden]{display:none!important}' +
+        '#vsdg-p{position:fixed;right:64px;top:50%;transform:translateY(-50%);z-index:2147483600;width:min(320px,calc(100vw - 84px));max-height:min(78vh,560px);overflow:auto;background:#fff;color:#1F273F;border:1px solid #DFDFDF;border-radius:14px;box-shadow:0 18px 50px rgba(31,39,63,.22);padding:14px;font:400 13px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:left}#vsdg-p h2{margin:0 0 2px;font:600 15px/1.3 inherit;color:#1F273F}#vsdg-p .vsdg-s{margin:0 0 10px;color:#5B6478;font-size:12px}#vsdg-p ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}#vsdg-p li button{all:unset;box-sizing:border-box;display:block;width:100%;padding:10px 12px;border:1px solid #DFDFDF;border-radius:10px;background:#F9FAFE;cursor:pointer}#vsdg-p li button:hover{border-color:#3A5292;background:#EEF1F6}#vsdg-p li button:focus-visible{outline:2px solid #3A5292;outline-offset:1px}#vsdg-p li b{display:block;font-weight:600;font-size:13px;color:#1F273F}#vsdg-p li span{display:block;margin-top:2px;font-size:12px;color:#5B6478}#vsdg-p .vsdg-m{margin:10px 0 0;padding:8px 10px;border-radius:8px;background:#E7F5EC;color:#17704A;font-size:12px}#vsdg-p .vsdg-e{margin:0;color:#5B6478;font-size:12.5px}#vsdg-p .vsdg-f{margin:12px 0 0;padding-top:10px;border-top:1px solid #EEF1F6;display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11.5px;color:#8A93A5}#vsdg-p .vsdg-f button{all:unset;cursor:pointer;color:#3A5292;font-weight:500;text-decoration:underline;text-underline-offset:2px}';
+      document.head.appendChild(css);
+      var b = document.createElement('button'); b.id = 'vsdg-b'; b.type = 'button'; b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-label', 'Demo guide');
+      b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Demo';
+      var pn = document.createElement('div'); pn.id = 'vsdg-p'; pn.hidden = true; pn.setAttribute('role', 'dialog'); pn.setAttribute('aria-label', 'Demo guide');
+      var msg = '';
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
+      function steps() { try { return getSteps(); } catch (e) { return []; } }
+      function draw() {
+        var st = steps() || [];
+        pn.innerHTML = '<h2>' + esc(title || 'Demo guide') + '</h2><p class="vsdg-s">Sample people and data. Use these to move past steps that normally wait for a person or for time.</p>' +
+          (st.length ? '<ul>' + st.map(function (s, i) { return '<li><button type="button" data-i="' + i + '"><b>' + esc(s.t) + '</b>' + (s.n ? '<span>' + esc(s.n) + '</span>' : '') + '</button></li>'; }).join('') + '</ul>' : '<p class="vsdg-e">Nothing is waiting on this screen. Carry on as a normal user would, and open this guide again when a step asks you to wait.</p>') +
+          (msg ? '<p class="vsdg-m" role="status">' + esc(msg) + '</p>' : '') +
+          '<p class="vsdg-f"><span>Demo mode is on</span><button type="button" data-leave>Leave demo mode</button></p>';
+        pn._st = st;
+      }
+      function open(v) { pn.hidden = !v; b.setAttribute('aria-expanded', String(v)); if (v) { draw(); } else msg = ''; }
+      b.addEventListener('click', function (e) { e.stopPropagation(); open(pn.hidden); });
+      pn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (e.target.closest('[data-leave]')) { try { localStorage.removeItem(KEY); } catch (x) {} var u = location.href.replace(/([?&])demo=1(&|$)/, function (m, a, c) { return c ? a : ''; }); if (u !== location.href) location.href = u; else location.reload(); return; }
+        var t = e.target.closest('button[data-i]'); if (!t) return;
+        var s = (pn._st || [])[+t.dataset.i]; if (!s) return;
+        var done = function (r) { msg = typeof r === 'string' ? r : 'Done.'; setTimeout(draw, 350); };
+        try { var r = s.go(); if (r && r.then) r.then(done, function () { done('That step could not run here.'); }); else done(r); } catch (x) { done('That step could not run here.'); }
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pn.hidden) open(false); });
+      function place() {
+        var d = document.querySelectorAll('dialog[open]'), host = d.length ? d[d.length - 1] : document.body;
+        if (b.parentNode !== host) { host.appendChild(b); host.appendChild(pn); }
+        var st = steps(); b.hidden = st === null; if (b.hidden) pn.hidden = true;
+        else if (!pn.hidden) { var sig = (st || []).map(function (s) { return s.t; }).join('|'), was = (pn._st || []).map(function (s) { return s.t; }).join('|'); if (sig !== was) draw(); }
+      }
+      place(); setInterval(place, 700);
+    }
+    if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount);
+  };
+})();
+/* <<< demo guide */
+/* >>> demo guide steps (only shown in demo mode) */
+(function () {
+  if (!window.vsDemoGuide) return;
+  const AM = {name: 'Amara Okafor', email: 'amara.okafor@example.com', phone: '+234 803 555 0142', dob: '1998-04-12', country: 'Nigeria', city: 'Lagos', idType: 'National ID card', idNo: '48217730615', idFile: 'amara-okafor-national-id.jpg'};
+  const PLACES = ['Balogun Market', 'Mile 12 Market', 'Makola Market', 'Kaneshie Market', 'Sabon Gari', 'Kurmi Market', 'Kejetia Market', 'Central Market'];
+  function genAnswers(s, i) {
+    const a = {}; (s.questions || []).forEach((q, k) => { const o = q.options || [];
+      a[q.id] = ['single', 'dropdown'].includes(q.type) ? (o[(i + k) % Math.max(1, o.length)] || 'Yes') : q.type === 'yesno' ? ((i + k) % 3 ? 'Yes' : 'No') : q.type === 'multi' ? o.slice(0, 2) : q.type === 'rank' ? o.slice()
+        : ['number', 'price'].includes(q.type) ? String(900 + ((i * 37 + k * 11) % 9) * 50) : ['scale', 'rating'].includes(q.type) ? String(3 + ((i + k) % 3)) : q.type === 'date' ? new Date().toISOString().slice(0, 10)
+        : q.type === 'photo' ? 'photo' : q.type === 'paragraph' ? 'The shop owner said deliveries have been slower this month and shoppers keep asking for the smaller pack.' : PLACES[(i + k) % PLACES.length]; });
+    return a;
+  }
+  async function addResponses(s, sid, n) {
+    const base = subsOf(sid), pool = Object.entries(S.scouts).filter(([id, x]) => x.country === s.country && id !== S.me), any = Object.entries(S.scouts).filter(([id]) => id !== S.me);
+    const scouts = pool.length ? pool : any;
+    for (let i = 0; i < n; i++) {
+      const b = base.length ? base[(i * 3 + base.length) % base.length] : null, sc = scouts.length ? scouts[(base.length + i) % scouts.length] : ['sc-demo', {name: 'Chidi Okeke', city: (s.regions || [])[0] || ''}];
+      const doc = {...(b ? {route: b.route, contribution: b.contribution, source: b.source, role: b.role, basis: b.basis, media: b.media || []} : {media: []}), surveyId: sid, surveyTitle: s.title, scoutId: sc[0], scoutName: sc[1].name, region: (s.regions || [])[(base.length + i) % Math.max(1, (s.regions || []).length)] || sc[1].city || '', country: s.country,
+        answers: b ? JSON.parse(JSON.stringify(b.answers || {})) : genAnswers(s, base.length + i), reward: s.rewardPts, status: 'pending', createdAt: Date.now() - (n - i) * 40000, channel: 'whatsapp', outcome: null, flags: [], checks: {gps: true, attention: null, duplicate: false, consistency: true}, sample: !!s.sample, demo: true};
+      await put('submissions', uid('sb'), doc);
+    }
+  }
+  window.vsDemoGuide(function () {
+    const r = route(), st = [], sc = myScout();
+    if (r.role === 'scout') {
+      if (!sc) {
+        st.push({t: 'Fill in Amara Okafor’s details', n: 'Fills every sign-up step with the sample SavoScout. Tap Continue on each step to walk through them.', go() { if (!J) jFresh(); const stp = J.step; Object.assign(J, AM); if (!COUNTRIES[AM.country]) { J.country = Object.keys(COUNTRIES)[0]; J.city = COUNTRIES[J.country][0]; } else if (!COUNTRIES[AM.country].includes(AM.city)) J.city = COUNTRIES[AM.country][0]; J.step = stp; render(); return 'Filled in. Tap Continue on each step.'; }});
+        return st;
+      }
+      const pend = mySubs().filter(x => x.status === 'pending'), disp = mySubs().filter(x => x.status === 'rejected' && x.disputed && !x.disputeClosed);
+      const wd = myTx().filter(t => t.kind === 'withdrawal' && t.status === 'pending'), qk = myTx().filter(t => t.kind === 'quick' && t.status === 'pending');
+      st.push({t: 'Send this scout a new task', n: 'A price check near ' + sc.city + ' arrives in the chat.', go() { sampleJob(); render(); return 'Task sent. It appears in the chat.'; }});
+      if (pend.length) {
+        st.push({t: 'Verify the response being checked', n: 'A reviewer normally does this within 24 to 48 hours.', async go() { await patch('submissions', pend[0].id, {status: 'approved', reviewedAt: Date.now()}); render(); return 'Verified. The scout is told in the chat.'; }});
+        st.push({t: 'Mark it not verified instead', n: 'Shows the reason, the one fix and the dispute.', async go() { await patch('submissions', pend[0].id, {status: 'rejected', reason: 'Photo too unclear to read', reviewedAt: Date.now()}); render(); return 'Marked not verified. The scout is told why in the chat.'; }});
+      }
+      if (disp.length) st.push({t: 'Decide the dispute', n: 'A second reviewer normally decides within 3 days. This keeps it not verified.', async go() { await patch('submissions', disp[0].id, {disputeClosed: true, disputeResult: 'upheld', disputeClosedAt: Date.now()}); render(); return 'Dispute decided. The scout is told in the chat.'; }});
+      if (qk.length) st.push({t: 'Verify the quick checks', n: 'Releases the VeriPoints held for quick checks.', async go() { for (const t of qk) await patch('transactions', t.id, {status: 'approved'}); render(); return 'Quick checks verified.'; }});
+      if (wd.length) st.push({t: 'Complete the conversion', n: 'Payouts normally take a short while to arrive.', async go() { const t = wd[0]; await patch('transactions', t.id, {status: 'completed', paidAt: Date.now()}); if (W) { say(`*Payment sent* ✓\n${fmt(t.amountPts, 2)} VeriPoints (${money(t.amountPts * PT_USD)}) sent as ${String(t.method || 'your chosen method').toLowerCase()}.`, [{l: 'My balance', a: 'balance'}]); render(); } return 'Paid. The scout is told in the chat.'; }});
+      st.push({t: 'Start the scout demo again', n: 'Removes this sample scout and the chat, back to the welcome screen.', async go() { try { localStorage.removeItem('vs-wa-' + S.me); } catch (e) {} W = null; J = null; await remove('scouts', S.me); render(); return 'Starting again.'; }});
+      return st;
+    }
+    const sid = r.page === 'survey' && r.id ? r.id.split('~')[0] : null, s = sid ? S.surveys[sid] : null;
+    if (s && s.status !== 'draft') {
+      const pend = subsOf(sid).filter(x => x.status === 'pending');
+      if (s.status === 'active') st.push({t: 'Bring in 3 new responses', n: 'Three sample SavoScouts respond now, so you can show evidence arriving.', async go() { await addResponses(s, sid, 3); render(); return '3 responses arrived and are awaiting review.'; }});
+      if (pend.length) st.push({t: 'Verify everything awaiting review', n: pend.length + ' response' + (pend.length === 1 ? '' : 's') + '. Your team normally reviews these one by one.', async go() { for (const x of pend) await patch('submissions', x.id, {status: 'approved', reviewedAt: Date.now()}); render(); return pend.length + ' verified.'; }});
+      if (s.status === 'active' || s.status === 'paused') st.push({t: 'Finish this investigation', n: 'Normally it closes when the target or the deadline is reached.', async go() { await patch('surveys', sid, {status: 'completed', completedAt: Date.now()}); render(); return 'Investigation completed.'; }});
+    } else {
+      const live = surveys().find(x => x.status === 'active' && !x.practice), ex = S.surveys['case-kano'] ? 'case-kano' : null;
+      if (ex) st.push({t: 'Open the worked example', n: 'Detergent sales slowdown in Kano: signals, responses and the AI briefing.', go() { go('c-survey-' + ex + '~brief'); return 'Opened.'; }});
+      if (live) st.push({t: 'Open a live investigation', n: live.title + '. From there you can bring in new responses.', go() { go('c-survey-' + live.id); return 'Opened.'; }});
+    }
+    st.push({t: 'Reset all sample data', n: 'Puts every investigation, response and scout back to how the demo starts.', go() { try { Object.keys(localStorage).forEach(k => { if (k === 'vs-mvp' || k === 'vs-templates' || k.indexOf('vs-wa-') === 0) localStorage.removeItem(k); }); } catch (e) {} setTimeout(() => location.reload(), 200); return 'Resetting.'; }});
+    return st;
+  }, 'Demo guide');
+})();
+/* <<< demo guide steps */
 </script><style data-quiet>
 /* >>> quiet system v1 */
 /* Investigations app: same quiet system as the Assistant. Tokens first, then the few shapes the tokens don't reach. */
