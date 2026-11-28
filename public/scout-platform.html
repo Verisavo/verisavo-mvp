@@ -435,13 +435,17 @@ const SAMPLE = (o) => o && o.sample ? '<span class="sample">Sample</span>' : '';
 const TIMEFRAMES = [['24h', '24 hours', 1, 1], ['3d', '3 days', 3, 1], ['7d', '7 days', 7, 1], ['14d', '14 days', 14, 1], ['30d', '30 days', 30, 1]];
 const tf = (k) => TIMEFRAMES.find(t => t[0] === k) || TIMEFRAMES[2];
 const PLATFORM_FEE = 0, VERIFY_FEE = .15, PT_USD = .1, PER_RESPONSE = 1.15;
-const pricing = (n, k) => { const r = tf(k)[3]; const rewards = n * r, verify = n * VERIFY_FEE; return {rate: r, rewards, verify, collection: rewards + verify, total: rewards + verify + PLATFORM_FEE, rewardPts: Math.round(r / PT_USD * 100) / 100}; };
+/* the standard reward covers a task of up to about 10 minutes; longer tasks pay the SavoScout more */
+const lenMult = m => m <= 10 ? 1 : m <= 15 ? 1.5 : 2;
+const pricing = (n, k) => { const r = tf(k)[3] * (B && B.questions ? lenMult(dur(B)) : 1); const rewards = n * r, verify = n * VERIFY_FEE; return {rate: r, rewards, verify, collection: rewards + verify, total: rewards + verify + PLATFORM_FEE, rewardPts: Math.round(r / PT_USD * 100) / 100}; };
 
 /* the main cities and towns in each country, A to Z; MAIN_CITIES are the ones offered first as quick picks */
 const MAIN_CITIES = {Ghana: ['Tamale', 'Savelugu', 'Yendi', 'Bolgatanga', 'Kumasi', 'Accra', 'Takoradi'], Nigeria: ['Kano', 'Kaduna', 'Makurdi', 'Abuja', 'Lagos', 'Ibadan'], Kenya: ['Nairobi', 'Nakuru', 'Eldoret', 'Kisumu', 'Mombasa'], Zambia: ['Lusaka', 'Kabwe', 'Ndola', 'Kitwe'], 'South Africa': ['Johannesburg', 'Durban', 'Cape Town'], Uganda: ['Kampala', 'Gulu', 'Mbarara']};
 const COUNTRIES = {Ghana: ['Accra', 'Ashaiman', 'Bolgatanga', 'Cape Coast', 'Dambai', 'Damongo', 'Goaso', 'Ho', 'Kasoa', 'Koforidua', 'Kumasi', 'Nalerigu', 'Nkawkaw', 'Obuasi', 'Savelugu', 'Sefwi Wiawso', 'Sunyani', 'Takoradi', 'Tamale', 'Tarkwa', 'Techiman', 'Tema', 'Wa', 'Winneba', 'Yendi'], Nigeria: ['Aba', 'Abakaliki', 'Abeokuta', 'Abuja', 'Ado-Ekiti', 'Akure', 'Asaba', 'Awka', 'Bauchi', 'Benin City', 'Birnin Kebbi', 'Bonny', 'Calabar', 'Damaturu', 'Dutse', 'Enugu', 'Gombe', 'Gusau', 'Ibadan', 'Ife', 'Ijebu-Ode', 'Ikeja', 'Ikorodu', 'Ilorin', 'Jalingo', 'Jos', 'Kaduna', 'Kano', 'Katsina', 'Lafia', 'Lagos', 'Lokoja', 'Maiduguri', 'Makurdi', 'Minna', 'Nnewi', 'Nsukka', 'Ogbomosho', 'Onitsha', 'Oshogbo', 'Owerri', 'Oyo', 'Port Harcourt', 'Sapele', 'Sokoto', 'Umuahia', 'Uyo', 'Warri', 'Yenagoa', 'Yola', 'Zaria'], Kenya: ['Bungoma', 'Eldoret', 'Embu', 'Garissa', 'Isiolo', 'Kakamega', 'Kericho', 'Kiambu', 'Kilifi', 'Kisii', 'Kisumu', 'Kitale', 'Lamu', 'Machakos', 'Malindi', 'Meru', 'Mombasa', 'Nairobi', 'Naivasha', 'Nakuru', 'Nanyuki', 'Narok', 'Nyeri', 'Ruiru', 'Thika'], Zambia: ['Chililabombwe', 'Chingola', 'Chipata', 'Choma', 'Kabwe', 'Kafue', 'Kalulushi', 'Kasama', 'Kitwe', 'Livingstone', 'Luanshya', 'Lusaka', 'Mansa', 'Mazabuka', 'Mongu', 'Mufulira', 'Ndola', 'Solwezi'], 'South Africa': ['Benoni', 'Bloemfontein', 'Cape Town', 'Durban', 'East London', 'George', 'Gqeberha', 'Johannesburg', 'Kimberley', 'Mahikeng', 'Mbombela', 'Newcastle', 'Pietermaritzburg', 'Polokwane', 'Pretoria', 'Richards Bay', 'Rustenburg', 'Soweto', 'Stellenbosch', 'Upington', 'Vereeniging', 'Welkom'], Uganda: ['Arua', 'Entebbe', 'Fort Portal', 'Gulu', 'Hoima', 'Jinja', 'Kabale', 'Kampala', 'Kasese', 'Lira', 'Masaka', 'Mbale', 'Mbarara', 'Mukono', 'Soroti', 'Tororo', 'Wakiso']};
 const INDUSTRIES = ['Agriculture', 'Consumer goods', 'Energy', 'Retail', 'Healthcare', 'Financial services', 'Logistics'];
-const QTYPES = [['short', 'Short answer'], ['paragraph', 'Paragraph'], ['single', 'Single choice'], ['multi', 'Checkboxes'], ['number', 'Number'], ['scale', 'Scale (1–5)'], ['rating', 'Star rating'], ['date', 'Date'], ['photo', 'Photo upload']];
+const QTYPES = [['short', 'Short answer'], ['paragraph', 'Paragraph'], ['single', 'Single choice'], ['multi', 'Checkboxes'], ['yesno', 'Yes or No'], ['dropdown', 'Dropdown list'], ['rank', 'Ranking'], ['number', 'Number'], ['price', 'Price'], ['scale', 'Scale (1–5)'], ['rating', 'Star rating'], ['date', 'Date'], ['photo', 'Photo upload']];
+/* Yes or No and Dropdown are single-choice questions shown differently, so results and conditions treat them the same way */
+const qKind = q => q.yn ? 'yesno' : q.dd ? 'dropdown' : q.type;
 
 /* ---------------- state + data ---------------- */
 const S = {
@@ -549,7 +553,7 @@ function shell(r, title, body, extraTop = '') {
     </div>`}
     ${nav.map(n => n.length === 1 ? (n[0] ? `<div class="navlabel">${n[0]}</div>` : '<div style="height:8px"></div>') : `<button class="nav ${n[3] ? 'on' : ''}" data-go="${n[0]}">${ic[n[2]]}${n[1]}</button>`).join('')}
     <div class="grow"></div>
-    ${!client && sc ? `<div class="ptsbox"><span class="muted" style="font-size:12px">Available VeriPoints</span><b style="font-size:20px" class="num">${fmt(w.available, 2)}</b><span class="faint" style="font-size:11.5px">Reply WITHDRAW in the chat to cash out</span></div>` : ''}
+    ${!client && sc ? `<div class="ptsbox"><span class="muted" style="font-size:12px">Available VeriPoints</span><b style="font-size:20px" class="num">${fmt(w.available, 2)}</b><span class="faint" style="font-size:11.5px">Reply CONVERT in the chat to turn them into airtime, mobile money or a voucher</span></div>` : ''}
     <div class="me"><div class="avatar">${initials(client ? 'Client' : who.name)}</div><div style="min-width:0"><div style="font-weight:500;font-size:13px">${esc(who.name)}</div><div class="faint" style="font-size:11.5px">${esc(who.sub)}</div></div></div>
   </aside>
   ${S.ui.sidebar ? '<div class="scrim" data-act="closeside"></div>' : ''}
@@ -707,7 +711,7 @@ function processed(s, list) {
   const regions = [...new Set([...(s.regions || []), ...okList.map(x => x.region)])];
   const ok = list.filter(x => x.status === 'approved').length, rej = list.filter(x => x.status === 'rejected').length, pend = list.filter(x => x.status === 'pending').length;
   const qs = s.questions || [];
-  const numQ = qs.filter(q => q.type === 'number' || q.type === 'scale' || q.type === 'rating');
+  const numQ = qs.filter(q => q.type === 'number' || q.type === 'price' || q.type === 'scale' || q.type === 'rating');
   const choiceQ = qs.filter(q => q.type === 'single' || q.type === 'multi');
   const numBlock = numQ.map(q => {
     const per = regions.map(rg => { const v = okList.filter(x => x.region === rg).map(x => Number(x.answers?.[q.id])).filter(v => !isNaN(v) && v !== null && v !== ''); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0; });
@@ -748,8 +752,8 @@ function processed(s, list) {
 function openSub(id) {
   const x = S.submissions[id] ? {id, ...S.submissions[id]} : null; if (!x) return;
   const s = S.surveys[x.surveyId] || {questions: []};
-  const ansHtml = (s.questions || []).map(q => { let a = x.answers?.[q.id]; if (Array.isArray(a)) a = a.join(', '); if (q.type === 'rating' && a) a = '★'.repeat(a) + ' (' + a + '/5)'; return `<div class="ans"><span class="q">${esc(q.text)}</span><span>${a === undefined || a === '' || a === null ? '<span class="faint">No answer</span>' : esc(a) + (q.unit && q.type === 'number' ? ' ' + esc(q.unit) : '')}</span></div>`; }).join('');
-  const checks = [['GPS within ' + (s.gpsRadius || 100) + ' m of the investigation location', x.checks?.gps !== false], ['Media attached', (x.media || []).length > 0], ['No duplicate submission from this scout', x.checks?.duplicate !== true], ['Answers consistent with nearby submissions', x.checks?.consistency !== false]];
+  const ansHtml = (s.questions || []).map(q => { let a = x.answers?.[q.id]; if (Array.isArray(a)) a = a.join(', '); if (q.type === 'rating' && a) a = '★'.repeat(a) + ' (' + a + '/5)'; return `<div class="ans"><span class="q">${esc(q.text)}</span><span>${a === undefined || a === '' || a === null ? '<span class="faint">No answer</span>' : esc(a) + (qUnit(q) && isNum(q) ? ' ' + esc(qUnit(q)) : '')}</span></div>`; }).join('');
+  const checks = [['GPS within ' + (s.gpsRadius || 100) + ' m of the investigation location', x.checks?.gps !== false], ['Media attached', (x.media || []).length > 0], ['No duplicate submission from this scout', x.checks?.duplicate !== true], ['Answers consistent with nearby submissions', x.checks?.consistency !== false], ...(x.checks && x.checks.attention != null ? [['Attention check passed', x.checks.attention !== false]] : [])];
   layer(`<div class="drawer-bg" data-act="close"></div><aside class="drawer" role="dialog" aria-label="Submission">
     <div class="row between"><div><div class="faint" style="font-size:12px">SUB-${x.id.slice(-6).toUpperCase()}</div><h2 style="font-size:18px">${esc(x.surveyTitle)}</h2></div><button class="iconbtn" data-act="close" aria-label="Close">${ic.x}</button></div>
     <div class="row">${pill(x.status)}<span class="muted" style="font-size:12px">${dtt(x.createdAt)}</span>${SAMPLE(x)}</div>
@@ -758,8 +762,12 @@ function openSub(id) {
     <div><div class="flabel" style="margin-bottom:6px">Automatic checks</div><div class="checklist">${checks.map(([t, okk]) => `<div class="${okk ? 'done' : 'now'}"><span class="ck" style="${okk ? '' : 'border-color:var(--err);color:var(--err)'}">${okk ? ic.check : ic.x}</span>${esc(t)}</div>`).join('')}</div></div>
     <div><div class="flabel">Answers</div>${ansHtml || '<p class="muted">No answers recorded.</p>'}</div>
     <div><div class="flabel" style="margin-bottom:6px">Media</div>${(x.media || []).length ? (x.media || []).map(m => `<div class="file" style="margin-bottom:6px">${ic[m.kind === 'video' ? 'video' : m.kind === 'audio' ? 'mic' : m.kind === 'document' ? 'file' : 'camera']}<span style="flex:1;min-width:0;overflow-wrap:anywhere">${esc(m.name)}</span><span class="faint">${m.size ? fmt(m.size / 1024) + ' KB' : ''}</span></div>`).join('') : '<p class="muted">No media attached.</p>'}<p class="faint" style="font-size:12px">The MVP records file names and sizes; files are not uploaded.</p></div>
+    ${x.outcome === 'not_stocked' ? `<div class="note">${ic.info}<span><b>Reported as not stocked.</b> The SavoScout could not find the product at this outlet. That is a finding in its own right, so later questions may be unanswered.</span></div>` : ''}
+    ${(x.flags || []).filter(Boolean).length ? `<div class="note">${ic.info}<span>The SavoScout was asked to confirm an unusual number and said it is right.</span></div>` : ''}
+    ${x.fixed && x.status === 'pending' ? `<div class="note">${ic.info}<span><b>Sent again after a fix.</b> First marked not verified: ${esc(x.prevReason || 'no reason recorded')}. A SavoScout can fix a response once.</span></div>` : ''}
     ${x.status === 'rejected' && x.reason ? `<div class="note">${ic.info}<span>Not verified: ${esc(x.reason)}</span></div>` : ''}
-    ${x.status === 'pending' ? `<div class="field"><label for="rejReason">Reason, if not verified</label><select class="in" id="rejReason"><option>Location mismatch</option><option>Photo does not show the product</option><option>Contradicted by other responses</option><option>Could not confirm from the evidence</option><option>Duplicate submission</option></select></div>
+    ${x.status === 'rejected' && x.disputed ? (x.disputeClosed ? `<div class="note">${ic.info}<span>The SavoScout disputed this. It was looked at again and kept as not verified.</span></div>` : `<div class="note">${ic.info}<span><b>Disputed by the SavoScout.</b> A reviewer who did not make the first decision should look at it again within 3 days.</span></div><div class="row"><button class="btn okb" data-act="review" data-id="${x.id}" data-v="approved">${ic.check}Verify and release ${pts(x.reward)}</button><button class="btn ghost" data-act="uphold" data-id="${x.id}">Keep as not verified</button></div>`) : ''}
+    ${x.status === 'pending' ? `<div class="field"><label for="rejReason">Reason, if not verified</label><select class="in" id="rejReason">${REJ.map(r => `<option>${r[0]}</option>`).join('')}</select><span class="faint" style="font-size:12.5px">The SavoScout sees this reason. They can fix a photo or a missing answer once, and can dispute any decision within 7 days. If nobody reviews this response by ${dt((x.createdAt || Date.now()) + 7 * 86400000)}, it is verified automatically.</span></div>
     <div class="row"><button class="btn okb" data-act="review" data-id="${x.id}" data-v="approved">${ic.check}Verify and release ${pts(x.reward)}</button><button class="btn danger" data-act="review" data-id="${x.id}" data-v="rejected">Not verified</button></div>` : ''}
   </aside>`);
 }
@@ -793,7 +801,7 @@ function gapAssessView(s, list, b) {
 function localBrief(s, list) {
   const okL = list.filter(x => x.status === 'approved'), use = okL.length ? okL : list.filter(x => x.status === 'pending'), rej = list.filter(x => x.status === 'rejected');
   const qs = s.questions || [], F = [], AG = [], CO = [], UN = [], NX = [];
-  qs.filter(q => ['number', 'scale', 'rating'].includes(q.type)).forEach(q => {
+  qs.filter(q => ['number', 'price', 'scale', 'rating'].includes(q.type)).forEach(q => {
     const v = use.map(x => [x.id, Number(x.answers?.[q.id]), x.region]).filter(a => !isNaN(a[1]) && a[1] !== 0); if (!v.length) return;
     const nums = v.map(a => a[1]), avg = nums.reduce((a, b) => a + b, 0) / nums.length, lo = Math.min(...nums), hi = Math.max(...nums), u = q.unit ? ' ' + q.unit : '';
     F.push({text: `${q.text.replace(/\?$/, '')}: average ${fmt(avg, 1)}${u}, ranging from ${fmt(lo, 1)} to ${fmt(hi, 1)} across ${v.length} responses.`, confidence: v.length >= 5 && okL.length ? 'High' : v.length >= 3 ? 'Medium' : 'Low', refs: v.map(a => a[0])});
@@ -951,7 +959,7 @@ function payStep(P) {
     <label class="choice paym-ok ${p.ok ? 'on' : ''}"><input type="checkbox" id="pay-ok" data-pay="ok" ${p.ok ? 'checked' : ''}><span>I authorise Verisavo to charge up to <b>${money(P.total)}</b> for accepted, verified responses to this investigation.</span></label>
   </div>
   <div class="card" style="align-self:start;background:var(--paper)"><h2 style="font-size:16px;margin-bottom:8px">What you authorise</h2>
-    <div class="kv"><span>Rate per accepted, verified response</span><b class="num">${money(PER_RESPONSE)}</b></div>
+    <div class="kv"><span>Rate per accepted, verified response</span><b class="num">${money(perResp())}</b></div>
     <div class="kv"><span>Responses requested</span><b class="num">${fmt(B.responses)}</b></div>
     <div class="kv"><span>Set-up fee</span><b class="num">${money(0)}</b></div>
     <div class="kv" style="font-size:15px"><span style="color:var(--ink);font-weight:600">Maximum you can be charged</span><b class="num">${money(P.total)}</b></div>
@@ -1343,7 +1351,7 @@ function fromGapCtx(raw) {
   B.builtBy = 'verisavo';
 }
 function cBuilder(r) {
-  if (!B || (r.id && B.id !== r.id) || (!r.id && B.id && !B.autoId)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: d.status === 'draft' ? Math.min(3, d.draftStep || 0) : 0, dist: d.distMode || 'even', distN: d.dist || null, evid: d.evidence || null, at: d.attrs || null, evidOpt: d.evidenceOptional || {}, evidNone: !!d.evidenceNone, catN: d.catTargets || null, routeN: d.routeTargets ? {direct: d.routeTargets.direct} : null} : null); }
+  if (!B || (r.id && B.id !== r.id) || (!r.id && B.id && !B.autoId)) { const d = r.id && S.surveys[r.id]; newBuilder(d ? {...d, id: r.id, responses: d.target || 250, ai: d.request || '', step: d.status === 'draft' ? Math.min(3, d.draftStep || 0) : 0, dist: d.distMode || 'even', distN: d.dist || null, evid: d.evidence || null, at: d.attrs || null, evidOpt: d.evidenceOptional || {}, evidNone: !!d.evidenceNone, attn: d.attnSet == null ? null : d.attnSet, catN: d.catTargets || null, routeN: d.routeTargets ? {direct: d.routeTargets.direct} : null} : null); }
   /* four named stages: Create, Review, Configure, Launch. Both entry points (Intelligence Gaps or a typed request) share them. */
   const steps = ['Create', 'Review', 'Configure', 'Launch'], stage = B.wiz || (B.step === 0 && !B.prepared && !B.manual && !B.title) ? 0 : B.step <= 1 ? 1 : B.step === 2 ? 2 : 3;
   const stepper = `<div class="stepper stages">${steps.map((t, i) => `<div class="step ${i < stage ? 'done' : i === stage ? 'on' : ''}"><span class="lab">${i + 1}. ${t}</span></div>`).join('')}</div>`;
@@ -1398,9 +1406,12 @@ function cBuilder(r) {
         <button class="link" data-act="bstep" data-v="0" style="justify-self:start">Change the place and details</button></div>
       <div class="row between" style="flex-wrap:wrap;gap:8px"><div><h3 style="font-size:17px">Generated questions <span class="faint" style="font-weight:400;font-size:13px">${B.questions.length} of 20 · Editable</span></h3></div><button class="btn ghost sm" data-act="pv-open">${ic.eye}Preview as SavoScout</button></div>
       ${B.questions.map((q, i) => qRow(q, i)).join('') || `<div class="card">${emptyState('clip', 'No questions yet', 'Regenerate the set below or add questions one by one.')}</div>`}
-      <button class="qadd" data-act="addq" ${B.questions.length >= 20 ? 'disabled' : ''}>${ic.plus}Add a question</button>
+      <div class="qadds"><button class="qadd" data-act="addq" ${B.questions.length >= 20 ? 'disabled' : ''}>${ic.plus}Add a question</button><button class="qadd" data-act="bank" aria-expanded="${!!B.bank}">${ic.clip}Add from the question bank</button></div>
+      ${B.bank ? bankView() : ''}
       <details class="card rv-regen"${B.regen ? ' open' : ''}><summary>${ic.spark}Regenerate questions</summary><div class="stack" style="margin-top:12px"><p class="faint" style="margin:0;font-size:12.5px">Verisavo rebuilds the whole set from this description. Your edits to the current questions are replaced.</p><textarea class="in" id="b-ai" data-b="ai" placeholder="Describe what you want to understand about the market.">${esc(B.ai)}</textarea><button class="btn sm" data-act="genq" id="genq" style="justify-self:start">${ic.spark}Regenerate questions</button></div></details>
       ${(() => { const F2 = reviewFacts(), has = B.questions.some(q => q.screen), none = !bAt().targets.some(PEOPLE) && !bAt().targets.includes('everyone') || bAt().method === 'experience' && false; return none && !has ? '' : `<label class="card rv-screen"><input type="checkbox" data-bscreen="1"${has ? ' checked' : ''}><span><b>Screen respondents first</b><small>SavoScouts confirm they are speaking with the right person before asking anything else. If not, the task stops there.</small></span></label>`; })()}
+      ${(() => { const m = dur(B), P2 = pricing(B.responses, B.timeframe), long = m > 10; return `<div class="card rv-time"><h3 style="font-size:16px">Time and reward</h3><div class="rv-grid"><div><span>Time for one response</span><b>About ${m} minutes</b></div><div><span>Questions</span><b>${B.questions.length}</b></div><div><span>SavoScout earns</span><b>${fmt(P2.rewardPts, 2)} VeriPoints</b></div><div><span>You pay per verified response</span><b>${money(P2.rate + VERIFY_FEE)}</b></div></div>${long ? `<p class="cf-warn" style="margin:8px 0 0;font-size:13px">The standard reward covers a task of up to about 10 minutes. This one is longer, so each response earns the SavoScout ${fmt(P2.rewardPts, 2)} VeriPoints instead of ${fmt(tf(B.timeframe)[3] / PT_USD, 2)}. Shorten it, or split it into two tasks, to keep the standard rate.</p>` : '<p class="faint" style="margin:8px 0 0;font-size:12.5px">SavoScouts see the time, VeriPoints and evidence needed before they accept.</p>'}</div>`; })()}
+      <label class="card rv-screen"><input type="checkbox" data-battn="1"${bAttn() ? ' checked' : ''}><span><b>Add one attention check</b><small>Half-way through, the SavoScout is asked to pick a named option to show they are reading carefully. It takes a few seconds. A wrong answer never ends the task: it is flagged for the reviewer. Recommended for tasks of 5 minutes or more.</small></span></label>
       ${(() => { const qc = qualityChecks(); return `<div class="card rv-qc"><h3 style="font-size:16px">Research quality checks</h3>${qc.length ? `<ul>${qc.map(x => `<li>${ic.info}<span>${x[0] ? '<b>Question ' + x[0] + '</b> ' : ''}${esc(x[1])}</span></li>`).join('')}</ul>` : `<p class="rv-ok">${ic.checkc}<span>No leading questions, repeats or missing wording found.</span></p>`}<p class="faint" style="font-size:12px;margin:8px 0 0">Automatic wording checks. They do not replace your own read-through.</p></div>`; })()}
       <div class="card rv-ev"><h3 style="font-size:16px">Evidence requirements</h3><p class="faint" style="margin:2px 0 8px;font-size:12.5px">What must come with each response. Ask only for what the investigation needs. Photographs or recordings of people need their consent.</p>${Object.keys(EVREQ).map(k => `<div class="rv-evrow"><label><input type="checkbox" data-bev="${k}"${ev.includes(k) ? ' checked' : ''}>${ic[EVREQ[k][0]]}<span>${EVREQ[k][1]}</span></label>${ev.includes(k) ? `<select class="in rv-evsel" data-bevo="${k}" aria-label="${EVREQ[k][1]}: required or optional"><option value="">Required</option><option value="1"${(B.evidOpt || {})[k] ? ' selected' : ''}>Optional</option></select>` : ''}</div>`).join('')}<div class="rv-evrow"><label><input type="checkbox" data-bev="none"${!ev.length && B.evidNone ? ' checked' : ''}>${ic.x}<span>No additional supporting evidence</span></label></div></div>
     </div>`;
@@ -1486,10 +1497,10 @@ function cfgView(P) {
       <div class="kv"><span>Requested turnaround</span><b>${pl.days ? pl.days + ' day' + s(pl.days) : 'Choose a deadline'}</b></div>
       <div class="kv"><span>Estimated completion</span><b style="text-align:right">${!pl.days ? '—' : !pl.avail ? 'Pending feasibility check' : pl.tight ? recDate + ' (later than requested)' : dt(Date.now() + pl.days * DAY)}</b></div>
       <div class="kv"><span>Estimated cost</span><b class="num" style="text-align:right">Up to ${money(P.total)}</b></div>
-      <p class="faint" style="font-size:12px;margin:8px 0 0">${fmt(pl.target)} responses × ${money(PER_RESPONSE)}. You pay only for accepted, verified responses. ${pl.avail ? 'The completion date is an estimate and depends on SavoScouts accepting the task.' : 'Verisavo confirms the completion date once it has checked SavoScout availability in these locations.'}</p></div>
+      <p class="faint" style="font-size:12px;margin:8px 0 0">${fmt(pl.target)} responses × ${money(perResp())}. You pay only for accepted, verified responses. ${pl.avail ? 'The completion date is an estimate and depends on SavoScouts accepting the task.' : 'Verisavo confirms the completion date once it has checked SavoScout availability in these locations.'}</p></div>
   </div>`;
 }
-const QLABEL = {short: 'Short written response', paragraph: 'Written response', single: 'Single choice', multi: 'Multiple selection', number: 'Numeric response', scale: 'Scale 1 to 5', rating: 'Star rating', date: 'Date', photo: 'Photo'};
+const QLABEL = {short: 'Short written response', paragraph: 'Written response', single: 'Single choice', multi: 'Multiple selection', number: 'Numeric response', scale: 'Scale 1 to 5', rating: 'Star rating', date: 'Date', photo: 'Photo', yesno: 'Yes or No', dropdown: 'Dropdown list', rank: 'Ranking', price: 'Price'};
 const EVREQ = {written: ['clip', 'Completed responses to every question'], photos: ['camera', 'Photographs, where permitted'], video: ['video', 'A short video recording, where permitted'], observations: ['eye', 'What the SavoScout sees on site'], documents: ['file', 'Documents, receipts or price lists'], pricelabels: ['card', 'Price labels or product information'], screenshots: ['copy', 'Screenshots'], online: ['globe', 'Website links and online sources'], location: ['pin', 'Location confirmation'], };
 function bEvid() { if (!B.evid) { const a = bAt(), R = recAttrs({ctx: {gap: B.objective || B.ai || B.title || ''}, kinds: B.kinds || [], targets: a.targets, scoutCats: a.scoutCats, method: a.method || 'auto', whereMode: a.exec || '', evidence: [], city: B.regions[0] || ''}); B.evid = R.evidence.filter(k => EVREQ[k]); if (B.questions.some(q => q.type === 'photo') && !B.evid.some(k => /photos|pricelabels|screenshots|documents/.test(k))) B.evid.push('photos'); } return B.evid; }
 function bAt() {
@@ -1534,20 +1545,27 @@ function qualityChecks() {
     if (!t.trim()) out.push([n, 'has no wording yet.']);
     else if (/\b(don.?t you|wouldn.?t you|isn.?t it|do you agree|surely|obviously)\b|\bhow (good|great|bad|poor|much better)\b/i.test(t)) out.push([n, 'may lead the respondent towards an answer. Ask it neutrally.']);
     else if (/\band\b.*\?.*\band\b|\b(and|or) (why|how|what|when|where)\b/i.test(t) && q.type !== 'paragraph') out.push([n, 'asks two things at once. Consider splitting it.']);
-    if ((q.type === 'single' || q.type === 'multi') && (q.options || []).filter(o => String(o).trim()).length < 2) out.push([n, 'needs at least two options.']);
+    if ((q.type === 'single' || q.type === 'multi' || q.type === 'rank') && (q.options || []).filter(o => String(o).trim()).length < 2) out.push([n, 'needs at least two options.']);
+    if (q.type === 'rank' && (q.options || []).length > 6) out.push([n, 'asks people to rank more than six things. Shorter lists are ranked more reliably.']);
+    if (isNum(q) && q.min !== '' && q.min != null && q.max !== '' && q.max != null && +q.min > +q.max) out.push([n, 'has a lowest value above its highest value.']);
     const k = norm(t); if (k && seen[k]) out.push([n, 'repeats question ' + seen[k] + '.']); else if (k) seen[k] = n;
   });
   const ev = bEvid();
   if (ev.includes('photos') && !qs.some(q => q.type === 'photo')) out.push([0, 'Photographs are required, but no question asks for one.']);
   if (qs.length && !qs.some(q => q.type === 'paragraph' || q.type === 'short')) out.push([0, 'No question lets the SavoScout explain in their own words.']);
-  if (qs.length > 12) out.push([0, qs.length + ' questions is long for one visit. Shorter tasks are completed more reliably.']);
+  if (dur(B) > 10) out.push([0, 'This task takes about ' + dur(B) + ' minutes. Tasks of 10 minutes or less are completed more reliably.']);
+  else if (qs.length > 12) out.push([0, qs.length + ' questions is long for one visit. Shorter tasks are completed more reliably.']);
   return out;
 }
 /* how the answer will look to the person filling it in: the real boxes, circles and fields, switched off */
 function qPreview(q) {
   const o = (q.options || []).filter(x => String(x).trim()), box = (t, ph) => `<span class="qp-in${t ? ' ' + t : ''}">${ph}</span>`;
-  const body = q.type === 'single' ? (o.length ? o.map(x => `<span class="qp-o"><i class="qp-r"></i>${esc(x)}</span>`).join('') : '<span class="faint">No options yet</span>')
-    : q.type === 'multi' ? (o.length ? o.map(x => `<span class="qp-o"><i class="qp-c"></i>${esc(x)}</span>`).join('') + '<span class="qp-hint">Tick all that apply</span>' : '<span class="faint">No options yet</span>')
+  const o2 = qOpts(q);
+  const body = q.type === 'single' && q.dd ? `<span class="qp-in qp-dd">Choose one of ${o2.length} options</span><span class="qp-hint">${esc(o2.join(' · '))}</span>`
+    : q.type === 'rank' ? (o.length ? o.map((x, k) => `<span class="qp-o"><i class="qp-n">${k + 1}</i>${esc(x)}</span>`).join('') + '<span class="qp-hint">Put in order, first choice first</span>' : '<span class="faint">No options yet</span>')
+    : q.type === 'price' ? `<span class="qp-num">${q.cur ? '<b>' + esc(q.cur) + '</b>' : ''}${box('', '0.00')}${q.unit ? '<b>' + esc(q.unit) + '</b>' : ''}</span>`
+    : q.type === 'single' ? (o.length ? o2.map(x => `<span class="qp-o"><i class="qp-r"></i>${esc(x)}</span>`).join('') : '<span class="faint">No options yet</span>')
+    : q.type === 'multi' ? (o.length ? o2.map(x => `<span class="qp-o"><i class="qp-c"></i>${esc(x)}</span>`).join('') + '<span class="qp-hint">Tick all that apply</span>' : '<span class="faint">No options yet</span>')
     : q.type === 'short' ? box('', 'Short answer')
     : q.type === 'paragraph' ? box('tall', 'Longer answer, in the respondent’s own words')
     : q.type === 'number' ? `<span class="qp-num">${box('', '0')}${q.unit ? '<b>' + esc(q.unit) + '</b>' : ''}</span>`
@@ -1557,10 +1575,28 @@ function qPreview(q) {
     : q.type === 'photo' ? `<span class="qp-photo">${ic.camera}Take or upload a photo</span>` : '';
   return `<div class="qprev" aria-hidden="true">${body}</div>`;
 }
+/* Question bank: checked wording with standard answer options, so results can be compared from one investigation to the next */
+const QBANK = {
+  price: ['Prices', [['price', 'What is the price of [product] today?'], ['single', 'How has the price of [product] changed in the last month?', ['Gone up', 'Stayed the same', 'Gone down'], {dk: true}], ['single', 'Is there a promotion or discount on [product] today?', ['Yes', 'No'], {yn: true}], ['price', 'What is the price of the main competing brand?'], ['photo', 'Photograph the price label or price list.']]],
+  stock: ['Availability', [['single', 'Is [product] on the shelf today?', ['Yes', 'No'], {yn: true}], ['single', 'How often does [product] run out?', ['Never', 'About once a month', 'About once a week', 'Most days'], {dk: true}], ['number', 'How many units of [product] are on the shelf?', null, {unit: 'units', min: 0}], ['photo', 'Photograph the shelf where [product] is sold.']]],
+  demand: ['Customer demand', [['single', 'How often do you buy [product]?', ['Weekly or more', 'A few times a month', 'Monthly or less', 'Never']], ['single', 'Where do you usually buy [product]?', ['Open market', 'Small shop or kiosk', 'Supermarket', 'Online'], {other: true}], ['rank', 'Put these in order of what matters most when you choose [product].', ['Price', 'Quality', 'Brand', 'Pack size', 'Always available']], ['scale', 'How satisfied are you with [product]?'], ['paragraph', 'What would make you change to another brand?']]],
+  supply: ['Distribution', [['single', 'Who supplies [product] to this outlet?', ['Manufacturer', 'Distributor', 'Wholesaler', 'Open market'], {other: true}], ['single', 'How often does stock of [product] arrive?', ['Daily', 'Weekly', 'Every two weeks', 'Monthly', 'No regular pattern'], {dd: true}], ['number', 'How many days late was the most recent delivery?', null, {unit: 'days', min: 0, max: 60}], ['single', 'Does the supplier offer credit?', ['Yes', 'No'], {yn: true}]]],
+  rivals: ['Competitors', [['single', 'Which brand of [product] sells most here?', ['Brand 1', 'Brand 2'], {other: true, dk: true}], ['single', 'Why do shoppers choose the best-selling brand?', ['Lower price', 'Better quality', 'Always available', 'Promotion', 'Habit'], {other: true, dk: true, shuffle: true}], ['price', 'What is the price of the best-selling brand?']]],
+  basics: ['Outlet and visit', [['single', 'What type of outlet is this?', ['Open market stall', 'Kiosk', 'Small shop', 'Supermarket', 'Wholesaler'], {dd: true}], ['date', 'When did you visit?'], ['paragraph', 'In your own words, what did you find?'], ['photo', 'Photograph the outlet from outside.']]]
+};
+const bankProduct = () => (B.wiz && B.wiz.product) || (B.wizAns && B.wizAns.product) || 'the product';
+function bankQ(t, k) { const r = (QBANK[t] || [0, []])[1][k]; if (!r) return null; const q = newQ(r[0], r[1].replace('[product]', bankProduct()), r[2] ? r[2].slice() : undefined); Object.assign(q, r[3] || {}, {bank: t}); if (q.type === 'price' && !q.cur) q.cur = CUR[bCountries()[0]] || ''; return q; }
+function bankView() {
+  const t = QBANK[B.bankT] ? B.bankT : 'price', full = B.questions.length >= 20, has = x => B.questions.some(q => q.text === x.replace('[product]', bankProduct()));
+  return `<div class="card qbank"><div class="row between"><h3 style="font-size:16px">Question bank</h3><button class="iconbtn" data-act="bank" aria-label="Close the question bank">${ic.x}</button></div>
+    <p class="faint" style="margin:0;font-size:12.5px">Checked wording with standard answer options. Using the same question in each investigation lets Verisavo compare results over time.</p>
+    <div class="field" style="max-width:260px"><label for="bank-t">Topic</label><select class="in" id="bank-t" data-bankt="1">${Object.keys(QBANK).map(k => `<option value="${k}"${k === t ? ' selected' : ''}>${QBANK[k][0]}</option>`).join('')}</select></div>
+    <ul class="qbank-l">${QBANK[t][1].map((r, k) => `<li><div><b>${esc(r[1].replace('[product]', bankProduct()))}</b><small>${QLABEL[(r[3] || {}).yn ? 'yesno' : (r[3] || {}).dd ? 'dropdown' : r[0]]}${r[2] && !(r[3] || {}).yn ? ' · ' + esc(r[2].join(', ')) : ''}</small></div>${has(r[1]) ? '<span class="faint" style="font-size:12.5px">Added</span>' : `<button class="btn ghost sm" data-act="bankadd" data-v="${t}:${k}"${full ? ' disabled' : ''}>Add</button>`}</li>`).join('')}</ul></div>`;
+}
 function qRow(q, i) {
   const open = B.openQ === q.id, qs = B.questions, prior = qs.slice(0, i).filter(x => x.type === 'single' && (x.options || []).length), ct = condText(q, qs);
   const arrow = d => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
-  return `<div class="qrow${open ? ' open' : ''}"><div class="qrow-h"><span class="qn">${i + 1}.</span><button type="button" class="qb" data-act="openq" data-v="${q.id}" aria-expanded="${open}"><b>${esc(q.text || 'Untitled question')}</b><small>${q.screen ? 'Screening question · ' : q.role ? 'Recorded as the respondent’s role · ' : ''}${QLABEL[q.type] || q.type}${ct ? ' · ' + esc(ct) : ''}</small></button>
+  return `<div class="qrow${open ? ' open' : ''}"><div class="qrow-h"><span class="qn">${i + 1}.</span><button type="button" class="qb" data-act="openq" data-v="${q.id}" aria-expanded="${open}"><b>${esc(q.text || 'Untitled question')}</b><small>${q.screen ? 'Screening question · ' : q.role ? 'Recorded as the respondent’s role · ' : ''}${QLABEL[qKind(q)] || q.type}${q.other ? ' · with Other' : ''}${q.dk ? ' · with Don’t know' : ''}${q.shuffle ? ' · shuffled' : ''}${ct ? ' · ' + esc(ct) : ''}</small></button>
     <div class="tools"><button class="iconbtn" data-act="moveq" data-v="${i}:-1" aria-label="Move question ${i + 1} up"${i ? '' : ' disabled'}>${arrow('M4 10l4-4 4 4')}</button><button class="iconbtn" data-act="moveq" data-v="${i}:1" aria-label="Move question ${i + 1} down"${i < qs.length - 1 ? '' : ' disabled'}>${arrow('M4 6l4 4 4-4')}</button><button class="iconbtn" data-act="openq" data-v="${q.id}" aria-label="${open ? 'Close' : 'Edit'} question ${i + 1}">${open ? ic.check : arrow('M11 2.5l2.5 2.5L6 12.5 3 13l.5-3z')}</button></div></div>
     ${open ? '' : qPreview(q)}
     ${open ? qEditor(q, i) + `<div class="field qcond"><label for="qc-${q.id}">When to ask</label><select class="in" id="qc-${q.id}" data-qc="${i}"><option value="">Always ask this question</option>${q.cond && Array.isArray(q.cond.v) ? `<option value="keep" selected>${esc(ct)}</option>` : ''}${prior.map(x => x.options.map(o => `<option value="${esc(x.id + '|' + o)}"${q.cond && q.cond.q === x.id && q.cond.v === o ? ' selected' : ''}>Only if question ${qs.indexOf(x) + 1} is “${esc(o)}”</option>`).join('')).join('')}</select>${prior.length ? '' : '<span class="faint" style="font-size:12.5px">Add a single-choice question before this one to make it conditional.</span>'}</div>` : ''}</div>`;
@@ -1573,22 +1609,24 @@ function pvView() {
   const P = pricing(B.responses, B.timeframe), qs = pvQs(), n = qs.length, i = PV.i, q = qs[i], a = q ? PV.ans[q.id] : null;
   const opt = (o, on, act) => `<button type="button" class="pv-o${on ? ' on' : ''}" data-act="${act}" data-v="${esc(String(o))}">${esc(String(o))}</button>`;
   let body;
-  if (i < 0) body = `<div class="wa-b">${fmtMsg(`*New job available near you*\n${B.title || 'Your investigation'}\nLocation: ${B.location || B.regions.join(', ') || '—'}\nTime: about ${Math.max(5, Math.round(B.questions.length * 1.5 + 4))} min\nReward: *${fmt(P.rewardPts, 2)} VeriPoints* after verification`)}</div><div class="wa-b">${fmtMsg('*What to do*\n' + (B.brief || 'Answer the questions in order.') + '\n\n' + taskBrief(bAsTask(), PV.route))}</div><button class="btn" data-act="pv-next">Accept job</button>`;
+  if (i < 0) body = `<div class="wa-b">${fmtMsg(`*New task available near you*\n${B.title || 'Your investigation'}\nLocation: ${B.location || B.regions.join(', ') || '—'}\nTime: about ${dur(B)} min · ${B.questions.length} questions\nReward: *${fmt(P.rewardPts, 2)} VeriPoints* after verification`)}</div><div class="wa-b">${fmtMsg('*What to do*\n' + (B.brief || 'Answer the questions in order.') + '\n\n' + taskBrief(bAsTask(), PV.route))}</div><button class="btn" data-act="pv-next">Accept task</button>`;
   else if (i >= n) body = `<div class="wa-b">${fmtMsg('*Review your answers*\n' + (qs.map((x, j) => (j + 1) + '. ' + pvText(x) + '\n_' + (Array.isArray(PV.ans[x.id]) ? PV.ans[x.id].join(', ') : PV.ans[x.id] || 'No answer') + '_').join('\n') || 'No questions.'))}</div><p class="faint" style="font-size:12.5px;margin:0">This is where the SavoScout submits. In this preview nothing is sent.</p><div class="row" style="gap:8px"><button class="btn ghost" data-act="pv-back">Back</button><button class="btn" data-act="pv-restart">Start again</button></div>`;
-  else body = `<div class="wa-b">${fmtMsg(`*Question ${i + 1} of ${n}*\n${pvText(q)}`)}</div>
-    ${q.type === 'single' ? `<div class="pv-opts">${(q.options || []).map(o => opt(o, a === o, 'pv-ans')).join('')}</div>` : q.type === 'multi' ? `<div class="pv-opts">${(q.options || []).map(o => opt(o, (a || []).includes(o), 'pv-tog')).join('')}</div><span class="faint" style="font-size:12.5px">Tap all that apply.</span>` : q.type === 'scale' || q.type === 'rating' ? `<div class="pv-opts pv-line">${[1, 2, 3, 4, 5].map(v => opt(q.type === 'rating' ? '★'.repeat(v) : v, String(a) === String(q.type === 'rating' ? '★'.repeat(v) : v), 'pv-ans')).join('')}</div>` : q.type === 'photo' ? `<button type="button" class="pv-o${a ? ' on' : ''}" data-act="pv-ans" data-v="Photo attached">${ic.camera}<span>${a ? 'Photo attached' : 'Take a photo'}</span></button>` : q.type === 'paragraph' ? `<textarea class="in" data-pv="1" placeholder="Type your answer" aria-label="Your answer">${esc(a || '')}</textarea>` : `<input class="in" data-pv="1" ${q.type === 'number' ? 'inputmode="decimal"' : ''} placeholder="${q.type === 'number' ? 'A number' + (q.unit ? ' (' + q.unit + ')' : '') : q.type === 'date' ? 'DD/MM/YYYY' : 'Type your answer'}" aria-label="Your answer" value="${esc(a || '')}">`}
+  else body = `<div class="wa-b">${fmtMsg(`*Question ${i + 1} of ${n}*\n${pvText(q)}` + (q.type === 'rank' ? '\n' + qOpts(q).map((x, k) => (k + 1) + '. ' + x).join('\n') : ''))}</div>
+    ${q.type === 'single' ? `<div class="pv-opts">${qOpts(q).map(o => opt(o, a === o, 'pv-ans')).join('')}</div>` : q.type === 'multi' ? `<div class="pv-opts">${qOpts(q).map(o => opt(o, (a || []).includes(o), 'pv-tog')).join('')}</div><span class="faint" style="font-size:12.5px">Tap all that apply.</span>` : q.type === 'scale' || q.type === 'rating' ? `<div class="pv-opts pv-line">${[1, 2, 3, 4, 5].map(v => opt(q.type === 'rating' ? '★'.repeat(v) : v, String(a) === String(q.type === 'rating' ? '★'.repeat(v) : v), 'pv-ans')).join('')}</div>` : q.type === 'photo' ? `<button type="button" class="pv-o${a ? ' on' : ''}" data-act="pv-ans" data-v="Photo attached">${ic.camera}<span>${a ? 'Photo attached' : 'Take a photo'}</span></button>` : q.type === 'paragraph' ? `<textarea class="in" data-pv="1" placeholder="Type your answer" aria-label="Your answer">${esc(a || '')}</textarea>` : `<input class="in" data-pv="1" ${isNum(q) ? 'inputmode="decimal"' : ''} placeholder="${q.type === 'price' ? 'The price' + (qUnit(q) ? ' in ' + qUnit(q) : '') : q.type === 'number' ? 'A number' + (q.unit ? ' (' + q.unit + ')' : '') : q.type === 'rank' ? 'Numbers in your order, for example 2, 1, 3' : q.type === 'date' ? 'DD/MM/YYYY' : 'Type your answer'}" aria-label="Your answer" value="${esc(a || '')}">`}
     <div class="row" style="gap:8px"><button class="btn ghost" data-act="pv-back">Back</button><button class="btn" data-act="pv-next">${i === n - 1 ? 'Finish' : 'Next'}</button></div>`;
   layer(`<div class="modal-bg" data-act="close"><div class="modal pv" role="dialog" aria-label="Preview as SavoScout"><div class="row between"><b>Preview as SavoScout</b><button class="iconbtn" data-act="close" aria-label="Close preview">${ic.x}</button></div><p class="faint" style="font-size:12.5px;margin:-8px 0 0">How the Verisavo agent asks this task on WhatsApp. Nothing is sent.</p>${dualRoute(bAt()) ? `<div class="pv-rt" role="group" aria-label="Preview as"><button type="button" class="${PV.route === 'first' ? 'on' : ''}" data-act="pv-route" data-v="first">Participant</button><button type="button" class="${PV.route === 'first' ? '' : 'on'}" data-act="pv-route" data-v="reported">Researcher</button></div>` : ''}<div class="pv-body">${body}</div></div></div>`);
 }
 function qEditor(q, i) {
-  const opts = (q.type === 'single' || q.type === 'multi') ? `<div class="stack" style="gap:6px">${(q.options || []).map((o, j) => `<div class="opt"><span class="faint" style="width:18px">${q.type === 'single' ? '○' : '☐'}</span><input class="in" id="qo-${q.id}-${j}" aria-label="Option ${j + 1}" data-qo="${i}:${j}" value="${esc(o)}"><button class="iconbtn" data-act="delopt" data-v="${i}:${j}" aria-label="Remove option">${ic.x}</button></div>`).join('')}<button class="link" data-act="addopt" data-v="${i}" style="justify-self:start">${ic.plus}Add option</button></div>` : '';
-  const prev = {short: 'Short answer text', paragraph: 'Long answer text', number: 'Number' + (q.unit ? ' (' + q.unit + ')' : ''), scale: 'Scale from 1 (low) to 5 (high)', rating: '★★★★★', date: 'DD/MM/YYYY', photo: 'Photo upload (max 50 MB)'}[q.type] || '';
+  const sw = (k, label) => `<label class="qsw"><input type="checkbox" data-q="${i}:${k}"${q[k] ? ' checked' : ''}><span>${label}</span></label>`;
+  const lim = isNum(q) ? `<div class="qlim">${q.type === 'price' ? `<div class="field"><label for="qcur-${q.id}">Currency</label><input class="in" id="qcur-${q.id}" data-q="${i}:cur" placeholder="GHS" maxlength="6" value="${esc(q.cur || '')}"></div>` : ''}<div class="field"><label for="qu-${q.id}">${q.type === 'price' ? 'Per' : 'Unit'}</label><input class="in" id="qu-${q.id}" data-q="${i}:unit" placeholder="${q.type === 'price' ? 'per kg, per pack' : 'for example days, packs'}" value="${esc(q.unit || '')}"></div><div class="field"><label for="qmin-${q.id}">Lowest allowed</label><input class="in" id="qmin-${q.id}" type="number" inputmode="decimal" data-q="${i}:min" placeholder="0" value="${esc(q.min ?? '')}"></div><div class="field"><label for="qmax-${q.id}">Highest allowed</label><input class="in" id="qmax-${q.id}" type="number" inputmode="decimal" data-q="${i}:max" placeholder="No limit" value="${esc(q.max ?? '')}"></div></div><span class="faint" style="font-size:12.5px">Answers outside these limits are sent back to the SavoScout to check. Unusual values are confirmed before they are accepted.</span>` : '';
+  const opts = q.yn ? '<span class="faint" style="font-size:13px">The SavoScout chooses Yes or No.</span>' : (q.type === 'single' || q.type === 'multi' || q.type === 'rank') ? `<div class="stack" style="gap:6px">${(q.options || []).map((o, j) => `<div class="opt"><span class="faint" style="width:18px">${q.type === 'rank' ? (j + 1) + '.' : q.type === 'single' ? '○' : '☐'}</span><input class="in" id="qo-${q.id}-${j}" aria-label="Option ${j + 1}" data-qo="${i}:${j}" value="${esc(o)}"><button class="iconbtn" data-act="delopt" data-v="${i}:${j}" aria-label="Remove option">${ic.x}</button></div>`).join('')}<button class="link" data-act="addopt" data-v="${i}" style="justify-self:start">${ic.plus}Add option</button>${q.type === 'rank' ? '' : `<div class="qsws">${sw('other', 'Add “Other”, with space to say what')}${sw('dk', 'Add “Don’t know”')}${sw('shuffle', 'Shuffle the order for each SavoScout')}</div>`}</div>` : '';
+  const prev = {short: 'Short answer text', paragraph: 'Long answer text', number: 'Number' + (q.unit ? ' (' + q.unit + ')' : ''), scale: 'Scale from 1 (low) to 5 (high)', rating: '★★★★★', date: 'DD/MM/YYYY', photo: 'Photo upload (max 50 MB)', rank: '', price: ''}[q.type] || '';
   return `<div class="qcard"><div class="row between"><span class="faint" style="font-size:12px">Question ${i + 1}</span><div class="tools"><button class="iconbtn" data-act="dupq" data-v="${i}" aria-label="Duplicate">${ic.copy}</button><button class="iconbtn del" data-act="delq" data-v="${i}" aria-label="Delete">${ic.trash}</button></div></div>
-    <div class="grid" style="grid-template-columns:minmax(0,1fr) 170px;gap:8px"><input class="in" id="qt-${q.id}" aria-label="Question statement" data-q="${i}:text" placeholder="Question statement" value="${esc(q.text)}"><select class="in" id="qy-${q.id}" aria-label="Answer type" data-q="${i}:type" data-rerender="1">${QTYPES.map(t => `<option value="${t[0]}" ${q.type === t[0] ? 'selected' : ''}>${t[1]}</option>`).join('')}</select></div>
-    ${q.type === 'number' ? `<input class="in" id="qu-${q.id}" style="max-width:220px" aria-label="Unit" data-q="${i}:unit" placeholder="Unit, for example GHS per kg" value="${esc(q.unit || '')}">` : ''}
-    ${opts || `<span class="faint" style="font-size:13px">${prev}</span>`}</div>`;
+    <div class="grid" style="grid-template-columns:minmax(0,1fr) 170px;gap:8px"><input class="in" id="qt-${q.id}" aria-label="Question statement" data-q="${i}:text" placeholder="Question statement" value="${esc(q.text)}"><select class="in" id="qy-${q.id}" aria-label="Answer type" data-q="${i}:type" data-rerender="1">${QTYPES.map(t => `<option value="${t[0]}" ${qKind(q) === t[0] ? 'selected' : ''}>${t[1]}</option>`).join('')}</select></div>
+    ${lim}
+    ${opts || (prev ? `<span class="faint" style="font-size:13px">${prev}</span>` : '')}</div>`;
 }
-const newQ = (type = 'short', text = '', options) => ({id: uid('q'), type, text, options: options || (type === 'single' || type === 'multi' ? ['Option 1', 'Option 2'] : undefined)});
+const newQ = (type = 'short', text = '', options) => ({id: uid('q'), type, text, options: options || (type === 'single' || type === 'multi' || type === 'rank' ? ['Option 1', 'Option 2'] : undefined)});
 function templateQs(desc) {
   const d = desc.toLowerCase(), m = (desc.match(/\b(onion|maize|rice|fertili[sz]er|seed|tomato|cement|solar|soap|oil|sugar|flour|beans|yam|cassava|lantern|battery|detergent|product)\w*/i) || ['product'])[0];
   const out = [newQ('single', 'What type of location are you collecting data from?', ['Open market', 'Retail shop', 'Wholesale store', 'Supermarket'])];
@@ -1605,7 +1643,11 @@ function templateQs(desc) {
 /* ================= SCOUT · WHATSAPP ONLY ================= */
 const AGENT_NO = '+233 20 555 0142';
 const loc = (s) => s.location || (s.regions || [])[0] || s.country;
-const dur = (s) => Math.max(5, Math.round((s.questions || []).length * 1.5 + 4));
+/* time for one response: about two minutes to get going, then seconds per question by the kind of answer */
+const QSEC = {single: 20, multi: 30, rank: 40, number: 25, price: 25, scale: 15, rating: 15, date: 20, short: 45, paragraph: 80, photo: 60};
+const dur = (s) => Math.max(3, Math.round(2 + (s.questions || []).reduce((a, q) => a + (QSEC[q.type] || 30), 0) / 60));
+const perResp = () => pricing(B.responses, B.timeframe).rate + VERIFY_FEE;
+const bAttn = () => B.attn == null ? dur(B) >= 5 : !!B.attn;
 /* eligibility comes from the stored attributes, never from the wording of the brief */
 function eligible(s, sc) { const r = routeFor(s, sc); if (!r || r === 'locked') return false; const rt = s.routeTargets; if (rt && (r === 'first' || r === 'reported')) { const n = subsOf(s.id).filter(x => x.route === r && x.status !== 'rejected').length; if (n >= (r === 'first' ? rt.direct : rt.assisted)) return false; } return true; }
 function recSurveys() {
@@ -1624,16 +1666,16 @@ function joinView() {
   let inner;
   if (J.step === -1) {
     inner = `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><img class="logo-light" src="${LOGO}" alt="Verisavo" style="height:28px"><img class="logo-dark" src="${LOGOW}" alt="Verisavo" style="height:28px">
-      <h2 style="font-size:28px">${QS.get('invite') ? 'Welcome to the Verisavo Scout Network' : 'Welcome to SavoScouts'}</h2><p class="muted" style="margin:0">${QS.get('invite') ? 'You have been invited to contribute verified market evidence in your area.' : 'Share what you see in your local market and earn VeriPoints for every response that passes our checks.'} Once you register, all your jobs come to you on WhatsApp.</p>
+      <h2 style="font-size:28px">${QS.get('invite') ? 'Welcome to the Verisavo Scout Network' : 'Welcome to SavoScouts'}</h2><p class="muted" style="margin:0">${QS.get('invite') ? 'You have been invited to contribute verified market evidence in your area.' : 'Share what you see in your local market and earn VeriPoints for every response that passes our checks.'} Once you register, all your tasks come to you on WhatsApp.</p>
       <div class="perks" style="width:100%"><div>${ic.gift}Earn rewards for verified work</div><div>${ic.pin}Contribute local knowledge</div><div>${ic.store}Support businesses in your market</div><div>${ic.medal}Build your contributor reputation</div></div>
       <button class="btn" style="width:100%" data-act="jstep" data-v="0">${QS.get('invite') ? 'Accept invitation' : 'Join with WhatsApp'}</button>
       ${SIDE ? (EXIT ? `<button class="link" data-act="exit">${EXIT}</button>` : '') : '<button class="link" data-go="c-overview">Back to the client view</button>'}${EXIT && !SIDE ? `<button class="link" data-act="exit">${EXIT}</button>` : ''}</div>`;
   } else if (J.step < JSTEPS) {
     const qs = [
       ['What is your full name?', 'Use the name on your ID.', `<input class="in" id="j-name" data-j="name" placeholder="Full name" value="${esc(J.name)}" autocomplete="name"><input class="in" id="j-email" data-j="email" placeholder="Email address" value="${esc(J.email)}" autocomplete="email">`],
-      ['What is your WhatsApp number?', 'Jobs, questions and payments all happen in WhatsApp. Include your country code.', `<input class="in" id="j-phone" data-j="phone" type="tel" placeholder="+233 24 123 4567" value="${esc(J.phone)}" autocomplete="tel">`],
+      ['What is your WhatsApp number?', 'Tasks, questions and payments all happen in WhatsApp. Include your country code.', `<input class="in" id="j-phone" data-j="phone" type="tel" placeholder="+233 24 123 4567" value="${esc(J.phone)}" autocomplete="tel">`],
       ['When were you born?', 'Scouts must be 18 or older.', `<input class="in" type="date" id="j-dob" data-j="dob" value="${esc(J.dob)}">`],
-      ['Where do you live?', 'We use this to send you jobs nearby.', `<select class="in" id="j-country" data-j="country">${Object.keys(COUNTRIES).map(c => `<option ${J.country === c ? 'selected' : ''}>${c}</option>`).join('')}</select><select class="in" id="j-city" data-j="city">${(COUNTRIES[J.country] || []).map(c => `<option ${J.city === c ? 'selected' : ''}>${c}</option>`).join('')}</select>`],
+      ['Where do you live?', 'We use this to send you tasks nearby.', `<select class="in" id="j-country" data-j="country">${Object.keys(COUNTRIES).map(c => `<option ${J.country === c ? 'selected' : ''}>${c}</option>`).join('')}</select><select class="in" id="j-city" data-j="city">${(COUNTRIES[J.country] || []).map(c => `<option ${J.city === c ? 'selected' : ''}>${c}</option>`).join('')}</select>`],
       ['Which of these describe you?', 'Pick all that apply. Verisavo uses this to send you tasks you can answer, for example as a customer, a shop owner or a researcher.', `<div class="stack" style="gap:8px">${CATS.map(c => `<label class="choice ${(J.cats || []).includes(c[0]) ? 'on' : ''}"><input type="checkbox" data-jc="${c[0]}" ${(J.cats || []).includes(c[0]) ? 'checked' : ''}>${c[1]}</label>`).join('')}</div>`],
       ['Which ID will you use?', 'Identity verification keeps the network trustworthy.', `<div class="stack" style="gap:8px">${['National ID card', 'Passport', "Driver's licence", "Voter's card"].map(t => `<label class="choice ${J.idType === t ? 'on' : ''}"><input type="radio" name="idt" data-j="idType" value="${t}" ${J.idType === t ? 'checked' : ''}>${t}</label>`).join('')}</div>`],
       ['What is your ID number?', 'Only used for identity verification.', `<input class="in" id="j-idno" data-j="idNo" placeholder="ID number" value="${esc(J.idNo)}">`],
@@ -1650,7 +1692,7 @@ function joinView() {
         <div class="card" style="width:100%;display:grid;gap:8px"><span class="faint" style="font-size:12px">Your reference ID</span><b class="num" style="font-size:26px;letter-spacing:.08em">${J.ref}</b><span class="faint" style="font-size:12px">Send to ${AGENT_NO}</span></div>
         <button class="btn" style="width:100%" data-act="jlink">${ic.send}Open WhatsApp and send ID</button><span class="faint" style="font-size:12px">In this MVP the WhatsApp step is simulated inside the page.</span></div>`
       : J.link === 'linking' ? `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><span class="pulse"></span><h2 style="font-size:22px">Connecting WhatsApp</h2><p class="muted" style="margin:0">Waiting for your reference ID to arrive…</p></div>`
-      : `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><span class="ring ok">${ic.check}</span><h2 style="font-size:24px">WhatsApp connected</h2><p class="muted" style="margin:0">${esc(J.phone)} is linked to your scout account. Your jobs, answers and payouts now happen in WhatsApp.</p>
+      : `<div style="text-align:center;display:grid;gap:14px;justify-items:center"><span class="ring ok">${ic.check}</span><h2 style="font-size:24px">WhatsApp connected</h2><p class="muted" style="margin:0">${esc(J.phone)} is linked to your scout account. Your tasks, answers and payouts now happen in WhatsApp.</p>
         <button class="btn" style="width:100%" data-act="jfinish">Open WhatsApp chat</button></div>`;
   }
   return `<div class="onb"><div class="box">${inner}</div></div>`;
@@ -1668,7 +1710,7 @@ function wSave() { try { localStorage.setItem(wKey(), JSON.stringify({msgs: W.ms
 const say = (text, buttons, extra = {}) => W.msgs.push({from: 'agent', text, buttons: buttons || null, t: Date.now(), ...extra});
 const mine = (text, extra = {}) => W.msgs.push({from: 'me', text, t: Date.now(), ...extra});
 function reply(fn, delay = 500) { typing = true; render(); setTimeout(() => { typing = false; fn(); wSave(); render(); }, delay); }
-const MENU = () => [{l: 'Find jobs', a: 'jobs'}, {l: 'My balance', a: 'balance'}, {l: 'My jobs', a: 'myjobs'}, {l: 'Withdraw', a: 'withdraw'}, {l: 'Help', a: 'help'}];
+const MENU = () => [{l: 'Find tasks', a: 'jobs'}, {l: 'My balance', a: 'balance'}, {l: 'My tasks', a: 'myjobs'}, {l: 'Convert points', a: 'withdraw'}, {l: 'Help', a: 'help'}];
 const first = () => (myScout() || {name: 'there'}).name.split(' ')[0];
 
 function waSync() {
@@ -1678,7 +1720,7 @@ function waSync() {
   if (!W.seen) {
     W.seen = {subs: {}, surveys: {}};
     ms.forEach(s => W.seen.subs[s.id] = s.status);
-    say(`Hi ${first()}, welcome to *Verisavo SavoScouts*.\nI'm your Verisavo agent. I'll send you paid jobs near *${sc.city}*, guide you through each one, and tell you as soon as your work is verified.\n\nReply *MENU* at any time.`, MENU());
+    say(`Hi ${first()}, welcome to *Verisavo SavoScouts*.\nI'm your Verisavo agent. I'll send you paid tasks near *${sc.city}*, guide you through each one, and tell you as soon as your work is verified.\n\nReply *MENU* at any time.`, MENU());
     const near = recSurveys().filter(s => s.country === sc.country).slice(0, 1);
     act.forEach(s => W.seen.surveys[s.id] = 1);
     near.forEach(s => jobAlert(s));
@@ -1689,9 +1731,10 @@ function waSync() {
     const prev = W.seen.subs[s.id];
     if (prev === s.status) return;
     W.seen.subs[s.id] = s.status;
-    if (prev && s.status === 'approved') { say(`*Job verified* ✓\n${s.surveyTitle}\n+${fmt(s.reward, 2)} VeriPoints added to your balance.\nAvailable now: *${fmt(wallet().available, 2)} pts*`, [{l: 'Find another job', a: 'jobs'}, {l: 'My balance', a: 'balance'}]); changed = true; }
-    else if (prev && s.status === 'rejected') { say(`*Job not approved*\n${s.surveyTitle}\nReason: ${s.reason || 'did not meet the brief'}. No points were added.`, [{l: 'Find jobs', a: 'jobs'}]); changed = true; }
+    if (prev && s.status === 'approved') { say(`*Task verified* ✓\n${s.surveyTitle}\n+${fmt(s.reward, 2)} VeriPoints added to your balance.\nAvailable now: *${fmt(wallet().available, 2)} pts*`, [{l: 'Find another task', a: 'jobs'}, {l: 'My balance', a: 'balance'}]); changed = true; }
+    else if (prev && s.status === 'rejected') { const r = s.reason || 'Could not confirm from the evidence'; say(`*Task not verified*\n${s.surveyTitle}\nReason: ${r}. No VeriPoints were added.${rejFix(r) && !s.fixed ? '\n_You can fix this once and send it again._' : ''}\n_If you think this is wrong, you can dispute it within 7 days._`, [...(rejFix(r) && !s.fixed ? [{l: 'Fix and resend', a: 'fix', v: s.id}] : []), ...(s.disputed ? [] : [{l: 'Dispute', a: 'dispute', v: s.id}]), {l: 'Find tasks', a: 'jobs'}]); changed = true; }
   });
+  ms.forEach(s => { if (s.disputeClosed && !(W.seen.disp = W.seen.disp || {})[s.id]) { W.seen.disp[s.id] = 1; say(`*Dispute result*\n${s.surveyTitle}\nA different reviewer looked at it again and it stays not verified. Reason: ${s.reason || 'could not confirm from the evidence'}.\nThis decision is final.`, [{l: 'Find tasks', a: 'jobs'}]); changed = true; } });
   act.forEach(s => { if (!W.seen.surveys[s.id]) { W.seen.surveys[s.id] = 1; if (s.country === sc.country && !ms.some(x => x.surveyId === s.id)) { jobAlert(s); changed = true; } } });
   if (changed) wSave();
   return changed;
@@ -1707,13 +1750,35 @@ function sampleJob() {
   if (W && W.seen) W.seen.surveys[id] = 1;
   return id;
 }
-function jobAlert(s) { say(`*New job available near you*\n${s.title}\nLocation: ${loc(s)}\nTime: about ${dur(s)} min\nReward: *${fmt(s.rewardPts, 2)} VeriPoints* after verification`, [{l: 'View details', a: 'job', v: s.id}, {l: 'Accept job', a: 'accept', v: s.id}]); }
+/* one standard task card, wherever a task is offered: time, VeriPoints, questions, evidence, deadline and places left */
+const EVSHORT = {written: 'written answers', photos: 'photos', video: 'a short video', observations: 'what you see', documents: 'documents or receipts', pricelabels: 'price labels', screenshots: 'screenshots', online: 'online sources', location: 'location check'};
+const placesLeft = s => Math.max(0, (s.target || 0) - subsOf(s.id).filter(x => x.status !== 'rejected').length);
+function taskCard(s) {
+  const ev = (s.evidence || []).filter(k => k !== 'written').map(k => EVSHORT[k]).filter(Boolean), left = placesLeft(s);
+  return `*${s.title}*\nPlace: ${loc(s)}\nTime: about ${dur(s)} min · ${(s.questions || []).length} questions\nEvidence: ${ev.length ? ev.join(', ') : (s.attrs ? 'your answers only' : 'photos, location check')}\nVeriPoints: *${fmt(s.rewardPts, 2)}* after verification${s.deadline ? '\nDeadline: ' + dt(s.deadline) : ''}${s.target ? '\nPlaces left: ' + left : ''}`;
+}
+/* SavoScout levels come from verified work, never from VeriPoints */
+function scoutLevel(id) { const t = scoutTrust(id), trusted = t.ok >= TRUST_MIN && t.rate >= TRUST_RATE; return {name: trusted ? 'Trusted Scout' : t.ok >= 3 ? 'Verified Scout' : 'New Scout', ok: t.ok, rate: t.rate, trusted, next: trusted ? '' : t.ok < 3 ? `${t.ok} of 3 verified responses towards Verified Scout` : `${Math.min(t.ok, TRUST_MIN)} of ${TRUST_MIN} verified responses towards Trusted Scout`}; }
+/* standard reasons a response is not verified: [reason shown to client and SavoScout, can the SavoScout fix it once?] */
+const REJ = [['Location mismatch', false], ['Photo does not show the product', true], ['Photo too unclear to read', true], ['Answers incomplete', true], ['Could not confirm from the evidence', true], ['Contradicted by other responses', false], ['Duplicate submission', false]];
+const rejFix = r => (REJ.find(x => x[0] === r) || [0, false])[1];
+/* converting VeriPoints: one set of rules on WhatsApp and on the dashboard. Minimums in VeriPoints */
+const WMIN = {'Airtime or data': 10, 'Mobile money': 20, 'Shopping voucher': 100};
+/* answer options as the SavoScout sees them: shuffled when asked, with Don't know and Other kept last */
+function qOpts(q, mix) { let o = (q.options || []).filter(x => String(x).trim()); if (mix && q.shuffle) { o = o.slice(); for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; } } if (q.dk && !o.includes('Don’t know')) o = [...o, 'Don’t know']; if (q.other && !o.includes('Other')) o = [...o, 'Other']; return o; }
+const isNum = q => q.type === 'number' || q.type === 'price';
+const CUR = {Ghana: 'GHS', Nigeria: 'NGN', Kenya: 'KES', Zambia: 'ZMW', 'South Africa': 'ZAR', Uganda: 'UGX'};
+const qUnit = q => q.type === 'price' ? [q.cur, q.unit].filter(Boolean).join(' ') : (q.unit || '');
+function jobAlert(s) { say(`*New task available near you*\n${taskCard(s)}`, [{l: 'View details', a: 'job', v: s.id}, {l: 'Accept task', a: 'accept', v: s.id}]); }
 
 function curQ() { const c = W.cs; const s = S.surveys[c.sid]; return s && (s.questions || [])[c.qi]; }
 function askNext() {
-  const c = W.cs, s = S.surveys[c.sid]; if (!s) { c.mode = 'idle'; return say('That job has closed. Reply *JOBS* to see others.', MENU()); }
+  const c = W.cs, s = S.surveys[c.sid]; if (!s) { c.mode = 'idle'; return say('That task has closed. Reply *TASKS* to see others.', MENU()); }
   const qs = s.questions || [];
+  if (c.editing) { c.editing = false; return review(); }
   c.qi++;
+  /* one simple attention check half-way through longer tasks. Failing it never ends the task: it is flagged for the reviewer */
+  if (s.attn && c.attn == null && c.qi > 0 && c.qi >= Math.floor(qs.length / 2) && c.qi < qs.length) { c.qi--; c.attnAsk = true; return say('*Quick check*\nTo show you are reading carefully, please choose *Market* below.', ['Shop', 'Market', 'Office'].map(o => ({l: o, a: 'attn', v: o}))); }
   /* someone answering first-hand does not screen themselves */
   while (c.qi < qs.length && (!condOk(qs[c.qi], qs, c.answers || {}) || (c.route === 'first' && qs[c.qi].screen && (c.answers[qs[c.qi].id] = 'Yes')))) c.qi++;
   if (c.qi < qs.length) return ask(qs[c.qi], c.qi, qs.length);
@@ -1722,8 +1787,10 @@ function askNext() {
 }
 function ask(q, i, n) {
   const h = `*Question ${i + 1} of ${n}*\n${W.cs.route === 'first' ? firstVoice(q) : q.text}`;
-  if (q.type === 'single') return say(h, q.options.map(o => ({l: o, a: 'ans', v: o})));
-  if (q.type === 'multi') { W.cs.multi = []; return say(h + '\n_Tap all that apply, then Done._', [...q.options.map(o => ({l: o, a: 'tog', v: o})), {l: 'Done', a: 'multidone'}], {multi: true}); }
+  if (q.type === 'single') return say(h, qOpts(q, 1).map(o => ({l: o, a: 'ans', v: o})));
+  if (q.type === 'multi') { W.cs.multi = []; return say(h + '\n_Tap all that apply, then Done._', [...qOpts(q, 1).map(o => ({l: o, a: 'tog', v: o})), {l: 'Done', a: 'multidone'}], {multi: true}); }
+  if (q.type === 'rank') { const o = qOpts(q); return say(h + '\n' + o.map((x, k) => (k + 1) + '. ' + x).join('\n') + `\n_Reply with the numbers in your order, first choice first. For example ${o.map((x, k) => k + 1).reverse().join(', ')}._`); }
+  if (q.type === 'price') return say(h + `\n_Reply with the price${qUnit(q) ? ' in ' + qUnit(q) : ''}, digits only._`);
   if (q.type === 'scale') return say(h + '\n_1 = low, 5 = high_', [1, 2, 3, 4, 5].map(v => ({l: String(v), a: 'ans', v})));
   if (q.type === 'rating') return say(h, [1, 2, 3, 4, 5].map(v => ({l: '★'.repeat(v), a: 'ans', v})));
   if (q.type === 'number') return say(h + `\n_Reply with a number${q.unit ? ' (' + q.unit + ')' : ''}._`);
@@ -1734,17 +1801,18 @@ function ask(q, i, n) {
 function record(val, shown) {
   const q = curQ(); if (!q) return;
   W.cs.answers[q.id] = val; mine(String(shown ?? val));
+  if (q.screen && val === 'No') { const sid = W.cs.sid; W.cs = {mode: 'idle'}; return reply(() => say('Thanks for checking first. This task needs a different person, so it stops here.\n_Nothing was sent, and this does not affect your record._', [{l: 'Try another person', a: 'accept', v: sid}, {l: 'Find tasks', a: 'jobs'}])); }
   reply(askNext);
 }
 function review() {
   const c = W.cs, s = S.surveys[c.sid];
   c.stage = 'review';
   const lines = (s.questions || []).map((q, i) => { let a = c.answers[q.id]; if (Array.isArray(a)) a = a.join(', '); return `${i + 1}. ${q.text}\n→ *${a ?? '—'}*`; }).join('\n');
-  say(`*Review your answers*\n${s.title}\n\n${lines}\n\nPhotos: ${c.media.length}\nLocation: confirmed at ${loc(s)}`, [{l: 'Submit', a: 'submit'}, {l: 'Start again', a: 'restart'}, {l: 'Cancel job', a: 'cancel'}]);
+  say(`*Review your answers*\n${s.title}\n\n${lines}\n\nPhotos: ${c.media.length}\nLocation: confirmed at ${loc(s)}`, [{l: 'Submit', a: 'submit'}, {l: 'Change an answer', a: 'edit'}, {l: 'Start again', a: 'restart'}, {l: 'Cancel task', a: 'cancel'}]);
 }
-async function waSubmit() {
+async function waSubmit(quiet) {
   const c = W.cs, s = S.surveys[c.sid], sc = myScout(); if (!s || !sc) return;
-  mine('Submit');
+  if (quiet !== true) mine('Submit');
   typing = true; render();
   await new Promise(r => setTimeout(r, 700));
   say('Checking your submission…\nGPS location ✓\nDuplicate check ✓\nAnswer consistency ✓');
@@ -1753,12 +1821,13 @@ async function waSubmit() {
   const doc = {surveyId: c.sid, surveyTitle: s.title, scoutId: S.me, scoutName: sc.name, region: (s.regions || []).includes(sc.city) ? sc.city : (s.regions || [])[0] || sc.city, country: s.country,
     route: s.attrs ? (c.route === 'first' ? 'first' : c.route === 'reported' ? 'reported' : 'observed') : null, contribution: s.attrs ? (c.route === 'first' ? 'direct' : c.route === 'reported' ? 'assisted' : 'independent') : null, source: s.attrs ? {category: c.route === 'first' ? (firstCats(s.attrs).find(x => ((myScout() || {}).cats || []).includes(x)) || null) : c.route === 'reported' ? (tPeople(s.attrs).length === 1 ? tPeople(s.attrs)[0] : null) : null, submittedBy: S.me, sameAsSubmitter: c.route === 'first'} : null,
     role: ((s.questions || []).find(q => q.role) && c.answers[(s.questions || []).find(q => q.role).id]) || null, basis: s.attrs ? {method: s.attrs.method, exec: s.attrs.exec, scoutCats: (myScout() || {}).cats || []} : null,
-    answers: c.answers, media: c.media, reward: s.rewardPts, status: 'pending', createdAt: Date.now(), channel: 'whatsapp', checks: {gps: true, duplicate: mySubs().filter(x => x.surveyId === c.sid).length >= ((S.surveys[c.sid] || {}).perScout || 1), consistency: true}};
+    answers: c.answers, media: c.media, reward: s.rewardPts, status: 'pending', createdAt: Date.now(), channel: 'whatsapp', outcome: c.outcome || null, flags: c.flags || [], checks: {gps: true, attention: c.attn == null ? null : !!c.attn, duplicate: mySubs().filter(x => x.surveyId === c.sid).length >= ((S.surveys[c.sid] || {}).perScout || 1), consistency: true}};
   W.seen.subs[id] = 'pending';
   W.cs = {mode: 'idle'};
   typing = false;
   if (c.route === 'reported') say(`If the person you spoke with would like to share their own view next time, they can join SavoScouts on WhatsApp: verisavo.com/join\n_Joining is their choice. It is separate from this task and does not change your reward._`);
-  say(`*Job submitted* ✓\nYour contribution is under review.\n*${fmt(s.rewardPts, 2)} VeriPoints* pending. I'll message you here as soon as it is verified, usually within 24 to 48 hours.`, [{l: 'Find another job', a: 'jobs'}, {l: 'My jobs', a: 'myjobs'}]);
+  if (c.outcome === 'not_stocked') say('Recorded as *not stocked* ✓\nThat is a finding in its own right, so it is checked like any other response.');
+  say(`*Task submitted* ✓\nYour contribution is under review.\n*${fmt(s.rewardPts, 2)} VeriPoints* pending. I'll message you here as soon as it is verified, usually within 24 to 48 hours. If nobody has reviewed it after 7 days, it is verified automatically.`, [{l: 'Find another task', a: 'jobs'}, {l: 'My tasks', a: 'myjobs'}]);
   wSave(); render();
   await put('submissions', id, doc);
   patch('scouts', S.me, {lastActive: Date.now()});
@@ -1768,23 +1837,23 @@ function waAct(a, v) {
   const c = W.cs, w = wallet();
   if (a === 'menu') return reply(() => say('What would you like to do?', MENU()));
   if (a === 'jobs') {
-    if (c.mode === 'job') return reply(() => say(`You have a job in progress: *${S.surveys[c.sid]?.title || ''}*. Finish or cancel it first.`, [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
+    if (c.mode === 'job') return reply(() => say(`You have a task in progress: *${S.surveys[c.sid]?.title || ''}*. Finish or cancel it first.`, [{l: 'Continue task', a: 'resume'}, {l: 'Cancel task', a: 'cancel'}]));
     const me = myScout() || {};
     let job = recSurveys().find(s => s.country === me.country);
     if (!job) { const id = sampleJob(); job = {id, ...S.surveys[id]}; }
-    return reply(() => say(`*A job near you*\n\n*${job.title}*\n${loc(job)} · ${fmt(job.rewardPts, 2)} VeriPoints · ~${dur(job)} min${job.sample ? '\n_Sample job for this preview._' : ''}\n\nView the details or accept it now.${(n => n ? `\n\n_${n} interview task${n === 1 ? '' : 's'} will open to you once you have ${TRUST_TEXT}. You have ${scoutTrust(S.me).ok} verified so far. VeriPoints do not count towards this._` : '')(surveys().filter(x => x.status === 'active' && routeFor(x, me) === 'locked').length)}`, [{l: 'View details', a: 'job', v: job.id}, {l: 'Accept job', a: 'accept', v: job.id}]));
+    return reply(() => say(`*A task near you*\n\n${taskCard(job)}${job.sample ? '\n_Sample task for this preview._' : ''}\n\nView the details or accept it now.${(n => n ? `\n\n_${n} interview task${n === 1 ? '' : 's'} will open to you once you have ${TRUST_TEXT}. You have ${scoutTrust(S.me).ok} verified so far. VeriPoints do not count towards this._` : '')(surveys().filter(x => x.status === 'active' && routeFor(x, me) === 'locked').length)}`, [{l: 'View details', a: 'job', v: job.id}, {l: 'Accept task', a: 'accept', v: job.id}]));
   }
   if (a === 'job') {
     const s = S.surveys[v]; if (!s) return;
-    return reply(() => say(`*${s.title}*\n${s.request || ''}\n\n*What to do*\n${s.brief || 'Answer the questions in order.'}\n\nLocation: ${loc(s)}${s.regions?.length ? ' (' + s.regions.join(', ') + ')' : ''}\nQuestions: ${(s.questions || []).length}\nTime: about ${dur(s)} min\nReward: *${fmt(s.rewardPts, 2)} VeriPoints* after verification\nDeadline: ${dt(s.deadline)}\n\n${s.attrs ? taskBrief(s, routeFor(s, myScout() || {})) : 'You must be within 100 m of the location and send at least one photo.'}`, [{l: 'Accept job', a: 'accept', v: s.id}, {l: 'Back to jobs', a: 'jobs'}]));
+    return reply(() => say(`${taskCard({id: v, ...s})}\n\n${s.request ? s.request + '\n\n' : ''}*What to do*\n${s.brief || 'Answer the questions in order.'}\n\n${s.attrs ? taskBrief(s, routeFor(s, myScout() || {})) : 'You must be within 100 m of the location and send at least one photo.'}`, [{l: 'Accept task', a: 'accept', v}, {l: 'Back to tasks', a: 'jobs'}]));
   }
   if (a === 'accept') {
-    const s = S.surveys[v]; if (!s || s.status !== 'active') return reply(() => say('Sorry, that job is no longer open.', MENU()));
-    if (c.mode === 'job' && c.sid !== v) return reply(() => say('Finish or cancel your current job first.', [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
-    mine('Accept job');
+    const s = S.surveys[v]; if (!s || s.status !== 'active') return reply(() => say('Sorry, that task is no longer open.', MENU()));
+    if (c.mode === 'job' && c.sid !== v) return reply(() => say('Finish or cancel your current task first.', [{l: 'Continue task', a: 'resume'}, {l: 'Cancel task', a: 'cancel'}]));
+    mine('Accept task');
     W.cs = {mode: 'job', sid: v, qi: -1, answers: {}, media: [], located: false, route: routeFor(s, myScout() || {})};
-    if (s.attrs && (W.cs.route === 'first' || REMOTE(s.attrs.exec) || !(s.evidence || []).includes('location'))) return reply(() => { say(`*Job accepted* ✓\n${W.cs.route === 'first' ? 'You are answering about your own ' + (firstCats(s.attrs).some(x => x !== 'consumers' && x !== 'community') && s.attrs.method !== 'experience' ? 'business' : 'experience') + '.' : 'Let’s get started.'}`); askNext(); });
-    return reply(() => say(`*Job accepted* ✓\nLet's get started. Are you at *${loc(s)}*? Share your location so I can confirm you are within 100 m.`, [{l: 'Share location', a: 'loc'}]));
+    if (s.attrs && (W.cs.route === 'first' || REMOTE(s.attrs.exec) || !(s.evidence || []).includes('location'))) { W.cs.located = true; return reply(() => { say(`*Task accepted* ✓\n${W.cs.route === 'first' ? 'You are answering about your own ' + (firstCats(s.attrs).some(x => x !== 'consumers' && x !== 'community') && s.attrs.method !== 'experience' ? 'business' : 'experience') + '.' : 'Let’s get started.'}\n_If you cannot complete the task, reply CANT at any time._`); askNext(); }); }
+    return reply(() => say(`*Task accepted* ✓\nLet's get started. Are you at *${loc(s)}*? Share your location so I can confirm you are within 100 m.\n_If you cannot complete the task, reply CANT at any time._`, [{l: 'Share location', a: 'loc'}]));
   }
   if (a === 'loc') {
     const s = S.surveys[c.sid]; if (!s) return;
@@ -1792,63 +1861,118 @@ function waAct(a, v) {
     return reply(() => { say(`Location confirmed ✓\nYou are within 100 m of ${loc(s)}.\n_Simulated in this MVP._`); askNext(); }, 900);
   }
   if (a === 'resume') { const q = curQ(); return reply(() => q ? ask(q, c.qi, (S.surveys[c.sid].questions || []).length) : c.located ? review() : say('Share your location to begin.', [{l: 'Share location', a: 'loc'}])); }
-  if (a === 'ans') { const q = curQ(); if (!q) return; return record(q.type === 'scale' || q.type === 'rating' ? Number(v) : v, q.type === 'rating' ? '★'.repeat(v) : v); }
+  if (a === 'attn') { if (!c.attnAsk) return; mine(String(v)); c.attn = v === 'Market'; c.attnAsk = false; return reply(askNext); }
+  if (a === 'ans') { const q = curQ(); if (!q) return; if (v === 'Other' && q.other) { mine('Other'); c.otherFor = q.id; return reply(() => say('Please type your answer.')); } return record(q.type === 'scale' || q.type === 'rating' ? Number(v) : v, q.type === 'rating' ? '★'.repeat(v) : v); }
   if (a === 'tog') { const m = new Set(c.multi || []); m.has(v) ? m.delete(v) : m.add(v); c.multi = [...m]; wSave(); return render(); }
   if (a === 'multidone') { if (!(c.multi || []).length) return toast('Choose at least one option.'); const val = c.multi; c.multi = null; return record(val, val.join(', ')); }
   if (a === 'submit') return waSubmit();
-  if (a === 'restart') { mine('Start again'); W.cs = {mode: 'job', sid: c.sid, qi: -1, answers: {}, media: [], located: true}; return reply(askNext); }
-  if (a === 'cancel') { mine('Cancel job'); W.cs = {mode: 'idle'}; return reply(() => say('Job cancelled. Nothing was submitted.', MENU())); }
-  if (a === 'balance') return reply(() => say(`*Your balance*\nAvailable: *${fmt(w.available, 2)} pts* (about ${money(w.available * PT_USD)})\nPending verification: ${fmt(w.pending, 2)} pts\nTotal earned: ${fmt(w.earned, 2)} pts\nWithdrawn: ${fmt(w.withdrawn, 2)} pts`, [{l: 'Withdraw', a: 'withdraw'}, {l: 'Find jobs', a: 'jobs'}]));
+  if (a === 'restart') { mine('Start again'); W.cs = {mode: 'job', sid: c.sid, qi: -1, answers: {}, media: [], located: true, route: c.route}; return reply(askNext); }
+  if (a === 'cancel') { mine('Cancel task'); W.cs = {mode: 'idle'}; return reply(() => say('Task cancelled. Nothing was submitted.', MENU())); }
+  if (a === 'edit') { if (c.mode !== 'job' || c.stage !== 'review') return; mine('Change an answer'); c.stage = 'pick'; const n = (S.surveys[c.sid].questions || []).length; return reply(() => say(`Which answer would you like to change? Reply with the question number, 1 to ${n}.`)); }
+  if (a === 'numok') { if (c.hold == null) return; const n = c.hold; c.hold = null; (c.flags = c.flags || []).push(curQ()?.id); return record(n, 'Yes, ' + n + ' is right'); }
+  if (a === 'numno') { c.hold = null; mine('Change it'); const q = curQ(); return reply(() => q && ask(q, c.qi, (S.surveys[c.sid].questions || []).length)); }
+  if (a === 'cant') {
+    if (c.mode !== 'job') return reply(() => say('You do not have a task in progress.', MENU()));
+    return reply(() => say('No problem. What happened?', [{l: 'The place was closed', a: 'cantr', v: 'closed'}, {l: 'The product is not stocked', a: 'cantr', v: 'notstocked'}, {l: 'I was not allowed to take photos', a: 'cantr', v: 'nophoto'}, {l: 'Something else', a: 'cantr', v: 'other'}, {l: 'Continue task', a: 'resume'}]));
+  }
+  if (a === 'cantr') {
+    if (c.mode !== 'job') return;
+    const lab = {closed: 'The place was closed', notstocked: 'The product is not stocked', nophoto: 'I was not allowed to take photos', other: 'Something else'}[v]; mine(lab);
+    /* "not stocked" is a finding in its own right: it is sent for checking like any other response */
+    if (v === 'notstocked' && c.qi >= 0) { c.outcome = 'not_stocked'; c.media = c.media || []; return waSubmit(true); }
+    const sid = c.sid; W.cs = {mode: 'idle'};
+    return reply(() => say(`Thanks for telling me. I have noted it.\n_Nothing was sent, and this does not affect your record. You can try another place for this task before the deadline._`, [{l: 'Try another place', a: 'accept', v: sid}, {l: 'Find tasks', a: 'jobs'}]));
+  }
+  if (a === 'fix') {
+    const x = S.submissions[v]; if (!x || x.status !== 'rejected' || x.fixed) return reply(() => say('That response can no longer be changed.', MENU()));
+    mine('Fix and resend'); W.cs = {mode: 'fix', sub: v};
+    return reply(() => say(`*Fix and resend*\n${x.surveyTitle}\nReason it was not verified: ${x.reason}.\nSend a clearer photo, or type what was missing. You can do this once.`, [{l: 'Cancel', a: 'cancel'}]));
+  }
+  if (a === 'dispute') {
+    const x = S.submissions[v]; if (!x || x.status !== 'rejected' || x.disputed) return reply(() => say('That response has already been looked at again.', MENU()));
+    mine('Dispute'); patch('submissions', v, {disputed: true, disputedAt: Date.now()});
+    return reply(() => say(`*Dispute sent* ✓\n${x.surveyTitle}\nA different reviewer will look at it within 3 days. I will message you here with the result.`, MENU()));
+  }
+  if (a === 'balance') return reply(() => { const lv = scoutLevel(S.me); say(`*Your balance*\nAvailable: *${fmt(w.available, 2)} pts* (about ${money(w.available * PT_USD)})\nPending verification: ${fmt(w.pending, 2)} pts\nTotal earned: ${fmt(w.earned, 2)} pts\nConverted: ${fmt(w.withdrawn, 2)} pts\n\nLevel: *${lv.name}*${lv.next ? '\n' + lv.next : ''}\n_Levels come from verified responses, not from VeriPoints._`, [{l: 'Convert points', a: 'withdraw'}, {l: 'Find tasks', a: 'jobs'}]); });
   if (a === 'myjobs') {
     const ms = mySubs().slice(0, 6), lab = {pending: 'Under review', approved: 'Verified ✓', rejected: 'Not approved'};
-    return reply(() => ms.length ? say(`*Your recent jobs*\n\n${ms.map(s => `*${s.surveyTitle}*\n${lab[s.status]} · ${fmt(s.reward, 2)} pts · ${dt(s.createdAt)}`).join('\n\n')}`, [{l: 'Find jobs', a: 'jobs'}, {l: 'My balance', a: 'balance'}]) : say('You have not submitted any jobs yet.', [{l: 'Find jobs', a: 'jobs'}]));
+    return reply(() => ms.length ? say(`*Your recent tasks*\n\n${ms.map(s => `*${s.surveyTitle}*\n${lab[s.status]} · ${fmt(s.reward, 2)} pts · ${dt(s.createdAt)}`).join('\n\n')}`, [{l: 'Find tasks', a: 'jobs'}, {l: 'My balance', a: 'balance'}]) : say('You have not submitted any tasks yet.', [{l: 'Find tasks', a: 'jobs'}]));
   }
   if (a === 'withdraw') {
-    if (c.mode === 'job') return reply(() => say('Finish or cancel your current job first.', [{l: 'Continue job', a: 'resume'}, {l: 'Cancel job', a: 'cancel'}]));
-    if (w.available < 10) return reply(() => say(`Withdrawals start at *10 points*. You have ${fmt(w.available, 2)} available.`, [{l: 'Find jobs', a: 'jobs'}]));
-    W.cs = {mode: 'wd', stage: 'amount'};
-    return reply(() => say(`How many points would you like to withdraw?\nAvailable: *${fmt(w.available, 2)} pts*\n_Reply with a number._`));
+    if (c.mode === 'job') return reply(() => say('Finish or cancel your current task first.', [{l: 'Continue task', a: 'resume'}, {l: 'Cancel task', a: 'cancel'}]));
+    if (w.available < 10) return reply(() => say(`Converting starts at *10 VeriPoints* for airtime or data. You have ${fmt(w.available, 2)} available.`, [{l: 'Find tasks', a: 'jobs'}]));
+    W.cs = {mode: 'wd', stage: 'method'};
+    return reply(() => say(`*Convert VeriPoints*\nAvailable: *${fmt(w.available, 2)} pts* (about ${money(w.available * PT_USD)})\nHow would you like to receive it?`, Object.keys(WMIN).map(m => ({l: `${m} · from ${WMIN[m]} pts`, a: 'wdm', v: m}))));
   }
-  if (a === 'wdm') { mine(v); c.method = v; c.stage = 'acct'; return reply(() => say(v === 'Bank transfer' ? 'Reply with your bank name and account number.' : 'Reply with the phone number to pay.')); }
+  if (a === 'wdm') {
+    if (c.mode !== 'wd') return; mine(v);
+    if (w.available < WMIN[v]) return reply(() => say(`${v} starts at *${WMIN[v]} VeriPoints*. You have ${fmt(w.available, 2)} available.`, Object.keys(WMIN).filter(m => w.available >= WMIN[m]).map(m => ({l: `${m} · from ${WMIN[m]} pts`, a: 'wdm', v: m})).concat([{l: 'Cancel', a: 'cancel'}])));
+    c.method = v; c.stage = 'amount';
+    return reply(() => say(`How many VeriPoints would you like to convert?\nBetween *${WMIN[v]}* and *${fmt(w.available, 2)}*.\n_Reply with a number._`));
+  }
   if (a === 'wdok') {
-    mine('Confirm'); const amt = c.amount, method = c.method + ' · ••' + String(c.acct).replace(/\D/g, '').slice(-4);
+    mine('Confirm'); const amt = c.amount, method = c.acct ? c.method + ' · ••' + String(c.acct).replace(/\D/g, '').slice(-4) : c.method;
     W.cs = {mode: 'idle'};
     put('transactions', uid('tx'), {scoutId: S.me, kind: 'withdrawal', amountPts: amt, method, status: 'pending', createdAt: Date.now(), channel: 'whatsapp'});
-    return reply(() => say(`*Payout requested* ✓\n${fmt(amt, 2)} pts to ${method}.\nWe will message you when it has been sent.`, MENU()));
+    return reply(() => say(`*Conversion requested* ✓\n${fmt(amt, 2)} VeriPoints as ${method}.\nI will message you here when it has been sent.`, MENU()));
   }
-  if (a === 'help') return reply(() => say('*How it works*\n1. I send you jobs near you.\n2. Accept a job and share your location at the market.\n3. Answer the questions and send photos.\n4. The client verifies your work and I credit your points.\n\n*Commands*\nMENU · JOBS · BALANCE · MY JOBS · WITHDRAW · HELP', MENU()));
+  if (a === 'help') return reply(() => say('*How it works*\n1. I send you tasks near you.\n2. Accept a task and share your location at the market.\n3. Answer the questions and send photos.\n4. Your response is checked and I credit your VeriPoints.\n\n*Good to know*\nYou always see the time, VeriPoints and evidence needed before you accept.\nIf you cannot complete a task, reply CANT. It does not count against you.\nYou can change an answer before you submit.\n\n*Commands*\nMENU · TASKS · BALANCE · MY TASKS · CONVERT · CANT · HELP', MENU()));
 }
 function waText(txt) {
   const t = txt.trim(); if (!t) return;
   const c = W.cs, low = t.toLowerCase();
-  const cmd = {menu: 'menu', hi: 'menu', hello: 'menu', start: 'menu', jobs: 'jobs', job: 'jobs', 'find jobs': 'jobs', balance: 'balance', 'my balance': 'balance', 'my jobs': 'myjobs', withdraw: 'withdraw', help: 'help', cancel: 'cancel'}[low];
+  const cmd = {menu: 'menu', hi: 'menu', hello: 'menu', start: 'menu', jobs: 'jobs', job: 'jobs', 'find jobs': 'jobs', 'find tasks': 'jobs', tasks: 'jobs', task: 'jobs', balance: 'balance', 'my balance': 'balance', 'my jobs': 'myjobs', 'my tasks': 'myjobs', withdraw: 'withdraw', help: 'help', cancel: 'cancel', convert: 'withdraw', 'convert points': 'withdraw', cant: 'cant', 'can’t': 'cant', "can't": 'cant', cannot: 'cant'}[low];
   if (c.mode === 'job' && c.located && !cmd) {
     const q = curQ();
     if (c.needPhoto || (q && q.type === 'photo')) { mine(t); return reply(() => say('Please send a *photo* using the camera button below.')); }
-    if (c.stage === 'review') { mine(t); return reply(() => say('Choose an option below.', [{l: 'Submit', a: 'submit'}, {l: 'Start again', a: 'restart'}, {l: 'Cancel job', a: 'cancel'}])); }
+    if (c.stage === 'review') { mine(t); return reply(() => say('Choose an option below.', [{l: 'Submit', a: 'submit'}, {l: 'Change an answer', a: 'edit'}, {l: 'Start again', a: 'restart'}, {l: 'Cancel task', a: 'cancel'}])); }
+    if (c.attnAsk) { mine(t); return reply(() => say('Please tap one of the options above.')); }
+    if (c.otherFor && q && c.otherFor === q.id) { c.otherFor = null; return record('Other: ' + t, t); }
+    if (c.stage === 'pick') { const qs = S.surveys[c.sid].questions || [], n = parseInt(t, 10), pq = qs[n - 1]; mine(t); if (!pq || !condOk(pq, qs, c.answers || {})) return reply(() => say(`Please reply with a question number from 1 to ${qs.length} that you answered.`)); c.stage = null; c.qi = n - 1; c.editing = true; return reply(() => ask(pq, n - 1, qs.length)); }
+    if (c.hold != null) { mine(t); return reply(() => say('Please tap one of the options above.')); }
+    if (q && q.type === 'rank') { const o = qOpts(q), ns = (t.match(/\d+/g) || []).map(Number); if (ns.length !== o.length || new Set(ns).size !== o.length || ns.some(k => k < 1 || k > o.length)) { mine(t); return reply(() => say(`Please reply with each number from 1 to ${o.length} once, in your order. For example ${o.map((x, k) => k + 1).join(', ')}.`)); } const val = ns.map(k => o[k - 1]); return record(val, val.map((x, k) => (k + 1) + '. ' + x).join(', ')); }
     if (q && ['single', 'multi', 'scale', 'rating'].includes(q.type)) {
-      const hit = (q.options || ['1', '2', '3', '4', '5']).find(o => String(o).toLowerCase() === low);
+      const hit = (q.options ? qOpts(q) : ['1', '2', '3', '4', '5']).find(o => String(o).toLowerCase() === low);
+      if (hit === 'Other' && q.other && q.type === 'single') { mine('Other'); c.otherFor = q.id; return reply(() => say('Please type your answer.')); }
       if (hit && q.type !== 'multi') return record(q.type === 'single' ? hit : Number(hit));
       mine(t); return reply(() => say('Please tap one of the options above.'));
     }
-    if (q && q.type === 'number') { const n = parseFloat(t.replace(/[^0-9.\-]/g, '')); if (isNaN(n)) { mine(t); return reply(() => say('That does not look like a number. Please reply with digits only, for example 18.50.')); } return record(n, t); }
+    if (q && isNum(q)) {
+      const n = parseFloat(t.replace(/,/g, '').replace(/[^0-9.\-]/g, '')), lo = q.min === '' || q.min == null ? 0 : +q.min, hi = q.max === '' || q.max == null ? null : +q.max;
+      if (isNaN(n)) { mine(t); return reply(() => say('That does not look like a number. Please reply with digits only, for example 18.50.')); }
+      if (n < lo || (hi != null && n > hi) || (q.type === 'price' && n === 0)) { mine(t); return reply(() => say(hi != null ? `Please reply with a number between ${lo} and ${hi}.` : q.type === 'price' ? 'A price must be more than 0. Please check and send it again.' : `Please reply with a number of ${lo} or more.`)); }
+      /* far from what others reported for the same question here: ask once before accepting it */
+      const others = subsOf(c.sid).filter(x => x.status !== 'rejected').map(x => Number((x.answers || {})[q.id])).filter(v => v > 0).sort((a, b) => a - b), mid = others.length >= 3 ? others[Math.floor(others.length / 2)] : null;
+      if (mid && (n > mid * 3 || n < mid / 3)) { mine(t); c.hold = n; return reply(() => say(`You entered *${t}*${qUnit(q) ? ' ' + qUnit(q) : ''}. Other answers for this place are around ${fmt(mid, 2)}. Is that right?`, [{l: 'Yes, that is right', a: 'numok'}, {l: 'Change it', a: 'numno'}])); }
+      return record(n, t);
+    }
     if (q) return record(t);
   }
+  if (c.mode === 'fix' && !cmd) { mine(t); return fixSend('note'); }
   if (c.mode === 'wd' && !cmd) {
-    if (c.stage === 'amount') { const n = parseFloat(t.replace(/[^0-9.]/g, '')), w = wallet(); mine(t); if (isNaN(n) || n < 10 || n > w.available) return reply(() => say(`Please reply with a number between 10 and ${fmt(w.available, 2)}.`)); c.amount = Math.round(n * 100) / 100; c.stage = 'method'; return reply(() => say('Where should we send it?', [{l: 'Mobile money', a: 'wdm', v: 'Mobile money'}, {l: 'Bank transfer', a: 'wdm', v: 'Bank transfer'}, {l: 'Airtime', a: 'wdm', v: 'Airtime'}])); }
-    if (c.stage === 'acct') { mine(t); if (t.replace(/\D/g, '').length < 6) return reply(() => say('Please send a full phone or account number.')); c.acct = t; c.stage = 'confirm'; return reply(() => say(`Withdraw *${fmt(c.amount, 2)} pts* (about ${money(c.amount * PT_USD)}) to ${c.method} ending ${t.replace(/\D/g, '').slice(-4)}?`, [{l: 'Confirm', a: 'wdok'}, {l: 'Cancel', a: 'cancel'}])); }
+    if (c.stage === 'method') { mine(t); return reply(() => say('Please tap one of the options above.')); }
+    if (c.stage === 'amount') { const n = parseFloat(t.replace(/[^0-9.]/g, '')), w = wallet(), mn = WMIN[c.method] || 10; mine(t); if (isNaN(n) || n < mn || n > w.available) return reply(() => say(`Please reply with a number between ${mn} and ${fmt(w.available, 2)}.`)); c.amount = Math.round(n * 100) / 100; if (c.method === 'Shopping voucher') { c.acct = ''; c.stage = 'confirm'; return reply(() => say(`Convert *${fmt(c.amount, 2)} VeriPoints* (about ${money(c.amount * PT_USD)}) to a shopping voucher, sent to this WhatsApp number?`, [{l: 'Confirm', a: 'wdok'}, {l: 'Cancel', a: 'cancel'}])); } c.stage = 'acct'; return reply(() => say('Reply with the phone number to send it to.')); }
+    if (c.stage === 'acct') { mine(t); if (t.replace(/\D/g, '').length < 6) return reply(() => say('Please send a full phone or account number.')); c.acct = t; c.stage = 'confirm'; return reply(() => say(`Convert *${fmt(c.amount, 2)} VeriPoints* (about ${money(c.amount * PT_USD)}) to ${c.method} ending ${t.replace(/\D/g, '').slice(-4)}?`, [{l: 'Confirm', a: 'wdok'}, {l: 'Cancel', a: 'cancel'}])); }
   }
   mine(t);
   if (cmd) { if (cmd === 'cancel') { W.cs = {mode: 'idle'}; return reply(() => say('Cancelled.', MENU())); } W.msgs.pop(); mine(t); return waAct(cmd); }
   reply(() => say("Sorry, I didn't understand that. Choose an option:", MENU()));
 }
+function fixSend(kind) {
+  const c = W.cs, id = c.sub, x = S.submissions[id]; W.cs = {mode: 'idle'}; if (!x) return;
+  if (W.seen && W.seen.subs) W.seen.subs[id] = 'pending';
+  patch('submissions', id, {status: 'pending', fixed: true, fixedAt: Date.now(), fixedWith: kind, prevReason: x.reason || '', reason: ''});
+  reply(() => say(`*Sent again* ✓\n${x.surveyTitle}\nIt is under review again. I will message you here with the result.`, MENU()));
+}
 function waPhoto(f) {
   const c = W.cs;
-  if (c.mode !== 'job' || !c.located) { mine('Photo', {kind: 'image', name: f.name}); return reply(() => say('Thanks. Photos are only needed during a job. Accept a job first.', [{l: 'Find jobs', a: 'jobs'}])); }
+  if (c.mode === 'fix') { mine('', {kind: 'image', name: f.name}); return fixSend('photo'); }
+  if (c.mode !== 'job' || !c.located) { mine('Photo', {kind: 'image', name: f.name}); return reply(() => say('Thanks. Photos are only needed during a task. Accept a task first.', [{l: 'Find tasks', a: 'jobs'}])); }
   c.media.push({name: f.name, size: f.size, kind: 'photo'});
   mine('', {kind: 'image', name: f.name});
   const q = curQ();
   if (q && q.type === 'photo') { c.answers[q.id] = f.name; return reply(askNext); }
+  if (c.stage === 'review') return reply(() => say('Photo added ✓', [{l: 'Submit', a: 'submit'}, {l: 'Change an answer', a: 'edit'}]));
   if (c.needPhoto) { c.needPhoto = false; return reply(review); }
   reply(() => say('Photo received ✓'));
 }
@@ -1871,14 +1995,14 @@ function waView(r) {
   }).join('');
   const body = `<div class="waw">
     ${WAFULL ? '<div class="wa-bd" data-act="wafull"></div>' : ''}<div class="wa ${WAFULL ? 'full' : ''}" aria-label="WhatsApp chat with the Verisavo agent"${WAFULL ? ' role="dialog" aria-modal="true"' : ''}>
-      <div class="wa-head"><span class="wa-av"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAAA8CAYAAAA5S9daAAAGG0lEQVR42u2baVBTVxTHzwvZF5MYCEYEwipBxUoAqSxadQIiW6wLVuxMrVpbp7W2rpUOUyuMIFqrtdoZO21t3bAQUbDCoKjggAgV1IhbFVCUTRNIQhJKSD+0dJhReI/kJcj4zrc37//unPd7J/f8750bxGw2w+seJCCCgEBAICAQEAgIBAQCAgFhwCCjCY7kXNqt1RkEA93ncBhtYSGSQ24ujjW2SLC7x8yovK1a1K7pFg+kYVId1DKp026bQXjaqvI7piiLGkxz4OfCtQeyVs2U+IwrwRPAnce6yP359cc6u3qEg+msAYDp55CUGP45mqZLb4TUjKPnTaZeMl4AtAaTYE/ew5NoABAAsyzQxhBcRAJl+FRJE5ruYWMrnDlXvREvCKcrWrbojaZRaDqpLzd3NIfy2OYT48KEMEwvl513eRseAHpMZmrpzWfLsGijpcKddukObwaNP+zq4oiqu32vCZR3Hs22NqmKOtU7hu5eNprOS8Ss8BQxK+3WIhfLIzKw6I6fLMuyNqkzV1s3YNFZOyEOGUKcLGgbi0lD1RWV1Ex+ptK4WZrQzQaNrFll9EXT8dmUpiAfXo5dIdDpVG1CdEgBms7U2ws5p8vTLE2osKrtMyy6KKnTNwgCuGyLIUPZXmtpU3vHLkm7h6YbzWNDwdEUGtnBoftcTftqjb7HCcv4JpOZXFDZugn1g1BJ2l0rJ4yjU0lauzjG/uHsxLsfEer/uLTi1rjBdM/VWii6UPtpzKzATB6L8qT4WvvHLSqjN17tM3KS4CBeACxaOyTJ0c0TAMDhExczAACkPlxF+nt+ktVx4gXuQsY1q0sXB3NkNYSQKT7ZYlchqu7ugydw/VbDnL7EpT5cRWqyb/BauWes91hWuaUJ42GOcFlFLp4XgckUHVOUvmBkJnlwzn6R5B2xYYHXbIkbe8hrDTzMkVUTY18YDN3s6KStGl2XcVCdA4kEBUdT3AV8TuOAdru5K+hURcuXtQ8652IxR1sW+4S/EvsJdDpVK48JPYWlXWafvJw5mMZjDLNqTaJHwvZlkvHTAwQHKWTEYGtzhEslAAA8bVH5xS9Nr0PTcUcxofj3r5CB7qs7dCIel/W071pnMPHP17R/dK6mfXX/FSSfTWnKWuEvxssb4LKzJHLm354RNvEhmq6jswtOFV5NGeh+xl5Fyfz3M835RVWbTaZeMovuoIoLdU7LWuEvXiZzXe7iSFfibY5wqwQAgOrav+Sr1h/IRdOJXYVw4sf1yMvMV1xy+r2+HMYIefDuwrcy4qNDvqZRybo+nbJBM9tTxKpkUEmdtoBg1R6jdLKXAku7rH/UCn9ef5D4kqV3Zv+P0NyqhszvFBvjk9O0h7JLvtd1GfkAABPcOcW2AmA1BACA5PnTUzGtLvPKdvS/Nhr/ZuUWVMgHcpx7D575MC457fkPhwp/AxuH1RDmzArcMYrDQNWVlN30bmlT/2+dTxdVbdHqDIM+o9Hq4UZdY/QrD4FKJevlMaGoS1qz2QzZef+2S7PZjPx64sJmTDY9MXzdKw8BAGBB/LRNCIKg6nLyy+Xd3T2M8qt3ljxpfo6qFzpyISzE75cRAcHZiXd/ZsSku2g6XZcRCoqrNx1RlGIyPUvejvwWQRCbH6VB8DquU6usn7t87b58DMCgpU2NOh6NSoazx1Md2Sz6sxFRCQAAkyeIC3w9x2LZmME0Xqws+KI9AOAKAQAgaV54Cl5jLUoMWwd2ClwhRM2YsgtLu0SL4De8OzzcnKtGJAQqlayfHzvtuPVVEG63KsAdAgDAwsSwDQ4ky4cVOnIhIlTy04iGIOBzGmdFBigtnlfkEftIJJJpREP4r5zXW/IcheIA8pipqWDnsAmEAH/3Pyb6uQ3ZgMTJgi/Zqy3aHAIAwPaUpb4cNvZOMXbMaFizMjYBhiFsBsFZyLu/J315FBYQYlch7M/8wJ/JoKmHAwJi61Pure0dXlt3Zl+5Un33hXNPNBoF4mRBJZ+siE1k0KmdMEyB2Ouof6dGL7xRVx/d8KgtECEhvS4igVIa4JXLYtJUMMyBEP93IM4xEhAICAQEAgIBgYBAQCAgEBAICBjiHwRxIICq38NHAAAAAElFTkSuQmCC" alt="" style="height:20px;width:auto"></span><div style="min-width:0;flex:1"><b>Verisavo Agent</b><div style="font-size:12px;opacity:.8">SavoScout jobs · WhatsApp</div></div><button class="wa-exp" data-act="wafull" aria-pressed="${WAFULL}" aria-label="${WAFULL ? 'Exit full screen' : 'Open chat full screen'}" title="${WAFULL ? 'Exit full screen' : 'Full screen'}">${WAFULL ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'}</button></div>
+      <div class="wa-head"><span class="wa-av"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAAA8CAYAAAA5S9daAAAGG0lEQVR42u2baVBTVxTHzwvZF5MYCEYEwipBxUoAqSxadQIiW6wLVuxMrVpbp7W2rpUOUyuMIFqrtdoZO21t3bAQUbDCoKjggAgV1IhbFVCUTRNIQhJKSD+0dJhReI/kJcj4zrc37//unPd7J/f8750bxGw2w+seJCCCgEBAICAQEAgIBAQCAgFhwCCjCY7kXNqt1RkEA93ncBhtYSGSQ24ujjW2SLC7x8yovK1a1K7pFg+kYVId1DKp026bQXjaqvI7piiLGkxz4OfCtQeyVs2U+IwrwRPAnce6yP359cc6u3qEg+msAYDp55CUGP45mqZLb4TUjKPnTaZeMl4AtAaTYE/ew5NoABAAsyzQxhBcRAJl+FRJE5ruYWMrnDlXvREvCKcrWrbojaZRaDqpLzd3NIfy2OYT48KEMEwvl513eRseAHpMZmrpzWfLsGijpcKddukObwaNP+zq4oiqu32vCZR3Hs22NqmKOtU7hu5eNprOS8Ss8BQxK+3WIhfLIzKw6I6fLMuyNqkzV1s3YNFZOyEOGUKcLGgbi0lD1RWV1Ex+ptK4WZrQzQaNrFll9EXT8dmUpiAfXo5dIdDpVG1CdEgBms7U2ws5p8vTLE2osKrtMyy6KKnTNwgCuGyLIUPZXmtpU3vHLkm7h6YbzWNDwdEUGtnBoftcTftqjb7HCcv4JpOZXFDZugn1g1BJ2l0rJ4yjU0lauzjG/uHsxLsfEer/uLTi1rjBdM/VWii6UPtpzKzATB6L8qT4WvvHLSqjN17tM3KS4CBeACxaOyTJ0c0TAMDhExczAACkPlxF+nt+ktVx4gXuQsY1q0sXB3NkNYSQKT7ZYlchqu7ugydw/VbDnL7EpT5cRWqyb/BauWes91hWuaUJ42GOcFlFLp4XgckUHVOUvmBkJnlwzn6R5B2xYYHXbIkbe8hrDTzMkVUTY18YDN3s6KStGl2XcVCdA4kEBUdT3AV8TuOAdru5K+hURcuXtQ8652IxR1sW+4S/EvsJdDpVK48JPYWlXWafvJw5mMZjDLNqTaJHwvZlkvHTAwQHKWTEYGtzhEslAAA8bVH5xS9Nr0PTcUcxofj3r5CB7qs7dCIel/W071pnMPHP17R/dK6mfXX/FSSfTWnKWuEvxssb4LKzJHLm354RNvEhmq6jswtOFV5NGeh+xl5Fyfz3M835RVWbTaZeMovuoIoLdU7LWuEvXiZzXe7iSFfibY5wqwQAgOrav+Sr1h/IRdOJXYVw4sf1yMvMV1xy+r2+HMYIefDuwrcy4qNDvqZRybo+nbJBM9tTxKpkUEmdtoBg1R6jdLKXAku7rH/UCn9ef5D4kqV3Zv+P0NyqhszvFBvjk9O0h7JLvtd1GfkAABPcOcW2AmA1BACA5PnTUzGtLvPKdvS/Nhr/ZuUWVMgHcpx7D575MC457fkPhwp/AxuH1RDmzArcMYrDQNWVlN30bmlT/2+dTxdVbdHqDIM+o9Hq4UZdY/QrD4FKJevlMaGoS1qz2QzZef+2S7PZjPx64sJmTDY9MXzdKw8BAGBB/LRNCIKg6nLyy+Xd3T2M8qt3ljxpfo6qFzpyISzE75cRAcHZiXd/ZsSku2g6XZcRCoqrNx1RlGIyPUvejvwWQRCbH6VB8DquU6usn7t87b58DMCgpU2NOh6NSoazx1Md2Sz6sxFRCQAAkyeIC3w9x2LZmME0Xqws+KI9AOAKAQAgaV54Cl5jLUoMWwd2ClwhRM2YsgtLu0SL4De8OzzcnKtGJAQqlayfHzvtuPVVEG63KsAdAgDAwsSwDQ4ky4cVOnIhIlTy04iGIOBzGmdFBigtnlfkEftIJJJpREP4r5zXW/IcheIA8pipqWDnsAmEAH/3Pyb6uQ3ZgMTJgi/Zqy3aHAIAwPaUpb4cNvZOMXbMaFizMjYBhiFsBsFZyLu/J315FBYQYlch7M/8wJ/JoKmHAwJi61Pure0dXlt3Zl+5Un33hXNPNBoF4mRBJZ+siE1k0KmdMEyB2Ouof6dGL7xRVx/d8KgtECEhvS4igVIa4JXLYtJUMMyBEP93IM4xEhAICAQEAgIBgYBAQCAgEBAICBjiHwRxIICq38NHAAAAAElFTkSuQmCC" alt="" style="height:20px;width:auto"></span><div style="min-width:0;flex:1"><b>Verisavo Agent</b><div style="font-size:12px;opacity:.8">SavoScout tasks · WhatsApp</div></div><button class="wa-exp" data-act="wafull" aria-pressed="${WAFULL}" aria-label="${WAFULL ? 'Exit full screen' : 'Open chat full screen'}" title="${WAFULL ? 'Exit full screen' : 'Full screen'}">${WAFULL ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'}</button></div>
       <div class="wa-body" id="wa-body">${bubbles}${typing ? '<div class="wa-row"><div class="wa-b wa-typing"><i></i><i></i><i></i></div></div>' : ''}</div>
       <form class="wa-comp" id="waform"><label class="wa-cam" title="Send a photo" aria-label="Send a photo">${ic.camera}<input type="file" accept="image/*" id="wa-file"></label><input id="wa-in" placeholder="Message" autocomplete="off" ${S.canWrite ? '' : 'disabled'}><button class="wa-send" aria-label="Send">${ic.send}</button></form>
     </div>
     <div class="stack">
       <div class="card stack"><div class="row" style="flex-wrap:nowrap"><div class="avatar">${initials(sc.name)}</div><div style="min-width:0"><b>${esc(sc.name)}</b><div class="faint" style="font-size:12px">${esc(sc.city)}, ${esc(sc.country)}</div></div><span class="pill ok" style="margin-left:auto">${ic.check}WhatsApp linked</span></div>
-        <div class="kv"><span>WhatsApp number</span><b class="num">${esc(sc.phone || '—')}</b></div><div class="kv"><span>Available points</span><b class="num">${fmt(w.available, 2)}</b></div><div class="kv"><span>Pending verification</span><b class="num">${fmt(w.pending, 2)}</b></div><div class="kv"><span>Jobs submitted</span><b class="num">${mySubs().length}</b></div></div>
-      <div class="note">${ic.info}<span>Scouts work only through WhatsApp in this MVP. This panel simulates the chat; in production the same messages go through the WhatsApp Business API. Try typing <b>JOBS</b>, <b>BALANCE</b> or <b>WITHDRAW</b>.</span></div>
+        <div class="kv"><span>WhatsApp number</span><b class="num">${esc(sc.phone || '—')}</b></div><div class="kv"><span>Available points</span><b class="num">${fmt(w.available, 2)}</b></div><div class="kv"><span>Pending verification</span><b class="num">${fmt(w.pending, 2)}</b></div><div class="kv"><span>Tasks submitted</span><b class="num">${mySubs().length}</b></div></div>
+      <div class="note">${ic.info}<span>Scouts work only through WhatsApp in this MVP. This panel simulates the chat; in production the same messages go through the WhatsApp Business API. Try typing <b>TASKS</b>, <b>BALANCE</b>, <b>CONVERT</b> or <b>CANT</b>.</span></div>
       <div class="row"><button class="btn ghost sm" data-act="wareset">Clear chat history</button></div>
     </div></div>`;
   return shell(r, 'SavoScout on WhatsApp', body);
@@ -1931,6 +2055,7 @@ document.addEventListener('click', async (e) => {
     const data = {status: v, reviewedAt: Date.now()}; if (v === 'rejected') data.reason = ($('#rejReason') || {}).value || 'Did not meet the brief';
     closeLayer(); await patch('submissions', id, data); toast(v === 'approved' ? `Verified. ${pts(x.reward)} released to ${x.scoutName}.` : 'Marked as not verified.');
   }
+  else if (a === 'uphold') { closeLayer(); await patch('submissions', id, {disputeClosed: true, disputeResult: 'upheld', disputeClosedAt: Date.now()}); toast('Kept as not verified. The SavoScout is told on WhatsApp.'); }
   else if (a === 'setstatus') { await patch('surveys', id, {status: v}); toast('Investigation ' + (v === 'active' ? 'resumed' : v) + '.'); }
   /* builder */
   else if (a === 'paymethod') { if (v === 'credits' && credits() < B.responses) return; B.pay.method = v; render(); }
@@ -1962,6 +2087,8 @@ document.addEventListener('click', async (e) => {
   else if (a === 'catreset') { B.catN = null; render(); }
   else if (a === 'cfgrec') { const p = cfgPlan(); B.scouts = p.rec; B.perScout = [1, 2, 3, 4, 5, 6, 8, 10].find(n => n >= p.recPer) || 10; B.scoutsCustom = ![5, 10, 20, 50].includes(B.scouts); render(); }
   else if (a === 'cfgdate') { B.due = new Date(Date.now() + cfgPlan().need * DAY).toISOString().slice(0, 10); B.timeframe = 'custom'; render(); }
+  else if (a === 'bank') { B.bank = !B.bank; render(); }
+  else if (a === 'bankadd') { const [t, k] = v.split(':'), nq = bankQ(t, Number(k)); if (nq && B.questions.length < 20) { B.questions.push(nq); render(); toast('Question added to the end of the task.'); } }
   else if (a === 'addq') { const nq = newQ(); B.questions.push(nq); B.openQ = nq.id; render(); const ins = document.querySelectorAll('[data-q$=":text"]'); ins[ins.length - 1]?.focus(); }
   else if (a === 'delq') { const gone = B.questions.splice(Number(v), 1)[0]; B.questions.forEach(x => { if (x.cond && gone && x.cond.q === gone.id) x.cond = null; }); render(); }
   else if (a === 'dupq') { const q = JSON.parse(JSON.stringify(B.questions[v])); q.id = uid('q'); B.questions.splice(Number(v) + 1, 0, q); render(); }
@@ -1973,7 +2100,7 @@ document.addEventListener('click', async (e) => {
   else if (a === 'atdone') { B.atEdit = false; render(); autoDraft(true); }
   else if (a === 'atrec') { const keep = bAt(); B.at = null; const R = bAt(); R.placeType = keep.placeType; R.placeText = keep.placeText; B.evid = null; bEvid(); render(); toast('Set to what Verisavo recommends for this investigation.'); }
   else if (a === 'openq') { B.openQ = B.openQ === v ? null : v; render(); }
-  else if (a === 'moveq') { const [i, d] = v.split(':').map(Number), j = i + d; if (j < 0 || j >= B.questions.length) return; const q = B.questions.splice(i, 1)[0]; B.questions.splice(j, 0, q); B.questions.forEach((x, k) => { if (x.cond && B.questions.findIndex(y => y.id === x.cond.q) >= k) x.cond = null; }); render(); }
+  else if (a === 'moveq') { const [i, d] = v.split(':').map(Number), j = i + d; if (j < 0 || j >= B.questions.length) return; if (B.questions[i].screen || B.questions[j].screen) return toast('The screening question stays first, so nobody is turned away part-way through.'); const q = B.questions.splice(i, 1)[0]; B.questions.splice(j, 0, q); B.questions.forEach((x, k) => { if (x.cond && B.questions.findIndex(y => y.id === x.cond.q) >= k) x.cond = null; }); render(); }
   else if (a === 'pv-open') { PV = {i: -1, ans: {}, route: 'reported'}; pvView(); }
   else if (a === 'pv-route') { PV = {i: -1, ans: {}, route: v}; pvView(); }
   else if (a === 'pv-next') { PV.i = Math.min(PV.i + 1, pvQs().length); pvView(); }
@@ -1992,7 +2119,7 @@ document.addEventListener('click', async (e) => {
     J = null; W = null; try { localStorage.removeItem('vs-wa-' + S.me); } catch (e) {}
     await put('scouts', S.me, doc); go('s-chat'); render();
   }
-  else if (a === 'wa') { const m = W && W.msgs[Number(t.dataset.m)], b = m && m.buttons && m.buttons[Number(v)]; if (!b) return; if (b.a !== 'tog' && b.a !== 'multidone' && b.a !== 'accept' && b.a !== 'loc' && b.a !== 'submit' && b.a !== 'restart' && b.a !== 'cancel' && b.a !== 'wdok' && b.a !== 'wdm' && b.a !== 'ans') mine(b.l); waAct(b.a, b.v); }
+  else if (a === 'wa') { const m = W && W.msgs[Number(t.dataset.m)], b = m && m.buttons && m.buttons[Number(v)]; if (!b) return; if (b.a !== 'tog' && b.a !== 'multidone' && b.a !== 'accept' && b.a !== 'loc' && b.a !== 'submit' && b.a !== 'restart' && b.a !== 'cancel' && b.a !== 'wdok' && b.a !== 'wdm' && b.a !== 'ans' && !['attn', 'edit', 'cantr', 'fix', 'dispute', 'numok', 'numno'].includes(b.a)) mine(b.l); waAct(b.a, b.v); }
   else if (a === 'wareset') { W = null; try { localStorage.removeItem('vs-wa-' + S.me); } catch (e) {} render(); }
 });
 document.addEventListener('submit', (e) => {
@@ -2037,6 +2164,8 @@ document.addEventListener('input', (e) => {
   if (B && d.cdue) { B.due = t.value; render(); return; }
   if (d.pv && PV) { const q = pvQs()[PV.i]; if (q) PV.ans[q.id] = t.value; return; }
   if (d.qc != null && d.qc !== '' && B) { if (t.value === 'keep') return; const [qid, ...o] = t.value.split('|'); B.questions[d.qc].cond = t.value ? {q: qid, v: o.join('|')} : null; render(); return; }
+  if (d.bankt && B) { B.bankT = t.value; render(); return; }
+  if (d.battn && B) { B.attn = t.checked; render(); return; }
   if (d.bscreen && B) { B.questions = B.questions.filter(q => !q.screen); if (t.checked) { const F = reviewFacts(), ppl = bAt().targets.filter(PEOPLE), who = !ppl.length ? 'the right person for this task' : ppl.map(c => (x => (/^[aeiou]/i.test(x) ? 'an ' : 'a ') + x.toLowerCase())(CATS.find(y => y[0] === c)[2].split(' or ')[0])).join(' or '); B.questions.unshift(Object.assign(newQ('single', 'Are you speaking with ' + who + '?', ['Yes', 'No']), {screen: true})); } render(); return; }
   if (d.bevo && B) { B.evidOpt = Object.assign({}, B.evidOpt, {[d.bevo]: !!t.value}); return; }
   if (d.bev === 'none' && B) { B.evidNone = t.checked; if (t.checked) { B.evid = []; B.questions = B.questions.filter(q => q.type !== 'photo'); } render(); return; }
@@ -2048,7 +2177,9 @@ document.addEventListener('input', (e) => {
   if (B && d.crn) { if (d.crn === 'on') { B.routeN = t.checked ? {direct: Math.ceil(B.responses / 2)} : null; render(); } else { B.routeN = {direct: Math.max(0, Math.min(B.responses, Math.round(Number(t.value)) || 0))}; softRender(); } return; }
   if (B && d.ccn) { B.catN = Object.assign({}, B.catN, {[d.ccn]: Math.max(0, Math.round(Number(t.value)) || 0)}); softRender(); return; }
   if (d.bev && B) { const ev = bEvid().filter(x => x !== d.bev); if (t.checked) { ev.push(d.bev); B.evidNone = false; } B.evid = ev; if (d.bev !== 'photos') render(); if (d.bev === 'photos') { if (!t.checked) B.questions = B.questions.filter(q => q.type !== 'photo'); else if (!B.questions.some(q => q.type === 'photo') && B.questions.length < 20) B.questions.push(newQ('photo', 'Photograph what you observed.')); render(); } return; }
-  if (d.q) { const [i, k] = d.q.split(':'); B.questions[i][k] = t.value; if (k === 'type') { const q = B.questions[i]; if ((t.value === 'single' || t.value === 'multi') && !(q.options || []).length) q.options = ['Option 1', 'Option 2']; render(); } else softRender(); return; }
+  if (d.q) { const [i, k] = d.q.split(':'), q = B.questions[i]; let val = t.type === 'checkbox' ? t.checked : t.value;
+    if (k === 'type') { q.yn = val === 'yesno'; q.dd = val === 'dropdown'; if (q.yn || q.dd) val = 'single'; q.type = val; if (q.yn) { q.options = ['Yes', 'No']; q.other = q.dk = q.shuffle = false; } else if (['single', 'multi', 'rank'].includes(val) && !(q.options || []).length) q.options = ['Option 1', 'Option 2']; if (val === 'price' && !q.cur) q.cur = CUR[bCountries()[0]] || ''; B.questions.forEach(x => { if (x.cond && x.cond.q === q.id && val !== 'single') x.cond = null; }); render(); }
+    else { q[k] = val; if (t.type === 'checkbox') render(); else softRender(); } return; }
   if (d.qo) { const [i, j] = d.qo.split(':').map(Number); B.questions[i].options[j] = t.value; return; }
   if (d.j) { J[d.j] = t.value; if (d.j === 'country') J.city = (MAIN_CITIES[t.value] || [])[0] || ''; if (t.tagName === 'SELECT' || t.type === 'radio') render(); else { const b = $('#jnext'); if (b) b.disabled = !jValid(); } return; }
 });
@@ -2096,9 +2227,9 @@ async function saveSurvey(status, silent) {
   if (!B.title.trim()) { B.step = 0; render(); return toast('Add an investigation name first.'); }
   cfgInit(); const P = pricing(B.responses, B.timeframe), id = B.id || uid('sv'), prev = S.surveys[id] || {};
   bAt().contribution = contribOf(bAt());
-  const doc = {attrs: bAt(), evidenceOptional: B.evidOpt || {}, evidenceNone: !!B.evidNone, catTargets: bCats().length ? catSplit() : null, routeTargets: B.routeN && dualRoute(bAt()) ? {direct: Math.min(B.routeN.direct, B.responses), assisted: Math.max(0, B.responses - B.routeN.direct)} : null, gaps: B.gaps || (B.gap ? [B.gap] : []), objective: B.objective != null ? B.objective : (B.gap || B.ai || ''), evidence: bEvid(), note: B.note || '', wizAns: B.wizAns || null, kinds: B.kinds || [], title: B.title.trim(), industry: B.industry, country: bCountries()[0] || '', countries: bCountries(), regions: B.regions, location: B.location, brief: B.brief, questions: B.questions, target: B.responses, timeframe: B.timeframe,
+  const doc = {attrs: bAt(), evidenceOptional: B.evidOpt || {}, evidenceNone: !!B.evidNone, catTargets: bCats().length ? catSplit() : null, routeTargets: B.routeN && dualRoute(bAt()) ? {direct: Math.min(B.routeN.direct, B.responses), assisted: Math.max(0, B.responses - B.routeN.direct)} : null, gaps: B.gaps || (B.gap ? [B.gap] : []), objective: B.objective != null ? B.objective : (B.gap || B.ai || ''), evidence: bEvid(), note: B.note || '', wizAns: B.wizAns || null, kinds: B.kinds || [], title: B.title.trim(), industry: B.industry, country: bCountries()[0] || '', countries: bCountries(), regions: B.regions, location: B.location, brief: B.brief, questions: B.questions, attn: bAttn(), attnSet: B.attn == null ? null : !!B.attn, target: B.responses, timeframe: B.timeframe,
     rewardPts: P.rewardPts, costTotal: P.total, gpsRadius: 100, status, createdAt: prev.createdAt || Date.now(), updatedAt: Date.now(), publishedAt: status === 'active' ? Date.now() : null,
-    deadline: status === 'active' ? Date.now() + bDays() * 86400000 : null, scouts: B.scouts, perScout: B.perScout, dist: cfgDist(), distMode: typeof B.dist === 'string' ? B.dist : 'even', draftStep: B.step, typed: !!B.typed, due: B.due || '', request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: PER_RESPONSE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
+    deadline: status === 'active' ? Date.now() + bDays() * 86400000 : null, scouts: B.scouts, perScout: B.perScout, dist: cfgDist(), distMode: typeof B.dist === 'string' ? B.dist : 'even', draftStep: B.step, typed: !!B.typed, due: B.due || '', request: B.ai || '', gap: B.gap || '', billing: {method: B.pay.method, company: B.pay.company, email: B.pay.email, po: B.pay.po, rate: P.rate + VERIFY_FEE, authorised: P.total, authorisedAt: status === 'active' ? Date.now() : null}};
   B.id = id;
   if (silent) { doc.createdAt = prev.createdAt || Date.now(); S.surveys = {...S.surveys, [id]: doc}; if (route().id !== id) { try { history.replaceState(null, '', '#c-builder-' + id); } catch (e) {} if (route().id !== id) B.autoId = true; } tellAt(); if (DB) { try { await DB.collection('surveys').doc(id).set(doc); } catch (e) {} } else saveLocal(); return; }
   if (status === 'active' && B.pay.method === 'credits') { try { localStorage.setItem('vs-credits', String(Math.max(0, credits() - B.responses))); } catch (e) {} }
@@ -2682,6 +2813,7 @@ select.in{cursor:pointer}
 .qp-in{display:block;width:min(100%,360px);min-height:40px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink-3);font-size:13.5px}.qp-in.tall{min-height:76px;width:100%}.qp-num{display:flex;align-items:center;gap:8px;width:100%}.qp-num .qp-in{width:160px}.qp-num b{font-weight:500;color:var(--ink-2)}.qp-num svg{width:17px;height:17px;color:var(--ink-3)}
 .qp-scale{display:flex;gap:6px}.qp-scale i{display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:#fff;font-style:normal;color:var(--ink-2)}.qp-stars{font-size:26px;letter-spacing:4px;color:#9AA6B8;line-height:1}.qp-hint{font-size:12.5px;color:var(--ink-3)}
 .qp-photo{display:flex;align-items:center;gap:8px;padding:14px 16px;border:1.5px dashed #B8C2D0;border-radius:12px;color:var(--ink-2);font-size:13.5px}.qp-photo svg{width:18px;height:18px}
+.qadds{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.qbank{display:grid;gap:12px}.qbank-l{list-style:none;margin:0;padding:0;display:grid}.qbank-l li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}.qbank-l li>div{display:grid;gap:2px;min-width:0}.qbank-l b{font-weight:500;font-size:14px}.qbank-l small{font-size:12.5px;color:var(--muted,#6B7385)}.qsws{display:grid;gap:8px;margin-top:6px}.qsw{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;cursor:pointer}.qsw input{width:18px;height:18px;margin:1px 0 0;flex:none}.qlim{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}.qlim .field label{font-size:12.5px}.qp-n{width:20px;height:20px;flex:none;display:grid;place-items:center;border:1.5px solid #9AA6B8;border-radius:6px;font-style:normal;font-size:11.5px;color:#5B6478;background:#fff}.qp-dd{min-width:200px}.rv-time .rv-grid{margin-top:8px}
 .qadd{display:flex;align-items:center;gap:10px;width:100%;padding:14px;border:1px dashed var(--line);border-radius:14px;background:none;font:inherit;font-weight:500;color:var(--ink);cursor:pointer}.qadd svg{width:16px;height:16px}
 .rv-regen summary{display:flex;align-items:center;gap:8px;font-weight:500;cursor:pointer;list-style:none}.rv-regen summary::-webkit-details-marker{display:none}.rv-regen summary svg{width:16px;height:16px;color:var(--primary)}
 .rv-ev{background:var(--paper)}.rv-evrow{display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer}.rv-evrow input{width:18px;height:18px;margin:0;flex:none;accent-color:var(--primary)}.rv-evrow svg{width:17px;height:17px;flex:none;color:var(--ink-2)}
