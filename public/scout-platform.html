@@ -593,7 +593,7 @@ function donut(segs, center, sub) {
 }
 
 /* ================= CLIENT ================= */
-function kpi(lab, val, icon, delta = '') { return `<div class="card kpi"><span class="ico">${ic[icon]}</span><span class="lab">${lab}</span><span class="val num">${val}</span>${delta ? `<span class="delta">${delta}</span>` : ''}</div>`; }
+function kpi(lab, val, icon, delta = '', to = '') { const tag = to ? 'button' : 'div'; return `<${tag} class="card kpi${to ? ' kpi-go' : ''}"${to ? ` type="button" data-go="${to}" aria-label="${lab}: ${String(val).replace(/<[^>]*>/g, '')}. Open investigations"` : ''}><span class="ico">${ic[icon]}</span><span class="lab">${lab}</span><span class="val num">${val}</span>${delta ? `<span class="delta">${delta}</span>` : ''}</${tag}>`; }
 function emptyState(icon, title, text, action = '') { return `<div class="empty">${ic[icon]}<b style="color:var(--ink)">${title}</b><span>${text}</span>${action}</div>`; }
 
 function cOverview(r) {
@@ -607,10 +607,10 @@ function cOverview(r) {
   <div class="grid g-main">
     <div class="stack">
       <div class="grid g2">
-        ${kpi('Verification rate', (ok + rej ? pct(ok, ok + rej) : 0) + '%', 'shield', ok + rej ? `<span class="pill ${pct(ok, ok + rej) >= 90 ? 'ok' : 'warn'}">${pct(ok, ok + rej) >= 90 ? 'Excellent' : 'Needs attention'}</span>` : 'No reviewed responses yet')}
-        ${kpi('Investigations', fmt(sv.length), 'clip', `<b>${act.length}</b> live now`)}
-        ${kpi('SavoScout responses', fmt(all.length), 'file', `<b>${fmt(wk)}</b> in the last 7 days`)}
-        ${kpi('Verified responses', fmt(ok), 'checkc', `<b>${pct(ok, all.length)}%</b> of all responses`)}
+        ${kpi('Verification rate', (ok + rej ? pct(ok, ok + rej) : 0) + '%', 'shield', ok + rej ? `<span class="pill ${pct(ok, ok + rej) >= 90 ? 'ok' : 'warn'}">${pct(ok, ok + rej) >= 90 ? 'Excellent' : 'Needs attention'}</span>` : 'No reviewed responses yet', 'c-surveys')}
+        ${kpi('Investigations', fmt(sv.length), 'clip', `<b>${act.length}</b> live now`, 'c-surveys')}
+        ${kpi('SavoScout responses', fmt(all.length), 'file', `<b>${fmt(wk)}</b> in the last 7 days`, 'c-surveys')}
+        ${kpi('Verified responses', fmt(ok), 'checkc', `<b>${pct(ok, all.length)}%</b> of all responses`, 'c-surveys')}
       </div>
       <div class="card"><div class="head"><h2>SavoScout coverage</h2></div>
         ${Object.keys(countries).length ? `<div class="tbl-wrap"><table><thead><tr><th>Country</th><th>Active SavoScouts</th><th>Online today</th><th>Tasks completed</th><th>Verification</th></tr></thead><tbody>
@@ -2657,6 +2657,9 @@ td { border-top-color: var(--line); }
 /* inside the Assistant: paper ground, white cards */
 .happ.inline { background: #F9FAFE; }
 body { background: #F9FAFE; }
+button.kpi-go { font: inherit; color: inherit; text-align: left; width: 100%; cursor: pointer; justify-items: start; -webkit-tap-highlight-color: transparent; transition: border-color .15s, box-shadow .15s; }
+button.kpi-go:hover { border-color: #3A5292; box-shadow: 0 2px 10px rgba(31,39,63,.08); }
+button.kpi-go:focus-visible { outline: 2px solid #3A5292; outline-offset: 2px; }
 th, .happ.inline th { background: #EEF1F6; }
 .hnav { background: #EEF1F6; }
 .happ.inline .content { padding: 18px 20px 32px; gap: 14px; }
