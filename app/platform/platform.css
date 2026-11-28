@@ -2834,7 +2834,7 @@ html body #va#va .va-side :is(.va-nav,.vapx-conv):is(button):hover{background:#E
 html body #va#va .va-side .va-nav[aria-current], html body #va#va .va-side .vapx-conv[aria-current="true"]{background:#fff !important;border-color:#DFDFDF !important;font-weight:600 !important;color:#2C2C2E !important}
 html body #va#va .va-side .va-nav[aria-current] svg, html body #va#va .va-side .vapx-conv[aria-current="true"] svg{color:#3B5D8A !important}
 html body #va#va .va-side .vsn-soon{color:#6D6C71 !important}
-html body #va#va .va-side .vsn-soon em{background:#DFDFDF !important;color:#6D6C71 !important;font-size:12px !important;font-style:normal !important;font-weight:500 !important}
+html body #va#va .va-side .vsn-soon em{background:#E3EBF8 !important;color:#3A5292 !important;font-size:12px !important;font-style:normal !important;font-weight:500 !important}
 html body #va#va .va-side .vsn, html body #va#va .va-side .va-user{border-color:#DFDFDF !important}
 html body #va#va .va-side .va-user b{color:#3A3A3C !important;font-size:14px !important;font-weight:600 !important}
 html body #va#va .va-side .va-user small{color:#6D6C71 !important;font-size:12.5px !important}
